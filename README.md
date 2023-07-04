@@ -1,25 +1,33 @@
-# Getting Started with Create React App
+# Task Tracker
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+### Project Tech Stack
+
+1. React.js
+2. Material UI
+3. Styled components
+4. Redux Toolkit
+5. React-router version 6
+6. Ajax
 
 ## Available Scripts
 
 In the project directory, you can run:
 
+### `npm install`
+
+It installs all required dependencies included in package.json file
+
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
+### `npm build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -27,44 +35,83 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Project rules and Style guides
 
-### `npm run eject`
+### Folder structure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### `src/api`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This folder is for ajax or axios request configs.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### `src/assets`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This folder contains subfolders: `styles`, `icons` and `images`.
 
-## Learn More
+#### `src/components`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This folder contains reusable stateless and stateful components. It has following sub folders:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### |---`src/components/UI`
 
-### Code Splitting
+     This folder containes common presentational components(eg. Button, Input, etc.)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### |---`src/components/Company/Form/CreateCompanyForm.jsx`
 
-### Analyzing the Bundle Size
+     Inside `src/components` we may have also other domain specific components like `src/components/Post/PostCard.jsx`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### `src/containers`
 
-### Making a Progressive Web App
+Each page includes many small components. This folder is similar to src/components, but it contains our large components which is literally our app pages.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### `src/utils/constants`
 
-### Advanced Configuration
+This folder to define some objects or arrays and import them anywhere we want to use. These constants could be list items or some text or some words. This is a good practice to keep them separate from components.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### `src/utils/helpers`
 
-### Deployment
+We can define helper functions in this folder. There are some functions that we might need across application which generate some certain data or do something special. It’s better to keep them separate from components in order to make them reusable and make code cleaner.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+#### `src/layout`
 
-### `npm run build` fails to minify
+It contains the layout components\*.
+Layout is the common top wrapper component usually will contain Navbar , Sidebar and Children components
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### `src/index`
+
+All type definitions, actions, reducers and the redux index belong to this folder.
+
+#### `src/routes`
+
+We’ll need this folder for react-router configs and route related components.
+
+#### `src/config`
+
+It contains the config files using the env and others
+
+## Style Guide
+
+#### Linters
+
+We are using Eslint and prettier linter tools to find bugs and errors before they happen.
+We'll spend less time testing new features and team's code will be more consistent.
+We are following [AirBnB JavaScript style guide](https://github.com/songhee24/VS-CODE__ReactJs-with-ESLint-Prettier-and-Airbnb)
+
+## How to work with Git?
+
+### How to name a branch?
+
+##### `feature/branch-name`
+
+If you are working on a new feature, you should checkout from `development` branch and name the branch as `feature/branch-name`.\
+After finishing your task, merge your current branch into the `development` branch by creating `pull request`
+
+##### `bugfix/branch-name`
+
+If you are fixing a bug on a development environment, you should checkout from `development` and name the branch as `bugfix/branch-name`.\
+After finishing your bugfix, merge your current branch into the `development` branch
+
+##### `hotfix/branch-name`
+
+If you are fixing a urgent bug on a production, you should chekout from `master` branch and name the branch as `hotfix/branch-name`\
+After finishing your hotfix, merge your current branch into the `staging` branche by creating `pull request`.\
+Then test your changes on the `staging` environment, if it's OK, then you must merge changes with `development` and `master` branches.
