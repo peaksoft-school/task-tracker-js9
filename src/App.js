@@ -1,7 +1,5 @@
-import "./App.css";
-
 function App() {
-  return <div className="App">hello</div>;
+   return <div>Task Tracker js-9</div>
 }
 
-export default App;
+export default App
