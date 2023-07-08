@@ -1,7 +1,21 @@
 import React from 'react'
+import { Button } from '@mui/material'
+import { showSnackbar } from './components/UI/snackbar/Snackbar'
 
 const App = () => {
-   return <div>Task Tracker js-9</div>
+   const handleButtonClick = () => {
+      showSnackbar({
+         message: 'Snackbar message',
+         additionalMessage: 'Additional message',
+         severity: 'success',
+      })
+   }
+
+   return (
+      <div>
+         <Button onClick={handleButtonClick}>Show Snackbar</Button>
+      </div>
+   )
 }
 
 export default App
