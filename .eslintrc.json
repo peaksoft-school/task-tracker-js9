@@ -16,6 +16,8 @@
   },
   "plugins": ["react", "react-hooks"],
   "rules": {
+    "eslintreact/prop-types":"off",
+   "react/prop-types": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
