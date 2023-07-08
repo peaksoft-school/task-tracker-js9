@@ -7,7 +7,7 @@ const App = () => {
          <Snackbar
             message="Avatar removed"
             additionalMessage="we've deleted your avatar."
-            severity="success"
+            severity="warning"
          />
       </div>
    )

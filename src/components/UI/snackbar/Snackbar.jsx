@@ -1,6 +1,20 @@
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { FaTimes } from 'react-icons/fa'
+
+const CloseButton = ({ color }) => {
+   return (
+      <FaTimes
+         style={{
+            color,
+            fontSize: '20px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+         }}
+      />
+   )
+}
 
 const CustomToast = ({ message, additionalMessage, severity }) => {
    let firstWordStyle = {
@@ -51,6 +65,14 @@ const CustomToast = ({ message, additionalMessage, severity }) => {
 }
 
 export const Snackbar = ({ message, additionalMessage, severity }) => {
+   let closeButtonColor = '#FF0000'
+
+   if (severity === 'success') {
+      closeButtonColor = '#008000'
+   } else if (severity === 'warning') {
+      closeButtonColor = '#FFA500'
+   }
+
    toast[severity](
       <CustomToast
          message={message}
@@ -61,7 +83,9 @@ export const Snackbar = ({ message, additionalMessage, severity }) => {
 
    return (
       <div>
-         <ToastContainer />
+         <ToastContainer
+            closeButton={<CloseButton color={closeButtonColor} />}
+         />
       </div>
    )
 }
