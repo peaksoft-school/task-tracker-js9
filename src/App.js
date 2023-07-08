@@ -1,11 +1,5 @@
-import { Header } from './components/header/Header'
-
 function App() {
-   return (
-      <div>
-         <Header />
-      </div>
-   )
+   return <div>Task Tracker js-9</div>
 }
 
 export default App
