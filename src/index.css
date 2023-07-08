@@ -1,11 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Average+Sans&family=Open+Sans:wght@500;600;700&display=swap');
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
 }
 a {
-  text-decoration: none;
+   text-decoration: none;
 }
 li {
-  list-style: none;
+   list-style: none;
 }
