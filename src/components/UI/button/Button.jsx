@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button as MyButton, styled } from '@mui/material'
+import { Button as ReusebleButton, styled } from '@mui/material'
 
 export const Button = ({ variant, onClick, children, ...rest }) => {
    return (
@@ -16,15 +16,15 @@ export const Button = ({ variant, onClick, children, ...rest }) => {
    )
 }
 
-const ButtonStyle = styled(MyButton)(({ ...props }) => ({
+const ButtonStyle = styled(ReusebleButton)(({ ...props }) => ({
    backgroundColor: props.backgroundColor || '#0079BF',
    color: props.color || '#ffff',
-   borderRadius: props.borderRadius || '24px',
-   width: props.width || '154px',
+   borderRadius: props.borderRadius || '1.6rem',
+   width: props.width || '9.6rem',
    display: 'inline-flex',
-   padding: props.padding || '8px 16px',
+   padding: props.padding || '0.5rem 1rem',
    alignItems: 'flex-start',
-   gap: '8px',
+   gap: '0.5rem',
    '&:hover': {
       backgroundColor: props.backgroundColor,
       color: props.color,
