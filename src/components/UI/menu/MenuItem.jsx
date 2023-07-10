@@ -1,10 +1,17 @@
 import { styled } from '@mui/material'
 
-export const MenuItem = ({ children, animation, ...props }) => {
+export const MenuItem = ({ children, animation, onClose, open, ...props }) => {
    return (
-      <MenuWrapper animation={animation} {...props}>
-         {children}
-      </MenuWrapper>
+      <div>
+         {open && (
+            <>
+               <Backdrop onClick={onClose} />
+               <MenuWrapper animation={animation} {...props}>
+                  {children}
+               </MenuWrapper>
+            </>
+         )}
+      </div>
    )
 }
 
@@ -32,6 +39,7 @@ const MenuWrapper = styled('div')(({ animation, ...props }) => {
       width: props.width,
       height: props.height,
       position: 'absolute',
+      zIndex: '999',
       ...animationStyles,
 
       '@keyframes slideInAnimation': {
@@ -55,3 +63,10 @@ const MenuWrapper = styled('div')(({ animation, ...props }) => {
       },
    }
 })
+
+const Backdrop = styled('div')(() => ({
+   position: 'absolute',
+   width: '100%',
+   height: '100%',
+   top: '0',
+}))
