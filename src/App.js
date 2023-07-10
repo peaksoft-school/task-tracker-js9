@@ -1,7 +1,4 @@
-import React from 'react'
-
-const App = () => {
-   return <div>Task Trecker js9</div>
+function App() {
+   return <div>Task Trecker js-9</div>
 }
-
 export default App
