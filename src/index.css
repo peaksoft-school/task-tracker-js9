@@ -10,3 +10,12 @@ a {
 li {
    list-style: none;
 }
+@font-face {
+   font-family: 'CarePro';
+   src: url('./assets/fonts/CeraPro-Regular.woff') format('woff'),
+      url('./assets/fonts/CeraPro-Medium.woff') format('woff');
+}
+
+body {
+   font-family: 'CarePro';
+}

@@ -8,7 +8,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import { styled as MUIStyled } from '@mui/material/styles'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DateField } from '@mui/x-date-pickers/DateField'
-import { Button } from '@mui/material'
+import { Button } from '../button/Button'
 
 export const DataPickers = () => {
    const [start, setStart] = useState(dayjs('2023-07-10'))
@@ -65,7 +65,7 @@ export const DataPickers = () => {
                      <MenuItem value="60min">1 hour before</MenuItem>
                   </Select>
                </SelectContainer>
-               <Button>Create a new template</Button>
+               <StyledButton>Create a new template</StyledButton>
             </DateContainer>
          </LocalizationProvider>
       </MainDateContainer>
@@ -99,11 +99,11 @@ const DateContainer = MUIStyled('div')(() => ({
 }))
 
 const DateLabel = MUIStyled('label')(() => ({
-   fontFamily: 'CeraPro',
    color: ' #919191',
    fontSize: '0.9375rem',
    fontWeight: '400',
    marginTop: '0.6rem',
+   fontFamily: 'CarePro',
 }))
 
 const DateAndTimeContainer = MUIStyled('div')(() => ({
@@ -121,11 +121,26 @@ const DueDatePanel = MUIStyled(DateField)(() => ({
 const SelectContainer = MUIStyled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
+   // fontFamily: 'CarePro',
    gap: '0.5rem',
    marginBottom: '1.3rem',
    '.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root': {
       width: '16.6875rem',
       borderRadius: '0.5rem',
       borderColor: ' #D0D0D0',
+   },
+}))
+
+const StyledButton = MUIStyled(Button)(() => ({
+   width: '16.65rem',
+   padding: '0.375rem 1rem',
+   color: '#FFF',
+   fontFamily: 'CarePro',
+   fontSize: ' 0.975rem',
+   '&:hover': {
+      backgroundColor: '#035c8f',
+   },
+   '&:active': {
+      backgroundColor: '#0079BF',
    },
 }))
