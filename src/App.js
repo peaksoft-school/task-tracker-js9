@@ -1,12 +1,7 @@
 import React from 'react'
-import { RadioComponent } from './components/Icon/Icon'
 
 const App = () => {
-   return (
-      <div>
-         <RadioComponent iconType="star">{}</RadioComponent>
-      </div>
-   )
+   return <div>Task Trecker js9</div>
 }
 
 export default App
