@@ -1,28 +1,31 @@
-import { useEffect, useState } from 'react'
 import TableMui from './components/UI/table/TableMui'
-// import { TableUi } from './components/UI/table/TableUi'
 
 function App() {
-   const [table, setTable] = useState([])
-
-   useEffect(()=>{
-      axios('https://jsonplaceholder.typicode.com/users')
-   })
-
-   const column = [
-      { field: 'id', header: '#' },
-      { field: 'name', header: 'Name' },
-      { field: 'address', header: 'address' },
+   const data = [
+      {
+         id: 1,
+         name: 'Leanne Graham',
+         username: 'Bret',
+         email: 'Sincere@april.biz',
+         icon: <Star />,
+         address: {
+            street: 'Kulas Light',
+            suite: 'Apt. 556',
+            city: 'Gwenborough',
+         },
+      },
    ]
 
+   const column = [
+      { heading: 'Name', key: 'name' },
+      { heading: 'Email', key: 'email' },
+      { heading: 'City', key: 'username' },
+   ]
    return (
       <div>
-         {/* <TableUi columns={columns} />
-         <TableUi columns={rows} /> */}
-         <TableMui rows={rows} column={column} />
-         Task Tracker js-9
+         <TableMui column={column} rows={data} />
+         Task Trecker js-9
       </div>
    )
 }
-
 export default App
