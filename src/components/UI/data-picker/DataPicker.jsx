@@ -121,7 +121,6 @@ const DueDatePanel = MUIStyled(DateField)(() => ({
 const SelectContainer = MUIStyled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
-   // fontFamily: 'CarePro',
    gap: '0.5rem',
    marginBottom: '1.3rem',
    '.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root': {
