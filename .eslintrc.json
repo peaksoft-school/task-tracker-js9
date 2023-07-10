@@ -17,13 +17,14 @@
    "rules": {
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "react/jsx-props-no-spreading": "off",
+      "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
       "import/prefer-default-export": "off",
+      "import/no-extraneous-dependencies": "off",
       "no-shadow": "off",
       "react-hooks/exhaustive-deps": "off",
       "react-hooks/rules-of-hooks": "error",
       "react/function-component-definition": "off",
-      "import/no-extraneous-dependencies": "off",
       "max-len": [
          "error",
          {

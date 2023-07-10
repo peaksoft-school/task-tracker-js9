@@ -64,6 +64,7 @@ const Favorite = muiStyled('div')(() => ({
 }))
 
 const ParagraphFavorite = muiStyled('p')(() => ({
+   fontFamily: 'CarePro',
    color: '#3e3e3e',
    fontSize: '1rem',
    fontWeight: '500',
