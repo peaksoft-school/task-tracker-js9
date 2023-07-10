@@ -1,35 +1,35 @@
 import React from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
-import searchIcon from '../../assets/icons/searchIcon.svg'
-import logo from '../../assets/icons/Logo.svg'
-import communications from '../../assets/icons/communication.svg'
-import personLogo from '../../assets/icons/person_icon.svg'
-import arrowDown from '../../assets/icons/Arrows.svg'
+import { ReactComponent as SearchIcon } from '../../assets/icons/searchIcon.svg'
+import { ReactComponent as Logo } from '../../assets/icons/Logo.svg'
+import { ReactComponent as Communications } from '../../assets/icons/communication.svg'
+import { ReactComponent as PersonLogo } from '../../assets/icons/person_icon.svg'
+import { ReactComponent as ArrowDown } from '../../assets/icons/Arrows.svg'
 
 export const Header = () => {
    return (
       <GLobalContainer>
          <LogoContainer>
-            <Logo src={logo} alt="task-tracker_logo" />
-            <h1>Task Tracker</h1>
+            <Logotype src={Logo} alt="task-tracker_logo" />
+            <LogoWords>Task Tracker</LogoWords>
             <Favorite>
-               <p>Favourites (2)</p>
-               <img src={arrowDown} alt="arrow" />
+               <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
+               <ArrowDown src={ArrowDown} alt="arrow" />
             </Favorite>
          </LogoContainer>
          <AboutPanel>
             <Search>
                <SearchIconWrapper>
-                  <img src={searchIcon} alt="Search_Icon" />
+                  <SearchIcon src={SearchIcon} alt="Search_Icon" />
                </SearchIconWrapper>
                <StyledInputBase
                   placeholder="Search"
                   inputProps={{ 'Cera Pro': 'search' }}
                />
             </Search>
-            <img src={communications} alt="natifacation" />
-            <img src={personLogo} alt="person_Icon" />
+            <Communications src={Communications} alt="natifacation" />
+            <PersonLogo src={PersonLogo} alt="person_Icon" />
          </AboutPanel>
       </GLobalContainer>
    )
@@ -37,9 +37,9 @@ export const Header = () => {
 
 const GLobalContainer = muiStyled('div')(() => ({
    width: '100%',
-   height: '68px',
+   height: '6.8vw',
    backgroundColor: '#ffffff',
-   padding: '16px 40px',
+   padding: '1rem 2.5rem',
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
@@ -48,37 +48,36 @@ const GLobalContainer = muiStyled('div')(() => ({
 const LogoContainer = muiStyled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
-   gap: '8px',
-   h1: {
-      color: '#0079bf',
-      fontFamily: 'Open Sans',
-      fontSize: '20px',
-      fontStyle: 'normal',
-      fontWeight: '600',
-      lineHeight: 'normal',
-   },
+   gap: '0.5rem',
+}))
+
+const LogoWords = muiStyled('h1')(() => ({
+   color: '#0079bf',
+   fontFamily: 'Open Sans',
+   fontSize: '1.25rem',
+   fontWeight: '600',
 }))
 const Favorite = muiStyled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
-   marginLeft: '80px',
-   p: {
-      color: '#3e3e3e',
-      fontSize: '16px',
-      fontStyle: 'normal',
-      fontWeight: '500',
-      lineHeight: 'normal',
-   },
+   marginLeft: '5rem',
 }))
 
-const Logo = muiStyled('img')(() => ({
-   width: '36px',
-   height: '36px',
+const ParagraphFavorite = muiStyled('p')(() => ({
+   color: '#3e3e3e',
+   fontSize: '1rem',
+   fontWeight: '500',
+}))
+
+const Logotype = muiStyled(Logo)(() => ({
+   width: '3.5vw',
+   height: '6.2vh',
 }))
 
 const AboutPanel = muiStyled('div')(() => ({
    display: 'flex',
-   gap: '28px',
+   alignItems: 'center',
+   gap: '1.8rem',
 }))
 
 const Search = muiStyled('div')(({ theme }) => ({
