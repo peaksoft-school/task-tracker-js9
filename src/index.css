@@ -1,11 +1,20 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
 }
 a {
-  text-decoration: none;
+   text-decoration: none;
 }
 li {
-  list-style: none;
+   list-style: none;
+}
+@font-face {
+   font-family: 'CarePro';
+   src: url('./assets/fonts/CeraPro-Regular.woff') format('woff'),
+      url('./assets/fonts/CeraPro-Medium.woff') format('woff');
+}
+
+body {
+   font-family: 'CarePro';
 }
