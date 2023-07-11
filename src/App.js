@@ -1,9 +1,7 @@
-import TableMui from './components/UI/table/TableMui'
-
 function App() {
    return (
       <div>
-         <TableMui />
+         <h1>Task-tracker</h1>
       </div>
    )
 }
