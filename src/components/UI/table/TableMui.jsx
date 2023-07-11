@@ -1,4 +1,3 @@
-import React from 'react'
 import { styled } from '@mui/material/styles'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -7,8 +6,75 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { Toolbar, Tooltip, Typography } from '@mui/material'
-import { Button } from '../button/Button'
+
+export default function TableMui({ column, rows }) {
+   return (
+      <TableContainer style={{ width: '85rem' }} component={Paper}>
+         <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead
+               style={{
+                  borderBottom: '2px solid #D7D7D7',
+                  paddingLeft: '1rem',
+                  paddingRight: '1rem',
+               }}
+            >
+               <TableRow>
+                  {column.map((column) => (
+                     <StyledTableCell
+                        key={`header-${column.key}`}
+                        align={column.align}
+                        style={
+                           column.minWidth ? { minWidth: column.minWidth } : {}
+                        }
+                     >
+                        <TableHeaderStyled>{column.heading}</TableHeaderStyled>
+                     </StyledTableCell>
+                  ))}
+               </TableRow>
+            </TableHead>
+
+            <TableBody>
+               {rows.map((row, rowIndex) => (
+                  <StyledTableRow key={row.id || row.appointmentId}>
+                     {column.map((column) => {
+                        if (column.render) {
+                           return (
+                              <StyledTableCell key={column.key}>
+                                 {column.render(row)}
+                              </StyledTableCell>
+                           )
+                        }
+                        const value = column.index
+                           ? rowIndex + 1
+                           : row[column.key]
+                        if (column.key === 'name') {
+                           return (
+                              <StyledTableCell
+                                 key={`row-${column.key}`}
+                                 align={column.align}
+                              >
+                                 <TableBodyTitleStyled>
+                                    {value}
+                                 </TableBodyTitleStyled>
+                              </StyledTableCell>
+                           )
+                        }
+                        return (
+                           <StyledTableCell
+                              key={`row-${column.key}`}
+                              align={column.align}
+                           >
+                              {value}
+                           </StyledTableCell>
+                        )
+                     })}
+                  </StyledTableRow>
+               ))}
+            </TableBody>
+         </Table>
+      </TableContainer>
+   )
+}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${TableHead}`]: {
@@ -29,73 +95,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }))
 
 const TableHeaderStyled = styled('h3')`
-   font-family: 'Manrope';
+   color: #000;
+   font-family: CarePro;
+   font-size: 0.9rem;
    font-style: normal;
-   font-weight: 600;
-   font-size: 14px;
-   line-height: 19px;
+   font-weight: bold;
+   line-height: normal;
+   height: 3.6rem;
+   display: flex;
+   align-items: flex-end;
 `
 
-const TableBodyTitleStyled = styled('p')`
-   font-family: 'Manrope';
+const TableBodyTitleStyled = styled('span')`
+   color: #000;
+   font-family: CarePro;
+   font-size: 1rem;
    font-style: normal;
-   font-weight: 400;
-   font-size: 16px;
-   line-height: 22px;
+   font-weight: bold;
+   line-height: normal;
+   height: 3.4rem;
+   display: flex;
+   align-items: center;
+   text-decoration: underline;
+   cursor: pointer;
+   color: #0073de;
 `
-
-export default function TableMui({ rows, column }) {
-   return (
-      <TableContainer component={Paper}>
-         <Toolbar>
-            <Typography
-               sx={{ flex: '1 1 100%' }}
-               variant="h6"
-               id="tableTitle"
-               component="div"
-            >
-               Workspace
-            </Typography>
-            <Tooltip title="Create">
-               <Button>Create</Button>
-            </Tooltip>
-         </Toolbar>
-         <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-               <TableRow>
-                  {column.map((column) => (
-                     <StyledTableCell
-                        key={`header-${column.key}`}
-                        align={column.align || 'left'}
-                        style={
-                           column.minWidth ? { minWidth: column.minWidth } : {}
-                        }
-                     >
-                        <TableHeaderStyled>{column.heading}</TableHeaderStyled>
-                     </StyledTableCell>
-                  ))}
-               </TableRow>
-            </TableHead>
-            <TableBody>
-               {rows.map((row) => (
-                  <StyledTableRow key={row.id}>
-                     {column.map((column) => {
-                        const value = row[column.key]
-                        return (
-                           <StyledTableCell
-                              key={`row-${column.key}`}
-                              align={column.align}
-                           >
-                              <TableBodyTitleStyled>
-                                 {value}
-                              </TableBodyTitleStyled>
-                           </StyledTableCell>
-                        )
-                     })}
-                  </StyledTableRow>
-               ))}
-            </TableBody>
-         </Table>
-      </TableContainer>
-   )
-}
