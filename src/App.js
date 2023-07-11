@@ -1,4 +1,11 @@
+import { CreateBoard } from './components/board/CreateBoard'
+
 function App() {
-   return <div>Task Trecker js-9</div>
+   return (
+      <div>
+         <h1>Task Trecker js-9</h1>
+         <CreateBoard />
+      </div>
+   )
 }
 export default App
