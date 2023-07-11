@@ -1,11 +1,13 @@
 import React from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
-import { ReactComponent as SearchIcon } from '../../assets/icons/searchIcon.svg'
-import { ReactComponent as Logo } from '../../assets/icons/Logo.svg'
-import { ReactComponent as Communications } from '../../assets/icons/communication.svg'
-import { ReactComponent as PersonLogo } from '../../assets/icons/person_icon.svg'
-import { ReactComponent as ArrowDown } from '../../assets/icons/Arrows.svg'
+import {
+   DownIcon,
+   Logo,
+   NotificationIcon,
+   PersonIcon,
+   SearchIcon,
+} from '../../assets/icons'
 
 export const Header = () => {
    return (
@@ -15,7 +17,7 @@ export const Header = () => {
             <LogoWords>Task Tracker</LogoWords>
             <Favorite>
                <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
-               <ArrowDown src={ArrowDown} alt="arrow" />
+               <DownIcon src={DownIcon} alt="arrow" />
             </Favorite>
          </LogoContainer>
          <AboutPanel>
@@ -28,8 +30,8 @@ export const Header = () => {
                   inputProps={{ CarePro: 'search' }}
                />
             </Search>
-            <Communications src={Communications} alt="natifacation" />
-            <PersonLogo src={PersonLogo} alt="person_Icon" />
+            <NotificationIcon src={NotificationIcon} alt="natifacation" />
+            <PersonIcon src={PersonIcon} alt="person_Icon" />
          </AboutPanel>
       </GLobalContainer>
    )
