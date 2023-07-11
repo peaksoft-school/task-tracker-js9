@@ -52,14 +52,13 @@ export const boards = [
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://cdn.pixabay.com/photo/2013/02/20/11/30/bubbles-83758_640.jpg',
    },
    {
       id: 10,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+      background: 'https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg',
    },
    {
       id: 11,
@@ -72,8 +71,7 @@ export const boards = [
       id: 12,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+      background: 'https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg',
    },
    {
       id: 13,
@@ -93,15 +91,14 @@ export const boards = [
       id: 15,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+      background: 'https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg',
    },
    {
       id: 16,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://cdn.pixabay.com/photo/2013/02/20/11/30/bubbles-83758_640.jpg',
    },
    {
       id: 17,
@@ -115,14 +112,14 @@ export const boards = [
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://www.befunky.com/images/prismic/f5ca4181-01da-4237-92bf-b6938359503e_hero-blur-image-5.jpg?auto=avif,webp&format=jpg&width=896',
    },
    {
       id: 19,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://cdn.pixabay.com/photo/2013/02/20/11/30/bubbles-83758_640.jpg',
    },
    {
       id: 20,
