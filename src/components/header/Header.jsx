@@ -25,7 +25,7 @@ export const Header = () => {
                </SearchIconWrapper>
                <StyledInputBase
                   placeholder="Search"
-                  inputProps={{ 'Cera Pro': 'search' }}
+                  inputProps={{ CarePro: 'search' }}
                />
             </Search>
             <Communications src={Communications} alt="natifacation" />
@@ -35,7 +35,7 @@ export const Header = () => {
    )
 }
 
-const GLobalContainer = muiStyled('div')(() => ({
+const GLobalContainer = muiStyled('header')(() => ({
    width: '100%',
    height: '6.8vw',
    backgroundColor: '#ffffff',
