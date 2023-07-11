@@ -1,11 +1,4 @@
-import ProfileForm from './components/profile/Profile'
-
 function App() {
-   return (
-      <div>
-         <ProfileForm />
-      </div>
-   )
+   return <div>Task Trecker js-9</div>
 }
-
 export default App
