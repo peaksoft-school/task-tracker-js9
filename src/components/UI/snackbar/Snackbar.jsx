@@ -8,7 +8,7 @@ const CloseButton = ({ color }) => {
       <FaTimes
          style={{
             color,
-            fontSize: '20px',
+            fontSize: '1.25rem',
             fontWeight: 'bold',
             cursor: 'pointer',
          }}
@@ -20,7 +20,7 @@ const CustomToast = ({ message, additionalMessage, severity }) => {
    let firstWordStyle = {
       color: '',
       fontSize: '',
-      marginBottom: '10px',
+      marginBottom: '0.625rem',
    }
    let secondWordStyle = {
       color: '',
@@ -30,29 +30,29 @@ const CustomToast = ({ message, additionalMessage, severity }) => {
    if (severity === 'success') {
       firstWordStyle = {
          color: '#006400',
-         fontSize: '20px',
+         fontSize: '1.25rem',
       }
       secondWordStyle = {
          color: '#008000',
-         fontSize: '15px',
+         fontSize: '0.9375rem',
       }
    } else if (severity === 'error') {
       firstWordStyle = {
          color: '#FF0000',
-         fontSize: '20px',
+         fontSize: '1.25rem',
       }
       secondWordStyle = {
          color: '#CD5C5C',
-         fontSize: '15px',
+         fontSize: '0.9375rem',
       }
    } else if (severity === 'warning') {
       firstWordStyle = {
          color: '#FF8C00',
-         fontSize: '20px',
+         fontSize: '1.25rem',
       }
       secondWordStyle = {
          color: '#FFA500',
-         fontSize: '15px',
+         fontSize: '0.9375rem',
       }
    }
 
