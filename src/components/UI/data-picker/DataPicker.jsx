@@ -11,6 +11,7 @@ import { DateField } from '@mui/x-date-pickers/DateField'
 import { Button } from '../button/Button'
 
 export const DataPickers = () => {
+   const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
    const [start, setStart] = useState(dayjs('2023-07-10'))
    const [due, setDue] = useState(dayjs('2023-07-15'))
    const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
@@ -18,7 +19,10 @@ export const DataPickers = () => {
    return (
       <MainDateContainer>
          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar />
+            <DateCalendar
+               value={selectedDate}
+               onChange={(date) => setSelectedDate(date)}
+            />
             <DateContainer>
                <DateLabel htmlFor="startDate">Start Date</DateLabel>
                <StartDatePanel
