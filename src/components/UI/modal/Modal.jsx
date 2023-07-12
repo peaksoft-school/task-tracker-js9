@@ -14,13 +14,13 @@ export const ModalUi = ({ children, ...rest }) => {
 const ModalStyle = styled(Box)(({ ...rest }) => ({
    position: 'fixed',
    left: '50%',
-   backgroundColor: 'white',
    borderRadius: '10px',
    width: rest.width,
-   padding: '16px 20px',
-   height: rest.height,
    transform: 'translate(-50%, -50%)',
+   height: rest.height,
    border: 'none',
+   backgroundColor: 'white',
+   padding: '16px 20px',
    top: '40%',
 }))
 const Backdrop = styled(Modal)(() => ({
