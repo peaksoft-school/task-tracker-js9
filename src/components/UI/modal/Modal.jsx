@@ -10,15 +10,15 @@ export const ModalUi = ({ open, onClose, children, ...rest }) => {
 }
 const ModalStyle = styled(Box)(({ ...rest }) => ({
    position: 'fixed',
-   padding: '16px 20px',
    left: '50%',
-   backgroundColor: 'white',
    borderRadius: '10px',
    width: rest.width,
-   height: rest.height,
-   top: '40%',
    transform: 'translate(-50%, -50%)',
+   height: rest.height,
    border: 'none',
+   backgroundColor: 'white',
+   padding: '16px 20px',
+   top: '40%',
 }))
 const Backdrop = styled(Modal)(() => ({
    position: 'absolute',
