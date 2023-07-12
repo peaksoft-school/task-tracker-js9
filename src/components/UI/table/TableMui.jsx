@@ -114,6 +114,7 @@ const TableBodyTitleStyled = styled('span')`
    font-weight: bold;
    line-height: normal;
    height: 3.4rem;
+
    display: flex;
    align-items: center;
    text-decoration: underline;
