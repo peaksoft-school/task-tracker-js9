@@ -129,3 +129,26 @@ export const boards = [
          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
    },
 ]
+
+export const involvedProjects = [
+   { title: 'ali', text: 'Samatov' },
+   { title: 'Samatov', text: 'ali' },
+]
+
+export const testFields = [
+   {
+      name: 'firstName',
+      type: 'text',
+      placeholder: 'First Name',
+   },
+   {
+      name: 'lastName',
+      type: 'text',
+      placeholder: 'Last Name',
+   },
+   {
+      name: 'email',
+      type: 'email',
+      placeholder: 'Email',
+   },
+]
