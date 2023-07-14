@@ -1,10 +1,9 @@
-import { PhotoColor } from './components/photoColor/PhotoColor'
-
 function App() {
    return (
       <div>
-         <PhotoColor />
+         <h1>Task Trecker js-9</h1>
       </div>
    )
 }
+
 export default App
