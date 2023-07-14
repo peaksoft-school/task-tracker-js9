@@ -133,6 +133,7 @@ export const boards = [
 export const involvedProjects = [
    { title: 'ali', text: 'Samatov' },
    { title: 'Samatov', text: 'ali' },
+   { title: 'Ali', text: 'Ali' },
 ]
 
 export const testFields = [

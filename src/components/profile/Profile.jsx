@@ -1,21 +1,39 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { styled } from '@mui/system'
 import { Button, IconButton, TextField } from '@mui/material'
+import { useDropzone } from 'react-dropzone'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { EditIcon, HideIcon, ShowIcon } from '../../assets/icons'
 import ColorBackground from '../../assets/images/ColorsBakground.png'
 import { Header } from '../header/Header'
-import { validatePassword } from '../../utils/helpers/Helpers'
 import { involvedProjects, testFields } from '../../utils/constants/general'
+import { validatePassword } from '../../utils/helpers/Helpers'
+
+const schema = yup.object().shape({
+   firstName: yup.string().required('First name is required'),
+   middleName: yup.string().required('Middle name is required'),
+   email: yup.string().email('Invalid email').required('Email is required'),
+})
 
 export function ProfileForm() {
-   const [showPassword, setShowPassword] = useState(false)
-   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-   const [passwordDirty, setPasswordDirty] = useState(false)
-   const [confirmPasswordDirty, setConfirmPasswordDirty] = useState(false)
-   const [profile, setProfile] = useState({
-      firstName: '',
-      middleName: '',
-      email: '',
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm({
+      resolver: yupResolver(schema),
+   })
+
+   const [showPassword, setShowPassword] = React.useState(false)
+   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
+   const [passwordDirty, setPasswordDirty] = React.useState(false)
+   const [confirmPasswordDirty, setConfirmPasswordDirty] = React.useState(false)
+   const [profile, setProfile] = React.useState({
+      firstName: 'Ali',
+      lastName: 'Samatov',
+      email: 'alisamatov@gmail',
       password: '',
       confirmPassword: '',
       avatarUrl:
@@ -28,9 +46,7 @@ export function ProfileForm() {
       setProfile((prevProfile) => ({ ...prevProfile, [name]: value }))
    }
 
-   const handleSubmit = (e) => {
-      e.preventDefault()
-   }
+   const handleFormSubmit = () => {}
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -42,6 +58,23 @@ export function ProfileForm() {
       )
    }
 
+   const handleDrop = (acceptedFiles) => {
+      const file = acceptedFiles[0]
+      const reader = new FileReader()
+
+      reader.onload = (event) => {
+         const uploadedImageUrl = event.target.result
+         setProfile((prevProfile) => ({
+            ...prevProfile,
+            avatarUrl: uploadedImageUrl,
+         }))
+      }
+
+      reader.readAsDataURL(file)
+   }
+
+   const { getRootProps, getInputProps } = useDropzone({ onDrop: handleDrop })
+
    return (
       <div>
          <Header />
@@ -51,13 +84,18 @@ export function ProfileForm() {
          </StyledWorkspace>
          <ProfileContainer>
             <div>
-               <ProfileImageBox photo={profile.avatarUrl}>
+               <ProfileImageBox {...getRootProps()} photo={profile.avatarUrl}>
+                  <input {...getInputProps()} />
                   <ProfileImageEdit type="file" placeholder="ali" />
                   <EditProfileIcon />
                </ProfileImageBox>
+               <ProfileNames>
+                  <ProfileNamesSpan>{profile.firstName}</ProfileNamesSpan>
+                  <ProfileNamesSpan>{profile.lastName}</ProfileNamesSpan>
+               </ProfileNames>
             </div>
             <div>
-               <StyledFormContainer onSubmit={handleSubmit}>
+               <StyledFormContainer onSubmit={handleSubmit(handleFormSubmit)}>
                   <div>
                      {testFields.map((field) => (
                         <div key={field.name}>
@@ -68,6 +106,9 @@ export function ProfileForm() {
                               value={profile[field.name]}
                               onChange={handleInputChange}
                               placeholder={field.placeholder}
+                              {...register(field.name)}
+                              error={!!errors[field.name]}
+                              helperText={errors[field.name]?.message}
                            />
                         </div>
                      ))}
@@ -212,7 +253,7 @@ const ProfileImageEdit = styled('input')({
    left: '4rem',
 })
 
-const ProfileImageBox = styled('label')(({ photo }) => ({
+const ProfileImageBox = styled('div')(({ photo }) => ({
    width: '8.8125rem',
    height: '8.8125rem',
    borderRadius: '50%',
@@ -238,6 +279,19 @@ const EditProfileIcon = styled(EditIcon)({
    top: '3rem',
    left: '2rem',
    backgroundColor: 'grey',
+})
+
+const ProfileNames = styled('div')({
+   position: 'relative',
+   left: '10rem',
+   bottom: '5rem',
+   display: 'flex',
+   gap: '0.5rem',
+})
+const ProfileNamesSpan = styled('span')({
+   fontFamily: 'Cera Pro',
+   fontSize: '1.25rem',
+   fontWeight: '500',
 })
 
 const StyledTextField = styled('input')({
@@ -306,7 +360,6 @@ const ProjectsList = styled('div')({
 
 const ProjectCard = styled('div')({
    display: 'flex',
-   justifyContent: 'center',
    alignItems: 'center',
    width: '9.125rem',
    height: '4.125rem',
@@ -324,9 +377,13 @@ const ProjectCardFirstLetter = styled('div')({
    padding: '0.3125rem 0.8125rem 0.3125rem 0.8125rem',
    borderRadius: '0.625rem',
    gap: '0.5rem',
+   color: 'white',
+   fontFamily: 'Gilroy',
+   fontWeight: '600',
+   fontSize: '2rem',
 })
 
-const ProjectCardTitle = styled('p')({
+const ProjectCardTitle = styled('h2')({
    fontFamily: 'CarePro',
    fontWeight: '500',
    color: '#000000',
