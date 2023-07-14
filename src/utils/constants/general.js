@@ -129,3 +129,34 @@ export const boards = [
          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
    },
 ]
+
+export const colors = [
+   {
+      id: 1,
+      background: '#CBCBCB',
+   },
+   {
+      id: 2,
+      background: '#CBCBCB',
+   },
+   {
+      id: 3,
+      background: '#CBCBCB',
+   },
+   {
+      id: 4,
+      background: '#CBCBCB',
+   },
+   {
+      id: 5,
+      background: '#CBCBCB',
+   },
+   {
+      id: 6,
+      background: '#CBCBCB',
+   },
+   {
+      id: 7,
+      background: '#CBCBCB',
+   },
+]

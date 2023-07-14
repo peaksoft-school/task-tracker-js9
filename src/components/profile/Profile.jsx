@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { styled } from '@mui/system'
 import { Button, IconButton, TextField } from '@mui/material'
 import { EditIcon, HideIcon, ShowIcon } from '../../assets/icons'
-import ColorBackground from '../../assets/images/ColorsBakground.png'
 import { Header } from '../header/Header'
 import { validatePassword } from '../../utils/helpers/Helpers'
 import { involvedProjects, testFields } from '../../utils/constants/general'
+import ColorBackground from '../../assets/images/test.txt'
 
 export function ProfileForm() {
    const [showPassword, setShowPassword] = useState(false)

@@ -1,7 +1,10 @@
+import { PhotoColor } from './components/photoColor/PhotoColor'
+import { colors } from './utils/constants/general'
+
 function App() {
    return (
       <div>
-         <h1>Task Trecker js-9</h1>
+         <PhotoColor boards={colors} />
       </div>
    )
 }
