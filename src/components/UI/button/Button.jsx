@@ -3,14 +3,7 @@ import { Button as ReusebleButton, styled } from '@mui/material'
 
 export const Button = ({ variant, onClick, children, ...rest }) => {
    return (
-      <ButtonStyle
-         type="submit"
-         variant={variant}
-         onClick={onClick}
-         startIcon
-         icon
-         {...rest}
-      >
+      <ButtonStyle type="submit" {...rest}>
          {children}
       </ButtonStyle>
    )
@@ -20,7 +13,6 @@ const ButtonStyle = styled(ReusebleButton)(({ ...props }) => ({
    backgroundColor: props.backgroundColor || '#0079BF',
    color: props.color || '#ffff',
    borderRadius: props.borderRadius || '1.6rem',
-   width: props.width || '9.6rem',
    display: 'inline-flex',
    padding: props.padding || '0.5rem 1rem',
    alignItems: 'flex-start',
