@@ -1,14 +1,11 @@
 import { Box, Modal, styled } from '@mui/material'
 import React from 'react'
 
-export const ModalUi = ({ children, ...rest }) => {
+export const ModalUi = ({ open, onClose, children, ...rest }) => {
    return (
-      <>
-         {' '}
-         <Backdrop>
-            <ModalStyle {...rest}>{children}</ModalStyle>
-         </Backdrop>
-      </>
+      <Backdrop open={open} onClose={onClose}>
+         <ModalStyle {...rest}>{children}</ModalStyle>
+      </Backdrop>
    )
 }
 const ModalStyle = styled(Box)(({ ...rest }) => ({
