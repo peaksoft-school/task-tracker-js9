@@ -1,6 +1,6 @@
-import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
+import { useRef } from 'react'
 
 export function Input({
    label,
@@ -11,6 +11,7 @@ export function Input({
    placeholder,
    ...other
 }) {
+   const ref = useRef()
    return (
       <MyStyledInput
          size="small"
@@ -20,6 +21,7 @@ export function Input({
          value={value}
          onChange={onChange}
          placeholder={placeholder}
+         ref={ref}
          {...other}
       />
    )
