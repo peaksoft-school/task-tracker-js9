@@ -137,26 +137,89 @@ export const colors = [
    },
    {
       id: 2,
-      background: '#CBCBCB',
+      background: '#B04632',
    },
    {
       id: 3,
-      background: '#CBCBCB',
+      background: '#519839',
    },
    {
       id: 4,
-      background: '#CBCBCB',
+      background: '#D29034',
    },
    {
       id: 5,
-      background: '#CBCBCB',
+      background: '#89609E',
    },
    {
       id: 6,
-      background: '#CBCBCB',
+      background: '#0079BF',
    },
    {
       id: 7,
-      background: '#CBCBCB',
+      background: '#2A2A2A',
+   },
+]
+
+export const photos = [
+   {
+      id: 1,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGHSgFpN9QRbFMRnzC5JpcD8Z5XWr33IhmEw&usqp=CAU',
+   },
+   {
+      id: 2,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLgUp9TmRJNFj6jr0QuUUy9ajRlkZv2-RGKw&usqp=CAU',
+   },
+   {
+      id: 3,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfZ4AQZX7Ivia06qMYvJHIperjEcxw1TZZ8A&usqp=CAU',
+   },
+   {
+      id: 4,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhzS9khm4CYDPmpa17OSHP4KwZPDik-XMP6A&usqp=CAU',
+   },
+   {
+      id: 5,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR7snOvArBihyhf1TZlgc3vrHyQMMs7jumeA&usqp=CAU',
+   },
+   {
+      id: 6,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHi4HxTQxyHUQAfuvONaUuEiRk1UmRd2yFbg&usqp=CAU',
+   },
+   {
+      id: 7,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-6oz_AoRkVNMmFEvXhHDkw7L502CARhYRng&usqp=CAU',
+   },
+   {
+      id: 8,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9Hjd63rV6-JAUzWmRX7NU3wP0KnNKJPvNMw&usqp=CAU',
+   },
+   {
+      id: 9,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT6qaDX8jolo7QYnUDpGA1k3HFwodSExajdQ&usqp=CAU',
+   },
+   {
+      id: 10,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtE0_0dbUuiO6otNwmDHLiuwTBIua8lUTTbA&usqp=CAU',
+   },
+   {
+      id: 11,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8hKJQr2CGJKEh1dFKumxLOBHJ2L1bWWRdJw&usqp=CAU',
+   },
+   {
+      id: 12,
+      background:
+         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAUIdDmcqRcMT4LeyHId_5aIdQbszLuQb7UQ&usqp=CAU',
    },
 ]

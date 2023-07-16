@@ -1,10 +1,10 @@
-import { PhotoColor } from './components/photoColor/PhotoColor'
-import { colors } from './utils/constants/general'
+import { Photos } from './components/photoColor/Photo'
+import { photos } from './utils/constants/general'
 
 function App() {
    return (
       <div>
-         <PhotoColor boards={colors} />
+         <Photos boards={photos} />
       </div>
    )
 }
