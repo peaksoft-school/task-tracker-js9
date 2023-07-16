@@ -32,19 +32,14 @@ export function ProfileForm() {
    const [confirmPasswordDirty, setConfirmPasswordDirty] = React.useState(false)
    const [profile, setProfile] = React.useState({
       firstName: 'Ali',
-      lastName: 'Samatov',
-      email: 'alisamatov@gmail',
+      middleName: 'Samatov',
+      email: '',
       password: '',
       confirmPassword: '',
       avatarUrl:
          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU',
    })
    const projectCount = involvedProjects.length
-
-   const handleInputChange = (e) => {
-      const { name, value } = e.target
-      setProfile((prevProfile) => ({ ...prevProfile, [name]: value }))
-   }
 
    const handleFormSubmit = () => {}
 
@@ -56,6 +51,13 @@ export function ProfileForm() {
       setShowConfirmPassword(
          (prevShowConfirmPassword) => !prevShowConfirmPassword
       )
+   }
+   const handleInputChange = (event) => {
+      const { name, value } = event.target
+      setProfile((prevProfile) => ({
+         ...prevProfile,
+         [name]: value,
+      }))
    }
 
    const handleDrop = (acceptedFiles) => {
@@ -91,7 +93,7 @@ export function ProfileForm() {
                </ProfileImageBox>
                <ProfileNames>
                   <ProfileNamesSpan>{profile.firstName}</ProfileNamesSpan>
-                  <ProfileNamesSpan>{profile.lastName}</ProfileNamesSpan>
+                  <ProfileNamesSpan>{profile.middleName}</ProfileNamesSpan>
                </ProfileNames>
             </div>
             <div>
@@ -102,13 +104,10 @@ export function ProfileForm() {
                            <StyledTextField
                               type={field.type}
                               id={field.name}
-                              name={field.name}
-                              value={profile[field.name]}
-                              onChange={handleInputChange}
-                              placeholder={field.placeholder}
                               {...register(field.name)}
                               error={!!errors[field.name]}
                               helperText={errors[field.name]?.message}
+                              placeholder={field.placeholder}
                            />
                         </div>
                      ))}
@@ -118,10 +117,7 @@ export function ProfileForm() {
                         <StyledPasswordField
                            type={showPassword ? 'text' : 'password'}
                            id="password"
-                           name="password"
-                           placeholder="Password"
-                           value={profile.password}
-                           onChange={handleInputChange}
+                           {...register('password')}
                            error={
                               passwordDirty &&
                               !validatePassword(profile.password)
@@ -133,6 +129,7 @@ export function ProfileForm() {
                                  : ''
                            }
                            onBlur={() => setPasswordDirty(true)}
+                           placeholder="password"
                            InputProps={{
                               endAdornment: (
                                  <IconButton
@@ -297,19 +294,22 @@ const ProfileNamesSpan = styled('span')({
 const StyledTextField = styled('input')({
    display: 'flex',
    width: '20.0625rem',
+   height: '2.125rem',
    padding: '0.375rem 1rem',
    justifyContent: 'space-between',
    alignItems: 'center',
    borderRadius: '0.5rem',
    border: '1px solid #D0D0D0',
    marginBottom: '1rem',
+   fontWeight: '500',
+   fontFamily: 'CarePro',
 })
 
 const StyledPasswordField = styled(TextField)({
    width: '20.0625rem',
    marginBottom: '1rem',
    '& .MuiInputBase-root': {
-      height: '1.8rem',
+      height: '2.125rem',
       borderRadius: '0.5rem',
    },
 })
