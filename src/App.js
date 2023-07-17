@@ -1,10 +1,7 @@
-import { Photos } from './components/photoColor/Photo'
-import { photos } from './utils/constants/general'
-
 function App() {
    return (
       <div>
-         <Photos boards={photos} />
+         <h1>Task Trecker js-9</h1>
       </div>
    )
 }
