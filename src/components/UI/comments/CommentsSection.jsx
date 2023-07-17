@@ -49,7 +49,6 @@ export const CommentSectoin = ({ comments }) => {
 }
 
 const GLobalContainer = styled('div')(() => ({
-   marginLeft: '30px',
    backgroundColor: '#F4F5F7',
    width: ' 24.9rem',
    padding: ' 0.75rem ',
