@@ -37,6 +37,7 @@ import { ReactComponent as TemplateIcon } from './template.svg'
 import { ReactComponent as ToolsIcon } from './tools.svg'
 import { ReactComponent as Logo } from './Logo.svg'
 import { ReactComponent as PersonIcon } from './person_icon.svg'
+import { ReactComponent as BlueIcon } from './blueIcon.svg'
 
 export {
    LeftIcon,
@@ -78,4 +79,5 @@ export {
    ToolsIcon,
    Logo,
    PersonIcon,
+   BlueIcon,
 }

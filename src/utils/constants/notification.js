@@ -23,8 +23,7 @@ export const notificationsPanel = [
       nameofColumn: 'Name of the column',
       img: 'https://i.pinimg.com/564x/ea/83/68/ea8368eea947c816f80bc97bbb7afcf0.jpg',
       nameOfPerson: 'Emir',
-      notification:
-         'Lorem ipsum dolor sit amet consectetur, adipisicing elit.Possimus suscipit distinctio quasi, reprehenderit aliquam,beatae fuga eius sunt porro harum, incidunt earum in. At veritatis optio aperiam. Cumque, corrupti et.',
+      notification: 'Moved to list Done',
       addedDate: 'Sep 15 at 13:23 PM',
    },
    {
@@ -51,8 +50,7 @@ export const notificationsPanel = [
       nameofColumn: 'Name of the column',
       img: 'https://i.pinimg.com/564x/78/1e/d8/781ed87c7a009efdc27dea7726342326.jpg',
       nameOfPerson: 'Amina',
-      notification:
-         'Lorem ipsum dolor sit amet consectetur, adipisicing elit.Possimus suscipit distinctio quasi, reprehenderit aliquam,beatae fuga eius sunt porro harum, incidunt earum in. At veritatis optio aperiam. Cumque, corrupti et.',
+      notification: 'Moved to list Done',
       addedDate: 'Sep 15 at 13:23 PM',
    },
    {

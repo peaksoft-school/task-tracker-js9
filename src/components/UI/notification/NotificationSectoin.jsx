@@ -1,31 +1,35 @@
 import React from 'react'
-import { styled } from '@mui/material'
+import { IconButton, styled } from '@mui/material'
 import { RightIcon } from '../../../assets/icons'
 
 export const NotifictionSection = ({ el }) => {
    return (
       <InfoBox>
-         <FirstBox>
-            <UsersIcon src={el.img} />
-            <PeoplesName>{el.nameOfPerson}</PeoplesName>
-         </FirstBox>
+         <div className="dd">
+            <FirstBox key={el.id}>
+               <UsersIcon src={el.img} />
+               <PeoplesName>{el.nameOfPerson}</PeoplesName>
+            </FirstBox>
 
-         <SecondBox>
-            <NotificationTitle>
-               {el.notification}
-               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos,
-               molestias consequatur. Laborum assumenda blanditiis eaque a. Quam
-               hic dolor soluta!
-            </NotificationTitle>
+            <SecondBox>
+               <NotificationTitle>{el.notification}</NotificationTitle>
+
+               <AddedDate>{el.addedDate}</AddedDate>
+            </SecondBox>
+         </div>
+         <IconButton style={{ marginTop: '1.6rem' }}>
             <RightIcon src={RightIcon} />
-         </SecondBox>
-         <AddedDate>{el.addedDate}</AddedDate>
+         </IconButton>
       </InfoBox>
    )
 }
 const InfoBox = styled('div')(() => ({
-   width: '20.3rem',
-   padding: '0 0 0 1.2rem',
+   display: 'flex',
+   alignItems: 'center',
+   '.dd': {
+      width: '18.7rem',
+      padding: '0 0 0 1.2rem',
+   },
 }))
 
 const FirstBox = styled('div')(() => ({
@@ -50,6 +54,8 @@ const PeoplesName = styled('p')(() => ({
 
 const SecondBox = styled('div')(() => ({
    display: 'flex',
+   flexDirection: 'column',
+   // alignContent: 'center',
    justifyContent: 'space-between',
 }))
 
@@ -57,7 +63,7 @@ const NotificationTitle = styled('h3')(() => ({
    fontFamily: 'CarePro',
    fontSize: '1rem',
    margin: '0',
-   width: '18rem',
+   width: '17rem',
 }))
 
 const AddedDate = styled('p')(() => ({

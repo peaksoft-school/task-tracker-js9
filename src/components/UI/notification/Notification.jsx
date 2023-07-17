@@ -1,6 +1,6 @@
 import { Button, styled } from '@mui/material'
-import React from 'react'
 import { NotifictionSection } from './NotificationSectoin'
+import { BlueIcon } from '../../../assets/icons'
 
 export const Notification = ({ notificationsPanel }) => {
    return (
@@ -10,20 +10,34 @@ export const Notification = ({ notificationsPanel }) => {
             <MarkAsReadBtn>Mark as Read</MarkAsReadBtn>
          </HeaderConatiner>
 
-         <ScrollContainer>
-            {notificationsPanel.map((el, index) => {
-               const lastItem = index === notificationsPanel.length - 1
-               return (
-                  <MainBox key={el.id} lastItem={lastItem}>
-                     <BoardConatiner>
-                        <TitleofBoard>{el.titleofBoard}</TitleofBoard>
-                        <NameofColumn>{el.nameofColumn}</NameofColumn>
-                     </BoardConatiner>
-                     <NotifictionSection el={el} />
-                  </MainBox>
-               )
-            })}
-         </ScrollContainer>
+         {notificationsPanel.length > 0 ? (
+            <ScrollContainer>
+               {notificationsPanel.map((el, index) => {
+                  const lastItem = index === notificationsPanel.length - 1
+
+                  return (
+                     <div key={el.id}>
+                        {/* <div style={{ paddingTop: '10px' }}> */}
+                        <BlueIcon />
+                        {/* </div> */}
+                        <MainBox lastItem={lastItem}>
+                           <BoardConatiner>
+                              <TitleofBoard>{el.titleofBoard}</TitleofBoard>
+                              <NameofColumn>{el.nameofColumn}</NameofColumn>
+                           </BoardConatiner>
+                           <NotifictionSection el={el} />
+                        </MainBox>
+                     </div>
+                  )
+               })}
+            </ScrollContainer>
+         ) : (
+            <NoNotification>
+               <NonNotificationDescription>
+                  No Notifications
+               </NonNotificationDescription>
+            </NoNotification>
+         )}
       </MainConatiner>
    )
 }
@@ -105,7 +119,6 @@ const BoardConatiner = styled('div')(() => ({
    background: '#CBCBCB',
    width: '19.1rem',
    height: '8.625rem',
-   marginTop: '0.8rem',
    padding: '0.6rem',
 }))
 
@@ -123,4 +136,18 @@ const NameofColumn = styled('p')(() => ({
    color: '#fff',
    fontWeight: '400',
    margin: '0.13rem 1rem',
+}))
+
+const NoNotification = styled('div')(() => ({
+   height: '4rem',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+}))
+
+const NonNotificationDescription = styled('p')(() => ({
+   fontFamily: 'CarePro',
+   fontSize: '1.3rem',
+   fontWeight: '600',
+   color: '#d74141',
 }))
