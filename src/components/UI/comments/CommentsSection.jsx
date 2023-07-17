@@ -10,7 +10,7 @@ export const CommentSectoin = ({ comments }) => {
             <p>Comments</p>
             <UpIcon />
          </CommentsPanel>
-         {comments.length > 10 ? (
+         {comments.length > 0 ? (
             <ScrollableContainer>
                {comments.map((el, index) => {
                   const isLastItem = index === comments.length - 1
