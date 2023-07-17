@@ -1,4 +1,4 @@
-export const comments = [
+export const commentsInfo = [
    {
       id: 12,
       name: 'Arzuu',

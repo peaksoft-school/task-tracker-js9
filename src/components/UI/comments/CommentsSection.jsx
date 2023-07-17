@@ -1,6 +1,7 @@
-import { Button, TextField } from '@mui/material'
+import { Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { UpIcon } from '../../../assets/icons'
+import { Input } from '../input/Input'
 
 export const CommentSectoin = ({ comments }) => {
    return (
@@ -42,6 +43,7 @@ export const CommentSectoin = ({ comments }) => {
 }
 
 const GLobalContainer = styled('div')(() => ({
+   marginLeft: '30px',
    backgroundColor: '#F4F5F7',
    width: ' 24.9rem',
    padding: ' 0.75rem ',
@@ -74,7 +76,7 @@ const ScrollableContainer = styled('div')(() => ({
 const MainContainer = styled('div')(({ isLastItem }) => ({
    display: 'flex',
    gap: '0.5rem',
-   padding: '0.8rem',
+   padding: '0.7rem',
    borderBottom: '2px solid #E4E4E4',
    width: ' 22.5125rem',
    ...(isLastItem && {
@@ -84,14 +86,14 @@ const MainContainer = styled('div')(({ isLastItem }) => ({
 
 const FormContainer = styled('form')(() => ({
    backgroundColor: '#F4F5F7',
-   padding: '0.75rem 0.5rem',
+   padding: '0.8rem 0.5rem 0.5rem 0.5rem',
 }))
 
-const StyledInput = styled(TextField)(() => ({
-   '& .MuiInputBase-root.MuiOutlinedInput-root': {
+const StyledInput = styled(Input)(() => ({
+   input: {
       display: 'flex',
-      width: '20.8125rem',
-      height: '2.25rem',
+      width: '20rem',
+      height: '1.7rem',
       borderRadius: '0.5rem',
       background: '#F4F5F7',
       '&:hover .MuiOutlinedInput-notchedOutline': {
