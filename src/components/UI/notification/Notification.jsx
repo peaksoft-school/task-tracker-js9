@@ -32,7 +32,7 @@ const MainConatiner = styled('div')(() => ({
    margin: '0 20rem',
    width: '24.48rem',
    borderRadius: '0.625rem',
-   padding: '0.8rem 0.5rem 0.8rem 1.6   rem',
+   padding: '0.8rem 0.5rem 0.8rem 1.6rem',
    boxShadow: '0px 4px 14px 0px #00000021',
 }))
 

@@ -13,8 +13,9 @@ export const NotifictionSection = ({ el }) => {
          <SecondBox>
             <NotificationTitle>
                {el.notification}
-               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius,
-               est saepe. Et, quas iste? Pariatur.
+               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos,
+               molestias consequatur. Laborum assumenda blanditiis eaque a. Quam
+               hic dolor soluta!
             </NotificationTitle>
             <RightIcon src={RightIcon} />
          </SecondBox>
