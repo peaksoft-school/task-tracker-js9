@@ -51,7 +51,7 @@ const MyStyledInput = styled(TextField)(() => ({
          border: '1px solid #0079BF',
       },
       '&.Mui-focused fieldset': {
-         border: '1px solid #a3a3a3',
+         border: '1px solid #999898',
       },
    },
 }))
