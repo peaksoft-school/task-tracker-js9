@@ -10,27 +10,33 @@ export const CommentSectoin = ({ comments }) => {
             <p>Comments</p>
             <UpIcon />
          </CommentsPanel>
-         <ScrollableContainer>
-            {comments.map((el, index) => {
-               const isLastItem = index === comments.length - 1
-               return (
-                  <MainContainer key={el.id} isLastItem={isLastItem}>
-                     <PersonIcon src={el.img} alt="Member" />
-                     <AboutComments>
-                        <PostName>{el.name}</PostName>
-                        <PostComments>{el.comment}</PostComments>
-                        <NecessaryContainer>
-                           <PostDate>{el.date}</PostDate>
-                           <MyStyledBtnCont>
-                              <MyStyledBtn>edit</MyStyledBtn>
-                              <MyStyledBtn>delete</MyStyledBtn>
-                           </MyStyledBtnCont>
-                        </NecessaryContainer>
-                     </AboutComments>
-                  </MainContainer>
-               )
-            })}
-         </ScrollableContainer>
+         {comments.length > 10 ? (
+            <ScrollableContainer>
+               {comments.map((el, index) => {
+                  const isLastItem = index === comments.length - 1
+                  return (
+                     <MainContainer key={el.id} isLastItem={isLastItem}>
+                        <PersonIcon src={el.img} alt="Member" />
+                        <AboutComments>
+                           <PostName>{el.name}</PostName>
+                           <PostComments>{el.comment}</PostComments>
+                           <NecessaryContainer>
+                              <PostDate>{el.date}</PostDate>
+                              <MyStyledBtnCont>
+                                 <MyStyledBtn>edit</MyStyledBtn>
+                                 <MyStyledBtn>delete</MyStyledBtn>
+                              </MyStyledBtnCont>
+                           </NecessaryContainer>
+                        </AboutComments>
+                     </MainContainer>
+                  )
+               })}
+            </ScrollableContainer>
+         ) : (
+            <NoCommentsComtainer>
+               <NoCommentsDescription>No comments</NoCommentsDescription>
+            </NoCommentsComtainer>
+         )}
          <FormContainer>
             <StyledInput
                id="outlined-basic"
@@ -174,4 +180,17 @@ const MyStyledBtn = styled(Button)(() => ({
 
 const MyStyledBtnCont = styled('div')(() => ({
    display: 'flex',
+}))
+
+const NoCommentsComtainer = styled('div')(() => ({
+   padding: '1rem ',
+   display: 'flex ',
+   justifyContent: 'center',
+}))
+
+const NoCommentsDescription = styled('p')(() => ({
+   fontFamily: 'CarePro',
+   fontSize: '1.2rem',
+   fontWeight: '600',
+   color: '#5f5f5f',
 }))
