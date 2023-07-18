@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, IconButton, TextField } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
@@ -11,7 +11,7 @@ import { Header } from '../header/Header'
 import { involvedProjects, testFields } from '../../utils/constants/general'
 import { schema } from '../../utils/helpers/Helpers'
 
-export function ProfileForm() {
+export const ProfileForm = () => {
    const {
       register,
       handleSubmit,
@@ -63,19 +63,29 @@ export function ProfileForm() {
       reader.readAsDataURL(file)
    }
 
+   useEffect(() => {
+      console.log('Avatar URL changed:', avatarUrl)
+   }, [avatarUrl])
+
    const { getRootProps, getInputProps } = useDropzone({ onDrop: handleDrop })
 
    return (
       <div>
          <Header />
          <StyledWorkspace>
-            <WorkSpaceSpan onClick={navigate('')}>Workspace</WorkSpaceSpan>
+            <WorkSpaceSpan onClick={() => navigate('/')}>
+               Workspace
+            </WorkSpaceSpan>
             <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
             <div>
                <ProfileImageBox {...getRootProps()} photo={avatarUrl}>
-                  <input {...getInputProps()} />
+                  <input
+                     {...getInputProps()}
+                     type="file"
+                     onChange={(event) => handleDrop(event.target.files)}
+                  />
                   <ProfileImageEdit type="file" placeholder="ali" />
                   <EditProfileIcon />
                </ProfileImageBox>
@@ -179,7 +189,7 @@ export function ProfileForm() {
             </ProjectsHeader>
             <ProjectsList>
                {involvedProjects.map((project) => (
-                  <ProjectCard key={project.title}>
+                  <ProjectCard key={Math.random().toString()}>
                      <div>
                         <ProjectCardFirstLetter>
                            {project.title && project.title.charAt(0)}
@@ -342,6 +352,7 @@ const ProjectCount = styled('span')({
    borderRadius: '50%',
    width: '1.3rem',
    height: '1.3rem',
+   color: 'white',
 })
 
 const ProjectsList = styled('div')({

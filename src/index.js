@@ -11,11 +11,11 @@ import App from './App'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
    <React.StrictMode>
-      <ToastContainer />
-      <ThemeProvider theme={theme}>
-         <BrowserRouter>
+      <BrowserRouter>
+         <ToastContainer />
+         <ThemeProvider theme={theme}>
             <App />
-         </BrowserRouter>
-      </ThemeProvider>
+         </ThemeProvider>
+      </BrowserRouter>
    </React.StrictMode>
 )
