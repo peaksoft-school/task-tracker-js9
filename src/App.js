@@ -1,7 +1,9 @@
+import { ProfileForm } from './components/profile/Profile'
+
 function App() {
    return (
       <div>
-         <h1>Task-tracker</h1>
+         <ProfileForm />
       </div>
    )
 }
