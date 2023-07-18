@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled } from '@mui/system'
 import { Button, IconButton, TextField } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
@@ -22,26 +22,22 @@ export function ProfileForm() {
       register,
       handleSubmit,
       formState: { errors },
+      watch,
    } = useForm({
       resolver: yupResolver(schema),
    })
 
-   const [showPassword, setShowPassword] = React.useState(false)
-   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
-   const [passwordDirty, setPasswordDirty] = React.useState(false)
-   const [confirmPasswordDirty, setConfirmPasswordDirty] = React.useState(false)
-   const [profile, setProfile] = React.useState({
-      firstName: 'Ali',
-      middleName: 'Samatov',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      avatarUrl:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU',
-   })
+   const [showPassword, setShowPassword] = useState(false)
+   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+   const [passwordDirty, setPasswordDirty] = useState(false)
+   const [confirmPasswordDirty, setConfirmPasswordDirty] = useState(false)
    const projectCount = involvedProjects.length
 
    const handleFormSubmit = () => {}
+
+   const [avatarUrl, setAvatarUrl] = useState(
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU'
+   )
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -52,13 +48,6 @@ export function ProfileForm() {
          (prevShowConfirmPassword) => !prevShowConfirmPassword
       )
    }
-   const handleInputChange = (event) => {
-      const { name, value } = event.target
-      setProfile((prevProfile) => ({
-         ...prevProfile,
-         [name]: value,
-      }))
-   }
 
    const handleDrop = (acceptedFiles) => {
       const file = acceptedFiles[0]
@@ -66,10 +55,7 @@ export function ProfileForm() {
 
       reader.onload = (event) => {
          const uploadedImageUrl = event.target.result
-         setProfile((prevProfile) => ({
-            ...prevProfile,
-            avatarUrl: uploadedImageUrl,
-         }))
+         setAvatarUrl(uploadedImageUrl)
       }
 
       reader.readAsDataURL(file)
@@ -86,14 +72,14 @@ export function ProfileForm() {
          </StyledWorkspace>
          <ProfileContainer>
             <div>
-               <ProfileImageBox {...getRootProps()} photo={profile.avatarUrl}>
+               <ProfileImageBox {...getRootProps()} photo={avatarUrl}>
                   <input {...getInputProps()} />
                   <ProfileImageEdit type="file" placeholder="ali" />
                   <EditProfileIcon />
                </ProfileImageBox>
                <ProfileNames>
-                  <ProfileNamesSpan>{profile.firstName}</ProfileNamesSpan>
-                  <ProfileNamesSpan>{profile.middleName}</ProfileNamesSpan>
+                  <ProfileNamesSpan>ali</ProfileNamesSpan>
+                  <ProfileNamesSpan>samatov</ProfileNamesSpan>
                </ProfileNames>
             </div>
             <div>
@@ -118,13 +104,9 @@ export function ProfileForm() {
                            type={showPassword ? 'text' : 'password'}
                            id="password"
                            {...register('password')}
-                           error={
-                              passwordDirty &&
-                              !validatePassword(profile.password)
-                           }
+                           error={passwordDirty && !validatePassword('')}
                            helperText={
-                              passwordDirty &&
-                              !validatePassword(profile.password)
+                              passwordDirty && !validatePassword('')
                                  ? 'Password must be at least 6 characters long'
                                  : ''
                            }
@@ -147,15 +129,14 @@ export function ProfileForm() {
                            id="confirmPassword"
                            name="confirmPassword"
                            placeholder="Confirm Password"
-                           value={profile.confirmPassword}
-                           onChange={handleInputChange}
+                           {...register('confirmPassword', {
+                              validate: (value) => value === watch('password'),
+                           })}
                            error={
-                              confirmPasswordDirty &&
-                              profile.password !== profile.confirmPassword
+                              confirmPasswordDirty && errors.confirmPassword
                            }
                            helperText={
-                              confirmPasswordDirty &&
-                              profile.password !== profile.confirmPassword
+                              confirmPasswordDirty && errors.confirmPassword
                                  ? 'Passwords do not match'
                                  : ''
                            }
