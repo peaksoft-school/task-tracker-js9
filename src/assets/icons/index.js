@@ -35,6 +35,8 @@ import { ReactComponent as StarIcon } from './star.svg'
 import { ReactComponent as StarFilledIcon } from './starFilled.svg'
 import { ReactComponent as TemplateIcon } from './template.svg'
 import { ReactComponent as ToolsIcon } from './tools.svg'
+import { ReactComponent as Logo } from './Logo.svg'
+import { ReactComponent as PersonIcon } from './person_icon.svg'
 
 export {
    LeftIcon,
@@ -74,4 +76,6 @@ export {
    StarFilledIcon,
    TemplateIcon,
    ToolsIcon,
+   Logo,
+   PersonIcon,
 }
