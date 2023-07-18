@@ -2,28 +2,27 @@ import React, { useState } from 'react'
 import { styled } from '@mui/system'
 import { Button, IconButton, TextField } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { EditIcon, HideIcon, ShowIcon } from '../../assets/icons'
 import ColorBackground from '../../assets/images/ColorsBakground.png'
 import { Header } from '../header/Header'
 import { involvedProjects, testFields } from '../../utils/constants/general'
-import { validatePassword } from '../../utils/helpers/Helpers'
-
-const schema = yup.object().shape({
-   firstName: yup.string().required('First name is required'),
-   middleName: yup.string().required('Middle name is required'),
-   email: yup.string().email('Invalid email').required('Email is required'),
-})
+import { schema } from '../../utils/helpers/Helpers'
 
 export function ProfileForm() {
    const {
       register,
       handleSubmit,
       formState: { errors },
-      watch,
    } = useForm({
+      defaultValues: {
+         firstName: 'Ваше имя',
+         lastName: 'Ваша фамилия',
+         email: 'example@example.com',
+         confirmPassword: '',
+      },
       resolver: yupResolver(schema),
    })
 
@@ -33,7 +32,9 @@ export function ProfileForm() {
    const [confirmPasswordDirty, setConfirmPasswordDirty] = useState(false)
    const projectCount = involvedProjects.length
 
-   const handleFormSubmit = () => {}
+   const handleFormSubmit = (data) => {
+      console.log(data)
+   }
 
    const [avatarUrl, setAvatarUrl] = useState(
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU'
@@ -48,6 +49,7 @@ export function ProfileForm() {
          (prevShowConfirmPassword) => !prevShowConfirmPassword
       )
    }
+   const navigate = useNavigate()
 
    const handleDrop = (acceptedFiles) => {
       const file = acceptedFiles[0]
@@ -67,8 +69,8 @@ export function ProfileForm() {
       <div>
          <Header />
          <StyledWorkspace>
-            <WorkSpaceSpan>Workspaces</WorkSpaceSpan>
-            <WorkSpaceSpanTwo>\ Profile</WorkSpaceSpanTwo>
+            <WorkSpaceSpan onClick={navigate('')}>Workspace</WorkSpaceSpan>
+            <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
             <div>
@@ -104,14 +106,14 @@ export function ProfileForm() {
                            type={showPassword ? 'text' : 'password'}
                            id="password"
                            {...register('password')}
-                           error={passwordDirty && !validatePassword('')}
+                           error={passwordDirty && !!errors.password}
                            helperText={
-                              passwordDirty && !validatePassword('')
-                                 ? 'Password must be at least 6 characters long'
+                              passwordDirty && errors.password?.message
+                                 ? errors.password.message
                                  : ''
                            }
                            onBlur={() => setPasswordDirty(true)}
-                           placeholder="password"
+                           placeholder="Пароль"
                            InputProps={{
                               endAdornment: (
                                  <IconButton
@@ -128,16 +130,15 @@ export function ProfileForm() {
                            type={showConfirmPassword ? 'text' : 'password'}
                            id="confirmPassword"
                            name="confirmPassword"
-                           placeholder="Confirm Password"
-                           {...register('confirmPassword', {
-                              validate: (value) => value === watch('password'),
-                           })}
+                           placeholder="Подтвердите пароль"
+                           {...register('confirmPassword')}
                            error={
-                              confirmPasswordDirty && errors.confirmPassword
+                              confirmPasswordDirty && !!errors.confirmPassword
                            }
                            helperText={
-                              confirmPasswordDirty && errors.confirmPassword
-                                 ? 'Passwords do not match'
+                              confirmPasswordDirty &&
+                              errors.confirmPassword?.message
+                                 ? errors.confirmPassword.message
                                  : ''
                            }
                            onBlur={() => setConfirmPasswordDirty(true)}
@@ -163,7 +164,7 @@ export function ProfileForm() {
                               variant="contained"
                               color="primary"
                            >
-                              Save
+                              add
                            </SaveButton>
                         </ButtonDiv>
                      </div>
@@ -173,7 +174,7 @@ export function ProfileForm() {
          </ProfileContainer>
          <ProjectsContainer>
             <ProjectsHeader>
-               <p>Involved in projects</p>
+               <p>involved in projects</p>
                <ProjectCount>{projectCount}</ProjectCount>
             </ProjectsHeader>
             <ProjectsList>
@@ -198,6 +199,7 @@ export function ProfileForm() {
 
 const WorkSpaceSpan = styled('span')({
    color: 'white',
+   cursor: 'pointer',
 })
 const WorkSpaceSpanTwo = styled('span')({
    color: 'white',
@@ -256,7 +258,7 @@ const EditProfileIcon = styled(EditIcon)({
    position: 'relative',
    top: '3rem',
    left: '2rem',
-   backgroundColor: 'grey',
+   backgroundColor: '#d1c9c9',
 })
 
 const ProfileNames = styled('div')({
@@ -321,6 +323,7 @@ const ProjectsContainer = styled('div')({
    display: 'flex',
    flexDirection: 'column',
    marginLeft: '3.75rem',
+   flexWrap: 'wrap',
 })
 
 const ProjectsHeader = styled('div')({
@@ -331,12 +334,22 @@ const ProjectsHeader = styled('div')({
 const ProjectCount = styled('span')({
    marginLeft: '0.5rem',
    fontWeight: 'bold',
+   fontSize: '0.8rem',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: 'grey',
+   borderRadius: '50%',
+   width: '1.3rem',
+   height: '1.3rem',
 })
 
 const ProjectsList = styled('div')({
    display: 'flex',
    flexDirection: 'column',
    gap: '1rem',
+   flexWrap: 'wrap',
+   height: '20rem',
 })
 
 const ProjectCard = styled('div')({
@@ -346,6 +359,7 @@ const ProjectCard = styled('div')({
    height: '4.125rem',
    borderRadius: '0.5rem',
    gap: '0.7rem',
+   cursor: 'pointer',
 })
 
 const ProjectCardFirstLetter = styled('div')({
