@@ -1,18 +1,26 @@
-import { styled } from '@mui/material'
+import { styled, IconButton } from '@mui/material'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
 
 export const Photos = ({ boards }) => {
    return (
       <AllBoard>
          <StyledHeader>
-            <LeftIcon />
+            <IconButton>
+               <LeftIcon />
+            </IconButton>
             <p>Photos</p>
-            <ExitIcon />
+            <IconButton>
+               <ExitIcon />
+            </IconButton>
          </StyledHeader>
          <ColorBlocks>
             {boards.map((board) => (
                <div key={board.id}>
-                  <BoardBlock board={board} />
+                  <BoardBlock board={board}>
+                     <IconButton>
+                        {/* Здесь можете разместить другие иконки, если необходимо */}
+                     </IconButton>
+                  </BoardBlock>
                </div>
             ))}
          </ColorBlocks>

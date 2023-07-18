@@ -1,18 +1,37 @@
-import { styled } from '@mui/material'
+import React, { useState } from 'react'
+import { styled, IconButton } from '@mui/material'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
 
-export const Colors = ({ boards }) => {
+export const Colors = ({ boards, onColorSelect }) => {
+   const [selectedColor, setSelectedColor] = useState(null)
+
+   const handleColorClick = (color) => {
+      setSelectedColor(color)
+      onColorSelect(color)
+   }
+
    return (
       <AllBoard>
          <StyledHeader>
-            <LeftIcon />
+            <IconButton>
+               <LeftIcon />
+            </IconButton>
             <p>Colors</p>
-            <ExitIcon />
+            <IconButton>
+               <ExitIcon />
+            </IconButton>
          </StyledHeader>
          <ColorBlocks>
             {boards.map((board) => (
                <div key={board.id}>
-                  <BoardBlock board={board} />
+                  <BoardBlock
+                     board={board}
+                     selected={selectedColor === board.color}
+                  >
+                     <IconButton onClick={() => handleColorClick(board.color)}>
+                        {/* Здесь можете разместить другие иконки, если необходимо */}
+                     </IconButton>
+                  </BoardBlock>
                </div>
             ))}
          </ColorBlocks>
@@ -47,7 +66,7 @@ const ColorBlocks = styled('div')(() => ({
    flexWrap: 'wrap',
 }))
 
-const BoardBlock = styled('div')(({ board }) => ({
+const BoardBlock = styled('div')(({ board, selected }) => ({
    backgroundRepeat: 'no-repeat',
    backgroundSize: 'cover',
    borderRadius: '0.5rem',
@@ -57,4 +76,5 @@ const BoardBlock = styled('div')(({ board }) => ({
    backgroundColor: board.background,
    width: '10rem',
    height: '5rem',
+   border: selected ? '2px solid #000' : 'none',
 }))
