@@ -1,29 +1,44 @@
+import React, { useState } from 'react'
 import { styled, IconButton } from '@mui/material'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
 
-export const Photos = ({ boards }) => {
+export const Photos = ({
+   boards,
+   onLeftIconClick,
+   onExitIconClick,
+   onPhotoSelect,
+}) => {
+   const [selectedPhoto, setSelectedPhoto] = useState(null)
+
+   const handlePhotoClick = (photo) => {
+      setSelectedPhoto(photo)
+      onPhotoSelect(photo)
+   }
+
    return (
       <AllBoard>
          <StyledHeader>
-            <IconButton>
+            <IconButton onClick={onLeftIconClick}>
                <LeftIcon />
             </IconButton>
             <p>Photos</p>
-            <IconButton>
+            <IconButton onClick={onExitIconClick}>
                <ExitIcon />
             </IconButton>
          </StyledHeader>
-         <ColorBlocks>
+         <PhotoBlocks>
             {boards.map((board) => (
                <div key={board.id}>
-                  <BoardBlock board={board}>
-                     <IconButton>
-                        {/* Здесь можете разместить другие иконки, если необходимо */}
-                     </IconButton>
+                  <BoardBlock
+                     onClick={() => handlePhotoClick(board.background)}
+                     board={board}
+                     selected={selectedPhoto === board.background}
+                  >
+                     <img src={board.background} alt={board.id} />
                   </BoardBlock>
                </div>
             ))}
-         </ColorBlocks>
+         </PhotoBlocks>
       </AllBoard>
    )
 }
@@ -49,13 +64,13 @@ const StyledHeader = styled('div')({
    marginBottom: '1rem',
 })
 
-const ColorBlocks = styled('div')(() => ({
+const PhotoBlocks = styled('div')(() => ({
    display: 'flex',
    gap: '10px',
    flexWrap: 'wrap',
 }))
 
-const BoardBlock = styled('div')(({ board }) => ({
+const BoardBlock = styled('div')(({ board, selected }) => ({
    backgroundRepeat: 'no-repeat',
    backgroundSize: 'cover',
    borderRadius: '0.5rem',
@@ -65,4 +80,5 @@ const BoardBlock = styled('div')(({ board }) => ({
    backgroundImage: `url(${board.background})`,
    width: '10rem',
    height: '5rem',
+   border: selected ? '2px solid #000' : 'none',
 }))
