@@ -131,14 +131,8 @@ export const boards = [
 ]
 
 export const colors = [
-   {
-      id: 1,
-      background: '#CBCBCB',
-   },
-   {
-      id: 2,
-      background: '#B04632',
-   },
+   { id: 1, background: '#CBCBCB' },
+   { id: 2, background: '#B04632' },
    {
       id: 3,
       background: '#519839',

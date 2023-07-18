@@ -25,13 +25,10 @@ export const Colors = ({ boards, onColorSelect }) => {
             {boards.map((board) => (
                <div key={board.id}>
                   <BoardBlock
+                     onClick={() => handleColorClick(board.background)}
                      board={board}
-                     selected={selectedColor === board.color}
-                  >
-                     <IconButton onClick={() => handleColorClick(board.color)}>
-                        {/* Здесь можете разместить другие иконки, если необходимо */}
-                     </IconButton>
-                  </BoardBlock>
+                     selected={selectedColor === board.background}
+                  />
                </div>
             ))}
          </ColorBlocks>
