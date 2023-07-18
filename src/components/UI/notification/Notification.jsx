@@ -16,18 +16,16 @@ export const Notification = ({ notificationsPanel }) => {
                   const lastItem = index === notificationsPanel.length - 1
 
                   return (
-                     <div key={el.id}>
-                        {/* <div style={{ paddingTop: '10px' }}> */}
-                        <BlueIcon />
-                        {/* </div> */}
-                        <MainBox lastItem={lastItem}>
-                           <BoardConatiner>
-                              <TitleofBoard>{el.titleofBoard}</TitleofBoard>
-                              <NameofColumn>{el.nameofColumn}</NameofColumn>
-                           </BoardConatiner>
-                           <NotifictionSection el={el} />
-                        </MainBox>
-                     </div>
+                     <MainBox key={el.id} lastItem={lastItem}>
+                        <NotificatonBlueIcon>
+                           <BlueIcon style={{ width: '1rem' }} />
+                        </NotificatonBlueIcon>
+                        <BoardConatiner>
+                           <TitleofBoard>{el.titleofBoard}</TitleofBoard>
+                           <NameofColumn>{el.nameofColumn}</NameofColumn>
+                        </BoardConatiner>
+                        <NotifictionSection el={el} />
+                     </MainBox>
                   )
                })}
             </ScrollContainer>
@@ -43,7 +41,6 @@ export const Notification = ({ notificationsPanel }) => {
 }
 
 const MainConatiner = styled('div')(() => ({
-   margin: '0 20rem',
    width: '24.48rem',
    borderRadius: '0.625rem',
    padding: '0.8rem 0.5rem 0.8rem 1.6rem',
@@ -105,13 +102,16 @@ const MainBox = styled('div')(({ lastItem }) => ({
    display: 'flex',
    flexDirection: 'column',
    alignItems: 'center',
-   padding: '0.3rem',
-
    borderBottom: '2px solid #E4E4E4',
    width: '21.4rem',
    ...(lastItem && {
       borderBottom: 'none',
    }),
+}))
+const NotificatonBlueIcon = styled('div')(() => ({
+   position: 'relative',
+   right: '10.45rem',
+   top: '0.6rem',
 }))
 
 const BoardConatiner = styled('div')(() => ({
@@ -119,7 +119,7 @@ const BoardConatiner = styled('div')(() => ({
    background: '#CBCBCB',
    width: '19.1rem',
    height: '8.625rem',
-   padding: '0.6rem',
+   padding: '0.8rem',
 }))
 
 const TitleofBoard = styled('p')(() => ({

@@ -43,19 +43,19 @@ const UsersIcon = styled('img')(() => ({
    width: '2.125rem',
    height: '2.125rem',
    borderRadius: '50%',
-   marginBottom: '0.8rem',
+   marginBottom: '0.7rem',
 }))
 
 const PeoplesName = styled('p')(() => ({
    marginTop: '0.35rem',
    fontFamily: 'CarePro',
-   fontSize: '0.875rem',
+   fontSize: '0.9rem',
+   fontWeight: '600',
 }))
 
 const SecondBox = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
-   // alignContent: 'center',
    justifyContent: 'space-between',
 }))
 
