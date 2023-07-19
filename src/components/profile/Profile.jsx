@@ -1,36 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, IconButton, TextField } from '@mui/material'
+import { useDropzone } from 'react-dropzone'
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { EditIcon, HideIcon, ShowIcon } from '../../assets/icons'
+import ColorBackground from '../../assets/images/ColorsBakground.png'
 import { Header } from '../header/Header'
-import { validatePassword } from '../../utils/helpers/Helpers'
 import { involvedProjects, testFields } from '../../utils/constants/general'
-import ColorBackground from '../../assets/images/test.txt'
+import { schema } from '../../utils/helpers/Helpers'
 
-export function ProfileForm() {
+export const ProfileForm = () => {
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm({
+      defaultValues: {
+         firstName: 'Ваше имя',
+         lastName: 'Ваша фамилия',
+         email: 'example@example.com',
+         confirmPassword: '',
+      },
+      resolver: yupResolver(schema),
+   })
+
    const [showPassword, setShowPassword] = useState(false)
    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
    const [passwordDirty, setPasswordDirty] = useState(false)
    const [confirmPasswordDirty, setConfirmPasswordDirty] = useState(false)
-   const [profile, setProfile] = useState({
-      firstName: '',
-      middleName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      avatarUrl:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU',
-   })
    const projectCount = involvedProjects.length
 
-   const handleInputChange = (e) => {
-      const { name, value } = e.target
-      setProfile((prevProfile) => ({ ...prevProfile, [name]: value }))
+   const handleFormSubmit = (data) => {
+      console.log(data)
    }
 
-   const handleSubmit = (e) => {
-      e.preventDefault()
-   }
+   const [avatarUrl, setAvatarUrl] = useState(
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU'
+   )
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -41,32 +49,62 @@ export function ProfileForm() {
          (prevShowConfirmPassword) => !prevShowConfirmPassword
       )
    }
+   const navigate = useNavigate()
+
+   const handleDrop = (acceptedFiles) => {
+      const file = acceptedFiles[0]
+      const reader = new FileReader()
+
+      reader.onload = (event) => {
+         const uploadedImageUrl = event.target.result
+         setAvatarUrl(uploadedImageUrl)
+      }
+
+      reader.readAsDataURL(file)
+   }
+
+   useEffect(() => {
+      console.log('Avatar URL changed:', avatarUrl)
+   }, [avatarUrl])
+
+   const { getRootProps, getInputProps } = useDropzone({ onDrop: handleDrop })
 
    return (
       <div>
          <Header />
          <StyledWorkspace>
-            <WorkSpaceSpan>Workspaces</WorkSpaceSpan>
-            <WorkSpaceSpanTwo>\ Profile</WorkSpaceSpanTwo>
+            <WorkSpaceSpan onClick={() => navigate('/')}>
+               Workspace
+            </WorkSpaceSpan>
+            <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
             <div>
-               <ProfileImageBox photo={profile.avatarUrl}>
+               <ProfileImageBox {...getRootProps()} photo={avatarUrl}>
+                  <input
+                     {...getInputProps()}
+                     type="file"
+                     onChange={(event) => handleDrop(event.target.files)}
+                  />
                   <ProfileImageEdit type="file" placeholder="ali" />
                   <EditProfileIcon />
                </ProfileImageBox>
+               <ProfileNames>
+                  <ProfileNamesSpan>ali</ProfileNamesSpan>
+                  <ProfileNamesSpan>samatov</ProfileNamesSpan>
+               </ProfileNames>
             </div>
             <div>
-               <StyledFormContainer onSubmit={handleSubmit}>
+               <StyledFormContainer onSubmit={handleSubmit(handleFormSubmit)}>
                   <div>
                      {testFields.map((field) => (
                         <div key={field.name}>
                            <StyledTextField
                               type={field.type}
                               id={field.name}
-                              name={field.name}
-                              value={profile[field.name]}
-                              onChange={handleInputChange}
+                              {...register(field.name)}
+                              error={!!errors[field.name]}
+                              helperText={errors[field.name]?.message}
                               placeholder={field.placeholder}
                            />
                         </div>
@@ -77,21 +115,15 @@ export function ProfileForm() {
                         <StyledPasswordField
                            type={showPassword ? 'text' : 'password'}
                            id="password"
-                           name="password"
-                           placeholder="Password"
-                           value={profile.password}
-                           onChange={handleInputChange}
-                           error={
-                              passwordDirty &&
-                              !validatePassword(profile.password)
-                           }
+                           {...register('password')}
+                           error={passwordDirty && !!errors.password}
                            helperText={
-                              passwordDirty &&
-                              !validatePassword(profile.password)
-                                 ? 'Password must be at least 6 characters long'
+                              passwordDirty && errors.password?.message
+                                 ? errors.password.message
                                  : ''
                            }
                            onBlur={() => setPasswordDirty(true)}
+                           placeholder="Пароль"
                            InputProps={{
                               endAdornment: (
                                  <IconButton
@@ -108,17 +140,15 @@ export function ProfileForm() {
                            type={showConfirmPassword ? 'text' : 'password'}
                            id="confirmPassword"
                            name="confirmPassword"
-                           placeholder="Confirm Password"
-                           value={profile.confirmPassword}
-                           onChange={handleInputChange}
+                           placeholder="Подтвердите пароль"
+                           {...register('confirmPassword')}
                            error={
-                              confirmPasswordDirty &&
-                              profile.password !== profile.confirmPassword
+                              confirmPasswordDirty && !!errors.confirmPassword
                            }
                            helperText={
                               confirmPasswordDirty &&
-                              profile.password !== profile.confirmPassword
-                                 ? 'Passwords do not match'
+                              errors.confirmPassword?.message
+                                 ? errors.confirmPassword.message
                                  : ''
                            }
                            onBlur={() => setConfirmPasswordDirty(true)}
@@ -144,7 +174,7 @@ export function ProfileForm() {
                               variant="contained"
                               color="primary"
                            >
-                              Save
+                              add
                            </SaveButton>
                         </ButtonDiv>
                      </div>
@@ -154,12 +184,12 @@ export function ProfileForm() {
          </ProfileContainer>
          <ProjectsContainer>
             <ProjectsHeader>
-               <p>Involved in projects</p>
+               <p>involved in projects</p>
                <ProjectCount>{projectCount}</ProjectCount>
             </ProjectsHeader>
             <ProjectsList>
                {involvedProjects.map((project) => (
-                  <ProjectCard key={project.title}>
+                  <ProjectCard key={Math.random().toString()}>
                      <div>
                         <ProjectCardFirstLetter>
                            {project.title && project.title.charAt(0)}
@@ -179,6 +209,7 @@ export function ProfileForm() {
 
 const WorkSpaceSpan = styled('span')({
    color: 'white',
+   cursor: 'pointer',
 })
 const WorkSpaceSpanTwo = styled('span')({
    color: 'white',
@@ -212,7 +243,7 @@ const ProfileImageEdit = styled('input')({
    left: '4rem',
 })
 
-const ProfileImageBox = styled('label')(({ photo }) => ({
+const ProfileImageBox = styled('div')(({ photo }) => ({
    width: '8.8125rem',
    height: '8.8125rem',
    borderRadius: '50%',
@@ -237,25 +268,41 @@ const EditProfileIcon = styled(EditIcon)({
    position: 'relative',
    top: '3rem',
    left: '2rem',
-   backgroundColor: 'grey',
+   backgroundColor: '#d1c9c9',
+})
+
+const ProfileNames = styled('div')({
+   position: 'relative',
+   left: '10rem',
+   bottom: '5rem',
+   display: 'flex',
+   gap: '0.5rem',
+})
+const ProfileNamesSpan = styled('span')({
+   fontFamily: 'Cera Pro',
+   fontSize: '1.25rem',
+   fontWeight: '500',
 })
 
 const StyledTextField = styled('input')({
    display: 'flex',
    width: '20.0625rem',
+   height: '2.125rem',
    padding: '0.375rem 1rem',
    justifyContent: 'space-between',
    alignItems: 'center',
    borderRadius: '0.5rem',
    border: '1px solid #D0D0D0',
    marginBottom: '1rem',
+   fontWeight: '500',
+   fontFamily: 'CarePro',
 })
 
 const StyledPasswordField = styled(TextField)({
    width: '20.0625rem',
    marginBottom: '1rem',
    '& .MuiInputBase-root': {
-      height: '1.8rem',
+      height: '2.125rem',
       borderRadius: '0.5rem',
    },
 })
@@ -286,6 +333,7 @@ const ProjectsContainer = styled('div')({
    display: 'flex',
    flexDirection: 'column',
    marginLeft: '3.75rem',
+   flexWrap: 'wrap',
 })
 
 const ProjectsHeader = styled('div')({
@@ -296,22 +344,33 @@ const ProjectsHeader = styled('div')({
 const ProjectCount = styled('span')({
    marginLeft: '0.5rem',
    fontWeight: 'bold',
+   fontSize: '0.8rem',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: 'grey',
+   borderRadius: '50%',
+   width: '1.3rem',
+   height: '1.3rem',
+   color: 'white',
 })
 
 const ProjectsList = styled('div')({
    display: 'flex',
    flexDirection: 'column',
    gap: '1rem',
+   flexWrap: 'wrap',
+   height: '20rem',
 })
 
 const ProjectCard = styled('div')({
    display: 'flex',
-   justifyContent: 'center',
    alignItems: 'center',
    width: '9.125rem',
    height: '4.125rem',
    borderRadius: '0.5rem',
    gap: '0.7rem',
+   cursor: 'pointer',
 })
 
 const ProjectCardFirstLetter = styled('div')({
@@ -324,9 +383,13 @@ const ProjectCardFirstLetter = styled('div')({
    padding: '0.3125rem 0.8125rem 0.3125rem 0.8125rem',
    borderRadius: '0.625rem',
    gap: '0.5rem',
+   color: 'white',
+   fontFamily: 'Gilroy',
+   fontWeight: '600',
+   fontSize: '2rem',
 })
 
-const ProjectCardTitle = styled('p')({
+const ProjectCardTitle = styled('h2')({
    fontFamily: 'CarePro',
    fontWeight: '500',
    color: '#000000',
