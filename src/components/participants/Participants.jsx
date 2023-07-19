@@ -10,24 +10,28 @@ export const Participants = () => {
    const handleChange = (event) => {
       setRole(event.target.value)
    }
-
+   const dataLength = 254
    return (
       <BodyContainer>
          <GlobalContainer>
             <HeaderContainer>
-               <RoleSection>
-                  <ViewAllIssues>View all issues</ViewAllIssues>
-                  <FormControl>
-                     <Selectt value={role} onChange={handleChange}>
-                        <MenuItem value="All">All</MenuItem>
-                        <MenuItem value="Admin">Admin</MenuItem>
-                        <MenuItem value="Member">Member</MenuItem>
-                     </Selectt>
-                  </FormControl>
-               </RoleSection>
-               <Button>Create</Button>
+               <MainCont>
+                  <RoleSection>
+                     <ViewAllIssues>View all issues</ViewAllIssues>
+                     <FormControl>
+                        <Selectt value={role} onChange={handleChange}>
+                           <MenuItem value="All">All</MenuItem>
+                           <MenuItem value="Admin">Admin</MenuItem>
+                           <MenuItem value="Member">Member</MenuItem>
+                        </Selectt>
+                     </FormControl>
+                  </RoleSection>
+                  <Button>Create</Button>
+               </MainCont>
+               <Total>
+                  Total:<TotalAmount>{dataLength}</TotalAmount>
+               </Total>
             </HeaderContainer>
-            <Total>Total</Total>
          </GlobalContainer>
       </BodyContainer>
    )
@@ -50,17 +54,23 @@ const GlobalContainer = styled('div')(() => ({
 
 const HeaderContainer = styled('div')(() => ({
    display: 'flex',
+   flexDirection: 'column',
+}))
+
+const MainCont = styled('div')(() => ({
+   display: 'flex',
    justifyContent: 'space-between',
+   alignItems: 'center',
 }))
 
 const RoleSection = styled('div')(() => ({
    display: 'flex',
    alignContent: 'center',
+   margin: '0',
+   height: '1rem',
 }))
 
 const Selectt = styled(Select)(() => ({
-   '& .MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root': {},
-
    '& .MuiSelect-select': {
       borderRadius: '5rem',
       padding: '0.2rem 0.875rem 0.2rem 1rem',
@@ -69,7 +79,7 @@ const Selectt = styled(Select)(() => ({
    },
 }))
 
-const ViewAllIssues = styled('h3')(() => ({
+const ViewAllIssues = styled('p')(() => ({
    fontFamily: 'CarePro',
    fontSize: '1.25rem',
    fontWeight: ' 500',
@@ -80,4 +90,15 @@ const Total = styled('p')(() => ({
    color: '#919191',
    fontSize: '1rem',
    fontWeight: ' 400',
+}))
+
+const TotalAmount = styled('span')(() => ({
+   display: 'inline-flex',
+   padding: '0rem 0.3125rem ',
+   justifyContent: 'center',
+   alignItems: 'center',
+   gap: '0.5rem',
+   borderRadius: '1rem',
+   background: 'var(--secondary-gray-2, #B2B2B2)',
+   color: '#fff',
 }))
