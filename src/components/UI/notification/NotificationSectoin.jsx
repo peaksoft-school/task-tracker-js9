@@ -12,8 +12,9 @@ export const NotifictionSection = ({ el }) => {
             </FirstBox>
 
             <SecondBox>
-               <NotificationTitle>{el.notification}</NotificationTitle>
-
+               <NotificationTitleWrapper>
+                  {el.notification}
+               </NotificationTitleWrapper>
                <AddedDate>{el.addedDate}</AddedDate>
             </SecondBox>
          </div>
@@ -23,6 +24,7 @@ export const NotifictionSection = ({ el }) => {
       </InfoBox>
    )
 }
+
 const InfoBox = styled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
@@ -59,16 +61,25 @@ const SecondBox = styled('div')(() => ({
    justifyContent: 'space-between',
 }))
 
-const NotificationTitle = styled('h3')(() => ({
-   fontFamily: 'CarePro',
-   fontSize: '1rem',
-   margin: '0',
-   width: '17rem',
-}))
-
 const AddedDate = styled('p')(() => ({
    fontFamily: 'CarePro',
    fontSize: '0.875rem',
    color: '#919191',
    margin: '0.5rem 0 0.5rem 0',
+}))
+
+const NotificationTitleWrapper = styled('h3')(() => ({
+   fontFamily: 'CarePro',
+   fontSize: '1rem',
+   margin: '0',
+   width: '17rem',
+   overflow: 'hidden',
+   whiteSpace: 'nowrap',
+   textOverflow: 'ellipsis',
+   '&:hover': {
+      textOverflow: 'clip',
+      overflow: 'visible',
+      whiteSpace: 'normal',
+      cursor: 'pointer',
+   },
 }))

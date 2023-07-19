@@ -23,7 +23,9 @@ export const notificationsPanel = [
       nameofColumn: 'Name of the column',
       img: 'https://i.pinimg.com/564x/ea/83/68/ea8368eea947c816f80bc97bbb7afcf0.jpg',
       nameOfPerson: 'Emir',
-      notification: 'Moved to list Done',
+
+      notification:
+         'Moved to list Done  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, ',
       addedDate: 'Sep 15 at 13:23 PM',
    },
    {
@@ -41,7 +43,9 @@ export const notificationsPanel = [
       nameofColumn: 'Name of the column',
       img: 'https://i.pinimg.com/564x/69/02/cd/6902cd3556639678ffb92bb58770d7ba.jpg',
       nameOfPerson: 'Ali',
-      notification: 'Moved to list Done',
+      notification:
+         'Moved to list Done  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, ',
+
       addedDate: 'Sep 15 at 13:23 PM',
    },
    {
