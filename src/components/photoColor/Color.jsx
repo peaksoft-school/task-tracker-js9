@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import { styled, IconButton } from '@mui/material'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
 
-export const Colors = ({ boards, onColorSelect }) => {
+export const Colors = ({
+   boards,
+   onColorSelect,
+   onLeftIconClick,
+   onExitIconClick,
+}) => {
    const [selectedColor, setSelectedColor] = useState(null)
 
    const handleColorClick = (color) => {
@@ -13,12 +18,12 @@ export const Colors = ({ boards, onColorSelect }) => {
    return (
       <AllBoard>
          <StyledHeader>
-            <IconButton>
+            <IconButton onClick={onLeftIconClick}>
                <LeftIcon />
             </IconButton>
             <p>Colors</p>
             <IconButton>
-               <ExitIcon />
+               <ExitIcon onClick={onExitIconClick} />
             </IconButton>
          </StyledHeader>
          <ColorBlocks>
