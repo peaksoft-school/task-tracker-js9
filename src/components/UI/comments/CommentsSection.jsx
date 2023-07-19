@@ -1,42 +1,60 @@
-import { Button } from '@mui/material'
+import React from 'react'
+import { Button, IconButton } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { UpIcon } from '../../../assets/icons'
 import { Input } from '../input/Input'
+import { UpIcon, DownIcon } from '../../../assets/icons'
 
-export const CommentSectoin = ({ comments }) => {
+export const CommentSection = ({ comments, showMore, setShowMore }) => {
+   const toggleComments = () => {
+      setShowMore((prevShowComments) => !prevShowComments)
+   }
+
    return (
       <GLobalContainer>
          <CommentsPanel>
             <p>Comments</p>
-            <UpIcon />
+            <IconButton
+               style={{ marginTop: '-0.3rem' }}
+               onClick={toggleComments}
+            >
+               {showMore ? <DownIcon /> : <UpIcon />}
+            </IconButton>
          </CommentsPanel>
-         {comments.length > 0 ? (
-            <ScrollableContainer>
-               {comments.map((el, index) => {
-                  const isLastItem = index === comments.length - 1
-                  return (
-                     <MainContainer key={el.id} isLastItem={isLastItem}>
-                        <PersonIcon src={el.img} alt="Member" />
-                        <AboutComments>
-                           <PostName>{el.name}</PostName>
-                           <PostComments>{el.comment}</PostComments>
-                           <NecessaryContainer>
-                              <PostDate>{el.date}</PostDate>
-                              <MyStyledBtnCont>
-                                 <MyStyledBtn>edit</MyStyledBtn>
-                                 <MyStyledBtn>delete</MyStyledBtn>
-                              </MyStyledBtnCont>
-                           </NecessaryContainer>
-                        </AboutComments>
-                     </MainContainer>
-                  )
-               })}
-            </ScrollableContainer>
-         ) : (
-            <NoCommentsComtainer>
-               <NoCommentsDescription>No comments</NoCommentsDescription>
-            </NoCommentsComtainer>
+         {showMore && (
+            <div>
+               {comments.length > 0 ? (
+                  <ScrollableContainer>
+                     {comments.map((comments, index) => {
+                        const isLastItem = index === comments.length - 1
+                        return (
+                           <MainContainer
+                              key={comments.id}
+                              isLastItem={isLastItem}
+                           >
+                              <PersonIcon src={comments.img} alt="Member" />
+                              <AboutComments>
+                                 <PostName>{comments.name}</PostName>
+                                 <PostComments>{comments.comment}</PostComments>
+                                 <NecessaryContainer>
+                                    <PostDate>{comments.date}</PostDate>
+                                    <MyStyledBtnCont>
+                                       <MyStyledBtn>edit</MyStyledBtn>
+                                       <MyStyledBtn>delete</MyStyledBtn>
+                                    </MyStyledBtnCont>
+                                 </NecessaryContainer>
+                              </AboutComments>
+                           </MainContainer>
+                        )
+                     })}
+                  </ScrollableContainer>
+               ) : (
+                  <NoCommentsComtainer>
+                     <NoCommentsDescription>No comments</NoCommentsDescription>
+                  </NoCommentsComtainer>
+               )}
+            </div>
          )}
+
          <FormContainer>
             <StyledInput
                id="outlined-basic"
@@ -51,7 +69,8 @@ export const CommentSectoin = ({ comments }) => {
 const GLobalContainer = styled('div')(() => ({
    backgroundColor: '#F4F5F7',
    width: ' 24.9rem',
-   padding: ' 0.75rem ',
+
+   padding: ' 0.9rem 0.75rem ',
    borderRadius: '0.5rem',
 }))
 
@@ -60,7 +79,7 @@ const CommentsPanel = styled('div')(() => ({
    gap: '16rem',
 }))
 const ScrollableContainer = styled('div')(() => ({
-   height: ' 20rem ',
+   height: ' 25rem ',
    overflowY: 'auto ',
    scrollbarWidth: 'thin',
    scrollbarColor: ' #d9d9d9 transparent',
@@ -80,10 +99,11 @@ const ScrollableContainer = styled('div')(() => ({
 }))
 const MainContainer = styled('div')(({ isLastItem }) => ({
    display: 'flex',
-   gap: '0.5rem',
+   justifyContent: 'space-between',
    padding: '0.7rem',
    borderBottom: '2px solid #E4E4E4',
-   width: ' 22.5125rem',
+   width: ' 22.8rem',
+
    ...(isLastItem && {
       borderBottom: 'none',
    }),
