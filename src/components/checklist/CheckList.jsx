@@ -44,10 +44,14 @@ const ProgressLabel = styled('span')({
    fontSize: '12px',
 })
 
-const InputContainer = styled('div')({
+const ItemContainer = styled('div')({
    display: 'flex',
    alignItems: 'center',
    marginBottom: '10px',
+})
+
+const ItemText = styled('p')({
+   margin: '0 10px',
 })
 
 const ActionButtonsContainer = styled('div')({
@@ -131,14 +135,14 @@ export const CheckList = ({ title }) => {
          </ProgressLine>
          {showInputs ? (
             <>
-               <InputContainer>
+               <ItemContainer>
                   <Checkbox checked={false} />
                   <StyledInput
                      type="text"
                      value={newItemValue}
                      onChange={handleNewItemChange}
                   />
-               </InputContainer>
+               </ItemContainer>
                <ActionButtonsContainer>
                   <Button onClick={addItem}>Add</Button>
                   <Button onClick={cancelAddItem}>Cancel</Button>
@@ -150,20 +154,16 @@ export const CheckList = ({ title }) => {
             </div>
          )}
          {items.map((item) => (
-            <div key={item.id}>
+            <ItemContainer key={item.id}>
                <Checkbox
                   checked={item.completed}
                   onChange={() => toggleCompleted(item.id)}
                />
-               <StyledInput
-                  type="text"
-                  value={item.value}
-                  onChange={(e) => handleItemChange(item.id, e.target.value)}
-               />
+               <ItemText>{item.value}</ItemText>
                <IconButton onClick={() => removeItem(item.id)}>
                   <DeleteIcon />
                </IconButton>
-            </div>
+            </ItemContainer>
          ))}
       </ChecklistContainer>
    )
@@ -171,12 +171,9 @@ export const CheckList = ({ title }) => {
 
 const StyledInput = styled(Input)({
    input: {
-      height: '100px',
-      width: '300px',
-      backgroundColor: 'white',
-      borderRadius: '5px',
-      padding: '10px',
-      border: '1px solid #ccc',
-      marginBottom: '10px',
+      display: 'none',
+   },
+   root: {
+      width: 'auto',
    },
 })
