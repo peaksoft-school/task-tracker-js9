@@ -39,7 +39,7 @@ export const Header = () => {
 
 const GLobalContainer = muiStyled('header')(() => ({
    width: '100%',
-   height: '6.8vw',
+   height: ': 4.25rem',
    backgroundColor: '#ffffff',
    padding: '1rem 2.5rem',
    display: 'flex',
