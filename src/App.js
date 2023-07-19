@@ -1,9 +1,7 @@
-import { ProfileForm } from './components/profile/Profile'
-
 function App() {
    return (
       <div>
-         <ProfileForm />
+         <h1>Task Trecker js-9</h1>
       </div>
    )
 }
