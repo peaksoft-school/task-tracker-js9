@@ -78,7 +78,7 @@ const RoleSection = styled('div')(() => ({
 }))
 
 const StyledSelect = styled(Select)(() => ({
-   // fontFamily: 'CarePro',
+   fontFamily: 'CarePro',
 
    '& .MuiSelect-select': {
       borderRadius: '5rem',
@@ -107,7 +107,7 @@ const StyledSelect = styled(Select)(() => ({
 }))
 
 const StyledMenuItem = styled(MenuItem)(() => ({
-   // fontFamily: 'CarePro',
+   fontFamily: 'CarePro',
 }))
 
 const ViewAllIssues = styled('p')(() => ({
@@ -117,13 +117,14 @@ const ViewAllIssues = styled('p')(() => ({
 }))
 
 const Total = styled('p')(() => ({
-   // fontFamily: 'CarePro',
+   fontFamily: 'CarePro',
    color: '#919191',
    fontSize: '1rem',
    fontWeight: ' 400',
 }))
 
 const TotalAmount = styled('span')(() => ({
+   marginLeft: '0.5rem ',
    display: 'inline-flex',
    padding: '0.1rem 0.3125rem ',
    justifyContent: 'center',
@@ -135,11 +136,11 @@ const TotalAmount = styled('span')(() => ({
 }))
 
 const MyBtnStyled = styled(Button)(() => ({
-   // fontFamily: 'CarePro',
+   fontFamily: 'CarePro',
    color: '#fff',
    borderRadius: ' 1.5rem',
    width: '5rem',
-   padding: '0.4rem 2.8rem 0.4rem 2rem',
+   padding: '0.4rem 2rem 0.4rem 2rem',
    textAlign: 'center',
    fontSize: '0.91rem',
    textTransform: 'capitalize',

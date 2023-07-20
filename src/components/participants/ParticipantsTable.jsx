@@ -72,7 +72,7 @@ const Container = styled('div')(() => ({
    height: '100%',
 }))
 const MenuItemStyle = styled(MenuItem)(() => ({
-   // fontFamily: 'CarePro',
+   fontFamily: 'CarePro',
 }))
 
 const FormControlStyle = styled(FormControl)(() => ({
@@ -80,7 +80,7 @@ const FormControlStyle = styled(FormControl)(() => ({
 }))
 
 const StyledSelect = styled(Select)(() => ({
-   // fontFamily: 'CarePro',
+   fontFamily: 'CarePro',
    fieldset: {
       border: 'none',
    },

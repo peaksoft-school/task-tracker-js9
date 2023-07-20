@@ -40,7 +40,9 @@ export const Header = () => {
                </SearchIconWrapper>
                <StyledInputBase placeholder="Search" />
             </Search>
-            <NotificationIcon src={NotificationIcon} alt="natifacation" />
+            <IconButton>
+               <NotificationIcon src={NotificationIcon} alt="natifacation" />
+            </IconButton>
             <PersonIcon src={PersonIcon} alt="person_Icon" />
          </AboutPanel>
       </GLobalContainer>
