@@ -3,7 +3,7 @@ import { CheckList } from './components/checklist/CheckList'
 function App() {
    return (
       <div>
-         <CheckList title="ali" />
+         <CheckList title="checklist" />
       </div>
    )
 }

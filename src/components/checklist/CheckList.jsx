@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { IconButton, Checkbox, styled } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
-import { UpIcon, DownIcon, PlusIcon } from '../../assets/icons'
+import {
+   UpIcon,
+   DownIcon,
+   PlusIcon,
+   DeleteIcon,
+   EditIcon,
+} from '../../assets/icons'
 
 export const CheckList = ({ title }) => {
    const [showInputs, setShowInputs] = useState(false)
@@ -43,6 +47,7 @@ export const CheckList = ({ title }) => {
          setTaskListVisible(true)
       }
    }
+
    const cancelAddItem = () => {
       setNewItemValue('')
       setShowInputs((prev) => !prev)
@@ -88,7 +93,9 @@ export const CheckList = ({ title }) => {
                   <Title>{title}</Title>
                </CheckListBox>
                <DeleteBox>
-                  <DeleteIcon />
+                  <IconButton>
+                     <DeleteIcon />
+                  </IconButton>
                   <p>Delete</p>
                </DeleteBox>
             </ChecklistHeader>
@@ -111,7 +118,10 @@ export const CheckList = ({ title }) => {
                   {isTaskListVisible && (
                      <div className="map-item">
                         {items.map((item) => (
-                           <ItemContainer key={item.id}>
+                           <ItemContainer
+                              key={item.id}
+                              completed={item.completed}
+                           >
                               <Checkbox
                                  checked={item.completed}
                                  onChange={() => toggleCompleted(item.id)}
@@ -135,7 +145,6 @@ export const CheckList = ({ title }) => {
                            type="text"
                            value={newItemValue}
                            onChange={handleNewItemChange}
-                           placeholder="Введите задачу"
                         />
                      </ItemContainer>
                      <ActionButtonsContainer>
@@ -146,9 +155,14 @@ export const CheckList = ({ title }) => {
                      </ActionButtonsContainer>
                   </div>
                ) : (
-                  <AddnewButton onClick={toggleInputs}>
-                     <PlusIcon /> Add an items
-                  </AddnewButton>
+                  <ButtonBox>
+                     <AddnewButton onClick={toggleInputs}>
+                        <PlusIconContainer>
+                           <PlusIcon />
+                           <p className="button-p">Add an items</p>
+                        </PlusIconContainer>
+                     </AddnewButton>
+                  </ButtonBox>
                )}
             </Main>
          ) : null}
@@ -158,12 +172,11 @@ export const CheckList = ({ title }) => {
 
 const StyledInput = styled(Input)({
    input: {
-      fontSize: '14px',
+      backgroundColor: 'none',
+      fontSize: '1rem',
       width: '39.9931rem',
-      height: '5.5rem',
       borderRadius: '5rem',
-      padding: '0.5rem 1rem 0.5rem 1rem',
-      border: '0625rem',
+      padding: '1.3rem 1.3rem 5.5rem',
    },
 })
 
@@ -186,9 +199,10 @@ const ChecklistHeader = styled('div')({
 })
 
 const Title = styled('p')({
-   margin: '0 10px',
-   fontWeight: 'bold',
-   fontSize: '16px',
+   fontSize: '1rem',
+   color: '#111',
+   fontFamily: 'CarePro',
+   fontWeight: '400',
 })
 
 const ProgressContainer = styled('div')({
@@ -204,7 +218,7 @@ const CheckListHeaderContainer = styled('div')({
 })
 
 const ProgressLine = styled('div')({
-   height: '0.8rem',
+   height: '0.625rem',
    borderRadius: '5px',
    backgroundColor: '#ccc',
    flex: 1,
@@ -214,30 +228,40 @@ const ProgressBar = styled('div')(({ progress }) => ({
    borderRadius: '5px',
    backgroundColor: '#007bff',
    width: `${progress}%`,
-   height: '0.8rem',
+   height: '0.625rem',
 }))
 
 const ProgressLabel = styled('span')({
    fontSize: '1rem',
+   marginLeft: '0.63rem',
+   color: '#787878',
+   fontFamily: 'Gilroy',
+   fontWeight: '400',
 })
 
 const TaskCountContainer = styled('div')({
    display: 'flex',
    justifyContent: 'center',
+   marginRight: '0.63rem',
+   fontSize: '1rem',
+   marginLeft: '0.63rem',
+   color: '#787878',
+   fontFamily: 'Gilroy',
+   fontWeight: '400',
 })
 
 const CheckListBox = styled('div')({
    display: 'flex',
    alignItems: 'center',
-   gap: '',
 })
 
-const ItemContainer = styled('div')({
+const ItemContainer = styled('div')(({ completed }) => ({
    display: 'flex',
    alignItems: 'center',
    width: '41.875rem',
    border: '0.0625rem',
-})
+   background: completed ? '#F2F2F2' : 'transparent',
+}))
 
 const ItemText = styled('p')({
    margin: '0 10px',
@@ -249,6 +273,7 @@ const ActionButtonsContainer = styled('div')({
    display: 'flex',
    justifyContent: 'flex-end',
    marginTop: '10px',
+   gap: '1rem',
 })
 
 const StyledIconButton = styled(IconButton)({
@@ -271,34 +296,75 @@ const DeleteBox = styled('div')({
    justifyContent: 'center',
    alignItems: 'center',
    gap: '0.5rem',
+   fontSize: '1rem',
+   color: '#787878',
+   fontFamily: 'CarePro',
+   fontWeight: '400',
 })
 
 const AddButton = styled(Button)({
-   width: '4.1638rem',
-   height: '1.875rem',
-   borderRadius: '1.5rem',
    fontFamily: 'CarePro',
+   color: '#fff',
+   borderRadius: ' 1.5rem',
+   width: '4.3rem',
+   padding: '0.3rem 1rem 0 0.3rem',
+   height: '2.1rem',
+   textAlign: 'center',
    fontSize: '0.875rem',
-   fontWeight: '400',
-   display: 'flex',
-   alignItems: 'center',
-   justifyContent: 'center',
+   textTransform: 'capitalize',
+   '&:hover': {
+      backgroundColor: '#015C91',
+      '&:active': {
+         backgroundColor: '#0079BF',
+      },
+   },
 })
-
 const CancelButton = styled(Button)({
-   width: '5.4131rem',
-   height: '1.875rem',
-   borderRadius: '1.5rem',
-   gap: '0.5rem',
+   fontFamily: 'CarePro',
+   color: '#919191',
+   borderRadius: ' 1.5rem',
+   height: '2.1rem',
+
+   width: '5.41313rem',
+   padding: '0.275rem 1rem 0.375rem 0.5rem ',
+   backgroundColor: '#F0F0F0',
+   textAlign: 'center',
+   fontSize: '0.91rem',
+   textTransform: 'capitalize',
+   '&:hover': {
+      backgroundColor: '#cecdcd',
+      color: '#fff',
+
+      '&:active': {
+         backgroundColor: '#F0F0F0',
+      },
+   },
 })
 
 const AddnewButton = styled(Button)({
-   width: '7.9375rem',
-   height: '1.875rem',
-   borderRadius: '0.5rem',
-   border: '0.0625rem',
+   fontFamily: 'CarePro',
    color: 'black',
-   background: '#D0D0D0',
+   borderRadius: '0.5rem',
+   padding: '0 0.3rem 0 0.3rem',
+   height: '2rem',
+   textTransform: 'capitalize',
+   width: '8.9375rem',
    boxSizing: 'border-box',
-   padding: '0.375rem, 0.875rem, 0.375rem, 1rem',
+   background: 'none',
+   border: '0.0625rem solid #F2F2F2',
+   display: 'inline-block',
+
+   fontSize: '0.91rem',
+   textAlign: 'center',
+})
+
+const PlusIconContainer = styled('div')({
+   display: 'flex',
+   alignItems: 'center',
+   gap: '0.5rem',
+})
+
+const ButtonBox = styled('div')({
+   display: 'flex',
+   justifyContent: 'end',
 })
