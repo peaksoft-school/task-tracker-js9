@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper'
 
 export default function TableMui({ column, rows }) {
    return (
-      <TableContainer style={{ width: '85rem' }} component={Paper}>
+      <TableContainer style={{ width: '100%' }} component={Paper}>
          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead
                style={{
@@ -101,7 +101,7 @@ const TableHeaderStyled = styled('h3')`
    font-style: normal;
    font-weight: bold;
    line-height: normal;
-   height: 3.6rem;
+   height: 2rem;
    display: flex;
    align-items: flex-end;
 `
@@ -113,7 +113,7 @@ const TableBodyTitleStyled = styled('span')`
    font-style: normal;
    font-weight: bold;
    line-height: normal;
-   height: 3.4rem;
+   height: 2rem;
    display: flex;
    align-items: center;
    text-decoration: underline;

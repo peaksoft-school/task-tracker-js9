@@ -3,8 +3,9 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import { FormControl, styled } from '@mui/material'
 import { Button } from '../UI/button/Button'
+import { ParticipantsTable } from './ParticipantsTable'
 
-export const Participants = () => {
+export const Participants = ({ onDelete }) => {
    const [role, setRole] = useState('All')
 
    const handleChange = (event) => {
@@ -19,19 +20,22 @@ export const Participants = () => {
                   <RoleSection>
                      <ViewAllIssues>View all issues</ViewAllIssues>
                      <FormControl>
-                        <Selectt value={role} onChange={handleChange}>
-                           <MenuItem value="All">All</MenuItem>
-                           <MenuItem value="Admin">Admin</MenuItem>
-                           <MenuItem value="Member">Member</MenuItem>
-                        </Selectt>
+                        <StyledSelect value={role} onChange={handleChange}>
+                           <StyledMenuItem value="All">All</StyledMenuItem>
+                           <StyledMenuItem value="Admin">Admin</StyledMenuItem>
+                           <StyledMenuItem value="Member">
+                              Member
+                           </StyledMenuItem>
+                        </StyledSelect>
                      </FormControl>
                   </RoleSection>
-                  <Button>Create</Button>
+                  <MyBtnStyled>Create</MyBtnStyled>
                </MainCont>
                <Total>
                   Total:<TotalAmount>{dataLength}</TotalAmount>
                </Total>
             </HeaderContainer>
+            <ParticipantsTable onDelete={onDelete} />
          </GlobalContainer>
       </BodyContainer>
    )
@@ -42,19 +46,21 @@ const BodyContainer = styled('div')(() => ({
 
    backgroundColor: '#F0F0F0',
    width: '100%',
-   height: '100vh',
+   height: '89vh',
 }))
 
 const GlobalContainer = styled('div')(() => ({
-   padding: '1.4rem',
-   backgroundColor: '#F8F8F8',
+   padding: '1.4rem 0 0 0',
+   backgroundColor: '#fff',
    width: '100%',
-   height: ' 17.8125rem',
+   minHeight: ' 10vh',
+   borderRadius: ' 0.5rem',
 }))
 
 const HeaderContainer = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
+   padding: '0 1.4rem 1.5rem 1.4rem ',
 }))
 
 const MainCont = styled('div')(() => ({
@@ -67,26 +73,51 @@ const RoleSection = styled('div')(() => ({
    display: 'flex',
    alignContent: 'center',
    margin: '0',
-   height: '1rem',
+   height: '1.2rem',
+   gap: '1.88rem',
 }))
 
-const Selectt = styled(Select)(() => ({
+const StyledSelect = styled(Select)(() => ({
+   // fontFamily: 'CarePro',
+
    '& .MuiSelect-select': {
       borderRadius: '5rem',
       padding: '0.2rem 0.875rem 0.2rem 1rem',
       width: '5rem',
       borderColor: '#D0D0D0',
+      '&:hover': {
+         borderColor: '#8d8c8c',
+      },
+      '&.Mui-focused': {
+         borderColor: '#0079BF',
+      },
+   },
+   '&.MuiOutlinedInput-root': {
+      borderRadius: '0.5rem',
+      fieldset: {
+         borderColor: '#D0D0D0',
+      },
+      '&:hover fieldset': {
+         borderColor: '#8d8c8c',
+      },
+      '&.Mui-focused fieldset': {
+         borderColor: '#0079BF',
+      },
    },
 }))
 
+const StyledMenuItem = styled(MenuItem)(() => ({
+   // fontFamily: 'CarePro',
+}))
+
 const ViewAllIssues = styled('p')(() => ({
-   fontFamily: 'CarePro',
+   // fontFamily: 'CarePro',
    fontSize: '1.25rem',
-   fontWeight: ' 500',
+   fontWeight: ' 600',
 }))
 
 const Total = styled('p')(() => ({
-   fontFamily: 'CarePro',
+   // fontFamily: 'CarePro',
    color: '#919191',
    fontSize: '1rem',
    fontWeight: ' 400',
@@ -94,11 +125,28 @@ const Total = styled('p')(() => ({
 
 const TotalAmount = styled('span')(() => ({
    display: 'inline-flex',
-   padding: '0rem 0.3125rem ',
+   padding: '0.1rem 0.3125rem ',
    justifyContent: 'center',
    alignItems: 'center',
    gap: '0.5rem',
    borderRadius: '1rem',
    background: 'var(--secondary-gray-2, #B2B2B2)',
    color: '#fff',
+}))
+
+const MyBtnStyled = styled(Button)(() => ({
+   // fontFamily: 'CarePro',
+   color: '#fff',
+   borderRadius: ' 1.5rem',
+   width: '5rem',
+   padding: '0.4rem 2.8rem 0.4rem 2rem',
+   textAlign: 'center',
+   fontSize: '0.91rem',
+   textTransform: 'capitalize',
+   '&:hover': {
+      backgroundColor: '#015c91',
+      '&:active': {
+         backgroundColor: '#0079BF',
+      },
+   },
 }))
