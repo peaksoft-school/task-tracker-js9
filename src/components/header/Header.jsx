@@ -38,12 +38,12 @@ export const Header = () => {
                <SearchIconWrapper>
                   <SearchIcon src={SearchIcon} alt="Search_Icon" />
                </SearchIconWrapper>
-               <StyledInputBase
-                  placeholder="Search"
-                  inputProps={{ CarePro: 'search' }}
-               />
+               <StyledInputBase placeholder="Search" />
             </Search>
-            <NotificationIcon src={NotificationIcon} alt="natifacation" />
+            <IconButton>
+               <NotificationIcon src={NotificationIcon} alt="natifacation" />
+            </IconButton>
+
             <PersonIcon src={PersonIcon} alt="person_Icon" />
          </AboutPanel>
       </GLobalContainer>
@@ -127,6 +127,7 @@ const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
 }))
 
 const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
+   fontFamily: 'CarePro',
    color: 'inherit',
    '& .MuiInputBase-input': {
       borderRadius: 8,
