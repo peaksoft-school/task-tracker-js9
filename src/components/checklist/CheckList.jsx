@@ -138,7 +138,7 @@ export const CheckList = ({ title }) => {
                   )}
                </div>
                {open ? (
-                  <div style={{ marginTop: '3rem' }}>
+                  <div>
                      <ItemContainer>
                         <Checkbox checked={false} />
                         <StyledInput
@@ -188,7 +188,7 @@ const ChecklistContainer = styled('div')({
    marginBottom: '10px',
 
    '.map-item': {
-      marginTop: '4rem',
+      // marginTop: '4rem',
    },
 })
 
@@ -214,7 +214,6 @@ const ProgressContainer = styled('div')({
 
 const CheckListHeaderContainer = styled('div')({
    width: '41.875rem',
-   height: '1.1875rem',
 })
 
 const ProgressLine = styled('div')({
@@ -284,7 +283,7 @@ const StyledIconButton = styled(IconButton)({
 })
 
 const Main = styled('div')({
-   height: '15vh',
+   // height: '15vh',
    width: '41.1875rem',
    display: 'flex',
    flexDirection: 'column',

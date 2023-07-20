@@ -1,7 +1,9 @@
+import { CheckList } from './components/checklist/CheckList'
+
 function App() {
    return (
       <div>
-         <h1>Task Trecker js-9</h1>
+         <CheckList title="ali" />
       </div>
    )
 }
