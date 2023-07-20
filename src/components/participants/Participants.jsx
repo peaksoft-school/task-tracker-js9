@@ -111,7 +111,7 @@ const StyledMenuItem = styled(MenuItem)(() => ({
 }))
 
 const ViewAllIssues = styled('p')(() => ({
-   // fontFamily: 'CarePro',
+   fontFamily: 'CarePro',
    fontSize: '1.25rem',
    fontWeight: ' 600',
 }))
