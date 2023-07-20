@@ -37,15 +37,15 @@ import { ReactComponent as TemplateIcon } from './template.svg'
 import { ReactComponent as ToolsIcon } from './tools.svg'
 import { ReactComponent as Logo } from './Logo.svg'
 import { ReactComponent as PersonIcon } from './person_icon.svg'
-import { ReactComponent as FirstMenu } from './firstMenu.svg'
-import { ReactComponent as SecondMenu } from './secondMenu.svg'
-import { ReactComponent as Ticon } from './ticon.svg'
+import { ReactComponent as BlueIcon } from './blueIcon.svg'
+import { ReactComponent as GoogleIcon } from './googleIcon.svg'
 import { ReactComponent as LayoutWhite } from './layoutwhite.svg'
+import { ReactComponent as SecondMenu } from './secondMenu.svg'
+import { ReactComponent as FirstMenu } from './firstMenu.svg'
 
 export {
    LayoutWhite,
    SecondMenu,
-   Ticon,
    FirstMenu,
    LeftIcon,
    RightIcon,
@@ -86,4 +86,6 @@ export {
    ToolsIcon,
    Logo,
    PersonIcon,
+   BlueIcon,
+   GoogleIcon,
 }
