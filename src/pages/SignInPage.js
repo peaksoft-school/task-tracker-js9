@@ -2,6 +2,7 @@ import { TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
+import { LayoutFormPage } from './LayoutFormPage'
 import { ShowIcon, HideIcon, GoogleIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
 import { ModalUi } from '../components/UI/modal/Modal'
@@ -24,7 +25,9 @@ export const SignInPage = () => {
 
    const validationSchema = Yup.object({
       email: Yup.string().email('Invalid email').required('Email is required'),
-      password: Yup.string().required('Password is required'),
+      password: Yup.string()
+         .required('Password is required')
+         .min(8, 'Password must be at least 8 characters'),
    })
 
    const handleSubmit = (values) => {
@@ -32,103 +35,109 @@ export const SignInPage = () => {
    }
 
    return (
-      <Container>
-         <div className="head">
-            <h2>Sign in</h2>
-            <AuthWithGoogle>
-               <AuthWithText>Auth with google</AuthWithText>
-               <GoogleIcon />
-            </AuthWithGoogle>
-            <p>or</p>
-         </div>
+      <LayoutFormPage>
+         <Container>
+            <div className="head">
+               <h2>Sign in</h2>
+               <AuthWithGoogle>
+                  <AuthWithText>Auth with google</AuthWithText>
+                  <GoogleIcon />
+               </AuthWithGoogle>
+               <p>or</p>
+            </div>
 
-         <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-         >
-            {({ values, errors, touched, handleChange }) => (
-               <Form>
-                  <MainWrapper>
-                     <WrapperInputs>
-                        <div className="inputBlock">
-                           <div>
-                              <EmailInput
-                                 size="small"
-                                 placeholder="example@gmail.com"
-                                 name="email"
-                                 value={values.email}
-                                 onChange={handleChange}
-                                 error={touched.email && !!errors.email}
-                              />
-                              {errors.email && touched.email && (
-                                 <ErrorText>{errors.email}</ErrorText>
-                              )}
-                           </div>
-                           <div className="password">
-                              <ContainerInputs>
-                                 <PasswordInput
+            <Formik
+               initialValues={initialValues}
+               validationSchema={validationSchema}
+               onSubmit={handleSubmit}
+            >
+               {({ values, errors, touched, handleChange }) => (
+                  <Form>
+                     <MainWrapper>
+                        <WrapperInputs>
+                           <div className="inputBlock">
+                              <div>
+                                 <EmailInput
                                     size="small"
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder="Password"
-                                    name="password"
-                                    value={values.password}
+                                    placeholder="example@gmail.com"
+                                    name="email"
+                                    value={values.email}
                                     onChange={handleChange}
-                                    error={
-                                       touched.password && !!errors.password
-                                    }
+                                    error={touched.email && !!errors.email}
                                  />
+                                 {errors.email && touched.email && (
+                                    <ErrorText>{errors.email}</ErrorText>
+                                 )}
+                              </div>
+                              <div className="password">
+                                 <ContainerInputs>
+                                    <PasswordInput
+                                       size="small"
+                                       type={showPassword ? 'text' : 'password'}
+                                       placeholder="Password"
+                                       name="password"
+                                       value={values.password}
+                                       onChange={handleChange}
+                                       error={
+                                          touched.password && !!errors.password
+                                       }
+                                    />
 
-                                 <ContainerEyes
-                                    onClick={handleTogglePasswordVisibility}
-                                 >
-                                    {showPassword ? <ShowIcon /> : <HideIcon />}
-                                 </ContainerEyes>
-                              </ContainerInputs>{' '}
-                              {errors.password && touched.password && (
-                                 <ErrorText>{errors.password}</ErrorText>
-                              )}
+                                    <ContainerEyes
+                                       onClick={handleTogglePasswordVisibility}
+                                    >
+                                       {showPassword ? (
+                                          <ShowIcon />
+                                       ) : (
+                                          <HideIcon />
+                                       )}
+                                    </ContainerEyes>
+                                 </ContainerInputs>{' '}
+                                 {errors.password && touched.password && (
+                                    <ErrorText>{errors.password}</ErrorText>
+                                 )}
+                              </div>
                            </div>
-                        </div>
-                        <ForgotPassword
-                           onClick={(event) => {
-                              event.preventDefault()
-                              handleOpenModal()
-                           }}
-                        >
-                           Forgot password?
-                        </ForgotPassword>
-                     </WrapperInputs>
+                           <ForgotPassword
+                              onClick={(event) => {
+                                 event.preventDefault()
+                                 handleOpenModal()
+                              }}
+                           >
+                              Forgot password?
+                           </ForgotPassword>
+                        </WrapperInputs>
 
-                     <LoginButton type="submit">Log In</LoginButton>
-                     <MainBlock>
-                        <p>Not a member?</p>
-                        <SignUpText> Sign up now</SignUpText>
-                     </MainBlock>
-                  </MainWrapper>
-               </Form>
+                        <LoginButton type="submit">Log In</LoginButton>
+                        <MainBlock>
+                           <p>Not a member?</p>
+                           <SignUpText> Sign up now</SignUpText>
+                        </MainBlock>
+                     </MainWrapper>
+                  </Form>
+               )}
+            </Formik>
+            {isModalOpen && (
+               <ModalUi open={isModalOpen} onClose={handleOpenModal}>
+                  <ModalStyle>
+                     <h3>Forgot Password ?</h3>
+                     <ModalSecondText>
+                        A link will be sent to your Email, follow the link sent
+                        to the mail
+                     </ModalSecondText>
+                     <ModalInput
+                        size="small"
+                        type="email"
+                        placeholder="example@gmail.com"
+                     />
+                     <WrapperModalButton>
+                        <ModalButton>send</ModalButton>
+                     </WrapperModalButton>
+                  </ModalStyle>
+               </ModalUi>
             )}
-         </Formik>
-         {isModalOpen && (
-            <ModalUi open={isModalOpen} onClose={handleOpenModal}>
-               <ModalStyle>
-                  <h3>Forgot Password ?</h3>
-                  <ModalSecondText>
-                     A link will be sent to your Email, follow the link sent to
-                     the mail
-                  </ModalSecondText>
-                  <ModalInput
-                     size="small"
-                     type="email"
-                     placeholder="example@gmail.com"
-                  />
-                  <WrapperModalButton>
-                     <ModalButton>send</ModalButton>
-                  </WrapperModalButton>
-               </ModalStyle>
-            </ModalUi>
-         )}
-      </Container>
+         </Container>
+      </LayoutFormPage>
    )
 }
 

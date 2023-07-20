@@ -2,6 +2,7 @@ import { Checkbox, TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import { LayoutFormPage } from './LayoutFormPage'
 import { GoogleIcon, HideIcon, ShowIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
 
@@ -42,133 +43,141 @@ export const SignUpPage = () => {
    }
 
    return (
-      <Container>
-         <div className="block-head">
-            <h2>Sign up</h2>
-            <AuthWithGoogle>
-               <AuthWithText>Auth with google</AuthWithText>
-               <GoogleIcon />
-            </AuthWithGoogle>
-            <TextOr>or</TextOr>
-         </div>
+      <LayoutFormPage>
+         <Container>
+            <div className="block-head">
+               <h2>Sign up</h2>
+               <AuthWithGoogle>
+                  <AuthWithText>Auth with google</AuthWithText>
+                  <GoogleIcon />
+               </AuthWithGoogle>
+               <TextOr>or</TextOr>
+            </div>
 
-         <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-         >
-            {({ values, errors, touched, handleChange }) => (
-               <Form>
-                  <WrapperInputs>
-                     <div className="input-block">
-                        <StyledInputs
-                           size="small"
-                           label="Name"
-                           type="text"
-                           placeholder="Name"
-                           name="name"
-                           value={values.name}
-                           onChange={handleChange}
-                           error={touched.name && !!errors.name}
-                           helperText={<ErrorMessage name="name" />}
-                        />
-                     </div>
-                     <div className="input-block">
-                        <StyledInputs
-                           size="small"
-                           label="Surname"
-                           type="text"
-                           placeholder="Surname"
-                           name="surname"
-                           value={values.surname}
-                           onChange={handleChange}
-                           error={touched.surname && !!errors.surname}
-                           helperText={<ErrorMessage name="surname" />}
-                        />
-                     </div>
-                     <div className="input-block">
-                        <StyledInputs
-                           size="small"
-                           label="Gmail"
-                           type="text"
-                           placeholder="example@gmail.com"
-                           name="email"
-                           value={values.email}
-                           onChange={handleChange}
-                           error={touched.email && !!errors.email}
-                           helperText={<ErrorMessage name="email" />}
-                        />
-                     </div>
-
-                     <div className="input-block">
-                        <ContainerPasswordInput>
+            <Formik
+               initialValues={initialValues}
+               validationSchema={validationSchema}
+               onSubmit={handleSubmit}
+            >
+               {({ values, errors, touched, handleChange }) => (
+                  <Form>
+                     <WrapperInputs>
+                        <div className="input-block">
                            <StyledInputs
                               size="small"
-                              label="Password"
-                              placeholder="Password"
-                              type={showPassword ? 'text' : 'password'}
-                              name="password"
-                              value={values.password}
+                              label="Name"
+                              type="text"
+                              placeholder="Name"
+                              name="name"
+                              value={values.name}
                               onChange={handleChange}
-                              error={touched.password && !!errors.password}
-                              helperText={<ErrorMessage name="password" />}
+                              error={touched.name && !!errors.name}
+                              helperText={<ErrorMessage name="name" />}
                            />
-                           <IconEyes onClick={handleTogglePasswordVisibility}>
-                              {showPassword ? <ShowIcon /> : <HideIcon />}
-                           </IconEyes>
-                        </ContainerPasswordInput>
-                     </div>
-                     <div className="input-block">
-                        <ContainerPasswordInput>
-                           <StyledInputs
-                              size="small"
-                              label="Repeat password"
-                              placeholder="Repeat password"
-                              type={showRepeatPassword ? 'text' : 'password'}
-                              name="repeatPassword"
-                              value={values.repeatPassword}
-                              onChange={handleChange}
-                              error={
-                                 touched.repeatPassword &&
-                                 !!errors.repeatPassword
-                              }
-                              helperText={
-                                 <ErrorMessage name="repeatPassword" />
-                              }
-                           />
-                           <IconEyes onClick={handleToggleRepeatPassword}>
-                              {showRepeatPassword ? <ShowIcon /> : <HideIcon />}
-                           </IconEyes>
-                        </ContainerPasswordInput>
-                     </div>
-
-                     <MainWrapper>
-                        <Checkbox
-                           name="termsAgreed"
-                           checked={values.termsAgreed}
-                           onChange={handleChange}
-                        />
-                        <div>
-                           <TextACreatingAccount>
-                              Creating an account means you’re okay with our
-                           </TextACreatingAccount>
-                           <LinkACreatingAccount>
-                              Terms of Service, Privacy Policy.
-                           </LinkACreatingAccount>
                         </div>
-                     </MainWrapper>
-                  </WrapperInputs>
-                  <WrapperButton>
-                     <StyledButton type="submit">Sign Up </StyledButton>
-                  </WrapperButton>
-               </Form>
-            )}
-         </Formik>
-         <LoginWrappwer>
-            <p>You already have an account?</p>
-            <TextInLogIn> Log in </TextInLogIn>
-         </LoginWrappwer>
-      </Container>
+                        <div className="input-block">
+                           <StyledInputs
+                              size="small"
+                              label="Surname"
+                              type="text"
+                              placeholder="Surname"
+                              name="surname"
+                              value={values.surname}
+                              onChange={handleChange}
+                              error={touched.surname && !!errors.surname}
+                              helperText={<ErrorMessage name="surname" />}
+                           />
+                        </div>
+                        <div className="input-block">
+                           <StyledInputs
+                              size="small"
+                              label="Gmail"
+                              type="text"
+                              placeholder="example@gmail.com"
+                              name="email"
+                              value={values.email}
+                              onChange={handleChange}
+                              error={touched.email && !!errors.email}
+                              helperText={<ErrorMessage name="email" />}
+                           />
+                        </div>
+
+                        <div className="input-block">
+                           <ContainerPasswordInput>
+                              <StyledInputs
+                                 size="small"
+                                 label="Password"
+                                 placeholder="Password"
+                                 type={showPassword ? 'text' : 'password'}
+                                 name="password"
+                                 value={values.password}
+                                 onChange={handleChange}
+                                 error={touched.password && !!errors.password}
+                                 helperText={<ErrorMessage name="password" />}
+                              />
+                              <IconEyes
+                                 onClick={handleTogglePasswordVisibility}
+                              >
+                                 {showPassword ? <ShowIcon /> : <HideIcon />}
+                              </IconEyes>
+                           </ContainerPasswordInput>
+                        </div>
+                        <div className="input-block">
+                           <ContainerPasswordInput>
+                              <StyledInputs
+                                 size="small"
+                                 label="Repeat password"
+                                 placeholder="Repeat password"
+                                 type={showRepeatPassword ? 'text' : 'password'}
+                                 name="repeatPassword"
+                                 value={values.repeatPassword}
+                                 onChange={handleChange}
+                                 error={
+                                    touched.repeatPassword &&
+                                    !!errors.repeatPassword
+                                 }
+                                 helperText={
+                                    <ErrorMessage name="repeatPassword" />
+                                 }
+                              />
+                              <IconEyes onClick={handleToggleRepeatPassword}>
+                                 {showRepeatPassword ? (
+                                    <ShowIcon />
+                                 ) : (
+                                    <HideIcon />
+                                 )}
+                              </IconEyes>
+                           </ContainerPasswordInput>
+                        </div>
+
+                        <MainWrapper>
+                           <Checkbox
+                              name="termsAgreed"
+                              checked={values.termsAgreed}
+                              onChange={handleChange}
+                           />
+                           <div>
+                              <TextACreatingAccount>
+                                 Creating an account means you’re okay with our
+                              </TextACreatingAccount>
+                              <LinkACreatingAccount>
+                                 Terms of Service, Privacy Policy.
+                              </LinkACreatingAccount>
+                           </div>
+                        </MainWrapper>
+                     </WrapperInputs>
+                     <WrapperButton>
+                        <StyledButton type="submit">Sign Up </StyledButton>
+                     </WrapperButton>
+                  </Form>
+               )}
+            </Formik>
+            <LoginWrappwer>
+               <p>You already have an account?</p>
+               <TextInLogIn> Log in </TextInLogIn>
+            </LoginWrappwer>
+         </Container>
+      </LayoutFormPage>
    )
 }
 
