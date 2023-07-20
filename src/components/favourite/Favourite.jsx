@@ -3,34 +3,37 @@ import { styled, IconButton } from '@mui/material'
 import { StarFilledIcon, StarIcon } from '../../assets/icons'
 
 export const Favourite = ({ favourite }) => {
-   const [open, setOpen] = useState(favourite.map(() => false))
+   const [favouriteData, setFavouriteData] = useState(favourite)
 
-   const handleStarClick = (index) => {
-      setOpen((prevOpen) => {
-         const newOpen = [...prevOpen]
-         newOpen[index] = !newOpen[index]
-         return newOpen
-      })
+   const handleStarClick = (id) => {
+      setFavouriteData((prevData) =>
+         prevData.map((item) =>
+            item.id === id ? { ...item, favourite: !item.favourite } : item
+         )
+      )
    }
+
+   const getIcon = (isFavourite) =>
+      isFavourite ? <StarFilledIcon /> : <StarIcon />
 
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
-         {favourite.map((item, index) => (
+         {favouriteData.map((item) => (
             <FavouriteBox key={item.id}>
                {item.image && (
                   <ImageContainer>
                      <StyledImage src={item.image} alt="favourites" />
                   </ImageContainer>
                )}
-               <TextContainer marginLeft={index === 2 ? '0rem' : '1rem'}>
+               <TextContainer>
                   <div>
-                     <p className="title-p">{item.title}</p>
-                     <p className="text-p">{item.text}</p>
+                     <StyledTitle>{item.title}</StyledTitle>
+                     <StyledText>{item.text}</StyledText>
                   </div>
                </TextContainer>
-               <IconButton onClick={() => handleStarClick(index)}>
-                  {open[index] ? <StarFilledIcon /> : <StarIcon />}
+               <IconButton onClick={() => handleStarClick(item.id)}>
+                  {getIcon(item.favourite)}
                </IconButton>
             </FavouriteBox>
          ))}
@@ -62,21 +65,8 @@ const FavouriteBox = styled('div')({
    marginBottom: '1rem',
 })
 
-const TextContainer = styled('div')(({ marginLeft }) => ({
+const TextContainer = styled('div')(() => ({
    flex: 1,
-   marginLeft,
-   '.title-p': {
-      color: '#000',
-      fontFamily: 'CarePro',
-      fontSize: '1rem',
-      fontWeight: '400',
-   },
-   '.text-p': {
-      color: '#919191',
-      fontFamily: 'CarePro',
-      fontSize: '0.875rem',
-      fontWeight: '400',
-   },
 }))
 
 const FavouriteText = styled('p')({
@@ -87,4 +77,20 @@ const FavouriteText = styled('p')({
    display: 'flex',
    justifyContent: 'center',
    marginBottom: '1rem',
+})
+
+const StyledTitle = styled('p')({
+   color: '#000',
+   fontFamily: 'CarePro',
+   fontSize: '1rem',
+   fontWeight: '400',
+   marginLeft: '0.5rem',
+})
+
+const StyledText = styled('p')({
+   color: '#919191',
+   fontFamily: 'CarePro',
+   fontSize: '0.875rem',
+   fontWeight: '400',
+   marginLeft: '0.5rem',
 })
