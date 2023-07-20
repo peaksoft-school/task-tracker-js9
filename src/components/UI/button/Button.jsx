@@ -1,14 +1,21 @@
 import React from 'react'
 import { Button as ReusebleButton, styled } from '@mui/material'
 
-export const Button = ({ variant, onClick, children, ...rest }) => {
+export const Button = ({
+   variant,
+   startIcon,
+   icon,
+   onClick,
+   children,
+   ...rest
+}) => {
    return (
       <ButtonStyle
          type="submit"
          variant={variant}
          onClick={onClick}
-         startIcon
-         icon
+         startIcon={startIcon}
+         icon={icon}
          {...rest}
       >
          {children}

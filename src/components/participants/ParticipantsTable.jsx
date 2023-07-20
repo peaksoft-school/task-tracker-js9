@@ -62,7 +62,7 @@ export const ParticipantsTable = ({ onDelete }) => {
 
    return (
       <Container>
-         <TableMui key={rows.id} column={column} rows={rows} />
+         <TableMui column={column} rows={rows} />
       </Container>
    )
 }

@@ -21,7 +21,8 @@ export default function TableMui({ column, rows }) {
                <TableRow>
                   {column.map((column) => (
                      <StyledTableCell
-                        key={`header-${column.key}`}
+                        // key={`header-${column.key}`}
+                        key={column.id}
                         align={column.align}
                         style={
                            column.minWidth ? { minWidth: column.minWidth } : {}
