@@ -16,6 +16,10 @@ export const Favourite = ({ favourite }) => {
    const getIcon = (isFavourite) =>
       isFavourite ? <StarFilledIcon /> : <StarIcon />
 
+   const returnIdHander = (id) => {
+      console.log(id)
+   }
+
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
@@ -23,7 +27,10 @@ export const Favourite = ({ favourite }) => {
             <p>Массив пусто</p>
          ) : (
             favouriteData.map((item) => (
-               <FavouriteBox key={item.id}>
+               <FavouriteBox
+                  onClick={() => returnIdHander(item.id)}
+                  key={item.id}
+               >
                   {item.image && (
                      <ImageContainer>
                         <StyledImage src={item.image} alt="favourites" />
@@ -67,6 +74,10 @@ const FavouriteBox = styled('div')({
    alignItems: 'center',
    justifyContent: 'space-between',
    marginBottom: '1rem',
+   '&:hover': {
+      backgroundColor: '#F2F2F2',
+      cursor: 'pointer',
+   },
 })
 
 const TextContainer = styled('div')(() => ({
