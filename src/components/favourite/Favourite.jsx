@@ -19,24 +19,28 @@ export const Favourite = ({ favourite }) => {
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
-         {favouriteData.map((item) => (
-            <FavouriteBox key={item.id}>
-               {item.image && (
-                  <ImageContainer>
-                     <StyledImage src={item.image} alt="favourites" />
-                  </ImageContainer>
-               )}
-               <TextContainer>
-                  <div>
-                     <StyledTitle>{item.title}</StyledTitle>
-                     <StyledText>{item.text}</StyledText>
-                  </div>
-               </TextContainer>
-               <IconButton onClick={() => handleStarClick(item.id)}>
-                  {getIcon(item.favourite)}
-               </IconButton>
-            </FavouriteBox>
-         ))}
+         {favouriteData.length === 0 ? (
+            <p>Массив пусто</p>
+         ) : (
+            favouriteData.map((item) => (
+               <FavouriteBox key={item.id}>
+                  {item.image && (
+                     <ImageContainer>
+                        <StyledImage src={item.image} alt="favourites" />
+                     </ImageContainer>
+                  )}
+                  <TextContainer>
+                     <div>
+                        <StyledTitle>{item.title}</StyledTitle>
+                        <StyledText>{item.text}</StyledText>
+                     </div>
+                  </TextContainer>
+                  <IconButton onClick={() => handleStarClick(item.id)}>
+                     {getIcon(item.favourite)}
+                  </IconButton>
+               </FavouriteBox>
+            ))
+         )}
       </Container>
    )
 }
