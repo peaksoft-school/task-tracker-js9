@@ -11,7 +11,9 @@ export const Participants = ({ onDelete }) => {
    const handleChange = (event) => {
       setRole(event.target.value)
    }
+
    const dataLength = 254
+
    return (
       <BodyContainer>
          <GlobalContainer>
@@ -43,7 +45,6 @@ export const Participants = ({ onDelete }) => {
 
 const BodyContainer = styled('div')(() => ({
    padding: '0.75rem 1.25rem 0rem 1.25rem',
-
    backgroundColor: '#F0F0F0',
    width: '100%',
    height: '89vh',
@@ -55,6 +56,7 @@ const GlobalContainer = styled('div')(() => ({
    width: '100%',
    minHeight: ' 10vh',
    borderRadius: ' 0.5rem',
+   fontFamily: 'CarePro',
 }))
 
 const HeaderContainer = styled('div')(() => ({
@@ -111,13 +113,11 @@ const StyledMenuItem = styled(MenuItem)(() => ({
 }))
 
 const ViewAllIssues = styled('p')(() => ({
-   fontFamily: 'CarePro',
    fontSize: '1.25rem',
    fontWeight: ' 600',
 }))
 
 const Total = styled('p')(() => ({
-   fontFamily: 'CarePro',
    color: '#919191',
    fontSize: '1rem',
    fontWeight: ' 400',
