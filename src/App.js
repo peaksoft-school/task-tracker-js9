@@ -1,10 +1,7 @@
-import { Favourite } from './components/favourite/Favourite'
-import { favourites } from './utils/constants/favourites'
-
 function App() {
    return (
       <div>
-         <Favourite favourite={favourites} />
+         <h1>Task Treacker js-9</h1>
       </div>
    )
 }
