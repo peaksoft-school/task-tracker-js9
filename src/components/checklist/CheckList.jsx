@@ -20,16 +20,17 @@ export const CheckList = ({ title }) => {
    const [open, setOpen] = useState(false)
    const [editId, setEditId] = useState(false)
    const [editTitle, setEditTitle] = useState('')
-   const [edit, serEdit] = useState([])
+   const [edit, setEdit] = useState([])
    const [state, setState] = useState(false)
    const maxTaskCount = 5
+   const isAddDisabled = taskCount >= maxTaskCount
 
    const handleNewItemChange = (e) => {
       setNewItemValue(e.target.value)
    }
 
    const addItem = () => {
-      if (!newItemValue.trim() || taskCount >= maxTaskCount) {
+      if (!newItemValue.trim() || isAddDisabled) {
          return
       }
 
@@ -77,7 +78,6 @@ export const CheckList = ({ title }) => {
       if (items.length === 0) {
          return 0
       }
-
       const completedCount = items.filter((item) => item.completed).length
       return Math.floor((completedCount / items.length) * 100)
    }
@@ -92,9 +92,30 @@ export const CheckList = ({ title }) => {
       const data = {
          title: editTitle,
       }
-      serEdit([...edit, data])
+      setEdit([...edit, data])
       setEditId(false)
    }
+
+   const [showModal, setShowModal] = useState(false)
+   const [itemToDeleteId, setItemToDeleteId] = useState(null)
+
+   const openModal = (id) => {
+      setItemToDeleteId(id)
+      setShowModal(true)
+   }
+
+   const closeModal = () => {
+      setShowModal(false)
+      setItemToDeleteId(null)
+   }
+
+   const handleDeleteItem = () => {
+      if (itemToDeleteId !== null) {
+         removeItem(itemToDeleteId)
+         closeModal()
+      }
+   }
+
    return (
       <ChecklistContainer>
          <CheckListHeaderContainer>
@@ -106,13 +127,15 @@ export const CheckList = ({ title }) => {
 
                   {editId === true ? (
                      <div>
-                        <input
+                        <EditInput
                            type="text"
                            value={editTitle}
                            onChange={(e) => setEditTitle(e.target.value)}
                         />
-                        <Button onClick={saveHandler}>Save</Button>
-                        <Button onClick={() => setEditId(false)}>Cancel</Button>
+                        <ButtonSave onClick={saveHandler}>Save</ButtonSave>
+                        <ButtonCancel onClick={() => setEditId(false)}>
+                           Cancel
+                        </ButtonCancel>
                      </div>
                   ) : (
                      <>
@@ -122,7 +145,7 @@ export const CheckList = ({ title }) => {
                         {state ? (
                            <Title>
                               {edit.map((item) => (
-                                 <Title>{item.title}</Title>
+                                 <Title key={item.id}>{item.title}</Title>
                               ))}
                            </Title>
                         ) : (
@@ -132,7 +155,7 @@ export const CheckList = ({ title }) => {
                   )}
                </CheckListBox>
                <DeleteBox>
-                  <IconButton>
+                  <IconButton onClick={() => openModal(title)}>
                      <DeleteIcon />
                   </IconButton>
                   <p>Delete</p>
@@ -154,32 +177,23 @@ export const CheckList = ({ title }) => {
          {showInputs ? (
             <Main>
                <div>
-                  {isTaskListVisible && (
-                     <div>
-                        {items.map((item) => (
-                           <ItemContainer
-                              key={item.id}
-                              completed={item.completed}
-                           >
-                              <Checkbox
-                                 checked={item.completed}
-                                 onChange={() => toggleCompleted(item.id)}
-                              />
-                              <ItemText>{item.value}</ItemText>
-                              <StyledIconButton
-                                 onClick={() => removeItem(item.id)}
-                              >
-                                 <DeleteIcon />
-                              </StyledIconButton>
-                           </ItemContainer>
-                        ))}
-                     </div>
-                  )}
+                  {isTaskListVisible &&
+                     items.map((item) => (
+                        <ItemContainer key={item.id} completed={item.completed}>
+                           <Checkbox
+                              checked={item.completed}
+                              onChange={() => toggleCompleted(item.id)}
+                           />
+                           <ItemText>{item.value}</ItemText>
+                           <StyledIconButton onClick={() => openModal(item.id)}>
+                              <DeleteIcon />
+                           </StyledIconButton>
+                        </ItemContainer>
+                     ))}
                </div>
                {open ? (
                   <div>
                      <ItemContainer>
-                        <Checkbox checked={false} />
                         <StyledInput
                            type="text"
                            value={newItemValue}
@@ -190,7 +204,9 @@ export const CheckList = ({ title }) => {
                         <CancelButton onClick={toggleInputs}>
                            Cancel
                         </CancelButton>
-                        <AddButton onClick={addItem}>Add</AddButton>
+                        <AddButton onClick={addItem} disabled={isAddDisabled}>
+                           Add
+                        </AddButton>
                      </ActionButtonsContainer>
                   </div>
                ) : (
@@ -205,9 +221,121 @@ export const CheckList = ({ title }) => {
                )}
             </Main>
          ) : null}
+
+         {showModal && (
+            <ModalContainer>
+               <ModalContent>
+                  <ModalText>Are you sure you want to delete?</ModalText>
+                  <ModalButtons>
+                     <ModalButtonAdd onClick={handleDeleteItem}>
+                        Yes
+                     </ModalButtonAdd>
+                     <ModalButtonCancel onClick={closeModal}>
+                        Cancel
+                     </ModalButtonCancel>
+                  </ModalButtons>
+               </ModalContent>
+            </ModalContainer>
+         )}
       </ChecklistContainer>
    )
 }
+
+const ModalContainer = styled('div')({
+   position: 'fixed',
+   top: 0,
+   left: 0,
+   width: '100%',
+   height: '100%',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: 'rgba(62, 60, 60, 0.5)',
+})
+
+const ModalContent = styled('div')({
+   backgroundColor: '#fff',
+   padding: '1rem',
+   borderRadius: '5px',
+   width: '30rem',
+   height: '20vh',
+})
+
+const ModalText = styled('p')({
+   fontSize: '1rem',
+   fontWeight: 'bold',
+   marginBottom: '1rem',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+})
+
+const EditInput = styled('input')({
+   width: '6rem',
+   height: '1.5rem',
+})
+
+const ModalButtons = styled('div')({
+   display: 'flex',
+   justifyContent: 'center',
+   gap: '1rem',
+})
+
+const ButtonSave = styled(Button)({
+   width: '3rem',
+   height: '1.5rem',
+   fontSize: '0.6rem',
+   marginLeft: '1rem',
+   marginRight: '0.5rem',
+   paddingTop: '0.3rem',
+   paddingRight: '1.5rem',
+   '&:hover': {
+      backgroundColor: '#015C91',
+      '&:active': {
+         backgroundColor: '#0079BF',
+      },
+   },
+})
+
+const ButtonCancel = styled(Button)({
+   width: '3rem',
+   height: '1.5rem',
+   fontSize: '0.6rem',
+   paddingTop: '0.3rem',
+   paddingRight: '1.3rem',
+   '&:hover': {
+      backgroundColor: '#015C91',
+      '&:active': {
+         backgroundColor: '#0079BF',
+      },
+   },
+})
+
+const ModalButtonAdd = styled(Button)({
+   width: '6rem',
+   height: '3rem',
+   paddingTop: '0.8rem',
+   paddingRight: '1.6rem',
+   '&:hover': {
+      backgroundColor: '#015C91',
+      '&:active': {
+         backgroundColor: '#0079BF',
+      },
+   },
+})
+
+const ModalButtonCancel = styled(Button)({
+   width: '6rem',
+   height: '3rem',
+   paddingTop: '0.8rem',
+   paddingRight: '1.6rem',
+   '&:hover': {
+      backgroundColor: '#015C91',
+      '&:active': {
+         backgroundColor: '#0079BF',
+      },
+   },
+})
 
 const StyledInput = styled(Input)({
    input: {
@@ -319,7 +447,6 @@ const StyledIconButton = styled(IconButton)({
 })
 
 const Main = styled('div')({
-   // height: '15vh',
    width: '41.1875rem',
    display: 'flex',
    flexDirection: 'column',
@@ -354,12 +481,12 @@ const AddButton = styled(Button)({
       },
    },
 })
+
 const CancelButton = styled(Button)({
    fontFamily: 'CarePro',
    color: '#919191',
    borderRadius: ' 1.5rem',
    height: '2.1rem',
-
    width: '5.41313rem',
    padding: '0.275rem 1rem 0.375rem 0.5rem ',
    backgroundColor: '#F0F0F0',
@@ -369,7 +496,6 @@ const CancelButton = styled(Button)({
    '&:hover': {
       backgroundColor: '#cecdcd',
       color: '#fff',
-
       '&:active': {
          backgroundColor: '#F0F0F0',
       },
@@ -388,7 +514,6 @@ const AddnewButton = styled(Button)({
    background: 'none',
    border: '0.0625rem solid #F2F2F2',
    display: 'inline-block',
-
    fontSize: '0.91rem',
    textAlign: 'center',
 })
