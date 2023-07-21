@@ -18,6 +18,10 @@ export const CheckList = ({ title }) => {
    const [taskCount, setTaskCount] = useState(0)
    const [isTaskListVisible, setTaskListVisible] = useState(false)
    const [open, setOpen] = useState(false)
+   const [editId, setEditId] = useState(false)
+   const [editTitle, setEditTitle] = useState('')
+   const [edit, serEdit] = useState([])
+   const [state, setState] = useState(false)
    const maxTaskCount = 5
 
    const handleNewItemChange = (e) => {
@@ -25,7 +29,7 @@ export const CheckList = ({ title }) => {
    }
 
    const addItem = () => {
-      if (taskCount >= maxTaskCount) {
+      if (!newItemValue.trim() || taskCount >= maxTaskCount) {
          return
       }
 
@@ -51,7 +55,6 @@ export const CheckList = ({ title }) => {
    const cancelAddItem = () => {
       setNewItemValue('')
       setShowInputs((prev) => !prev)
-      // setOpen(false)
    }
 
    const toggleCompleted = (id) => {
@@ -79,6 +82,19 @@ export const CheckList = ({ title }) => {
       return Math.floor((completedCount / items.length) * 100)
    }
 
+   const editHandler = (title) => {
+      setEditTitle(title)
+      setEditId(true)
+      setState(true)
+   }
+
+   const saveHandler = () => {
+      const data = {
+         title: editTitle,
+      }
+      serEdit([...edit, data])
+      setEditId(false)
+   }
    return (
       <ChecklistContainer>
          <CheckListHeaderContainer>
@@ -87,10 +103,33 @@ export const CheckList = ({ title }) => {
                   <StyledIconButton onClick={cancelAddItem}>
                      {showInputs ? <DownIcon /> : <UpIcon />}
                   </StyledIconButton>
-                  <StyledIconButton>
-                     <EditIcon />
-                  </StyledIconButton>
-                  <Title>{title}</Title>
+
+                  {editId === true ? (
+                     <div>
+                        <input
+                           type="text"
+                           value={editTitle}
+                           onChange={(e) => setEditTitle(e.target.value)}
+                        />
+                        <Button onClick={saveHandler}>Save</Button>
+                        <Button onClick={() => setEditId(false)}>Cancel</Button>
+                     </div>
+                  ) : (
+                     <>
+                        <StyledIconButton>
+                           <EditIcon onClick={() => editHandler(title)} />
+                        </StyledIconButton>
+                        {state ? (
+                           <Title>
+                              {edit.map((item) => (
+                                 <Title>{item.title}</Title>
+                              ))}
+                           </Title>
+                        ) : (
+                           <Title>{title}</Title>
+                        )}
+                     </>
+                  )}
                </CheckListBox>
                <DeleteBox>
                   <IconButton>
@@ -116,7 +155,7 @@ export const CheckList = ({ title }) => {
             <Main>
                <div>
                   {isTaskListVisible && (
-                     <div className="map-item">
+                     <div>
                         {items.map((item) => (
                            <ItemContainer
                               key={item.id}
@@ -159,7 +198,7 @@ export const CheckList = ({ title }) => {
                      <AddnewButton onClick={toggleInputs}>
                         <PlusIconContainer>
                            <PlusIcon />
-                           <p className="button-p">Add an items</p>
+                           <p>Add an item</p>
                         </PlusIconContainer>
                      </AddnewButton>
                   </ButtonBox>
@@ -178,6 +217,7 @@ const StyledInput = styled(Input)({
       borderRadius: '5rem',
       padding: '1.3rem 1.3rem 5.5rem',
    },
+   marginTop: '0.5rem',
 })
 
 const ChecklistContainer = styled('div')({
@@ -186,10 +226,6 @@ const ChecklistContainer = styled('div')({
    borderRadius: '5px',
    padding: '10px',
    marginBottom: '10px',
-
-   '.map-item': {
-      // marginTop: '4rem',
-   },
 })
 
 const ChecklistHeader = styled('div')({
@@ -366,4 +402,5 @@ const PlusIconContainer = styled('div')({
 const ButtonBox = styled('div')({
    display: 'flex',
    justifyContent: 'end',
+   marginTop: '0.5rem',
 })
