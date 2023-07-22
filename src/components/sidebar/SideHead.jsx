@@ -16,7 +16,10 @@ import {
    LeftIcon,
    PlusIcon,
    TemplateIcon,
+   ToolsIcon,
 } from '../../assets/icons'
+
+import { ModalSideBar } from './ModalSideBar'
 
 export const SideHead = ({
    open,
@@ -24,36 +27,60 @@ export const SideHead = ({
    activeItem,
    handleItemClick,
    menuItems,
+   handleDrawerToggle,
 }) => {
    const [toggleButton, setToggleButton] = useState(false)
+   const [showModal, setShowModal] = useState(false)
+   const [editInput, setEditInput] = useState(() =>
+      data.map((item) => item.name)
+   )
+   const etidChangeInput = (e) => {
+      setEditInput(e.target.value)
+   }
+
+   const openCloseModalHandler = (text, icon) => {
+      if (text === 'Settings' || icon === <ToolsIcon />) {
+         setShowModal(!showModal)
+         setEditInput(editInput)
+      }
+   }
+
    const toggleButtonHadler = () => {
       setToggleButton(!toggleButton)
    }
+
    return (
       <div>
          <List>
-            <ListItem disablePadding>
-               <ListItemButton>
-                  <StyleListItemIcon>
-                     {open ? (
-                        <LeftIcon fill="3C3C3C" />
-                     ) : (
-                        <AvatarStyledHeader
-                           sx={{ bgcolor: '#0079BF' }}
-                           alt="photo"
-                        >
-                           <p>
-                              <p style={{ fontSize: '1.3rem' }}>
-                                 {data.name[0]}
-                              </p>
-                           </p>
-                        </AvatarStyledHeader>
-                     )}
-                  </StyleListItemIcon>
+            {data.map((item) => {
+               return (
+                  <ListItem disablePadding>
+                     <ListItemButton>
+                        <StyleListItemIcon>
+                           {open ? (
+                              <LeftIcon
+                                 onClick={handleDrawerToggle}
+                                 fill="3C3C3C"
+                              />
+                           ) : (
+                              <AvatarStyledHeader
+                                 sx={{ bgcolor: '#0079BF' }}
+                                 alt="photo"
+                              >
+                                 <p>
+                                    <p style={{ fontSize: '1.3rem' }}>
+                                       {item.name[0]}
+                                    </p>
+                                 </p>
+                              </AvatarStyledHeader>
+                           )}
+                        </StyleListItemIcon>
 
-                  <ListItemText primary={data.name} />
-               </ListItemButton>
-            </ListItem>
+                        <ListItemText primary={item.name} />
+                     </ListItemButton>
+                  </ListItem>
+               )
+            })}
             <List />
             <DividerStyle open={open} />
             <List>
@@ -117,6 +144,9 @@ export const SideHead = ({
                      <ListItemText
                         primary={
                            <MenuItemStyles
+                              onClick={() =>
+                                 openCloseModalHandler(menuItems.text)
+                              }
                               style={{
                                  color:
                                     activeItem === menuItems.text
@@ -135,6 +165,12 @@ export const SideHead = ({
                </ActiveListItem>
             ))}
          </List>
+         <ModalSideBar
+            showModal={showModal}
+            setShowModal={setShowModal}
+            editInput={editInput}
+            etidChangeInput={etidChangeInput}
+         />
       </div>
    )
 }

@@ -19,12 +19,12 @@ import {
 } from '../../assets/icons'
 
 export function Sidenav({ data, dataLength, workspacedata }) {
-   const [open, setOpen] = useState(false)
+   const [openDrawer, setOpenDrawer] = useState(false)
    const [activeItem, setActiveItem] = useState(null)
    const [toggle, setToggle] = useState(false)
 
    const handleDrawerToggle = () => {
-      setOpen((prev) => !prev)
+      setOpenDrawer((prev) => !prev)
       setToggle((prev) => !prev)
    }
 
@@ -67,33 +67,37 @@ export function Sidenav({ data, dataLength, workspacedata }) {
       {
          text: 'Board',
          icon: <TemplateIcon fill="#919191" />,
+         id: 1,
       },
       {
          text: 'Participants',
          icon: <PeopleIcon fill="#919191" />,
          iconn: <PlusIcon fill="#919191" />,
+         id: 2,
       },
       {
          text: 'Settings',
          icon: <ToolsIcon fill="#919191" />,
+         id: 3,
       },
    ]
    return (
       <div style={{ display: 'flex' }}>
          <Box sx={{ zIndex: '0' }}>
-            <Drawer variant="permanent" open={open}>
+            <Drawer variant="permanent" open={openDrawer}>
                <SideHead
                   handleItemClick={handleItemClick}
-                  open={open}
+                  handleDrawerToggle={handleDrawerToggle}
+                  open={openDrawer}
                   data={data}
                   activeItem={activeItem}
                   menuItems={menuItems}
                />
-               <DividerStyle open={open} />
+               <DividerStyle open={openDrawer} />
                <SideMain
                   workspacedata={workspacedata}
                   menuItemsWorspace={menuItemsWorspace}
-                  open={open}
+                  open={openDrawer}
                   activeItem={activeItem}
                   handleItemClick={handleItemClick}
                />
@@ -174,5 +178,5 @@ const Drawer = styled(MuiDrawer, {
 const DividerStyle = styled(Divider)(({ open }) => ({
    width: open ? '75%' : '35%',
    marginLeft: '1.8rem',
-   // borderBottom: '0.51px solid #E0E0E0',
+   borderBottom: '2px solid #E0E0E0',
 }))

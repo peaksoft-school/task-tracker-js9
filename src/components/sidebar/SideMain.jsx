@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {
    Avatar,
-   Divider,
    List,
    ListItem,
    ListItemButton,
@@ -32,7 +31,6 @@ export const SideMain = ({
    }
    return (
       <div>
-         <DividerStyle open={open} />
          <List>
             <ActiveListItem
                open={open}
@@ -64,26 +62,33 @@ export const SideMain = ({
                   .slice(0, showMore ? workspacedata.length : 6)
                   .map((item) => (
                      <>
-                        <ListItem>
-                           <StyleListItemIcon key={item.name}>
-                              <StyledAvatar
-                                 sx={{ bgcolor: '#2CB107' }}
-                                 alt="photo"
-                              >
-                                 <span style={{ fontSize: '1.3rem' }}>
-                                    {item.name[0]}
-                                 </span>
-                              </StyledAvatar>
-                              <ListItemTextStyled>
-                                 {item.name}{' '}
-                              </ListItemTextStyled>
-                              <DownIcon
-                                 onClick={() => toggleButtonHadler(item.id)}
-                                 fill="3C3C3C"
-                                 style={{ marginLeft: '4.1rem' }}
-                              />
-                           </StyleListItemIcon>
-                        </ListItem>
+                        <Accounting>
+                           <AccountingListItemIcon key={item.name}>
+                              <StyledForSpace>
+                                 <StyledAvatar
+                                    sx={{ bgcolor: '#2CB107' }}
+                                    alt="photo"
+                                 >
+                                    <span style={{ fontSize: '1.3rem' }}>
+                                       {item.name[0]}
+                                    </span>
+                                 </StyledAvatar>
+                                 <StyledAccountingText>
+                                    {item.name}
+                                 </StyledAccountingText>
+                              </StyledForSpace>
+                              <StyledForSpaceSecond>
+                                 <DownIcon
+                                    onClick={() => toggleButtonHadler(item.id)}
+                                    fill="3C3C3C"
+                                    style={{
+                                       marginLeft: '4.1rem',
+                                       cursor: 'pointer',
+                                    }}
+                                 />
+                              </StyledForSpaceSecond>
+                           </AccountingListItemIcon>
+                        </Accounting>
                         {workspaceId === item.id ? (
                            <ListStyled>
                               {menuItemsWorspace.map((item) => (
@@ -95,14 +100,16 @@ export const SideMain = ({
                                     >
                                        {item.icon}
                                     </StyleListItemIconPlus>
+
                                     <StyledListItemText>
                                        {item.text}
                                     </StyledListItemText>
-                                    <StyleListItemIconPlus
-                                       sx={{ marginRight: '0.8rem' }}
+                                    <ListItemIcon
+                                       fill="3C3C3C"
+                                       sx={{ marginLeft: '5.8rem' }}
                                     >
                                        {item.iconn}
-                                    </StyleListItemIconPlus>
+                                    </ListItemIcon>
                                  </ListItemStyle>
                               ))}
                            </ListStyled>
@@ -142,12 +149,6 @@ const ActiveListItem = styled(ListItem)(({ open }) => ({
    },
 }))
 
-const DividerStyle = styled(Divider)(({ open }) => ({
-   width: open ? '75%' : '35%',
-   marginLeft: '1.8rem',
-   borderBottom: '2px solid #E0E0E0',
-}))
-
 const ListSummaryStyle = styled(ListItem)(() => ({
    display: 'flex',
    flexDirection: 'column',
@@ -161,7 +162,17 @@ const ListSummaryStyle = styled(ListItem)(() => ({
 const ListStyled = styled(ListItem)(() => ({
    display: 'flex',
    flexDirection: 'column',
-   marginLeft: '0.5rem',
+   marginRight: '0.4rem',
+   cursor: 'pointer',
+}))
+const StyledForSpace = styled('div')(() => ({
+   display: 'flex',
+   gap: '1.9rem',
+   width: '5.6rem',
+   justifyContent: 'space-between',
+}))
+const StyledForSpaceSecond = styled('div')(() => ({
+   marginTop: '0.4rem',
 }))
 
 const StyleListItemIcon = styled(ListItemIcon)(() => ({
@@ -171,11 +182,18 @@ const StyleListItemIcon = styled(ListItemIcon)(() => ({
       marginLeft: '1.2rem',
    },
 }))
-const ListItemTextStyled = styled(ListItemText)(() => ({
-   '&.MuiListItemText-root ': {
-      minWidth: '3.4rem',
-      marginLeft: '1.7rem',
-      color: '#111',
+const AccountingListItemIcon = styled(ListItemIcon)(() => ({
+   '&.MuiListItemIcon-root ': {
+      display: 'flex',
+      justifyContent: 'space-around',
+   },
+}))
+const Accounting = styled(ListItem)(() => ({
+   '&.MuiListItem-root ': {
+      display: 'flex',
+      width: '100%',
+      marginLeft: '2.2rem',
+      cursor: 'default',
    },
 }))
 const StyledListItemText = styled(ListItemText)(() => ({
@@ -184,6 +202,9 @@ const StyledListItemText = styled(ListItemText)(() => ({
       color: '#919191',
       fontWeight: '400',
    },
+}))
+const StyledAccountingText = styled(ListItemText)(() => ({
+   color: '#3C3C3C',
 }))
 const ListItemStyle = styled(ListItem)(() => ({
    '&.MuiListItem-root ,MuiListItem-root MuiListItem-gutters MuiListItem-padding css-bjvhst-MuiListItem-root':
