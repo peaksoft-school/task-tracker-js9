@@ -16,20 +16,21 @@ export const Favourite = ({ favourite }) => {
    const getIcon = (isFavourite) =>
       isFavourite ? <StarFilledIcon /> : <StarIcon />
 
-   const returnIdHander = (id) => {
-      console.log(id)
+   const returnIdHandler = (id) => {
+      console.log('Clicked item ID:', id)
    }
 
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
          {favouriteData.length === 0 ? (
-            <p>Массив пусто</p>
+            <p>Favourite empty</p>
          ) : (
             favouriteData.map((item) => (
                <FavouriteBox
-                  onClick={() => returnIdHander(item.id)}
+                  onClick={() => returnIdHandler(item.id)}
                   key={item.id}
+                  hoverColor="#F2F2F2"
                >
                   {item.image && (
                      <ImageContainer>
@@ -69,16 +70,16 @@ const StyledImage = styled('img')({
    borderRadius: '0.5rem',
 })
 
-const FavouriteBox = styled('div')({
+const FavouriteBox = styled('div')(({ hoverColor }) => ({
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'space-between',
    marginBottom: '1rem',
    '&:hover': {
-      backgroundColor: '#F2F2F2',
+      backgroundColor: hoverColor || 'transparent',
       cursor: 'pointer',
    },
-})
+}))
 
 const TextContainer = styled('div')(() => ({
    flex: 1,
