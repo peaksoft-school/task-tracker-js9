@@ -9,13 +9,14 @@ import Paper from '@mui/material/Paper'
 
 export default function TableMui({ column, rows }) {
    return (
-      <TableContainer style={{ width: '85rem' }} component={Paper}>
-         <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <TableContainer
+         style={{ width: '100%', padding: '1rem 2rem 0rem 2rem' }}
+         component={Paper}
+      >
+         <Table aria-label="customized table">
             <TableHead
                style={{
                   borderBottom: '2px solid #D7D7D7',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem',
                }}
             >
                <TableRow>
@@ -23,9 +24,7 @@ export default function TableMui({ column, rows }) {
                      <StyledTableCell
                         key={`header-${column.key}`}
                         align={column.align}
-                        style={
-                           column.minWidth ? { minWidth: column.minWidth } : {}
-                        }
+                        style={{ minWidth: column.minWidth }}
                      >
                         <TableHeaderStyled>{column.heading}</TableHeaderStyled>
                      </StyledTableCell>
@@ -35,7 +34,7 @@ export default function TableMui({ column, rows }) {
 
             <TableBody>
                {rows.map((row, rowIndex) => (
-                  <StyledTableRow key={row.id || row.appointmentId}>
+                  <StyledTableRow key={row.id}>
                      {column.map((column) => {
                         if (column.render) {
                            return (
@@ -88,9 +87,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
-   },
-   '&:last-child td, &:last-child th': {
-      border: 0,
    },
 }))
 
