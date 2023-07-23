@@ -101,7 +101,7 @@ const TableHeaderStyled = styled('h3')`
    font-style: normal;
    font-weight: bold;
    line-height: normal;
-   height: 3.6rem;
+   height: 2rem;
    display: flex;
    align-items: flex-end;
 `
