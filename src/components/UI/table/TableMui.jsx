@@ -9,13 +9,14 @@ import Paper from '@mui/material/Paper'
 
 export default function TableMui({ column, rows }) {
    return (
-      <TableContainer style={{ width: '85rem' }} component={Paper}>
+      <TableContainer style={{ width: '100%' }} component={Paper}>
          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead
                style={{
                   borderBottom: '2px solid #D7D7D7',
                   paddingLeft: '1rem',
                   paddingRight: '1rem',
+                  height: '1rem',
                }}
             >
                <TableRow>
@@ -27,7 +28,7 @@ export default function TableMui({ column, rows }) {
                            column.minWidth ? { minWidth: column.minWidth } : {}
                         }
                      >
-                        <TableHeaderStyled>{column.heading}</TableHeaderStyled>
+                        {column.heading}
                      </StyledTableCell>
                   ))}
                </TableRow>
@@ -39,7 +40,10 @@ export default function TableMui({ column, rows }) {
                      {column.map((column) => {
                         if (column.render) {
                            return (
-                              <StyledTableCell key={column.key}>
+                              <StyledTableCell
+                                 key={column.key}
+                                 align={column.align}
+                              >
                                  {column.render(row)}
                               </StyledTableCell>
                            )
@@ -53,9 +57,7 @@ export default function TableMui({ column, rows }) {
                                  key={`row-${column.key}`}
                                  align={column.align}
                               >
-                                 <TableBodyTitleStyled>
-                                    {value}
-                                 </TableBodyTitleStyled>
+                                 {value}
                               </StyledTableCell>
                            )
                         }
@@ -76,13 +78,14 @@ export default function TableMui({ column, rows }) {
    )
 }
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(({ theme, align }) => ({
    [`&.${TableHead}`]: {
       color: theme.palette.common.white,
    },
    [`&.${TableBody}`]: {
       fontSize: 14,
    },
+   textAlign: align,
 }))
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -93,30 +96,3 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       border: 0,
    },
 }))
-
-const TableHeaderStyled = styled('h3')`
-   color: #000;
-   font-family: CarePro;
-   font-size: 0.9rem;
-   font-style: normal;
-   font-weight: bold;
-   line-height: normal;
-   height: 3.6rem;
-   display: flex;
-   align-items: flex-end;
-`
-
-const TableBodyTitleStyled = styled('span')`
-   color: #000;
-   font-family: CarePro;
-   font-size: 1rem;
-   font-style: normal;
-   font-weight: bold;
-   line-height: normal;
-   height: 3.4rem;
-   display: flex;
-   align-items: center;
-   text-decoration: underline;
-   cursor: pointer;
-   color: #0073de;
-`
