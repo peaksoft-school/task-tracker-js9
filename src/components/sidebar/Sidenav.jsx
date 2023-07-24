@@ -103,7 +103,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                />
             </Drawer>
          </Box>
-         <div style={{ margin: '10px 0 0 -40px' }}>
+         <div style={{ margin: '-1.6rem 0 0 -2.5rem' }}>
             <ListItemIcon
                style={{
                   display: 'flex',

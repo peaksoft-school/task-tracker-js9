@@ -30,39 +30,3 @@ export const schema = yup.object().shape({
       .oneOf([yup.ref('password'), null], 'Пароли должны совпадать')
       .required('Необходимо подтвердить пароль'),
 })
-
-export const data = [
-   {
-      name: 'Taigan',
-      partisipants: 222,
-      issues: 30,
-      id: 1,
-   },
-]
-
-export const workspacedata = [
-   {
-      name: 'LMS',
-      partisipants: 222,
-      issues: 30,
-      id: 2,
-   },
-   {
-      name: 'Accounting',
-      partisipants: 222,
-      issues: 30,
-      id: 3,
-   },
-   {
-      name: 'LMS',
-      partisipants: 222,
-      issues: 30,
-      id: 4,
-   },
-   {
-      name: 'Accounting',
-      partisipants: 222,
-      issues: 30,
-      id: 5,
-   },
-]
