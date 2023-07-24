@@ -1,8 +1,8 @@
 import React from 'react'
 import { styled } from '@mui/material'
 
-export const ColumnColorGroup = ({ ...props }) => {
-   return <Color props={props} />
+export const Label = ({ ...props }) => {
+   return <Color onClick={props.onClick} props={props} />
 }
 
 const Color = styled('div')(({ props }) => ({
@@ -13,4 +13,5 @@ const Color = styled('div')(({ props }) => ({
    borderRadius: ' 0.5rem',
    marginTop: '0.62rem',
    marginBottom: '0.62rem',
+   cursor: 'pointer',
 }))

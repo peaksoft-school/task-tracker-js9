@@ -13,4 +13,5 @@ const ColumnCardStyle = styled('div')(() => ({
    paddingRight: '0.5rem',
    paddingBottom: '0.63rem',
    paddingTop: '0.63rem',
+   height: 'auto',
 }))

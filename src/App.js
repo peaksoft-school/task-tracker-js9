@@ -1,7 +1,9 @@
+import { Column } from './components/column/Column'
+
 function App() {
    return (
       <div>
-         <h1>Task-tracker</h1>
+         <Column />
       </div>
    )
 }

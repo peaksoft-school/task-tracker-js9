@@ -1,8 +1,16 @@
 import React from 'react'
 
-export const MeadIcon = () => {
+export const MeadIcon = ({ onClick }) => {
    return (
-      <div>
+      <button
+         style={{
+            backgroundColor: '#f0f0f0',
+            cursor: 'pointer',
+            border: 'none',
+         }}
+         onClick={onClick}
+         type="button"
+      >
          <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -15,6 +23,6 @@ export const MeadIcon = () => {
                fill="#111111"
             />
          </svg>
-      </div>
+      </button>
    )
 }

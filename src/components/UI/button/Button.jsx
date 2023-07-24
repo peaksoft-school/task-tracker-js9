@@ -3,7 +3,7 @@ import { Button as ReusebleButton, styled } from '@mui/material'
 
 export const Button = ({ variant, onClick, children, ...rest }) => {
    return (
-      <ButtonStyle type="submit" {...rest}>
+      <ButtonStyle onClick={onClick} type="submit" {...rest}>
          {children}
       </ButtonStyle>
    )
