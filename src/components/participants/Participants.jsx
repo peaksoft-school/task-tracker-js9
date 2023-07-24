@@ -6,13 +6,19 @@ import { Button } from '../UI/button/Button'
 import { ParticipantsTable } from './ParticipantsTable'
 
 export const Participants = ({ onDelete }) => {
-   const [role, setRole] = useState('All')
+   const [role, setRole] = useState()
 
    const handleChange = (event) => {
       setRole(event.target.value)
    }
 
    const dataLength = 254
+
+   const selectData = [
+      { label: 'All', value: 'All' },
+      { label: 'Admin', value: 'Admin' },
+      { label: 'Member', value: 'Member' },
+   ]
 
    return (
       <BodyContainer>
@@ -23,11 +29,14 @@ export const Participants = ({ onDelete }) => {
                      <ViewAllIssues>View all issues</ViewAllIssues>
                      <FormControl>
                         <StyledSelect value={role} onChange={handleChange}>
-                           <StyledMenuItem value="All">All</StyledMenuItem>
-                           <StyledMenuItem value="Admin">Admin</StyledMenuItem>
-                           <StyledMenuItem value="Member">
-                              Member
-                           </StyledMenuItem>
+                           {selectData.map((item) => (
+                              <StyledMenuItem
+                                 key={item.value}
+                                 value={item.value}
+                              >
+                                 {item.label}
+                              </StyledMenuItem>
+                           ))}
                         </StyledSelect>
                      </FormControl>
                   </RoleSection>
