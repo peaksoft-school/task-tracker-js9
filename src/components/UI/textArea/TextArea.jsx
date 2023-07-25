@@ -17,6 +17,5 @@ export const TextArea = forwardRef(
 const StyledInput = styled(TextField)((props) => ({
    width: props.width,
    borderRadius: props.borderRadius,
-   height: props.height,
    padding: props.padding,
 }))

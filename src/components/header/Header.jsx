@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
+import { IconButton } from '@mui/material'
 import {
    DownIcon,
    Logo,
    NotificationIcon,
    PersonIcon,
    SearchIcon,
+   UpIcon,
 } from '../../assets/icons'
 
 export const Header = () => {
+   const [isIconUp, setIsIconUp] = useState(false)
+
+   const handleIconClick = () => {
+      setIsIconUp(!isIconUp)
+   }
    return (
       <GLobalContainer>
          <LogoContainer>
@@ -17,7 +24,13 @@ export const Header = () => {
             <LogoWords>Task Tracker</LogoWords>
             <Favorite>
                <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
-               <DownIcon src={DownIcon} alt="arrow" />
+               <IconButton onClick={handleIconClick}>
+                  {isIconUp ? (
+                     <UpIcon src={UpIcon} alt="up_arrow" />
+                  ) : (
+                     <DownIcon src={DownIcon} alt="down_arrow" />
+                  )}
+               </IconButton>
             </Favorite>
          </LogoContainer>
          <AboutPanel>
@@ -25,12 +38,12 @@ export const Header = () => {
                <SearchIconWrapper>
                   <SearchIcon src={SearchIcon} alt="Search_Icon" />
                </SearchIconWrapper>
-               <StyledInputBase
-                  placeholder="Search"
-                  inputProps={{ CarePro: 'search' }}
-               />
+               <StyledInputBase placeholder="Search" />
             </Search>
-            <NotificationIcon src={NotificationIcon} alt="natifacation" />
+            <IconButton>
+               <NotificationIcon src={NotificationIcon} alt="natifacation" />
+            </IconButton>
+
             <PersonIcon src={PersonIcon} alt="person_Icon" />
          </AboutPanel>
       </GLobalContainer>
@@ -39,7 +52,7 @@ export const Header = () => {
 
 const GLobalContainer = muiStyled('header')(() => ({
    width: '100%',
-   height: '6.8vw',
+   height: ': 4.25rem',
    backgroundColor: '#ffffff',
    padding: '1rem 2.5rem',
    display: 'flex',
@@ -114,6 +127,7 @@ const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
 }))
 
 const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
+   fontFamily: 'CarePro',
    color: 'inherit',
    '& .MuiInputBase-input': {
       borderRadius: 8,

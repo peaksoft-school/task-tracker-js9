@@ -1,22 +1,36 @@
 import React from 'react'
-import { Button as ReusebleButton, styled } from '@mui/material'
+import { Button as ReusableButton, styled } from '@mui/material'
 
-export const Button = ({ variant, onClick, children, ...rest }) => {
+export const Button = ({
+   variant,
+   onClick,
+   children,
+   startIcon,
+   icon,
+   ...rest
+}) => {
    return (
-      <ButtonStyle onClick={onClick} type="submit" {...rest}>
+      <ButtonStyle
+         type="submit"
+         variant={variant}
+         onClick={onClick}
+         startIcon
+         icon
+         {...rest}
+      >
          {children}
       </ButtonStyle>
    )
 }
 
-const ButtonStyle = styled(ReusebleButton)(({ ...props }) => ({
+const ButtonStyle = styled(ReusableButton)(({ ...props }) => ({
    backgroundColor: props.backgroundColor || '#0079BF',
-   color: props.color || '#ffff',
+   color: props.color || '#ffffff',
    borderRadius: props.borderRadius || '1.6rem',
    display: 'inline-flex',
    padding: props.padding || '0.5rem 1rem',
    alignItems: 'flex-start',
-   gap: '0.5rem',
+   // gap: '0.5rem',
    '&:hover': {
       backgroundColor: props.backgroundColor,
       color: props.color,
@@ -26,6 +40,6 @@ const ButtonStyle = styled(ReusebleButton)(({ ...props }) => ({
    },
    '&:disabled': {
       backgroundColor: '#B2B2B2',
-      color: 'FFFFFF',
+      color: '#FFFFFF',
    },
 }))

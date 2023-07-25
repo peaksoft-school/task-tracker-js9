@@ -7,56 +7,40 @@ import { TypographyIcon } from '../Icon/TypographyIcon'
 import { CommunicationIcon } from '../Icon/CommunicationIcon'
 import { CheckMarkIcon } from '../Icon/CheckMarkIcon'
 import { PeopleIcon } from '../Icon/PeopleIcon'
-import { ModalUi } from '../UI/modal/Modal'
+// import { ModalUi } from '../UI/modal/Modal'
 import { MeadTables } from './MeadTables'
 import { Label } from './Label'
-import { XIcon } from '../Icon/XIcon'
-import { TextArea } from '../UI/textArea/TextArea'
 import { Button } from '../UI/button/Button'
+import { MenuItem } from '../UI/menu/MenuItem'
 
 const ButtonTextcolors = [
-   { color: '#61BD4F', text: 'Сделано' },
-   { color: '#EB5A46', text: 'Срочно начать с этого' },
-   { color: '#F2D600', text: 'Обратите всем настроение,друзья' },
-   { color: '#0079BF', text: 'Хорошего всем настроение,друзья' },
-   { color: '#EB5A46', text: 'Срочно начать с этого' },
+   { color: '#61BD4F', text: 'Сделано', id: '1' },
+   { color: '#d47859', text: 'Срочно начать с этого', id: '2' },
+   { color: '#F2D600', text: 'Обратите всем настроение,друзья', id: '3' },
+   { color: '#0079BF', text: 'Хорошего всем настроение,друзья', id: '4' },
+   { color: '#EB5A46', text: 'Срочно начать с этого', id: '5' },
 ]
 
 export const CardInColumn = () => {
    // eslint-disable-next-line react-hooks/rules-of-hooks
    const [openModal, setOpneModal] = useState(false)
    // eslint-disable-next-line react-hooks/rules-of-hooks
-   const [openModalAddCard, setOpneModalAddCard] = useState(false)
-
-   // eslint-disable-next-line react-hooks/rules-of-hooks
-   const [clickedLabels, setClickedLabels] = useState([])
-   // eslint-disable-next-line react-hooks/rules-of-hooks
-   const [inputValue, setInputValue] = useState('')
+   const [selectedLabels, setSelectedLabels] = useState([])
 
    const handleOpenModal = () => {
       setOpneModal((state) => !state)
    }
+   const handleButtonClick = (text, color) => {
+      const labelExists = selectedLabels.some((label) => label.color === color)
 
-   const handleOpenModalAddCard = () => {
-      setOpneModalAddCard((state) => !state)
+      if (!labelExists) {
+         setSelectedLabels((prevLabels) => [...prevLabels, { text, color }])
+      }
    }
 
-   const handleButtonClick = () => {
-      setClickedLabels(ButtonTextcolors)
+   const deleteLabelText = (id) => {
+      setSelectedLabels((prev) => prev.filter((el) => el.id !== id))
    }
-   const handleButtonClickAddCard = () => {
-      console.log(inputValue)
-   }
-   const handleAddCardInputChange = (event) => {
-      console.log(inputValue)
-
-      setInputValue(event.target.value)
-   }
-
-   const handleDeleteButtonDeleteClick = () => {
-      setInputValue('')
-   }
-
    return (
       <>
          <ParentTitle>
@@ -68,26 +52,28 @@ export const CardInColumn = () => {
                      handleOpenModal()
                   }}
                />
+               {openModal && (
+                  <MenuItem
+                     style={{ marginLeft: '40px' }}
+                     padding="1rem 0rem 0.5rem"
+                     width="16.6875rem"
+                     open={openModal}
+                     onClose={handleOpenModal}
+                  >
+                     <MeadTables />
+                  </MenuItem>
+               )}
             </StyleMeadIcon>
-            {openModal && (
-               <ModalUi
-                  backdropFilter="blur"
-                  padding="1rem 0rem 0.5rem"
-                  width="16.6875rem"
-                  open={openModal}
-                  onClose={handleOpenModal}
-               >
-                  <MeadTables />
-               </ModalUi>
-            )}
          </ParentTitle>
+
          <ParentColumnCard>
             <ColumnCard>
                <Labels>
                   {ButtonTextcolors.map((el) => (
                      // eslint-disable-next-line react/no-array-index-key
                      <Label
-                        onClick={() => handleButtonClick()}
+                        key={el.id}
+                        onClick={() => handleButtonClick(el.text, el.color)}
                         color={el.color}
                      />
                   ))}
@@ -117,12 +103,11 @@ export const CardInColumn = () => {
             </ColumnCard>
             <ColumnCard>
                <ParentColorGroupButton>
-                  {clickedLabels.map((el) => (
+                  {selectedLabels.map((el) => (
                      <ColorfulButton
-                        key={el.text}
-                        style={{
-                           backgroundColor: el.color,
-                        }}
+                        onClick={() => deleteLabelText(el.id)}
+                        key={el.id}
+                        style={{ backgroundColor: el.color }}
                      >
                         {el.text}
                      </ColorfulButton>
@@ -148,41 +133,6 @@ export const CardInColumn = () => {
                      <PeopleNumber>5</PeopleNumber>
                   </div>
                </FlexIcon>
-
-               <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
-
-               {openModalAddCard && (
-                  <ModalUi
-                     onClose={handleOpenModalAddCard}
-                     padding="1rem"
-                     open={openModalAddCard}
-                  >
-                     <AddCard>
-                        <ParentTitle>
-                           <NeedToDo>Need to do</NeedToDo>
-                        </ParentTitle>
-                        <TextArea
-                           type="text"
-                           value={inputValue}
-                           onChange={handleAddCardInputChange}
-                           placeholder="Enter a title for this card"
-                        />
-                        <ParentButtonAndXIcon>
-                           <AddCardButton
-                              borderRadius="0.5rem"
-                              padding="0.4rem"
-                              onClick={handleButtonClickAddCard}
-                           >
-                              Add card
-                           </AddCardButton>
-                           <XIcon
-                              style={{ marginLeft: '30px' }}
-                              onClick={handleDeleteButtonDeleteClick}
-                           />
-                        </ParentButtonAndXIcon>
-                     </AddCard>
-                  </ModalUi>
-               )}
             </ColumnCard>
          </ParentColumnCard>
       </>
@@ -191,8 +141,7 @@ export const CardInColumn = () => {
 
 const ParentTitle = styled('div')(() => ({
    display: 'flex',
-   justifyContent: 'space-between',
-   paddingRight: '0.62rem',
+   // justifyContent: 'space-between',
 }))
 
 const Title = styled('p')(() => ({
@@ -202,8 +151,8 @@ const Title = styled('p')(() => ({
    fontStyle: 'normal',
    fontWeight: 500,
    lineHeight: 'normal',
-   marginLeft: '1rem',
-   marginTop: '0.69rem',
+   // marginLeft: '1rem',
+   // marginTop: '0.69rem',
 }))
 
 const ParentColumnCard = styled('div')(() => ({
@@ -213,9 +162,11 @@ const ParentColumnCard = styled('div')(() => ({
 }))
 
 const StyleMeadIcon = styled('div')(() => ({
-   marginTop: '0.5rem',
+   // marginTop: '0.5rem',
    cursor: 'pointer',
    backgroundColor: '#f0f0f0',
+   position: 'absolute',
+   marginLeft: '14.62rem',
 }))
 
 const ParagraphText = styled('p')(() => ({
@@ -311,46 +262,4 @@ const CheckMarNumberkIcon = styled('div')(() => ({
 const ParentPeopleIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',
-}))
-
-const AddPlus = styled('p')(() => ({
-   cursor: 'pointer',
-   color: '#000000',
-   fontFamily: ' Cera Pro',
-   fontSize: '1rem   ',
-   fontStyle: ' normal',
-   marginLeft: '0.5rem',
-   fontWeight: '400',
-}))
-
-const AddCard = styled('div')(() => ({
-   display: 'flex',
-   flexDirection: 'column',
-   gap: '1rem',
-}))
-
-const ParentButtonAndXIcon = styled('div')(() => ({
-   display: 'flex',
-   gap: '1rem',
-}))
-
-const NeedToDo = styled('p')(() => ({
-   color: '#000',
-   fontFamily: ' Gilroy',
-   fontSize: '1rem',
-   fontStyle: 'normal',
-   fontWeight: 500,
-   lineHeight: 'normal',
-   marginTop: '0.69rem',
-}))
-
-const AddCardButton = styled(Button)(() => ({
-   color: '#F8F8F8',
-   // fontFamily: ' Cera Pro',
-   fontSize: ' 0.7rem',
-   fontStyle: ' normal',
-   fontWeight: '500',
-   '&:hover': {
-      backgroundColor: '#0079BF',
-   },
 }))
