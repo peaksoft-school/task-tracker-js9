@@ -129,3 +129,26 @@ export const boards = [
          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
    },
 ]
+
+export const rows = [
+   {
+      id: 1,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+   {
+      id: 2,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+   {
+      id: 3,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+   {
+      id: 4,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+]
