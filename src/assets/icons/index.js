@@ -39,8 +39,14 @@ import { ReactComponent as Logo } from './Logo.svg'
 import { ReactComponent as PersonIcon } from './person_icon.svg'
 import { ReactComponent as BlueIcon } from './blueIcon.svg'
 import { ReactComponent as GoogleIcon } from './googleIcon.svg'
+import { ReactComponent as LayoutWhite } from './layoutwhite.svg'
+import { ReactComponent as SecondMenu } from './secondMenu.svg'
+import { ReactComponent as FirstMenu } from './firstMenu.svg'
 
 export {
+   LayoutWhite,
+   SecondMenu,
+   FirstMenu,
    LeftIcon,
    RightIcon,
    UpIcon,
