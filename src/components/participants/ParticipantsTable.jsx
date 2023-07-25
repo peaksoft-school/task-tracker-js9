@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import TableMui from '../UI/table/TableMui'
 import { DeleteIcon } from '../../assets/icons'
+// import { render } from '@testing-library/react'
 
 const rows = [
    {
@@ -25,11 +26,12 @@ const rows = [
       email: 'kursanovbeku@example.com',
       id: '6',
    },
-   {
-      name: 'Ali Samatov',
-      email: 'alisamatov@example.com',
-      id: '7',
-   },
+]
+
+const kindaSelect = [
+   { label: 'All', value: 'All' },
+   { label: 'Admin', value: 'Admin' },
+   { label: 'Member', value: 'Member' },
 ]
 
 export const ParticipantsTable = ({ onDelete }) => {
@@ -49,31 +51,40 @@ export const ParticipantsTable = ({ onDelete }) => {
    }
 
    const column = [
-      { heading: 'Name', key: 'name', minWidth: '40rem' },
-
-      { heading: 'Email', key: 'email', minWidth: '20rem' },
       {
+         heading: 'Name',
+         key: 'name',
+         align: 'left',
+         minWidth: '33rem',
+         padding: '0 0 0 1.6rem',
          render: (data) => (
-            <FormControlStyle>
-               <StyledSelect
-                  value={roles[data.id]}
-                  onChange={(e) => handleRolesChange(e, data.id)}
-               >
-                  <MenuItemStyle value="All">All</MenuItemStyle>
-                  <MenuItemStyle value="Admin">Admin</MenuItemStyle>
-                  <MenuItemStyle value="Member">Member</MenuItemStyle>
-               </StyledSelect>
-            </FormControlStyle>
+            <p style={{ padding: '0 0 0 0.6rem' }}>{data.name}</p>
          ),
       },
+
+      { heading: 'Email', key: 'email', minWidth: '10rem' },
 
       {
          heading: 'Role',
          align: 'right',
          render: (data) => (
-            <IconButton onClick={() => onDelete(data.id)}>
-               <DeleteIcon />
-            </IconButton>
+            <MainContainer>
+               <FormControlStyle>
+                  <StyledSelect
+                     value={roles[data.id]}
+                     onChange={(e) => handleRolesChange(e, data.id)}
+                  >
+                     {kindaSelect.map((item) => (
+                        <MenuItemStyle key={item.value} value={item.value}>
+                           {item.label}
+                        </MenuItemStyle>
+                     ))}
+                  </StyledSelect>
+               </FormControlStyle>
+               <IconButton onClick={() => onDelete(data.id)}>
+                  <DeleteIcon />
+               </IconButton>
+            </MainContainer>
          ),
       },
    ]
@@ -87,7 +98,12 @@ export const ParticipantsTable = ({ onDelete }) => {
 
 const Container = styled('div')(() => ({
    width: '100%',
-   height: '100%',
+   height: '100vh',
+}))
+const MainContainer = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'end',
+   alignItems: 'center',
 }))
 const MenuItemStyle = styled(MenuItem)(() => ({
    fontFamily: 'CarePro',

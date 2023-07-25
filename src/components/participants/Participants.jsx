@@ -54,9 +54,7 @@ export const Participants = ({ onDelete }) => {
 
 const BodyContainer = styled('div')(() => ({
    padding: '0.75rem 1.25rem 0rem 1.25rem',
-   backgroundColor: '#F0F0F0',
    width: '100%',
-   height: '89vh',
 }))
 
 const GlobalContainer = styled('div')(() => ({

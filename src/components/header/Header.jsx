@@ -11,7 +11,7 @@ import {
    UpIcon,
 } from '../../assets/icons'
 
-export const Header = () => {
+export const Headers = () => {
    const [isIconUp, setIsIconUp] = useState(false)
 
    const handleIconClick = () => {

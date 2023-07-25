@@ -1,10 +1,7 @@
-import { Participants } from './components/participants/Participants'
-
 function App() {
    return (
       <div>
-         <h1>Task Tracker</h1>
-         <Participants />
+         <h1>Task Trecker js-9</h1>
       </div>
    )
 }
