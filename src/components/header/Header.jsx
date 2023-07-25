@@ -11,7 +11,7 @@ import {
    UpIcon,
 } from '../../assets/icons'
 
-export const Header = () => {
+export const Headers = () => {
    const [isIconUp, setIsIconUp] = useState(false)
 
    const handleIconClick = () => {
@@ -43,7 +43,6 @@ export const Header = () => {
             <IconButton>
                <NotificationIcon src={NotificationIcon} alt="natifacation" />
             </IconButton>
-
             <PersonIcon src={PersonIcon} alt="person_Icon" />
          </AboutPanel>
       </GLobalContainer>

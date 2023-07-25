@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper'
 
 export default function TableMui({ column, rows }) {
    return (
-      <TableContainer style={{ width: '100%' }} component={Paper}>
+      <TableContainerStyle style={{ width: '100%' }} component={Paper}>
          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead
                style={{
@@ -22,11 +22,14 @@ export default function TableMui({ column, rows }) {
                <TableRow>
                   {column.map((column) => (
                      <StyledTableCell
-                        key={`header-${column.key}`}
+                        // key={`header-${column.key}`}
+                        key={column.id}
                         align={column.align}
-                        style={
-                           column.minWidth ? { minWidth: column.minWidth } : {}
-                        }
+                        style={{
+                           minWidth: column.minWidth,
+                           padding: column.padding,
+                           fontWeight: 'bold',
+                        }}
                      >
                         {column.heading}
                      </StyledTableCell>
@@ -74,7 +77,7 @@ export default function TableMui({ column, rows }) {
                ))}
             </TableBody>
          </Table>
-      </TableContainer>
+      </TableContainerStyle>
    )
 }
 
@@ -86,6 +89,9 @@ const StyledTableCell = styled(TableCell)(({ theme, align }) => ({
       fontSize: 14,
    },
    textAlign: align,
+}))
+const TableContainerStyle = styled(TableContainer)(() => ({
+   boxShadow: 'none',
 }))
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
