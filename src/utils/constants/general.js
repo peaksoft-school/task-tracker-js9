@@ -130,25 +130,39 @@ export const boards = [
    },
 ]
 
-export const rows = [
+export const data = [
    {
+      name: 'Taigan',
+      partisipants: 222,
+      issues: 30,
       id: 1,
-      name: 'Taigan',
-      lead: 'Almaz Almazov',
-   },
-   {
-      id: 2,
-      name: 'Taigan',
-      lead: 'Almaz Almazov',
-   },
-   {
-      id: 3,
-      name: 'Taigan',
-      lead: 'Almaz Almazov',
-   },
-   {
-      id: 4,
-      name: 'Taigan',
-      lead: 'Almaz Almazov',
    },
 ]
+
+export const workspacedata = [
+   {
+      name: 'LMS',
+      partisipants: 222,
+      issues: 30,
+      id: 2,
+   },
+   {
+      name: 'Accounting',
+      partisipants: 222,
+      issues: 30,
+      id: 3,
+   },
+   {
+      name: 'LMS',
+      partisipants: 222,
+      issues: 30,
+      id: 4,
+   },
+   {
+      name: 'Accounting',
+      partisipants: 222,
+      issues: 30,
+      id: 5,
+   },
+]
+export const dataLength = data.length
