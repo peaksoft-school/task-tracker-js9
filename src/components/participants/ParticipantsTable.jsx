@@ -8,7 +8,6 @@ import {
 } from '@mui/material'
 import TableMui from '../UI/table/TableMui'
 import { DeleteIcon } from '../../assets/icons'
-// import { render } from '@testing-library/react'
 
 const rows = [
    {
