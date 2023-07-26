@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { StarIcon } from '../../assets/icons'
 
 import { rows } from '../../utils/constants/general'
+import TableMui from '../UI/table/TableMui'
 
 export const WorkspaceTable = () => {
    const [favoriteIds, setFavoriteIds] = useState([])
@@ -62,7 +63,7 @@ export const WorkspaceTable = () => {
 
    return (
       <div>
-         <TableMu column={column} rows={rows} />
+         <TableMui column={column} rows={rows} />
       </div>
    )
 }
