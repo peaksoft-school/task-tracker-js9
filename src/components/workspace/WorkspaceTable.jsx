@@ -1,7 +1,7 @@
 import { Avatar, IconButton, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { StarIcon } from '../../assets/icons'
-import TableMui from '../UI/table/TableMui'
+
 import { rows } from '../../utils/constants/general'
 
 export const WorkspaceTable = () => {
@@ -62,7 +62,7 @@ export const WorkspaceTable = () => {
 
    return (
       <div>
-         <TableMui column={column} rows={rows} />
+         <TableMu column={column} rows={rows} />
       </div>
    )
 }

@@ -24,6 +24,7 @@ export default function TableMui({ column, rows }) {
                         align={column.align}
                         style={{
                            minWidth: column.minWidth,
+                           padding: column.padding,
                            fontWeight: 'bold',
                         }}
                      >
