@@ -3,7 +3,7 @@ import { styled } from '@mui/material'
 import { WorkspaceTable } from './WorkspaceTable'
 import { Button } from '../UI/button/Button'
 
-export const Workspace = () => {
+export const Workspaces = () => {
    return (
       <div>
          <div>
