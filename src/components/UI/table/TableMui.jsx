@@ -14,16 +14,13 @@ export default function TableMui({ column, rows }) {
             <TableHead
                style={{
                   borderBottom: '2px solid #D7D7D7',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem',
-                  height: '1rem',
+                  height: '4rem',
                }}
             >
                <TableRow>
                   {column.map((column) => (
                      <StyledTableCell
-                        // key={`header-${column.key}`}
-                        key={column.id}
+                        key={`header-${column.key}`}
                         align={column.align}
                         style={{
                            minWidth: column.minWidth,
@@ -81,14 +78,13 @@ export default function TableMui({ column, rows }) {
    )
 }
 
-const StyledTableCell = styled(TableCell)(({ theme, align }) => ({
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${TableHead}`]: {
       color: theme.palette.common.white,
    },
    [`&.${TableBody}`]: {
       fontSize: 14,
    },
-   textAlign: align,
 }))
 const TableContainerStyle = styled(TableContainer)(() => ({
    boxShadow: 'none',
