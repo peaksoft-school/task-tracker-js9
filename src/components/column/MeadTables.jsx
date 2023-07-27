@@ -10,11 +10,11 @@ export const MeadTables = () => {
          </CardText>
          <Line />
          <CardText>
-            <TextDeleteColumn>Delete a column</TextDeleteColumn>
+            <p>Delete a column</p>
          </CardText>
          <Line />
          <CardText>
-            <DeleteAllCards>Delete all cards in this list</DeleteAllCards>
+            <p>Delete all cards in this list</p>
          </CardText>
          <CardText>
             <p>Archive all cards in this list</p>
@@ -44,7 +44,6 @@ const CardText = styled('div')(() => ({
 
 const TextAddCard = styled('p')(() => ({
    color: '#000',
-   // fontFamily: 'Gilroy',
    fontSize: '1rem',
    fontStyle: 'normal',
    fontWeight: '400',
@@ -56,13 +55,4 @@ const Line = styled('div')(() => ({
    width: '14.1875rem',
    height: ' 0.0625rem',
    marginLeft: '1.25rem',
-}))
-
-const TextDeleteColumn = styled('p')(() => ({
-   // padding: '0.5rem 0rem 1rem 1.25rem',
-}))
-
-const DeleteAllCards = styled('p')(() => ({
-   // padding: '0.5rem 0rem 1rem 1.25rem',
-   // marginBottom: '1rem',
 }))

@@ -30,7 +30,6 @@ const ButtonStyle = styled(ReusableButton)(({ ...props }) => ({
    display: 'inline-flex',
    padding: props.padding || '0.5rem 1rem',
    alignItems: 'flex-start',
-   // gap: '0.5rem',
    '&:hover': {
       backgroundColor: props.backgroundColor,
       color: props.color,

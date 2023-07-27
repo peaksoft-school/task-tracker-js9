@@ -7,7 +7,7 @@ export const ColumnCard = ({ children }) => {
 
 const ColumnCardStyle = styled('div')(() => ({
    width: '16.5rem',
-   background: '#F4F4F4',
+   background: '#ffffff',
    marginBottom: '0.5rem',
    borderRadius: ' 0.25rem',
    paddingLeft: '0.5rem',

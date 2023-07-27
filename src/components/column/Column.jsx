@@ -19,8 +19,6 @@ const ParentColumnStyle = styled('div')(() => ({
 
 const ColumnStyle = styled('div')(() => ({
    width: '17.5rem',
-   // display: 'flex',
-   // justifyContent: 'space-between',
    borderRadius: '0.5rem',
    backgroundColor: 'rgba(145, 145, 145, 0.12)',
    paddingBottom: '1rem',
