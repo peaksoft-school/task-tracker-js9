@@ -7,18 +7,39 @@ import { TypographyIcon } from '../Icon/TypographyIcon'
 import { CommunicationIcon } from '../Icon/CommunicationIcon'
 import { CheckMarkIcon } from '../Icon/CheckMarkIcon'
 import { PeopleIcon } from '../Icon/PeopleIcon'
-// import { ModalUi } from '../UI/modal/Modal'
 import { MeadTables } from './MeadTables'
 import { Label } from './Label'
 import { Button } from '../UI/button/Button'
 import { MenuItem } from '../UI/menu/MenuItem'
+import { Input } from '../UI/input/Input'
+import { EditIcon, ExitIcon } from '../../assets/icons'
 
 const ButtonTextcolors = [
-   { color: '#61BD4F', text: 'Сделано', id: '1' },
-   { color: '#d47859', text: 'Срочно начать с этого', id: '2' },
-   { color: '#F2D600', text: 'Обратите всем настроение,друзья', id: '3' },
-   { color: '#0079BF', text: 'Хорошего всем настроение,друзья', id: '4' },
-   { color: '#EB5A46', text: 'Срочно начать с этого', id: '5' },
+   {
+      color: '#61BD4F',
+      text: 'Сделано',
+      id: '1',
+   },
+   {
+      color: '#d47859',
+      text: 'Срочно начать с этого',
+      id: '2',
+   },
+   {
+      color: '#F2D600',
+      text: 'Обратите всем настроение,друзья',
+      id: '3',
+   },
+   {
+      color: '#0079BF',
+      text: 'Хорошего всем настроение,друзья',
+      id: '4',
+   },
+   {
+      color: '#EB5A46',
+      text: 'Срочно начать с этого',
+      id: '5',
+   },
 ]
 
 export const CardInColumn = () => {
@@ -26,21 +47,57 @@ export const CardInColumn = () => {
    const [openModal, setOpneModal] = useState(false)
    // eslint-disable-next-line react-hooks/rules-of-hooks
    const [selectedLabels, setSelectedLabels] = useState([])
+   console.log('selectedLabels: ', selectedLabels)
 
    const handleOpenModal = () => {
       setOpneModal((state) => !state)
    }
-   const handleButtonClick = (text, color) => {
+   const handleButtonClick = (text, color, id) => {
       const labelExists = selectedLabels.some((label) => label.color === color)
-
       if (!labelExists) {
-         setSelectedLabels((prevLabels) => [...prevLabels, { text, color }])
+         setSelectedLabels((prevLabels) => [...prevLabels, { text, id, color }])
       }
    }
 
    const deleteLabelText = (id) => {
-      setSelectedLabels((prev) => prev.filter((el) => el.id !== id))
+      console.log('id: ', id)
+
+      console.log('selectedLabels', selectedLabels)
+      console.log('id', id)
+      setSelectedLabels(selectedLabels.filter((el) => el.id !== id))
    }
+
+   const [openModalAddCard, setOpneModalAddCard] = useState(false)
+   const [openInputAddCard, setOpenInputAddCard] = useState(false)
+
+   const [inputValue, setInputValue] = useState('')
+   const [cards, setCards] = useState([])
+
+   const handleOpenModalAddCard = () => {
+      setOpneModalAddCard(true)
+      setOpenInputAddCard((prev) => !prev)
+   }
+
+   const handleButtonClickAddCard = (event) => {
+      event.preventDefault()
+      const newCard = {
+         id: Date.now().toString(),
+         text: inputValue,
+      }
+      setCards((prevTasks) => [...prevTasks, newCard])
+      setInputValue('')
+   }
+   const handleCloseCard = () => {
+      setOpenInputAddCard(false)
+      setOpneModalAddCard(false)
+   }
+
+   const handleAddCardInputChange = (event) => {
+      console.log(inputValue)
+      setInputValue(event.target.value)
+   }
+
+   const isButtonDisabled = inputValue === ''
    return (
       <>
          <ParentTitle>
@@ -73,7 +130,9 @@ export const CardInColumn = () => {
                      // eslint-disable-next-line react/no-array-index-key
                      <Label
                         key={el.id}
-                        onClick={() => handleButtonClick(el.text, el.color)}
+                        onClick={() =>
+                           handleButtonClick(el.text, el.color, el.id)
+                        }
                         color={el.color}
                      />
                   ))}
@@ -134,6 +193,50 @@ export const CardInColumn = () => {
                   </div>
                </FlexIcon>
             </ColumnCard>
+            {cards.map((el) => (
+               <ColumnCard key={el.id}>
+                  <ParagraphText>{el.text}</ParagraphText>
+               </ColumnCard>
+            ))}
+            {openModalAddCard ? (
+               <form onSubmit={handleButtonClickAddCard}>
+                  <InputAddCard>
+                     <div
+                        style={{
+                           display: 'flex',
+                           alignItems: 'center',
+                        }}
+                     >
+                        {openInputAddCard && (
+                           <InputAddCardStyle
+                              // onClose={handleOpenModalAddCard}
+                              // padding="1rem"
+                              type="text"
+                              value={inputValue}
+                              open={openModalAddCard}
+                              placeholder="Enter a title for this card"
+                              onChange={handleAddCardInputChange}
+                           />
+                        )}
+                        {openInputAddCard && <EditIconStyle />}
+                     </div>
+                     <ParentAddbuttonAndExitIcon>
+                        <ButtonAddCardStyle
+                           backgroundColor="#0079BF"
+                           borderRadius="3px"
+                           disabled={isButtonDisabled}
+                           onClick={handleButtonClickAddCard}
+                           padding="6px 12px"
+                        >
+                           +Add card
+                        </ButtonAddCardStyle>
+                        <ExitIconStyle onClick={handleCloseCard} />
+                     </ParentAddbuttonAndExitIcon>
+                  </InputAddCard>
+               </form>
+            ) : (
+               <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
+            )}
          </ParentColumnCard>
       </>
    )
@@ -142,6 +245,7 @@ export const CardInColumn = () => {
 const ParentTitle = styled('div')(() => ({
    display: 'flex',
    // justifyContent: 'space-between',
+   marginBottom: '0.89rem',
 }))
 
 const Title = styled('p')(() => ({
@@ -158,7 +262,7 @@ const Title = styled('p')(() => ({
 const ParentColumnCard = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
-   gap: '0.5rem',
+   // gap: '0.5rem',
 }))
 
 const StyleMeadIcon = styled('div')(() => ({
@@ -181,6 +285,7 @@ const ParagraphText = styled('p')(() => ({
 
 const Labels = styled('div')(() => ({
    display: 'flex',
+   flexWrap: 'wrap',
    gap: '6px',
 }))
 
@@ -262,4 +367,57 @@ const CheckMarNumberkIcon = styled('div')(() => ({
 const ParentPeopleIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',
+}))
+
+const AddPlus = styled('p')(() => ({
+   cursor: 'pointer',
+   color: '#000000',
+   fontFamily: ' Cera Pro',
+   fontSize: '1rem   ',
+   fontStyle: ' normal',
+   marginLeft: '0.5rem',
+   fontWeight: '400',
+   marginTop: '0.69rem',
+}))
+
+const InputAddCardStyle = styled(Input)(() => ({
+   input: {
+      minHeight: '3.75rem',
+      width: '15.2rem',
+      backgroundColor: '#F4F4F4',
+      borderRadius: '0.25rem',
+      padding: '0.5rem 0.63rem',
+      border: '0px solid ##919191 ',
+   },
+}))
+
+const InputAddCard = styled('div')(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   gap: '0.5rem',
+}))
+
+const EditIconStyle = styled(EditIcon)(() => ({
+   position: 'absolute',
+   // marginRight: '500px',
+   marginLeft: '14.81rem',
+   marginBottom: '2.6rem',
+   cursor: 'pointer',
+}))
+
+const ParentAddbuttonAndExitIcon = styled('div')(() => ({
+   display: 'flex',
+   gap: '0.5rem',
+}))
+const ExitIconStyle = styled(ExitIcon)(() => ({
+   color: 'gray',
+   cursor: 'pointer',
+   marginTop: '0.5rem',
+}))
+
+const ButtonAddCardStyle = styled(Button)(() => ({
+   '&:disabled': {
+      backgroundColor: ' #0079BF',
+      color: '#FFFFFF',
+   },
 }))

@@ -11,7 +11,6 @@ const Color = styled('div')(({ props }) => ({
    backgroundColor: props.color,
    flexShrink: 0,
    borderRadius: ' 0.5rem',
-   marginTop: '0.62rem',
-   marginBottom: '0.62rem',
+   marginBottom: '0.75rem',
    cursor: 'pointer',
 }))
