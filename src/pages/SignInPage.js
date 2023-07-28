@@ -1,6 +1,7 @@
 import { TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
+import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { LayoutFormPage } from './LayoutFormPage'
 import { ShowIcon, HideIcon, GoogleIcon } from '../assets/icons'
@@ -10,6 +11,8 @@ import { ModalUi } from '../components/UI/modal/Modal'
 export const SignInPage = () => {
    const [showPassword, setShowPassword] = useState(false)
    const [isModalOpen, setIsModalOpen] = useState(false)
+
+   const navigate = useNavigate()
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -34,6 +37,12 @@ export const SignInPage = () => {
       console.log(values)
    }
 
+   const handleResetPassword = () => {
+      navigate('/resetPassword')
+   }
+   const loginHandler = () => {
+      navigate('/mainpage')
+   }
    return (
       <LayoutFormPage>
          <Container>
@@ -108,10 +117,12 @@ export const SignInPage = () => {
                            </ForgotPassword>
                         </WrapperInputs>
 
-                        <LoginButton type="submit">Log In</LoginButton>
+                        <LoginButton type="submit" onClick={loginHandler}>
+                           Log In
+                        </LoginButton>
                         <MainBlock>
                            <p>Not a member?</p>
-                           <SignUpText> Sign up now</SignUpText>
+                           <SignUpText to="/signup"> Sign up now</SignUpText>
                         </MainBlock>
                      </MainWrapper>
                   </Form>
@@ -131,7 +142,9 @@ export const SignInPage = () => {
                         placeholder="example@gmail.com"
                      />
                      <WrapperModalButton>
-                        <ModalButton>send</ModalButton>
+                        <ModalButton onClick={handleResetPassword}>
+                           send
+                        </ModalButton>
                      </WrapperModalButton>
                   </ModalStyle>
                </ModalUi>
@@ -143,7 +156,7 @@ export const SignInPage = () => {
 
 // Styled components...
 
-const Container = styled('div')(() => ({
+const Container = styled('div')(({ theme }) => ({
    height: '100vh',
    display: 'flex',
    flexDirection: 'column',
@@ -157,10 +170,15 @@ const Container = styled('div')(() => ({
       h2: {
          marginBottom: '1.25rem',
       },
+      p: {
+         color: theme.palette.secondary.gray,
+      },
    },
 }))
 
 const AuthWithGoogle = styled('div')(({ theme }) => ({
+   // width: '100%',
+   cursor: 'pointer',
    display: 'flex',
    gap: '1rem',
    width: '20.0625rem',
@@ -350,10 +368,12 @@ const ForgotPassword = styled('p')(({ theme }) => ({
    width: '95%',
    display: 'flex',
    justifyContent: 'end',
+   marginTop: '1rem',
    color: theme.palette.primary.blue,
+   cursor: 'pointer',
 }))
 
-const SignUpText = styled('p')(({ theme }) => ({
+const SignUpText = styled(NavLink)(({ theme }) => ({
    color: theme.palette.primary.blue,
 }))
 
