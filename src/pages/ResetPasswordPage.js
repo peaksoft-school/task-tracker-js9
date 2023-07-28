@@ -135,6 +135,7 @@ const ContainerPasswordInput = styled('div')(() => ({
    //  position: 'relative',
    display: 'flex',
    alignItems: 'center',
+   justifyContent: 'center',
    width: '100%',
 }))
 const IconEyes = styled('div')(() => ({
@@ -187,7 +188,6 @@ const Container = styled('div')(() => ({
    justifyContent: 'center',
    alignItems: 'center',
    gap: '1rem',
-   marginTop: '10rem',
 }))
 
 const TextPassword = styled('h2')(() => ({
@@ -195,7 +195,7 @@ const TextPassword = styled('h2')(() => ({
    fontFamily: ' CarePro',
    fontSize: '1.125rem',
    fontStyle: 'normal',
-   fontWeight: '500',
+   fontWeight: 'bold',
    lineHeight: 'normal',
 }))
 

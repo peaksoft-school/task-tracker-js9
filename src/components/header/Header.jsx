@@ -1,51 +1,56 @@
 import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
-import { IconButton } from '@mui/material'
+import { Avatar, IconButton } from '@mui/material'
+import { Outlet } from 'react-router-dom'
 import {
    DownIcon,
    Logo,
    NotificationIcon,
-   PersonIcon,
+   // PersonIcon,
    SearchIcon,
    UpIcon,
 } from '../../assets/icons'
 
-export const Headers = () => {
+export const Headers = ({ data }) => {
    const [isIconUp, setIsIconUp] = useState(false)
 
    const handleIconClick = () => {
       setIsIconUp(!isIconUp)
    }
    return (
-      <GLobalContainer>
-         <LogoContainer>
-            <Logotype src={Logo} alt="task-tracker_logo" />
-            <LogoWords>Task Tracker</LogoWords>
-            <Favorite>
-               <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
-               <IconButton onClick={handleIconClick}>
-                  {isIconUp ? (
-                     <UpIcon src={UpIcon} alt="up_arrow" />
-                  ) : (
-                     <DownIcon src={DownIcon} alt="down_arrow" />
-                  )}
+      <div>
+         <GLobalContainer>
+            <LogoContainer>
+               <Logotype src={Logo} alt="task-tracker_logo" />
+               <LogoWords>Task Tracker</LogoWords>
+               <Favorite>
+                  <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
+                  <IconButton onClick={handleIconClick}>
+                     {isIconUp ? (
+                        <UpIcon src={UpIcon} alt="up_arrow" />
+                     ) : (
+                        <DownIcon src={DownIcon} alt="down_arrow" />
+                     )}
+                  </IconButton>
+               </Favorite>
+            </LogoContainer>
+            <AboutPanel>
+               <Search>
+                  <SearchIconWrapper>
+                     <SearchIcon src={SearchIcon} alt="Search_Icon" />
+                  </SearchIconWrapper>
+                  <StyledInputBase placeholder="Search" />
+               </Search>
+               <IconButton>
+                  <NotificationIcon src={NotificationIcon} alt="notification" />
                </IconButton>
-            </Favorite>
-         </LogoContainer>
-         <AboutPanel>
-            <Search>
-               <SearchIconWrapper>
-                  <SearchIcon src={SearchIcon} alt="Search_Icon" />
-               </SearchIconWrapper>
-               <StyledInputBase placeholder="Search" />
-            </Search>
-            <IconButton>
-               <NotificationIcon src={NotificationIcon} alt="natifacation" />
-            </IconButton>
-            <PersonIcon src={PersonIcon} alt="person_Icon" />
-         </AboutPanel>
-      </GLobalContainer>
+               {/* <PersonIcon src={PersonIcon} alt="person_Icon" /> */}
+               <Avatar> {data}</Avatar>
+            </AboutPanel>
+         </GLobalContainer>
+         <Outlet />
+      </div>
    )
 }
 

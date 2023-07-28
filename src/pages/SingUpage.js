@@ -1,6 +1,7 @@
 import { Checkbox, TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form, ErrorMessage } from 'formik'
+import { NavLink } from 'react-router-dom'
 import * as Yup from 'yup'
 import { LayoutFormPage } from './LayoutFormPage'
 import { GoogleIcon, HideIcon, ShowIcon } from '../assets/icons'
@@ -174,7 +175,7 @@ export const SignUpPage = () => {
             </Formik>
             <LoginWrappwer>
                <p>You already have an account?</p>
-               <TextInLogIn> Log in </TextInLogIn>
+               <TextInLogIn to="/"> Log in </TextInLogIn>
             </LoginWrappwer>
          </Container>
       </LayoutFormPage>
@@ -182,7 +183,6 @@ export const SignUpPage = () => {
 }
 
 const Container = styled('div')(() => ({
-   width: '100%',
    display: 'flex',
    flexDirection: 'column',
    justifyContent: 'center',
@@ -256,6 +256,7 @@ const TextOr = styled('p')(({ theme }) => ({
    color: theme.palette.secondary.gray,
    fontSize: '1rem',
    fontWeight: '400',
+   marginTop: '0.8rem',
 }))
 
 const WrapperButton = styled('div')(() => ({
@@ -269,7 +270,7 @@ const LoginWrappwer = styled('div')(() => ({
    marginTop: '1rem',
 }))
 
-const TextInLogIn = styled('p')(({ theme }) => ({
+const TextInLogIn = styled(NavLink)(({ theme }) => ({
    color: theme.palette.primary.blue,
 }))
 

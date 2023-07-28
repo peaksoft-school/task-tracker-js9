@@ -1,8 +1,17 @@
+import { RouterProvider } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import { ThemeProvider } from '@emotion/react'
+import { routes } from './routes/AppProvider'
+import { theme } from './assets/styles/theme'
+
 function App() {
    return (
-      <div>
-         <h1>Task Trecker js-9</h1>
-      </div>
+      <>
+         <ToastContainer />
+         <ThemeProvider theme={theme}>
+            <RouterProvider router={routes} />
+         </ThemeProvider>
+      </>
    )
 }
 export default App
