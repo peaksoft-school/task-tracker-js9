@@ -1,4 +1,5 @@
 import React from 'react'
+// import axios from 'axios'
 import { styled as muiStyled } from '@mui/material/styles'
 // import { InputBase } from '@mui/material'
 import { CloseIcon, EditIcon } from '../../assets/icons'
@@ -31,14 +32,17 @@ export const AddedLabelToCard = () => {
    const [taskText, setTaskText] = React.useState(
       Colors.map((color) => color.text)
    )
+   const inputRef = React.useRef()
 
    const onEditHandler = (index) => {
       setEditState((prevState) => {
-         const updatedState = [...prevState]
-         updatedState[index] = !prevState[index]
+         const updatedState = prevState.map((state, i) => i === index)
          return updatedState
       })
    }
+   // React.useEffect(() => {
+   //    inputRef.current.focus()
+   // }, [editState])
 
    const onEditTask = (event, index) => {
       const updatedTaskText = [...taskText]
@@ -74,28 +78,34 @@ export const AddedLabelToCard = () => {
             {Colors.map((color, index) => (
                <WrapperTask key={color.id}>
                   {editState[index] ? (
-                     <StyledInputBase
-                        onKeyPress={(e) => onClickKey(e, index)}
-                        style={color}
-                        value={taskText[index]}
-                        onChange={(e) => onEditTask(e, index)}
-                        onBlur={() =>
-                           setEditState((prevState) => {
-                              const updatedState = [...prevState]
-                              updatedState[index] = false
-                              return updatedState
-                           })
-                        }
-                     />
+                     <>
+                        <StyledInputBase
+                           onKeyPress={(e) => onClickKey(e, index)}
+                           ref={inputRef}
+                           id={color.id}
+                           style={color}
+                           value={taskText[index]}
+                           onChange={(e) => onEditTask(e, index)}
+                           placeholder="пусто"
+                        />
+                        <label htmlFor={color.id}>
+                           <EditIcon
+                              src={EditIcon}
+                              onClick={() => onEditHandler(index)}
+                           />
+                        </label>
+                     </>
                   ) : (
                      <>
                         <Task key={color.id} style={color}>
                            {taskText[index]}
                         </Task>
-                        <EditIcon
-                           src={EditIcon}
-                           onClick={() => onEditHandler(index)}
-                        />
+                        <label htmlFor={color.id}>
+                           <EditIcon
+                              src={EditIcon}
+                              onClick={() => onEditHandler(index)}
+                           />
+                        </label>
                      </>
                   )}
                </WrapperTask>
@@ -156,12 +166,18 @@ const StyledInputBase = muiStyled('input')(() => ({
    display: 'flex',
    alignItems: 'center',
    width: '292px',
-   padding: '6px 0 6px 16px',
+   padding: '7px 0 7px 16px',
    borderRadius: '6px',
    margin: '4px 10px 4px 0',
    fontSize: '16px',
    fontWeight: '500',
    color: '#fff',
    border: 'none',
-   outline: 'none',
+   '&:focus': {
+      outline: '1px solid rgba(0, 0, 0, 0.6)',
+   },
+   '&::placeholder': {
+      color: 'rgba(255, 255, 255, 0.5)',
+      fontSize: '14px',
+   },
 }))
