@@ -14,7 +14,7 @@ import { EditIcon, ExitIcon } from '../../assets/icons'
 import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 import { Label } from './Label'
 
-export const CardInColumn = () => {
+export const Card = () => {
    const [openModal, setOpneModal] = useState(false)
    const [openLabelText, setOpenLabelText] = useState(false)
    const [clickedLabels, setClickedLabels] = useState([])
@@ -22,6 +22,7 @@ export const CardInColumn = () => {
    const handleOpenModal = () => {
       setOpneModal((state) => !state)
    }
+
    const handleButtonClick = () => {
       setClickedLabels(ButtonTextcolors)
       setOpenLabelText(true)
@@ -31,15 +32,13 @@ export const CardInColumn = () => {
       setOpenLabelText(false)
    }
 
-   const [openModalAddCard, setOpneModalAddCard] = useState(false)
-   const [openInputAddCard, setOpenInputAddCard] = useState(false)
+   const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
 
    const [inputValue, setInputValue] = useState('')
    const [cards, setCards] = useState([])
 
    const handleOpenModalAddCard = () => {
-      setOpneModalAddCard(true)
-      setOpenInputAddCard((prev) => !prev)
+      setOpneModalInputAddCard(true)
    }
 
    const handleButtonClickAddCard = (event) => {
@@ -52,8 +51,7 @@ export const CardInColumn = () => {
       setInputValue('')
    }
    const handleCloseCard = () => {
-      setOpenInputAddCard(false)
-      setOpneModalAddCard(false)
+      setOpneModalInputAddCard(false)
    }
 
    const handleAddCardInputChange = (event) => {
@@ -61,6 +59,7 @@ export const CardInColumn = () => {
    }
 
    const isButtonDisabled = inputValue === ''
+
    return (
       <>
          <ParentTitle>
@@ -165,7 +164,8 @@ export const CardInColumn = () => {
                   </IconText>
                </ColumnCard>
             ))}
-            {openModalAddCard ? (
+
+            {openModalInputAddCard ? (
                <form onSubmit={handleButtonClickAddCard}>
                   <InputAddCard>
                      <div
@@ -174,13 +174,11 @@ export const CardInColumn = () => {
                            alignItems: 'center',
                         }}
                      >
-                        {openInputAddCard && (
+                        {openModalInputAddCard && (
                            <InputAddCardStyle
-                              // onClose={handleOpenModalAddCard}
-                              // padding="1rem"
                               type="text"
                               value={inputValue}
-                              open={openModalAddCard}
+                              open={openModalInputAddCard}
                               placeholder="Enter a title for this card"
                               onChange={handleAddCardInputChange}
                            />
@@ -210,7 +208,6 @@ export const CardInColumn = () => {
 
 const ParentTitle = styled('div')(() => ({
    display: 'flex',
-   // justifyContent: 'space-between',
    marginBottom: '0.89rem',
 }))
 
@@ -221,22 +218,22 @@ const Title = styled('p')(() => ({
    fontStyle: 'normal',
    fontWeight: 500,
    lineHeight: 'normal',
-   // marginLeft: '1rem',
-   // marginTop: '0.69rem',
 }))
 
 const ParentColumnCard = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
-   // gap: '0.5rem',
 }))
 
 const StyleMeadIcon = styled('div')(() => ({
-   // marginTop: '0.5rem',
    cursor: 'pointer',
    backgroundColor: '#f0f0f0',
    position: 'absolute',
    marginLeft: '14.62rem',
+   transition: 'transform 0.4s ease-out',
+   '&:active': {
+      transform: 'scale(1,2)',
+   },
 }))
 const MenuItemStyle = styled(MenuItem)(() => ({
    padding: '1rem 0rem 0.25rem',
@@ -248,10 +245,6 @@ const MenuItemStyle = styled(MenuItem)(() => ({
 
 const ParagraphText = styled('p')(() => ({
    width: '100%',
-   fontSize: '1rem',
-   fontStyle: 'normal',
-   fontWeight: 400,
-   color: '#000',
    boxSizing: 'border-box',
    wordWrap: 'break-word',
 }))
@@ -261,11 +254,6 @@ const Labels = styled('div')(() => ({
    flexWrap: 'wrap',
    gap: '6px',
 }))
-
-// const Label = styled(Button)(() => ({
-//    width: '2.8125rem',
-//    height: ' 0.3125rem',
-// }))
 
 const WraperDedline = styled('div')(() => ({
    display: 'flex',
@@ -319,6 +307,9 @@ const ColorfulButton = styled(Button)(() => ({
    borderRadius: '0.5rem',
    marginBottom: '0.5rem',
    marginRight: '0.5rem',
+   '&:active': {
+      transform: 'scale(0.9, 0.9)',
+   },
 }))
 const IconText = styled('div')(() => ({
    display: 'flex',
@@ -326,7 +317,6 @@ const IconText = styled('div')(() => ({
 
 const CheckListButton = styled(Button)(() => ({
    color: '#F8F8F8',
-   // fontFamily: ' Cera Pro',
    fontSize: ' 0.75rem',
    fontStyle: ' normal',
    fontWeight: '500',
@@ -352,10 +342,6 @@ const ParentPeopleIcon = styled('div')(() => ({
 
 const AddPlus = styled('p')(() => ({
    cursor: 'pointer',
-   color: '#000000',
-   fontFamily: ' Cera Pro',
-   fontSize: '1rem   ',
-   fontStyle: ' normal',
    marginLeft: '0.5rem',
    fontWeight: '400',
    marginTop: '0.69rem',
@@ -363,7 +349,6 @@ const AddPlus = styled('p')(() => ({
 
 const EditIconStyle = styled(EditIcon)(() => ({
    position: 'absolute',
-   // marginRight: '500px',
    marginLeft: '14.31rem',
    marginBottom: '5.6rem',
    cursor: 'pointer',
@@ -376,7 +361,6 @@ const InputAddCardStyle = styled('textarea')(() => ({
    padding: '8px 8px 4px 12px',
    resize: 'none',
    overflow: 'hidden',
-   // border: 'none',
 }))
 
 const InputAddCard = styled('div')(() => ({
