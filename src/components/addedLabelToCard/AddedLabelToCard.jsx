@@ -1,7 +1,6 @@
 import React from 'react'
-// import axios from 'axios'
 import { styled as muiStyled } from '@mui/material/styles'
-// import { InputBase } from '@mui/material'
+
 import { CloseIcon, EditIcon } from '../../assets/icons'
 
 const Colors = [
@@ -40,9 +39,6 @@ export const AddedLabelToCard = () => {
          return updatedState
       })
    }
-   // React.useEffect(() => {
-   //    inputRef.current.focus()
-   // }, [editState])
 
    const onEditTask = (event, index) => {
       const updatedTaskText = [...taskText]
