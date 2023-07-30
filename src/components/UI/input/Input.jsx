@@ -20,7 +20,7 @@ export const Input = forwardRef(
    }
 )
 
-const MyStyledInput = styled(TextField)(() => ({
+const MyStyledInput = styled(TextField)((props) => ({
    input: {
       padding: 0,
       width: 0,
@@ -44,14 +44,14 @@ const MyStyledInput = styled(TextField)(() => ({
    },
    '& .MuiOutlinedInput-root': {
       '& fieldset': {
-         border: '1px solid #D0D0D0',
-         borderRadius: 13,
+         border: props.border || '1px solid #D0D0D0',
+         borderRadius: props.borderRadius || 13,
       },
       '&:hover fieldset': {
-         border: '1px solid #0079BF',
+         border: props.border || '1px solid #0079BF',
       },
       '&.Mui-focused fieldset': {
-         border: '1px solid #999898',
+         border: props.border || '1px solid #999898',
       },
    },
 }))

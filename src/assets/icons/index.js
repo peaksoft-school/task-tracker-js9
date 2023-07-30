@@ -42,8 +42,10 @@ import { ReactComponent as GoogleIcon } from './googleIcon.svg'
 import { ReactComponent as LayoutWhite } from './layoutwhite.svg'
 import { ReactComponent as SecondMenu } from './secondMenu.svg'
 import { ReactComponent as FirstMenu } from './firstMenu.svg'
+import { ReactComponent as Xicon } from './x.icon.svg'
 
 export {
+   Xicon,
    LayoutWhite,
    SecondMenu,
    FirstMenu,
