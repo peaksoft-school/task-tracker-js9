@@ -166,3 +166,21 @@ export const workspacedata = [
    },
 ]
 export const dataLength = data.length
+
+export const rows = [
+   {
+      id: 1,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+   {
+      id: 2,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+   {
+      id: 3,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+]

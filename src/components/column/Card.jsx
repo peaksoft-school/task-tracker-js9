@@ -1,18 +1,22 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material'
-import { MeadIcon } from '../Icon/MeadIcon'
-import { ColumnCard } from './ColumnCard'
-import { TimerIcon } from '../Icon/TimerIcon'
-import { TypographyIcon } from '../Icon/TypographyIcon'
-import { CommunicationIcon } from '../Icon/CommunicationIcon'
-import { CheckMarkIcon } from '../Icon/CheckMarkIcon'
-import { PeopleIcon } from '../Icon/PeopleIcon'
+
 import { MeadTables } from './MeadTables'
 import { Button } from '../UI/button/Button'
 import { MenuItem } from '../UI/menu/MenuItem'
-import { EditIcon, ExitIcon } from '../../assets/icons'
+import {
+   CheckKeyboardIcon,
+   CommunicationIcon,
+   ControlsIcon,
+   EditIcon,
+   ExitIcon,
+   PeopleIcon,
+   RealWorldIcon,
+   TypographyIcon,
+} from '../../assets/icons'
 import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 import { Label } from './Label'
+import { ColumnCard } from './ColumnCard'
 
 export const Card = () => {
    const [openModal, setOpneModal] = useState(false)
@@ -65,12 +69,14 @@ export const Card = () => {
          <ParentTitle>
             <Title>Title</Title>
             <StyleMeadIcon>
-               <MeadIcon
+               <ControlsIcon
                   onClick={(e) => {
                      e.preventDefault()
                      handleOpenModal()
                   }}
                />
+            </StyleMeadIcon>
+            <div>
                {openModal && (
                   <MenuItemStyle
                      width="16.6875rem"
@@ -80,7 +86,7 @@ export const Card = () => {
                      <MeadTables />
                   </MenuItemStyle>
                )}
-            </StyleMeadIcon>
+            </div>
          </ParentTitle>
 
          <ParentColumnCard>
@@ -117,14 +123,14 @@ export const Card = () => {
 
                <WraperDedline>
                   <Deadline>
-                     <TimerIcon />
+                     <RealWorldIcon />
                      <ParagraphDeadlineMonth>2 month</ParagraphDeadlineMonth>
                   </Deadline>
                   <WraperIcons>
                      <TypographyIcon />
                      <CommunicationIcon />
                      <CheckMarNumberkIcon>
-                        <CheckMarkIcon />
+                        <CheckKeyboardIcon />
                         <NumberIcon>1/3</NumberIcon>
                      </CheckMarNumberkIcon>
                      <ParentPeopleIcon>
@@ -147,7 +153,7 @@ export const Card = () => {
                </CheckListButton>
                <FlexIcon>
                   <CheckMarNumberkIcon>
-                     <CheckMarkIcon />
+                     <CheckKeyboardIcon />
                      <NumberIcon>1/3</NumberIcon>
                   </CheckMarNumberkIcon>
                   <div style={{ display: 'flex', gap: '4px' }}>
@@ -240,7 +246,8 @@ const MenuItemStyle = styled(MenuItem)(() => ({
    borderRadius: ' 0.625rem',
    backgroundColor: '#FFF',
    boxShadow: '  -12px 1px 36px 0px rgba(34, 60, 80, 0.2)',
-   marginRight: '-40px',
+   marginLeft: '11.62rem',
+   marginTop: '2rem',
 }))
 
 const ParagraphText = styled('p')(() => ({
@@ -265,7 +272,7 @@ const Deadline = styled('div')(() => ({
    display: 'flex',
    backgroundColor: '#F9DCB4',
    borderRadius: '0.5rem',
-   padding: ' 0.125rem 0.5rem',
+   padding: ' 0.125rem 0.5rem 0rem 0.5rem',
    marginRight: '0.75rem',
 }))
 

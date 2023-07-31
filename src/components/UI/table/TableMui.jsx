@@ -9,14 +9,12 @@ import Paper from '@mui/material/Paper'
 
 export default function TableMui({ column, rows }) {
    return (
-      <TableContainer style={{ width: '100%' }} component={Paper}>
+      <TableContainerStyle style={{ width: '100%' }} component={Paper}>
          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead
                style={{
                   borderBottom: '2px solid #D7D7D7',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem',
-                  height: '1rem',
+                  height: '4rem',
                }}
             >
                <TableRow>
@@ -24,9 +22,11 @@ export default function TableMui({ column, rows }) {
                      <StyledTableCell
                         key={`header-${column.key}`}
                         align={column.align}
-                        style={
-                           column.minWidth ? { minWidth: column.minWidth } : {}
-                        }
+                        style={{
+                           minWidth: column.minWidth,
+                           padding: column.padding,
+                           fontWeight: 'bold',
+                        }}
                      >
                         {column.heading}
                      </StyledTableCell>
@@ -74,18 +74,20 @@ export default function TableMui({ column, rows }) {
                ))}
             </TableBody>
          </Table>
-      </TableContainer>
+      </TableContainerStyle>
    )
 }
 
-const StyledTableCell = styled(TableCell)(({ theme, align }) => ({
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${TableHead}`]: {
       color: theme.palette.common.white,
    },
    [`&.${TableBody}`]: {
       fontSize: 14,
    },
-   textAlign: align,
+}))
+const TableContainerStyle = styled(TableContainer)(() => ({
+   boxShadow: 'none',
 }))
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
