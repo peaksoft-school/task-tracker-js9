@@ -36,9 +36,7 @@ export const ProfileForm = () => {
       console.log(data)
    }
 
-   const [avatarUrl, setAvatarUrl] = useState(
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU'
-   )
+   const [avatarUrl, setAvatarUrl] = useState('')
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
