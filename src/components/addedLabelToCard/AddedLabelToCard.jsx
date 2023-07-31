@@ -1,9 +1,8 @@
 import React from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
-
 import { CloseIcon, EditIcon } from '../../assets/icons'
 
-const Colors = [
+const Labels = [
    {
       id: 1,
       backgroundColor: '#61BD4F',
@@ -27,37 +26,35 @@ const Colors = [
 ]
 
 export const AddedLabelToCard = () => {
-   const [editState, setEditState] = React.useState(Colors.map(() => false))
+   const [editState, setEditState] = React.useState(Labels.map(() => false))
    const [taskText, setTaskText] = React.useState(
-      Colors.map((color) => color.text)
+      Labels.map((color) => color.text)
    )
-   const inputRef = React.useRef()
 
-   const onEditHandler = (index) => {
-      setEditState((prevState) => {
-         const updatedState = prevState.map((state, i) => i === index)
-         return updatedState
+   const onEditHandler = (idx) => {
+      setEditState((prev) => {
+         return prev.map((state, i) => i === idx)
       })
    }
 
-   const onEditTask = (event, index) => {
+   const onEditTask = (event, idx) => {
       const updatedTaskText = [...taskText]
-      updatedTaskText[index] = event.target.value
+      updatedTaskText[idx] = event.target.value
       setTaskText(updatedTaskText)
    }
 
-   const onClickKey = (event, index) => {
+   const onClickKey = (event, idx) => {
       if (event.key === 'Enter') {
-         setEditState((prevState) => {
-            const updatedState = [...prevState]
-            updatedState[index] = false
+         setEditState((prev) => {
+            const updatedState = [...prev]
+            updatedState[idx] = false
             return updatedState
          })
 
-         if (taskText[index] === '') {
-            setTaskText((prevTaskText) => {
-               const updatedTaskText = [...prevTaskText]
-               updatedTaskText[index] = 'Done'
+         if (taskText[idx] === '') {
+            setTaskText((prev) => {
+               const updatedTaskText = [...prev]
+               updatedTaskText[idx] = 'Done'
                return updatedTaskText
             })
          }
@@ -71,39 +68,28 @@ export const AddedLabelToCard = () => {
                <Title>Label</Title>
                <CloseIcon style={{ display: 'inline-block' }} src={CloseIcon} />
             </WrapperTitle>
-            {Colors.map((color, index) => (
+            {Labels.map((color, idx) => (
                <WrapperTask key={color.id}>
-                  {editState[index] ? (
-                     <>
-                        <StyledInputBase
-                           onKeyPress={(e) => onClickKey(e, index)}
-                           ref={inputRef}
-                           id={color.id}
-                           style={color}
-                           value={taskText[index]}
-                           onChange={(e) => onEditTask(e, index)}
-                           placeholder="пусто"
-                        />
-                        <label htmlFor={color.id}>
-                           <EditIcon
-                              src={EditIcon}
-                              onClick={() => onEditHandler(index)}
-                           />
-                        </label>
-                     </>
+                  {editState[idx] ? (
+                     <StyledInputBase
+                        onKeyPress={(e) => onClickKey(e, idx)}
+                        id={color.id}
+                        style={color}
+                        value={taskText[idx]}
+                        onChange={(e) => onEditTask(e, idx)}
+                        placeholder="empty"
+                     />
                   ) : (
-                     <>
-                        <Task key={color.id} style={color}>
-                           {taskText[index]}
-                        </Task>
-                        <label htmlFor={color.id}>
-                           <EditIcon
-                              src={EditIcon}
-                              onClick={() => onEditHandler(index)}
-                           />
-                        </label>
-                     </>
+                     <Task key={color.id} style={color}>
+                        {taskText[idx]}
+                     </Task>
                   )}
+                  <label htmlFor={color.id}>
+                     <EditIcon
+                        src={EditIcon}
+                        onClick={() => onEditHandler(idx)}
+                     />
+                  </label>
                </WrapperTask>
             ))}
          </Wrapper>
@@ -116,7 +102,7 @@ const Container = muiStyled('div')(() => ({
    justifyContent: 'center',
    alignItems: 'center',
    height: '100vh',
-   backgroundColor: 'black',
+   backgroundColor: 'rgba(0, 0, 0, 0.3)',
 }))
 
 const Wrapper = muiStyled('div')(() => ({
@@ -136,7 +122,6 @@ const WrapperTitle = muiStyled('div')(() => ({
 
 const Title = muiStyled('h4')(() => ({
    fontFamily: 'sans-serif',
-   fontSize: '16px',
    fontWeight: '400',
    marginRight: '120px',
 }))
@@ -153,7 +138,6 @@ const Task = muiStyled('div')(() => ({
    padding: '6px 0 6px 16px',
    borderRadius: '6px',
    margin: '4px 10px 4px 0',
-   fontSize: '16px',
    fontWeight: '500',
    color: '#fff',
 }))
@@ -165,7 +149,6 @@ const StyledInputBase = muiStyled('input')(() => ({
    padding: '7px 0 7px 16px',
    borderRadius: '6px',
    margin: '4px 10px 4px 0',
-   fontSize: '16px',
    fontWeight: '500',
    color: '#fff',
    border: 'none',
