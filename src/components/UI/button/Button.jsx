@@ -14,8 +14,8 @@ export const Button = ({
          type="submit"
          variant={variant}
          onClick={onClick}
-         startIcon={startIcon}
-         icon={icon}
+         startIcon
+         icon
          {...rest}
       >
          {children}
@@ -27,11 +27,9 @@ const ButtonStyle = styled(ReusableButton)(({ ...props }) => ({
    backgroundColor: props.backgroundColor || '#0079BF',
    color: props.color || '#ffffff',
    borderRadius: props.borderRadius || '1.6rem',
-   width: props.width || '9.6rem',
    display: 'inline-flex',
    padding: props.padding || '0.5rem 1rem',
    alignItems: 'flex-start',
-   gap: '0.5rem',
    '&:hover': {
       backgroundColor: props.backgroundColor,
       color: props.color,

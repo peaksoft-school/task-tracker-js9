@@ -42,10 +42,18 @@ import { ReactComponent as GoogleIcon } from './googleIcon.svg'
 import { ReactComponent as LayoutWhite } from './layoutwhite.svg'
 import { ReactComponent as SecondMenu } from './secondMenu.svg'
 import { ReactComponent as FirstMenu } from './firstMenu.svg'
-import { ReactComponent as Xicon } from './x.icon.svg'
+import { ReactComponent as ControlsIcon } from './controlsIcon.svg'
+import { ReactComponent as RealWorldIcon } from './realWorldIcon.svg'
+import { ReactComponent as TypographyIcon } from './typographyIcon.svg'
+import { ReactComponent as CommunicationIcon } from './communicationIcon.svg'
+import { ReactComponent as CheckKeyboardIcon } from './CheckKeyboardIcon.svg'
 
 export {
-   Xicon,
+   CheckKeyboardIcon,
+   CommunicationIcon,
+   TypographyIcon,
+   RealWorldIcon,
+   ControlsIcon,
    LayoutWhite,
    SecondMenu,
    FirstMenu,
