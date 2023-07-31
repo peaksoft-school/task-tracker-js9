@@ -41,7 +41,7 @@ export const ResetPasswordPage = () => {
                validateOnBlur
             >
                {({ values, errors, touched, setFieldValue, handleChange }) => (
-                  <Form>
+                  <StyledForm>
                      <WrapperInputs>
                         <ContainerPasswordInput>
                            <StyledInputs
@@ -121,7 +121,7 @@ export const ResetPasswordPage = () => {
                            <StyledButton type="submit">Log in</StyledButton>
                         </WrapperButton>
                      </WrapperInputs>
-                  </Form>
+                  </StyledForm>
                )}
             </Formik>
          </Container>
@@ -130,6 +130,13 @@ export const ResetPasswordPage = () => {
 }
 
 // Styled components...
+
+const StyledForm = styled(Form)(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'space-between',
+   height: '25vh',
+}))
 
 const ContainerPasswordInput = styled('div')(() => ({
    //  position: 'relative',

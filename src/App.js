@@ -1,10 +1,17 @@
-import { Column } from './components/column/Column'
+import { ThemeProvider } from '@emotion/react'
+import { RouterProvider } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import { routes } from './routes/AppProvider'
+import { theme } from './assets/styles/theme'
 
 function App() {
    return (
-      <div>
-         <Column />
-      </div>
+      <>
+         <ToastContainer />
+         <ThemeProvider theme={theme}>
+            <RouterProvider router={routes} />
+         </ThemeProvider>
+      </>
    )
 }
 export default App

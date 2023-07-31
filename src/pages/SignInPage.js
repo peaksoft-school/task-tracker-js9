@@ -41,7 +41,7 @@ export const SignInPage = () => {
       navigate('/resetPassword')
    }
    const loginHandler = () => {
-      navigate('/mainpage')
+      // navigate('/mainpage')
    }
    return (
       <LayoutFormPage>
