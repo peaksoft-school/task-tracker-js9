@@ -1,10 +1,4 @@
-import { Column } from './components/column/Column'
-
 function App() {
-   return (
-      <div>
-         <Column />
-      </div>
-   )
+   return <div>Task tracker</div>
 }
 export default App
