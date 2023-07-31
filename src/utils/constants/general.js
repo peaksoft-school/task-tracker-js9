@@ -130,40 +130,57 @@ export const boards = [
    },
 ]
 
-export const involvedProjects = [
-   { title: 'ali', text: 'Samatov' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Samatov', text: 'ali' },
-   { title: 'Ali', text: 'Ali' },
+export const data = [
+   {
+      name: 'Taigan',
+      partisipants: 222,
+      issues: 30,
+      id: 1,
+   },
 ]
 
-export const testFields = [
+export const workspacedata = [
    {
-      name: 'firstName',
-      type: 'text',
-      placeholder: 'First Name',
+      name: 'LMS',
+      partisipants: 222,
+      issues: 30,
+      id: 2,
    },
    {
-      name: 'lastName',
-      type: 'text',
-      placeholder: 'Last Name',
+      name: 'Accounting',
+      partisipants: 222,
+      issues: 30,
+      id: 3,
    },
    {
-      name: 'email',
-      type: 'email',
-      placeholder: 'Email',
+      name: 'LMS',
+      partisipants: 222,
+      issues: 30,
+      id: 4,
+   },
+   {
+      name: 'Accounting',
+      partisipants: 222,
+      issues: 30,
+      id: 5,
+   },
+]
+export const dataLength = data.length
+
+export const rows = [
+   {
+      id: 1,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+   {
+      id: 2,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
+   },
+   {
+      id: 3,
+      name: 'Taigan',
+      lead: 'Almaz Almazov',
    },
 ]

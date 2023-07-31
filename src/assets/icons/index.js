@@ -37,8 +37,26 @@ import { ReactComponent as TemplateIcon } from './template.svg'
 import { ReactComponent as ToolsIcon } from './tools.svg'
 import { ReactComponent as Logo } from './Logo.svg'
 import { ReactComponent as PersonIcon } from './person_icon.svg'
+import { ReactComponent as BlueIcon } from './blueIcon.svg'
+import { ReactComponent as GoogleIcon } from './googleIcon.svg'
+import { ReactComponent as LayoutWhite } from './layoutwhite.svg'
+import { ReactComponent as SecondMenu } from './secondMenu.svg'
+import { ReactComponent as FirstMenu } from './firstMenu.svg'
+import { ReactComponent as ControlsIcon } from './controlsIcon.svg'
+import { ReactComponent as RealWorldIcon } from './realWorldIcon.svg'
+import { ReactComponent as TypographyIcon } from './typographyIcon.svg'
+import { ReactComponent as CommunicationIcon } from './communicationIcon.svg'
+import { ReactComponent as CheckKeyboardIcon } from './CheckKeyboardIcon.svg'
 
 export {
+   CheckKeyboardIcon,
+   CommunicationIcon,
+   TypographyIcon,
+   RealWorldIcon,
+   ControlsIcon,
+   LayoutWhite,
+   SecondMenu,
+   FirstMenu,
    LeftIcon,
    RightIcon,
    UpIcon,
@@ -78,4 +96,6 @@ export {
    ToolsIcon,
    Logo,
    PersonIcon,
+   BlueIcon,
+   GoogleIcon,
 }

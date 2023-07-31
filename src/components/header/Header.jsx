@@ -1,45 +1,62 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
+import { Avatar, IconButton } from '@mui/material'
+import { Outlet } from 'react-router-dom'
 import {
    DownIcon,
    Logo,
    NotificationIcon,
-   PersonIcon,
+   // PersonIcon,
    SearchIcon,
+   UpIcon,
 } from '../../assets/icons'
 
-export const Header = () => {
+export const Headers = ({ data }) => {
+   const [isIconUp, setIsIconUp] = useState(false)
+
+   const handleIconClick = () => {
+      setIsIconUp(!isIconUp)
+   }
    return (
-      <GLobalContainer>
-         <LogoContainer>
-            <Logotype src={Logo} alt="task-tracker_logo" />
-            <LogoWords>Task Tracker</LogoWords>
-            <Favorite>
-               <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
-               <DownIcon src={DownIcon} alt="arrow" />
-            </Favorite>
-         </LogoContainer>
-         <AboutPanel>
-            <Search>
-               <SearchIconWrapper>
-                  <SearchIcon src={SearchIcon} alt="Search_Icon" />
-               </SearchIconWrapper>
-               <StyledInputBase
-                  placeholder="Search"
-                  inputProps={{ CarePro: 'search' }}
-               />
-            </Search>
-            <NotificationIcon src={NotificationIcon} alt="natifacation" />
-            <PersonIcon src={PersonIcon} alt="person_Icon" />
-         </AboutPanel>
-      </GLobalContainer>
+      <div>
+         <GLobalContainer>
+            <LogoContainer>
+               <Logotype src={Logo} alt="task-tracker_logo" />
+               <LogoWords>Task Tracker</LogoWords>
+               <Favorite>
+                  <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
+                  <IconButton onClick={handleIconClick}>
+                     {isIconUp ? (
+                        <UpIcon src={UpIcon} alt="up_arrow" />
+                     ) : (
+                        <DownIcon src={DownIcon} alt="down_arrow" />
+                     )}
+                  </IconButton>
+               </Favorite>
+            </LogoContainer>
+            <AboutPanel>
+               <Search>
+                  <SearchIconWrapper>
+                     <SearchIcon src={SearchIcon} alt="Search_Icon" />
+                  </SearchIconWrapper>
+                  <StyledInputBase placeholder="Search" />
+               </Search>
+               <IconButton>
+                  <NotificationIcon src={NotificationIcon} alt="notification" />
+               </IconButton>
+               {/* <PersonIcon src={PersonIcon} alt="person_Icon" /> */}
+               <Avatar> {data}</Avatar>
+            </AboutPanel>
+         </GLobalContainer>
+         <Outlet />
+      </div>
    )
 }
 
 const GLobalContainer = muiStyled('header')(() => ({
    width: '100%',
-   height: '6.8vw',
+   height: ': 4.25rem',
    backgroundColor: '#ffffff',
    padding: '1rem 2.5rem',
    display: 'flex',
@@ -114,6 +131,7 @@ const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
 }))
 
 const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
+   fontFamily: 'CarePro',
    color: 'inherit',
    '& .MuiInputBase-input': {
       borderRadius: 8,
