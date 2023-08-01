@@ -25,7 +25,7 @@ const MyStyledInput = styled(TextField)(() => ({
       padding: 0,
       width: 0,
       backgroundColor: 'white',
-      borderRadius: 13,
+      borderRadius: 0,
       height: 0,
    },
 
@@ -40,12 +40,12 @@ const MyStyledInput = styled(TextField)(() => ({
       borderBottomColor: 'green',
    },
    '& .MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill': {
-      borderRadius: 13,
+      borderRadius: '0.25rem',
    },
    '& .MuiOutlinedInput-root': {
       '& fieldset': {
          border: '1px solid #D0D0D0',
-         borderRadius: 13,
+         borderRadius: '0.25rem',
       },
       '&:hover fieldset': {
          border: '1px solid #0079BF',
