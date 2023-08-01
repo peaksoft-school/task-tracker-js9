@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { styled, IconButton } from '@mui/material'
 import { StarFilledIcon, StarIcon } from '../../assets/icons'
+import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Favourite = ({ favourite }) => {
    const [favouriteData, setFavouriteData] = useState(favourite)
+   const dispatch = useDispatch()
 
    const handleStarClick = (id) => {
       setFavouriteData((prevData) =>
@@ -19,6 +22,10 @@ export const Favourite = ({ favourite }) => {
    const returnIdHandler = (id) => {
       console.log('Clicked item ID:', id)
    }
+
+   useEffect(() => {
+      dispatch(getFavourites())
+   }, [dispatch])
 
    return (
       <Container>

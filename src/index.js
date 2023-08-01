@@ -1,16 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-// import { RouterProvider } from 'react-router-dom'
-// import { ToastContainer } from 'react-toastify'
-// import { ThemeProvider } from '@mui/material'
-// import { theme } from './assets/styles/theme'
+// import App from './App'
 import './index.css'
-import App from './App'
-// import { routes } from './routes/AppProvider'
+import { Provider } from 'react-redux'
+import { Favourite } from './components/favourite/Favourite'
+import { store } from './store'
+import { favourites } from './utils/constants/favourites'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
    <React.StrictMode>
-      <App />
+      {/* <App /> */}
+      <Provider store={store}>
+         <Favourite favourite={favourites} />
+      </Provider>
    </React.StrictMode>
 )
