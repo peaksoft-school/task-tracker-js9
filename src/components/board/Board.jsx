@@ -1,13 +1,27 @@
+import React from 'react'
 import { styled } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
 import { StarIcon } from '../../assets/icons'
+import { fetchBoards } from '../../redux/slice/boardSlice'
 
-export const Board = ({ boards }) => {
+export const Board = () => {
+   const dispatch = useDispatch()
+   const getPizzas = () => {
+      dispatch(fetchBoards())
+   }
+
+   React.useEffect(() => {
+      getPizzas()
+   }, [])
+
+   const items = useSelector((state) => state.boardSlice.items)
+   console.log(items)
    return (
       <AllBoard>
-         {boards.map((board) => (
-            <div key={board.id}>
-               <BoardBlock board={board}>
-                  <BoardTitle>{board.title}</BoardTitle>
+         {items.map((item) => (
+            <div key={item.id}>
+               <BoardBlock board={item}>
+                  <BoardTitle>{item.title}</BoardTitle>
                   <StarContainer>
                      <StarIcon />
                   </StarContainer>

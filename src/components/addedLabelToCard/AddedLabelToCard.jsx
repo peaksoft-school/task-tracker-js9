@@ -102,6 +102,7 @@ const Container = muiStyled('div')(() => ({
    justifyContent: 'center',
    alignItems: 'center',
    height: '100vh',
+   fontSize: '1rem',
    backgroundColor: 'rgba(0, 0, 0, 0.3)',
 }))
 
