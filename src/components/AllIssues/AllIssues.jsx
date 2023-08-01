@@ -12,11 +12,14 @@ export const AllIssues = () => {
    const [value, setValue] = useState(dayjs('2023-09-17'))
 
    const [labels, setLabels] = useState('All Labels')
+   const [assignee, setAssignee] = useState('Assignee')
 
-   const handleChange = (event) => {
+   const LabelsHandleChange = (event) => {
       setLabels(event.target.value)
    }
-
+   const AssigneeHandleChange = (event) => {
+      setAssignee(event.target.value)
+   }
    const dataLength = 24
    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
@@ -39,9 +42,12 @@ export const AllIssues = () => {
                            format="DD.MM.YYYY"
                         />
                      </LocalizationProvider>
-                     <div style={{ display: 'flex', gap: '1.3rem' }}>
+                     <MainFormControlContainer>
                         <FormControl>
-                           <StyledSelect value={labels} onChange={handleChange}>
+                           <StyledSelect
+                              value={labels}
+                              onChange={LabelsHandleChange}
+                           >
                               <MenuItem disabled value="All Labels">
                                  All Labels
                               </MenuItem>
@@ -50,39 +56,27 @@ export const AllIssues = () => {
                         </FormControl>
                         <FormControl>
                            <AssigneeSelect
-                              value={labels}
-                              onChange={handleChange}
-                              defaultValue="All Labels"
+                              value={assignee}
+                              onChange={AssigneeHandleChange}
                            >
-                              <p>kd</p>
+                              <MenuItem disabled value="Assignee">
+                                 Assignee
+                              </MenuItem>
                            </AssigneeSelect>
                         </FormControl>
-                     </div>
-                     <div
-                        style={{
-                           display: 'flex',
-                           alignItems: 'center',
-                           gap: '0.4rem',
-                        }}
-                     >
+                     </MainFormControlContainer>
+                     <CheckConatainer>
                         <Checkbox
                            sx={{
                               '& .MuiSvgIcon-root': { fontSize: 25 },
                               '&.Mui-checked': {
-                                 color: ' #30a0d4',
+                                 color: ' #39abe0',
                               },
                            }}
                            {...label}
                         />
-                        <p
-                           style={{
-                              textTransform: 'capitalize',
-                              color: '#464646',
-                           }}
-                        >
-                           checklist
-                        </p>
-                     </div>
+                        <p>checklist</p>
+                     </CheckConatainer>
                   </RoleSection>
                </MainCont>
                <Total>
@@ -226,4 +220,16 @@ const AssigneeSelect = styled(Select)(() => ({
          borderColor: '#0079BF',
       },
    },
+}))
+
+const MainFormControlContainer = styled('div')(() => ({
+   display: 'flex',
+   gap: '1.3rem',
+}))
+
+const CheckConatainer = styled('div')(() => ({
+   display: 'flex',
+   alignItems: 'center',
+   gap: '0.4rem',
+   p: { textTransform: 'capitalize', color: '#464646' },
 }))

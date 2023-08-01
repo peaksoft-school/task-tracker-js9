@@ -30,7 +30,8 @@ const MainWrapper = styled('div')(() => ({
 }))
 
 const ImageLogoPage = styled('img')(() => ({
-   width: '37.3125rem;',
+   width: '37.3125rem',
+   // width: '100vw',
    height: '100vh',
    marginRight: '7.69rem',
 }))
