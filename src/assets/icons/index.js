@@ -98,4 +98,5 @@ export {
    PersonIcon,
    BlueIcon,
    GoogleIcon,
+   CloseIcon,
 }
