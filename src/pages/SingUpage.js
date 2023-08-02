@@ -1,15 +1,21 @@
 import { Checkbox, TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form, ErrorMessage } from 'formik'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux'
 import { LayoutFormPage } from './LayoutFormPage'
 import { GoogleIcon, HideIcon, ShowIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
+import { signUpRequest } from '../store/auth/authThunk'
 
 export const SignUpPage = () => {
+   const token = useSelector((state) => state.auth)
+   console.log('token: ', token)
    const [showPassword, setShowPassword] = useState(false)
    const [showRepeatPassword, setShowRepeatPassword] = useState(false)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -40,7 +46,10 @@ export const SignUpPage = () => {
    })
 
    const handleSubmit = (values) => {
-      console.log(values)
+      dispatch(signUpRequest(values))
+         .unwrap()
+         .then(() => navigate('/mainPage'))
+         .catch((error) => console.log(error))
    }
 
    return (

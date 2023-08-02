@@ -15,7 +15,7 @@ export const routes = createBrowserRouter([
       element: <SignUpPage />,
    },
    {
-      path: 'resetPassword',
+      path: `/forgotPassword`,
       element: <ResetPasswordPage />,
    },
    {

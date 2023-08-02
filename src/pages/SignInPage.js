@@ -2,17 +2,23 @@ import { TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 import { LayoutFormPage } from './LayoutFormPage'
 import { ShowIcon, HideIcon, GoogleIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
 import { ModalUi } from '../components/UI/modal/Modal'
+import { signInRequest } from '../store/auth/authThunk'
 
 export const SignInPage = () => {
    const [showPassword, setShowPassword] = useState(false)
    const [isModalOpen, setIsModalOpen] = useState(false)
+   const [emailValue, setEmailValue] = useState('')
 
    const navigate = useNavigate()
+   const dispatch = useDispatch()
+
+   const disabledButton = emailValue.length === 0 || !emailValue.includes('@')
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -34,15 +40,20 @@ export const SignInPage = () => {
    })
 
    const handleSubmit = (values) => {
-      console.log(values)
+      dispatch(signInRequest(values))
+         .unwrap()
+         .then(() => navigate('/mainPage'))
+         .catch((error) => console.log(error))
    }
 
+   const geteEmailValue = (e) => {
+      setEmailValue(e.target.value)
+   }
    const handleResetPassword = () => {
-      navigate('/resetPassword')
+      setEmailValue('')
+      handleOpenModal()
    }
-   const loginHandler = () => {
-      // navigate('/mainpage')
-   }
+
    return (
       <LayoutFormPage>
          <Container>
@@ -101,7 +112,7 @@ export const SignInPage = () => {
                                           <HideIcon />
                                        )}
                                     </ContainerEyes>
-                                 </ContainerInputs>{' '}
+                                 </ContainerInputs>
                                  {errors.password && touched.password && (
                                     <ErrorText>{errors.password}</ErrorText>
                                  )}
@@ -117,9 +128,7 @@ export const SignInPage = () => {
                            </ForgotPassword>
                         </WrapperInputs>
 
-                        <LoginButton type="submit" onClick={loginHandler}>
-                           Log In
-                        </LoginButton>
+                        <LoginButton type="submit">Log In</LoginButton>
                         <MainBlock>
                            <p>Not a member?</p>
                            <SignUpText to="/signup"> Sign up now</SignUpText>
@@ -140,9 +149,14 @@ export const SignInPage = () => {
                         size="small"
                         type="email"
                         placeholder="example@gmail.com"
+                        value={emailValue}
+                        onChange={geteEmailValue}
                      />
                      <WrapperModalButton>
-                        <ModalButton onClick={handleResetPassword}>
+                        <ModalButton
+                           disabled={disabledButton}
+                           onClick={handleResetPassword}
+                        >
                            send
                         </ModalButton>
                      </WrapperModalButton>
