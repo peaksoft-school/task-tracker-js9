@@ -2,12 +2,19 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const fetchBoards = createAsyncThunk('board/fetchBoards', async () => {
-   const { data } = await axios.get(
-      `http://tasktracker.peaksoftprojects.com/boards/`
-   )
+   const { data } = await axios.get(`http://localhost:3001/boards/`)
+
    return data
 })
 
+export const boardRemove = createAsyncThunk(
+   'board/boardRemove',
+   async (id, { dispatch }) => {
+      console.log(dispatch)
+      axios.delete(`http://localhost:3001/boards/${id}`)
+      dispatch(fetchBoards())
+   }
+)
 export const initialState = {
    items: [],
    status: 'loading',
@@ -22,6 +29,9 @@ export const boardSlice = createSlice({
    reducers: {
       setItems(state, action) {
          state.items = action.payload
+      },
+      removeItem(state, action) {
+         state.items = state.items.filter((obj) => obj.id !== action.payload)
       },
    },
    extraReducers: {
@@ -40,6 +50,6 @@ export const boardSlice = createSlice({
    },
 })
 
-export const { setItems } = boardSlice.actions
+export const { setItems, removeItem } = boardSlice.actions
 
 export default boardSlice.reducer
