@@ -9,6 +9,7 @@ export const Colors = ({
    open,
    onClose,
    id,
+   anchorEl,
 }) => {
    const [selectedColor, setSelectedColor] = useState(null)
 
@@ -18,7 +19,7 @@ export const Colors = ({
    }
 
    return (
-      <PopoverCont id={id} open={open} onClose={onClose}>
+      <PopoverCont id={id} open={open} onClose={onClose} anchorEl={anchorEl}>
          <AllBoard>
             <StyledHeader>
                <StyledIconButton onClick={handleLeftColorClick}>
@@ -47,8 +48,9 @@ export const Colors = ({
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -520,
-   left: 5,
+   top: -574,
+   left: -12,
+
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       borderRadius: '0.7rem',
       minWidth: '23.8rem',

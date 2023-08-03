@@ -7,7 +7,13 @@ import { BackgroundChanger } from './BackgroundChanger'
 
 export const AssigneeSection = () => {
    const [anchorEl, setAnchorEl] = useState(null)
-   const [, setToogle] = useState(false)
+   const [toogle, setToogle] = useState(false)
+
+   const [, setSelectedUserId] = useState(null)
+
+   const handleCheckboxClick = (id) => {
+      setSelectedUserId(id)
+   }
 
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget)
@@ -40,14 +46,15 @@ export const AssigneeSection = () => {
          </Search>
          <div style={{ marginTop: '1rem' }}>
             <ScrollableContainer>
-               {/* {& ( */}
-               <BackgroundChanger
-                  open={open}
-                  onClose={handleClose}
-                  handleUnassignedClick={handleUnassignedClick}
-                  id={id}
-                  anchorEl={anchorEl}
-               />
+               {toogle && (
+                  <BackgroundChanger
+                     open={open}
+                     onClose={handleClose}
+                     handleUnassignedClick={handleUnassignedClick}
+                     id={id}
+                     anchorEl={anchorEl}
+                  />
+               )}
 
                <UnassignedContainer aria-describedby={id} onClick={handleClick}>
                   <Checkbox
@@ -79,8 +86,9 @@ export const AssigneeSection = () => {
                               color: '#5faed0',
                            },
                         }}
+                        onClick={() => handleCheckboxClick(el.id)}
                      />
-                     <Avatar>{el.img}</Avatar>
+                     <Avatar src={el.img} />
                      <div>
                         <p>{el.name}</p>
                         <PeoplesEmail>{el.email}</PeoplesEmail>
