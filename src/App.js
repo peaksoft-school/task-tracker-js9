@@ -1,9 +1,9 @@
-import { Column } from './components/column/Column'
+import { Workspaces } from './components/workspace/Workspace'
 
 function App() {
    return (
       <div>
-         <Column />
+         <Workspaces />
       </div>
    )
 }

@@ -1,113 +1,170 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
+import CreatableSelect from 'react-select/creatable'
+import { Formik, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 import { styled } from '@mui/material'
 import { ModalUi } from '../UI/modal/Modal'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
-import { Xicon } from '../../assets/icons'
 
-export const WorkspaceModal = ({ showModal, setShowModal }) => {
-   const [workspaceName, setWorkspaceName] = useState('')
-   const [inviteMember, setInviteMember] = useState('')
-   const [todoEmails, setTodoEmails] = useState([])
+const validationSchema = Yup.object().shape({
+   workspaceName: Yup.string().required('Name of the workspace is required'),
+   inviteMember: Yup.array()
+      .of(
+         Yup.object().shape({
+            value: Yup.string().email('Invalid email format'),
+            label: Yup.string().email('Invalid email format'),
+         })
+      )
+      .required('At least one email is required')
+      .min(1, 'Please provide at least one email'),
+   tempValue: Yup.string().email('Invalid email format'),
+})
 
-   const addHandlerTodo = (data) => {
-      setTodoEmails([...todoEmails, data])
-   }
-   const removeEmailHandler = (id) => {
-      setTodoEmails(todoEmails.filter((item) => item.id !== id))
-   }
+const NewWorkspaceForm = ({ showModal, setShowModal }) => {
+   const [value, setValue] = useState([])
+   const formikRef = useRef()
 
-   const addEmailHandler = () => {
-      const data = {
-         title: inviteMember,
-         id: new Date(),
+   const handleFormSubmit = (values, formikBag) => {
+      if (formikRef.current) {
+         formikRef.current.setFieldValue('inviteMember', [])
       }
-      addHandlerTodo(data)
-      setInviteMember('')
-   }
-   const handleCreateWorkspace = () => {
-      console.log('Creating workspace...')
-   }
-
-   const isValidEmail = (email) => {
-      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-      return emailRegex.test(email)
-   }
-
-   const isCreateDisabled = () => {
-      if (
-         (!isValidEmail(inviteMember) && todoEmails.length === 0) ||
-         !workspaceName
-      ) {
-         return true
+      if (!values.inviteMember || values.inviteMember.length === 0) {
+         return
       }
-      return false
+
+      formikBag.setFieldValue([...values.inviteMember])
    }
-   const submitHandler = (event) => {
-      event.preventDefault()
-      addEmailHandler()
+
+   const createOption = (label) => ({
+      label,
+      value: label,
+   })
+
+   const handleCreatableChange = (newValue, actionMeta) => {
+      if (actionMeta.action === 'create-option') {
+         const newOption = createOption(newValue.label)
+         console.log(newOption)
+         setValue([...value, newOption])
+      } else {
+         setValue(newValue)
+      }
    }
+
+   const createNewWorkspace = (values) => {
+      console.log('Creating workspace...', values)
+
+      setShowModal(false)
+   }
+
+   console.log(value)
 
    return (
       <div>
-         {showModal ? (
+         {showModal && (
             <StyleModalUi open={showModal} onClose={() => setShowModal(false)}>
                <NewWorkspace>Create a new workspace</NewWorkspace>
-               <LebelStyle sx={{ padding: '0 0 0.5rem 0' }} htmlFor="name">
-                  Name of the workspace*
-               </LebelStyle>
-               <InputStyle
-                  type="text"
-                  placeholder="Name"
-                  id="name"
-                  value={workspaceName}
-                  onChange={(e) => setWorkspaceName(e.target.value)}
-                  borderRadius=" 0.3rem"
-               />
-               <InputContainer onSubmit={submitHandler}>
-                  <LebelStyle htmlFor="name">Invite a member</LebelStyle>
-                  <EmailInputContainer>
-                     <SecondInputStyle
-                        type="email"
-                        placeholder="exemple@gmail.com"
-                        id="name"
-                        value={inviteMember}
-                        onChange={(e) => setInviteMember(e.target.value)}
-                        border="none"
-                        z
-                     />
-                     <MapContainer>
-                        {todoEmails.map((item) => (
-                           <div>
-                              <p key={item.id}>{item.title}</p>
-                              <Xicon
-                                 onClick={() => removeEmailHandler(item.id)}
-                                 style={{
-                                    margin: '0.3rem 0.6rem 0.2rem 0 ',
-                                    cursor: 'pointer',
-                                 }}
+               <Formik
+                  ref={formikRef}
+                  initialValues={{
+                     tempValue: '',
+                     workspaceName: '',
+                     inviteMember: [],
+                  }}
+                  validationSchema={validationSchema}
+                  onSubmit={handleFormSubmit}
+               >
+                  {({
+                     values,
+                     isSubmitting,
+                     isValid,
+                     errors,
+                     touched,
+                     handleChange,
+                  }) => (
+                     <InputContainer>
+                        <LebelStyle
+                           sx={{ padding: '0 0 0.5rem 0' }}
+                           htmlFor="workspaceName"
+                        >
+                           Name of the workspace*
+                        </LebelStyle>
+                        <div>
+                           <InputStyle
+                              type="text"
+                              placeholder="Name"
+                              id="workspaceName"
+                              name="workspaceName"
+                              borderRadius="0.3rem"
+                              onChange={handleChange}
+                              value={values.workspaceName}
+                              error={
+                                 touched.workspaceName && !!errors.workspaceName
+                              }
+                           />
+                           <ErrorMessage
+                              name="workspaceName"
+                              component="div"
+                              style={{ color: 'red' }}
+                           />
+                        </div>
+
+                        <div>
+                           <LebelStyle htmlFor="inviteMember">
+                              Invite a member
+                           </LebelStyle>
+                           <EmailInputContainer>
+                              <CreatableSelect
+                                 isClearable
+                                 isMulti
+                                 components={{ DropdownIndicator: null }}
+                                 inputValue={values.tempValue}
+                                 options={value}
+                                 onChange={handleCreatableChange}
+                                 onInputChange={(newValue) =>
+                                    handleChange({
+                                       target: {
+                                          name: 'tempValue',
+                                          value: newValue,
+                                       },
+                                    })
+                                 }
+                                 placeholder="example@gmail.com"
                               />
-                           </div>
-                        ))}
-                     </MapContainer>
-                  </EmailInputContainer>
-               </InputContainer>
-               <ButtonContainer>
-                  <CanselButton onClick={() => setShowModal(false)}>
-                     Cancel
-                  </CanselButton>
-                  <SaveButton
-                     onClick={handleCreateWorkspace}
-                     disabled={isCreateDisabled()}
-                  >
-                     Create
-                  </SaveButton>
-               </ButtonContainer>
+                           </EmailInputContainer>
+                           <ErrorMessage
+                              name="inviteMember"
+                              component="div"
+                              style={{ color: 'red' }}
+                           />
+                        </div>
+
+                        <ButtonContainer>
+                           <CanselButton
+                              type="button"
+                              onClick={() => setShowModal(false)}
+                           >
+                              Cancel
+                           </CanselButton>
+                           <SaveButton
+                              disabled={isValid && !isSubmitting}
+                              type="button"
+                              onClick={() => createNewWorkspace(values)}
+                           >
+                              Create
+                           </SaveButton>
+                           <Button type="submit" style={{ display: 'none' }} />
+                        </ButtonContainer>
+                     </InputContainer>
+                  )}
+               </Formik>
             </StyleModalUi>
-         ) : null}
+         )}
       </div>
    )
 }
+
+export default NewWorkspaceForm
 
 const StyleModalUi = styled(ModalUi)(() => ({
    display: 'flex',
@@ -122,7 +179,7 @@ const LebelStyle = styled('label')(() => ({
    fontSize: '0.875rem',
    marginTop: '1.25rem',
 }))
-const InputContainer = styled('form')(() => ({
+const InputContainer = styled(Form)(() => ({
    display: 'flex',
    flexDirection: 'column',
    gap: '0.5rem',
@@ -181,28 +238,4 @@ const EmailInputContainer = styled('div')(() => ({
    width: '100%',
    borderRadius: ' 0.3rem',
    border: ' 1px solid #D0D0D0',
-}))
-const SecondInputStyle = styled(Input)(() => ({
-   input: {
-      width: '20vw',
-      height: '1.8rem',
-      padding: ' 0 1rem',
-      margin: ' 0.5rem',
-      alignItems: ' center',
-      border: 'none',
-   },
-}))
-const MapContainer = styled('div')(() => ({
-   div: {
-      display: 'inline-flex',
-      alignItems: ' start',
-      backgroundColor: '#F0F0F0',
-      margin: '0 0 0.5rem 1rem ',
-      borderRadius: '0.8rem',
-   },
-   p: {
-      display: 'inline-flex',
-      padding: '0.28rem 1rem',
-      color: '#919191',
-   },
 }))

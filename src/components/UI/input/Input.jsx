@@ -3,7 +3,10 @@ import TextField from '@mui/material/TextField'
 import React, { forwardRef } from 'react'
 
 export const Input = forwardRef(
-   ({ label, type, id, value, onChange, placeholder, ...other }, ref) => {
+   (
+      { label, type, id, value, onChange, placeholder, error, ...other },
+      ref
+   ) => {
       return (
          <MyStyledInput
             size="small"
@@ -14,6 +17,7 @@ export const Input = forwardRef(
             onChange={onChange}
             placeholder={placeholder}
             ref={ref}
+            error={error}
             {...other}
          />
       )
@@ -44,7 +48,7 @@ const MyStyledInput = styled(TextField)((props) => ({
    },
    '& .MuiOutlinedInput-root': {
       '& fieldset': {
-         border: '1px solid #D0D0D0',
+         border: props.border || '1px solid #D0D0D0',
          borderRadius: '0.25rem',
       },
       '&:hover fieldset': {

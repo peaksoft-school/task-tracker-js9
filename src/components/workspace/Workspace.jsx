@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { styled } from '@mui/material'
 import { WorkspaceTable } from './WorkspaceTable'
 import { Button } from '../UI/button/Button'
-import { WorkspaceModal } from './WorkspaceModal'
+import NewWorkspaceForm from './WorkspaceModal'
 
 export const Workspaces = () => {
    const [showModal, setShowModal] = useState(false)
@@ -21,7 +21,7 @@ export const Workspaces = () => {
          <TableContainer>
             <WorkspaceTable />
          </TableContainer>
-         <WorkspaceModal showModal={showModal} setShowModal={setShowModal} />
+         <NewWorkspaceForm showModal={showModal} setShowModal={setShowModal} />
       </div>
    )
 }
