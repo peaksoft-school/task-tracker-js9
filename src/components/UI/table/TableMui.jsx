@@ -81,10 +81,6 @@ export default function TableMui({ column, rows }) {
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${TableHead}`]: {
       color: theme.palette.common.white,
-      position: 'fixed',
-      top: 0,
-      zIndex: 1,
-      backgroundColor: '#cb3838',
    },
    [`&.${TableBody}`]: {
       fontSize: 14,

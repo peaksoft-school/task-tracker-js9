@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import { AllIssuesTable } from './AllIssuesTable'
-import { CommentSection } from '../UI/comments/CommentsSection'
+import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
 
 export const AllIssues = () => {
    const [start, setStart] = useState(dayjs('2023-07-10'))
@@ -48,10 +48,14 @@ export const AllIssues = () => {
                               value={labels}
                               onChange={LabelsHandleChange}
                            >
-                              <MenuItem disabled value="All Labels">
+                              <MenuItem
+                                 style={{ fontFamily: 'CarePro' }}
+                                 disabled
+                                 value="All Labels"
+                              >
                                  All Labels
                               </MenuItem>
-                              <CommentSection />
+                              <AddedLabelToCard />
                            </StyledSelect>
                         </FormControl>
                         <FormControl>
@@ -59,7 +63,11 @@ export const AllIssues = () => {
                               value={assignee}
                               onChange={AssigneeHandleChange}
                            >
-                              <MenuItem disabled value="Assignee">
+                              <MenuItem
+                                 style={{ fontFamily: 'CarePro' }}
+                                 disabled
+                                 value="Assignee"
+                              >
                                  Assignee
                               </MenuItem>
                            </AssigneeSelect>

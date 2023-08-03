@@ -74,7 +74,7 @@ export const AllIssuesTable = () => {
    ]
    return (
       <div>
-         <TableMui column={column} rows={rows} />
+         <StyledTable column={column} rows={rows} />
       </div>
    )
 }
@@ -106,7 +106,13 @@ const Labels = styled('div')(() => ({
 }))
 
 const Description = styled('p')(() => ({
-   padding: '0 0 0 2rem',
+   padding: '0 0 0 2.4rem',
    textAlign: 'left',
    width: ' 22rem',
+}))
+
+const StyledTable = styled(TableMui)(() => ({
+   '& .css-1q1u3t4-MuiTableRow-root': {
+      backgroundColor: 'red',
+   },
 }))

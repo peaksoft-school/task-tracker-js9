@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
+import { IconButton } from '@mui/material'
 import { CloseIcon, EditIcon } from '../../assets/icons'
 
 const Labels = [
@@ -66,7 +67,12 @@ export const AddedLabelToCard = () => {
          <Wrapper>
             <WrapperTitle>
                <Title>Label</Title>
-               <CloseIcon style={{ display: 'inline-block' }} src={CloseIcon} />
+               <IconButton>
+                  <CloseIcon
+                     style={{ display: 'inline-block' }}
+                     src={CloseIcon}
+                  />
+               </IconButton>
             </WrapperTitle>
             {Labels.map((color, idx) => (
                <WrapperTask key={color.id}>
@@ -85,10 +91,12 @@ export const AddedLabelToCard = () => {
                      </Task>
                   )}
                   <label htmlFor={color.id}>
-                     <EditIcon
+                     <IconButton
                         src={EditIcon}
                         onClick={() => onEditHandler(idx)}
-                     />
+                     >
+                        <EditIcon />
+                     </IconButton>
                   </label>
                </WrapperTask>
             ))}
@@ -99,17 +107,12 @@ export const AddedLabelToCard = () => {
 
 const Container = muiStyled('div')(() => ({
    display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-   height: '100vh',
    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+   fontFamily: 'CarePro',
 }))
 
 const Wrapper = muiStyled('div')(() => ({
-   width: '367px',
-   height: '224px',
-   borderRadius: '10px',
-   padding: '18px 20px 16px',
+   padding: '1.1rem 1.2rem 1rem ',
    backgroundColor: '#fff',
 }))
 
@@ -117,13 +120,13 @@ const WrapperTitle = muiStyled('div')(() => ({
    display: 'flex',
    justifyContent: 'end',
    alignItems: 'center',
-   marginBottom: '12px',
+   marginBottom: '0.75rem',
 }))
 
 const Title = muiStyled('h4')(() => ({
-   fontFamily: 'sans-serif',
    fontWeight: '400',
-   marginRight: '120px',
+   marginRight: '6.5rem',
+   fontFamily: 'CarePro',
 }))
 
 const WrapperTask = muiStyled('div')(() => ({
@@ -134,10 +137,10 @@ const WrapperTask = muiStyled('div')(() => ({
 const Task = muiStyled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
-   width: '297px',
-   padding: '6px 0 6px 16px',
+   width: '15.63rem',
+   padding: '0.3rem 0 0.3rem 1rem',
    borderRadius: '6px',
-   margin: '4px 10px 4px 0',
+   margin: '0.2rem 0.6rem 0.2rem 0',
    fontWeight: '500',
    color: '#fff',
 }))
@@ -145,10 +148,11 @@ const Task = muiStyled('div')(() => ({
 const StyledInputBase = muiStyled('input')(() => ({
    display: 'flex',
    alignItems: 'center',
-   width: '292px',
-   padding: '7px 0 7px 16px',
+   fontFamily: 'CarePro',
+   width: '15.54rem',
+   padding: ' 0.45rem 0 0.45rem 1rem',
    borderRadius: '6px',
-   margin: '4px 10px 4px 0',
+   margin: ' 0.2rem 0.5rem 0.2rem 0',
    fontWeight: '500',
    color: '#fff',
    border: 'none',
@@ -157,6 +161,6 @@ const StyledInputBase = muiStyled('input')(() => ({
    },
    '&::placeholder': {
       color: 'rgba(255, 255, 255, 0.5)',
-      fontSize: '14px',
+      fontSize: '0.9rem',
    },
 }))
