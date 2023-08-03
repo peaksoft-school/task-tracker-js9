@@ -1,8 +1,19 @@
+import { RouterProvider } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
+import { ThemeProvider } from '@mui/material'
+import { theme } from './assets/styles/theme'
+import { routes } from './routes/AppProvider'
+import { store } from './store'
+
 function App() {
    return (
-      <div>
-         <h1>Task traker js-9</h1>
-      </div>
+      <Provider store={store}>
+         <ToastContainer />
+         <ThemeProvider theme={theme}>
+            <RouterProvider router={routes} />
+         </ThemeProvider>
+      </Provider>
    )
 }
 export default App

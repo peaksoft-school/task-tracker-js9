@@ -33,7 +33,10 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
          return
       }
 
-      formikBag.setFieldValue([...values.inviteMember])
+      formikBag.setFieldValue('todoEmails', [
+         ...values.todoEmails,
+         ...values.inviteMember,
+      ])
    }
 
    const createOption = (label) => ({
