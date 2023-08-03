@@ -1,9 +1,7 @@
-import { Workspaces } from './components/workspace/Workspace'
-
 function App() {
    return (
       <div>
-         <Workspaces />
+         <h1>Task traker js-9</h1>
       </div>
    )
 }
