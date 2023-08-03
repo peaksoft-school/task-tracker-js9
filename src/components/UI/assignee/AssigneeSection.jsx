@@ -7,7 +7,7 @@ import { BackgroundChanger } from './BackgroundChanger'
 
 export const AssigneeSection = () => {
    const [anchorEl, setAnchorEl] = useState(null)
-   const [toogle, setToogle] = useState(false)
+   const [, setToogle] = useState(false)
 
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget)
@@ -40,14 +40,15 @@ export const AssigneeSection = () => {
          </Search>
          <div style={{ marginTop: '1rem' }}>
             <ScrollableContainer>
-               {toogle && (
-                  <BackgroundChanger
-                     open={open}
-                     onClose={handleClose}
-                     handleUnassignedClick={handleUnassignedClick}
-                     id={id}
-                  />
-               )}
+               {/* {& ( */}
+               <BackgroundChanger
+                  open={open}
+                  onClose={handleClose}
+                  handleUnassignedClick={handleUnassignedClick}
+                  id={id}
+                  anchorEl={anchorEl}
+               />
+
                <UnassignedContainer aria-describedby={id} onClick={handleClick}>
                   <Checkbox
                      sx={{
@@ -96,7 +97,6 @@ const MainContainerOfAssignee = styled('div')(() => ({
    width: ' 21.6rem',
    height: '32rem',
    padding: '1rem',
-   margin: '2rem 5rem',
    borderRadius: '0.625rem',
 }))
 
@@ -164,10 +164,14 @@ const ScrollableContainer = styled('div')(() => ({
 
 const AssigneeMapContainer = styled('div')(() => ({
    display: 'flex',
-   width: ' 16rem',
    height: '3.5rem',
+   width: '17.75rem',
    gap: '0.63rem',
    padding: '0.5rem 2rem 0 0 ',
+   cursor: 'pointer',
+   '&:hover': {
+      backgroundColor: '#e6e6e6',
+   },
 }))
 const PeoplesEmail = styled('p')(() => ({
    color: '#919191',

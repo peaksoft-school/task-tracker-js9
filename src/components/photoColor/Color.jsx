@@ -47,8 +47,8 @@ export const Colors = ({
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -578,
-   left: 64,
+   top: -520,
+   left: 5,
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       borderRadius: '0.7rem',
       minWidth: '23.8rem',

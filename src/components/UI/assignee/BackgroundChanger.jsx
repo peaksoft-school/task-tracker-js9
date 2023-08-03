@@ -9,6 +9,7 @@ export const BackgroundChanger = ({
    onClose,
    handleUnassignedClick,
    id,
+   anchorEl,
 }) => {
    const [isPhotoOpen, setIsPhotoOpen] = useState(false)
    const [isColorOpen, setIsColorOpen] = useState(false)
@@ -29,8 +30,8 @@ export const BackgroundChanger = ({
    }
 
    return (
-      <div>
-         <PopoverCont id={id} open={open} onClose={onClose}>
+      <>
+         <PopoverCont id={id} open={open} onClose={onClose} anchorEl={anchorEl}>
             <BackgroundContainer>
                <StyledIconButton onClick={handleUnassignedClick}>
                   <StyledLeftIcon />
@@ -69,7 +70,7 @@ export const BackgroundChanger = ({
                />
             </div>
          )}
-      </div>
+      </>
    )
 }
 
@@ -96,9 +97,9 @@ const slideInFromRight = keyframes`
   }
 `
 const PopoverCont = styled(Popover)(() => ({
-   position: 'relative',
-   top: -577,
-   left: 64,
+   // position: 'relative',
+   // top: -520,
+   // left: 5,
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       minWidth: '23.5rem',
