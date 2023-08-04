@@ -6,6 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import { AllIssuesTable } from './AllIssuesTable'
 import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
+import { AssigneeSection } from '../UI/assignee/AssigneeSection'
 
 export const AllIssues = () => {
    const [start, setStart] = useState(dayjs('2023-07-10'))
@@ -70,6 +71,7 @@ export const AllIssues = () => {
                               >
                                  Assignee
                               </MenuItem>
+                              <AssigneeSection />
                            </AssigneeSelect>
                         </FormControl>
                      </MainFormControlContainer>

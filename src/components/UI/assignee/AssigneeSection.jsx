@@ -56,7 +56,7 @@ export const AssigneeSection = () => {
                   />
                )}
 
-               <UnassignedContainer aria-describedby={id} onClick={handleClick}>
+               <UnassignedContainer aria-describedby={id}>
                   <Checkbox
                      sx={{
                         '&.Mui-checked': {
@@ -64,19 +64,12 @@ export const AssigneeSection = () => {
                         },
                      }}
                   />
-                  <div
-                     style={{
-                        marginLeft: '0.6rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.54rem',
-                     }}
-                  >
+                  <UnassignedChildContainer onClick={handleClick}>
                      <Avatar>
                         <Person />
                      </Avatar>
                      <p>Unassigned</p>
-                  </div>
+                  </UnassignedChildContainer>
                </UnassignedContainer>
                {assignee.map((el) => (
                   <AssigneeMapContainer key={el.id}>
@@ -192,4 +185,10 @@ const UnassignedContainer = styled('div')(() => ({
    height: '3.5rem',
    background: ' #F2F2F2',
    cursor: 'pointer',
+}))
+const UnassignedChildContainer = styled('div')(() => ({
+   marginLeft: '0.6rem',
+   display: 'flex',
+   alignItems: 'center',
+   gap: '0.54rem',
 }))
