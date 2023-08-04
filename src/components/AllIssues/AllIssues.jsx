@@ -100,7 +100,7 @@ export const AllIssues = () => {
 }
 
 const BodyContainer = styled('div')(() => ({
-   padding: '0.75rem 1.25rem 0rem 1.25rem',
+   padding: '0.76rem 1.25rem 0rem 1.25rem',
 }))
 
 const GlobalContainer = styled('div')(() => ({
