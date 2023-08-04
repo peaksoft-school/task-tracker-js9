@@ -1,4 +1,4 @@
-import { TextField, styled } from '@mui/material'
+import { IconButton, TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -124,19 +124,22 @@ export const SignInPage = () => {
                                              touched.password &&
                                              !!errors.password
                                           }
+                                          InputProps={{
+                                             endAdornment: (
+                                                <IconButton
+                                                   onClick={
+                                                      handleTogglePasswordVisibility
+                                                   }
+                                                >
+                                                   {showPassword ? (
+                                                      <ShowIcon />
+                                                   ) : (
+                                                      <HideIcon />
+                                                   )}
+                                                </IconButton>
+                                             ),
+                                          }}
                                        />
-
-                                       <ContainerEyes
-                                          onClick={
-                                             handleTogglePasswordVisibility
-                                          }
-                                       >
-                                          {showPassword ? (
-                                             <ShowIcon />
-                                          ) : (
-                                             <HideIcon />
-                                          )}
-                                       </ContainerEyes>
                                     </ContainerInputs>
                                     {errors.password && touched.password && (
                                        <ErrorText>{errors.password}</ErrorText>
@@ -218,7 +221,6 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const AuthWithGoogle = styled('div')(({ theme }) => ({
-   // width: '100%',
    cursor: 'pointer',
    display: 'flex',
    gap: '1rem',
@@ -230,15 +232,10 @@ const AuthWithGoogle = styled('div')(({ theme }) => ({
    borderRadius: '0.5rem',
    marginRight: '1.5rem',
 }))
-const ContainerEyes = styled('div')(() => ({
-   position: 'relative',
-   top: '8px',
-   right: '10%',
-}))
+
 const ContainerInputs = styled('div')(() => ({
    position: 'relative',
    display: 'flex',
-   //  flexDirection: 'column',
    width: '100%',
 }))
 
@@ -266,8 +263,10 @@ const EmailInput = styled(TextField)(() => ({
 }))
 
 const PasswordInput = styled(TextField)(() => ({
+   '& .MuiInputBase-root': {
+      width: '21.9rem',
+   },
    '& .MuiInputBase-input': {
-      width: '20.0625rem',
       borderRadius: '0.5rem',
    },
    '& .css-78trlr-MuiButtonBase-root-MuiIconButton-root': {

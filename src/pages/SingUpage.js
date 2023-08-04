@@ -1,4 +1,4 @@
-import { Checkbox, TextField, styled } from '@mui/material'
+import { Checkbox, IconButton, TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -152,12 +152,22 @@ export const SignUpPage = () => {
                                     helperText={
                                        <ErrorMessage name="password" />
                                     }
+                                    InputProps={{
+                                       endAdornment: (
+                                          <IconButton
+                                             onClick={
+                                                handleTogglePasswordVisibility
+                                             }
+                                          >
+                                             {showPassword ? (
+                                                <ShowIcon />
+                                             ) : (
+                                                <HideIcon />
+                                             )}
+                                          </IconButton>
+                                       ),
+                                    }}
                                  />
-                                 <IconEyes
-                                    onClick={handleTogglePasswordVisibility}
-                                 >
-                                    {showPassword ? <ShowIcon /> : <HideIcon />}
-                                 </IconEyes>
                               </ContainerPasswordInput>
                            </div>
                            <div className="input-block">
@@ -179,14 +189,22 @@ export const SignUpPage = () => {
                                     helperText={
                                        <ErrorMessage name="repeatPassword" />
                                     }
+                                    InputProps={{
+                                       endAdornment: (
+                                          <IconButton
+                                             onClick={
+                                                handleToggleRepeatPassword
+                                             }
+                                          >
+                                             {showRepeatPassword ? (
+                                                <ShowIcon />
+                                             ) : (
+                                                <HideIcon />
+                                             )}
+                                          </IconButton>
+                                       ),
+                                    }}
                                  />
-                                 <IconEyes onClick={handleToggleRepeatPassword}>
-                                    {showRepeatPassword ? (
-                                       <ShowIcon />
-                                    ) : (
-                                       <HideIcon />
-                                    )}
-                                 </IconEyes>
                               </ContainerPasswordInput>
                            </div>
 
@@ -240,17 +258,16 @@ const Container = styled('div')(() => ({
    },
 }))
 const ContainerPasswordInput = styled('div')(() => ({
-   width: '100%',
+   width: '94%',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
    padding: '0 0 0 22px',
+   '& .css-bgk865-MuiInputBase-root-MuiOutlinedInput-root': {
+      borderRadius: '0.5rem',
+   },
 }))
-const IconEyes = styled('div')(() => ({
-   position: 'relative',
-   top: '18%',
-   right: '10%',
-}))
+
 const AuthWithGoogle = styled('div')(({ theme }) => ({
    display: 'flex',
    gap: '1rem',
