@@ -1,4 +1,4 @@
-import { TextField, styled } from '@mui/material'
+import { IconButton, TextField, styled } from '@mui/material'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { LayoutFormPage } from './LayoutFormPage'
@@ -55,21 +55,25 @@ export const ResetPasswordPage = () => {
                               error={touched.password && !!errors.password}
                               value={values.password}
                               onChange={handleChange}
+                              InputProps={{
+                                 endAdornment: (
+                                    <IconButton
+                                       onClick={() =>
+                                          setFieldValue(
+                                             'passwordVisibility',
+                                             !values.passwordVisibility
+                                          )
+                                       }
+                                    >
+                                       {values.passwordVisibility ? (
+                                          <ShowIcon />
+                                       ) : (
+                                          <HideIcon />
+                                       )}
+                                    </IconButton>
+                                 ),
+                              }}
                            />
-                           <IconEyes
-                              onClick={() =>
-                                 setFieldValue(
-                                    'passwordVisibility',
-                                    !values.passwordVisibility
-                                 )
-                              }
-                           >
-                              {values.passwordVisibility ? (
-                                 <ShowIcon />
-                              ) : (
-                                 <HideIcon />
-                              )}
-                           </IconEyes>
                         </ContainerPasswordInput>
                         {errors.password && touched.password && (
                            <ErrorText>{errors.password}</ErrorText>
@@ -98,8 +102,26 @@ export const ResetPasswordPage = () => {
                                     ? 'matched'
                                     : ''
                               }
+                              InputProps={{
+                                 endAdornment: (
+                                    <IconButton
+                                       onClick={() =>
+                                          setFieldValue(
+                                             'repeatPasswordVisibility',
+                                             !values.repeatPasswordVisibility
+                                          )
+                                       }
+                                    >
+                                       {values.repeatPasswordVisibility ? (
+                                          <ShowIcon />
+                                       ) : (
+                                          <HideIcon />
+                                       )}
+                                    </IconButton>
+                                 ),
+                              }}
                            />
-                           <IconEyes
+                           {/* <IconEyes
                               onClick={() =>
                                  setFieldValue(
                                     'repeatPasswordVisibility',
@@ -112,7 +134,7 @@ export const ResetPasswordPage = () => {
                               ) : (
                                  <HideIcon />
                               )}
-                           </IconEyes>
+                           </IconEyes> */}
                         </ContainerPasswordInput>
                         {errors.repeatPassword && touched.repeatPassword && (
                            <ErrorText>{errors.repeatPassword}</ErrorText>
@@ -139,21 +161,15 @@ const StyledForm = styled(Form)(() => ({
 }))
 
 const ContainerPasswordInput = styled('div')(() => ({
-   //  position: 'relative',
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'center',
    width: '100%',
 }))
-const IconEyes = styled('div')(() => ({
-   position: 'relative',
-   top: '8%',
-   right: '12%',
-}))
 
 const StyledInputs = styled(TextField)(() => ({
-   '& .MuiInputBase-input': {
-      width: '20.0625rem',
+   '& .MuiInputBase-root': {
+      width: '21rem',
    },
    padding: '0.375rem 1rem',
    '& .MuiOutlinedInput-root': {
@@ -186,8 +202,6 @@ const ErrorText = styled('span')(() => ({
    fontSize: '0.75rem',
    marginLeft: '1.25rem',
 }))
-
-// Other styled components...
 
 const Container = styled('div')(() => ({
    display: 'flex',
