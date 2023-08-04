@@ -4,18 +4,27 @@ import { Formik, Form, ErrorMessage } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
+// import { toast, ToastContainer } from 'react-toastify'
+// import { FaTimes } from 'react-icons/fa'
 import { LayoutFormPage } from './LayoutFormPage'
 import { GoogleIcon, HideIcon, ShowIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
 import { signUpRequest } from '../store/auth/authThunk'
+import 'react-toastify/dist/ReactToastify.css'
+import Snackbar, { showSnackbar } from '../components/UI/snackbar/Snackbar'
+import IsLoading from '../components/UI/snackbar/IsLoading'
+// Other imports...
+
+// Snackbar component code...
 
 export const SignUpPage = () => {
-   const token = useSelector((state) => state.auth)
-   console.log('token: ', token)
+   // const token = useSelector((state) => state.auth)
    const [showPassword, setShowPassword] = useState(false)
    const [showRepeatPassword, setShowRepeatPassword] = useState(false)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+
+   const { isLoading } = useSelector((state) => state.auth)
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -48,146 +57,170 @@ export const SignUpPage = () => {
    const handleSubmit = (values) => {
       dispatch(signUpRequest(values))
          .unwrap()
-         .then(() => navigate('/mainPage'))
-         .catch((error) => console.log(error))
+         .then(() => {
+            showSnackbar({
+               message: 'Sign up successful!',
+               severity: 'success',
+            })
+            navigate('/mainPage')
+         })
+         .catch((error) => {
+            console.log(error)
+            showSnackbar({
+               message: 'An error occurred during sign up.',
+               additionalMessage: 'Please try again later.',
+               severity: 'error',
+            })
+         })
    }
 
    return (
-      <LayoutFormPage>
-         <Container>
-            <div className="block-head">
-               <h2>Sign up</h2>
-               <AuthWithGoogle>
-                  <AuthWithText>Auth with google</AuthWithText>
-                  <GoogleIcon />
-               </AuthWithGoogle>
-               <TextOr>or</TextOr>
-            </div>
+      <div>
+         {isLoading && <IsLoading />}
+         <LayoutFormPage>
+            <Container>
+               <div className="block-head">
+                  <h2>Sign up</h2>
+                  <AuthWithGoogle>
+                     <AuthWithText>Auth with google</AuthWithText>
+                     <GoogleIcon />
+                  </AuthWithGoogle>
+                  <TextOr>or</TextOr>
+               </div>
 
-            <Formik
-               initialValues={initialValues}
-               validationSchema={validationSchema}
-               onSubmit={handleSubmit}
-            >
-               {({ values, errors, touched, handleChange }) => (
-                  <Form>
-                     <WrapperInputs>
-                        <div className="input-block">
-                           <StyledInputs
-                              size="small"
-                              label="Name"
-                              type="text"
-                              placeholder="Name"
-                              name="name"
-                              value={values.name}
-                              onChange={handleChange}
-                              error={touched.name && !!errors.name}
-                              helperText={<ErrorMessage name="name" />}
-                           />
-                        </div>
-                        <div className="input-block">
-                           <StyledInputs
-                              size="small"
-                              label="Surname"
-                              type="text"
-                              placeholder="Surname"
-                              name="surname"
-                              value={values.surname}
-                              onChange={handleChange}
-                              error={touched.surname && !!errors.surname}
-                              helperText={<ErrorMessage name="surname" />}
-                           />
-                        </div>
-                        <div className="input-block">
-                           <StyledInputs
-                              size="small"
-                              label="Gmail"
-                              type="text"
-                              placeholder="example@gmail.com"
-                              name="email"
-                              value={values.email}
-                              onChange={handleChange}
-                              error={touched.email && !!errors.email}
-                              helperText={<ErrorMessage name="email" />}
-                           />
-                        </div>
-
-                        <div className="input-block">
-                           <ContainerPasswordInput>
+               <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit}
+               >
+                  {({ values, errors, touched, handleChange }) => (
+                     <Form>
+                        <WrapperInputs>
+                           <div className="input-block">
                               <StyledInputs
                                  size="small"
-                                 label="Password"
-                                 placeholder="Password"
-                                 type={showPassword ? 'text' : 'password'}
-                                 name="password"
-                                 value={values.password}
+                                 label="Name"
+                                 type="text"
+                                 placeholder="Name"
+                                 name="name"
+                                 value={values.name}
                                  onChange={handleChange}
-                                 error={touched.password && !!errors.password}
-                                 helperText={<ErrorMessage name="password" />}
+                                 error={touched.name && !!errors.name}
+                                 helperText={<ErrorMessage name="name" />}
                               />
-                              <IconEyes
-                                 onClick={handleTogglePasswordVisibility}
-                              >
-                                 {showPassword ? <ShowIcon /> : <HideIcon />}
-                              </IconEyes>
-                           </ContainerPasswordInput>
-                        </div>
-                        <div className="input-block">
-                           <ContainerPasswordInput>
-                              <StyledInputs
-                                 size="small"
-                                 label="Repeat password"
-                                 placeholder="Repeat password"
-                                 type={showRepeatPassword ? 'text' : 'password'}
-                                 name="repeatPassword"
-                                 value={values.repeatPassword}
-                                 onChange={handleChange}
-                                 error={
-                                    touched.repeatPassword &&
-                                    !!errors.repeatPassword
-                                 }
-                                 helperText={
-                                    <ErrorMessage name="repeatPassword" />
-                                 }
-                              />
-                              <IconEyes onClick={handleToggleRepeatPassword}>
-                                 {showRepeatPassword ? (
-                                    <ShowIcon />
-                                 ) : (
-                                    <HideIcon />
-                                 )}
-                              </IconEyes>
-                           </ContainerPasswordInput>
-                        </div>
-
-                        <MainWrapper>
-                           <Checkbox
-                              name="termsAgreed"
-                              checked={values.termsAgreed}
-                              onChange={handleChange}
-                           />
-                           <div>
-                              <TextACreatingAccount>
-                                 Creating an account means you’re okay with our
-                              </TextACreatingAccount>
-                              <LinkACreatingAccount>
-                                 Terms of Service, Privacy Policy.
-                              </LinkACreatingAccount>
                            </div>
-                        </MainWrapper>
-                     </WrapperInputs>
-                     <WrapperButton>
-                        <StyledButton type="submit">Sign Up </StyledButton>
-                     </WrapperButton>
-                  </Form>
-               )}
-            </Formik>
-            <LoginWrappwer>
-               <p>You already have an account?</p>
-               <TextInLogIn to="/"> Log in </TextInLogIn>
-            </LoginWrappwer>
-         </Container>
-      </LayoutFormPage>
+                           <div className="input-block">
+                              <StyledInputs
+                                 size="small"
+                                 label="Surname"
+                                 type="text"
+                                 placeholder="Surname"
+                                 name="surname"
+                                 value={values.surname}
+                                 onChange={handleChange}
+                                 error={touched.surname && !!errors.surname}
+                                 helperText={<ErrorMessage name="surname" />}
+                              />
+                           </div>
+                           <div className="input-block">
+                              <StyledInputs
+                                 size="small"
+                                 label="Gmail"
+                                 type="text"
+                                 placeholder="example@gmail.com"
+                                 name="email"
+                                 value={values.email}
+                                 onChange={handleChange}
+                                 error={touched.email && !!errors.email}
+                                 helperText={<ErrorMessage name="email" />}
+                              />
+                           </div>
+
+                           <div className="input-block">
+                              <ContainerPasswordInput>
+                                 <StyledInputs
+                                    size="small"
+                                    label="Password"
+                                    placeholder="Password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    name="password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    error={
+                                       touched.password && !!errors.password
+                                    }
+                                    helperText={
+                                       <ErrorMessage name="password" />
+                                    }
+                                 />
+                                 <IconEyes
+                                    onClick={handleTogglePasswordVisibility}
+                                 >
+                                    {showPassword ? <ShowIcon /> : <HideIcon />}
+                                 </IconEyes>
+                              </ContainerPasswordInput>
+                           </div>
+                           <div className="input-block">
+                              <ContainerPasswordInput>
+                                 <StyledInputs
+                                    size="small"
+                                    label="Repeat password"
+                                    placeholder="Repeat password"
+                                    type={
+                                       showRepeatPassword ? 'text' : 'password'
+                                    }
+                                    name="repeatPassword"
+                                    value={values.repeatPassword}
+                                    onChange={handleChange}
+                                    error={
+                                       touched.repeatPassword &&
+                                       !!errors.repeatPassword
+                                    }
+                                    helperText={
+                                       <ErrorMessage name="repeatPassword" />
+                                    }
+                                 />
+                                 <IconEyes onClick={handleToggleRepeatPassword}>
+                                    {showRepeatPassword ? (
+                                       <ShowIcon />
+                                    ) : (
+                                       <HideIcon />
+                                    )}
+                                 </IconEyes>
+                              </ContainerPasswordInput>
+                           </div>
+
+                           <MainWrapper>
+                              <Checkbox
+                                 name="termsAgreed"
+                                 checked={values.termsAgreed}
+                                 onChange={handleChange}
+                              />
+                              <div>
+                                 <TextACreatingAccount>
+                                    Creating an account means you’re okay with
+                                    our
+                                 </TextACreatingAccount>
+                                 <LinkACreatingAccount>
+                                    Terms of Service, Privacy Policy.
+                                 </LinkACreatingAccount>
+                              </div>
+                           </MainWrapper>
+                        </WrapperInputs>
+                        <WrapperButton>
+                           <StyledButton type="submit">Sign Up </StyledButton>
+                        </WrapperButton>
+                     </Form>
+                  )}
+               </Formik>
+               <LoginWrappwer>
+                  <p>You already have an account?</p>
+                  <TextInLogIn to="/"> Log in </TextInLogIn>
+               </LoginWrappwer>
+            </Container>
+            <Snackbar />
+         </LayoutFormPage>
+      </div>
    )
 }
 

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
+import { STORAGE_KEY } from '../../utils/constants/authorization'
 
 // РЕГИСТРАЦИЯ
 export const signUpRequest = createAsyncThunk(
@@ -7,7 +8,10 @@ export const signUpRequest = createAsyncThunk(
    async (data, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.post('/auth/signUp', data)
-
+         localStorage.setItem(
+            STORAGE_KEY.AUTH_KEY,
+            JSON.stringify(response.data)
+         )
          return response.data
       } catch (error) {
          return rejectWithValue(error)
@@ -21,8 +25,14 @@ export const signInRequest = createAsyncThunk(
    async (payload, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.post('/auth/signIn', payload)
+         console.log('response: ', response.data)
 
-         return response
+         localStorage.setItem(
+            STORAGE_KEY.AUTH_KEY,
+            JSON.stringify(response.data)
+         )
+
+         return response.data
       } catch (error) {
          return rejectWithValue(error.message)
       }

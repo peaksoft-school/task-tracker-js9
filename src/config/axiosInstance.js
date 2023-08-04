@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { BASE_URL } from '../utils/constants/baseURL'
+import { BASE_URL } from '../utils/constants/authorization'
 
 const logoutAction = () => {}
 
