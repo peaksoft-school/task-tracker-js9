@@ -8,8 +8,10 @@ import {
    fetchBoards,
    // setItems,
 } from '../../store/slice/boardSlice'
+import { BoardModal } from './BoardModal'
 
 export const Board = () => {
+   const [openModal, setOpenModal] = React.useState(false)
    const dispatch = useDispatch()
    const getPizzas = () => {
       dispatch(fetchBoards())
@@ -26,11 +28,15 @@ export const Board = () => {
    const deleteFunc = (id) => {
       dispatch(boardRemove(id))
    }
+
+   const toggleModal = () => {
+      setOpenModal((prev) => !prev)
+   }
    return (
       <AllBoards>
          <BoardButton>
             <Title>All boards</Title>
-            <Button>Create new board</Button>
+            <Button onClick={toggleModal}>Create new board</Button>
          </BoardButton>
          <Boards>
             {items.map((item) => (
@@ -44,6 +50,7 @@ export const Board = () => {
                </div>
             ))}
          </Boards>
+         {openModal ? <BoardModal toggleModal={toggleModal} /> : null}
       </AllBoards>
    )
 }
