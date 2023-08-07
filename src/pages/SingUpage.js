@@ -4,8 +4,6 @@ import { Formik, Form, ErrorMessage } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
-// import { toast, ToastContainer } from 'react-toastify'
-// import { FaTimes } from 'react-icons/fa'
 import { LayoutFormPage } from './LayoutFormPage'
 import { GoogleIcon, HideIcon, ShowIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
@@ -13,12 +11,8 @@ import { signUpRequest } from '../store/auth/authThunk'
 import 'react-toastify/dist/ReactToastify.css'
 import Snackbar, { showSnackbar } from '../components/UI/snackbar/Snackbar'
 import IsLoading from '../components/UI/snackbar/IsLoading'
-// Other imports...
-
-// Snackbar component code...
 
 export const SignUpPage = () => {
-   // const token = useSelector((state) => state.auth)
    const [showPassword, setShowPassword] = useState(false)
    const [showRepeatPassword, setShowRepeatPassword] = useState(false)
    const dispatch = useDispatch()
@@ -51,7 +45,9 @@ export const SignUpPage = () => {
       repeatPassword: Yup.string()
          .oneOf([Yup.ref('password'), null], 'Passwords must match')
          .required('Repeat password is required'),
-      termsAgreed: Yup.boolean().oneOf([true], 'You must accept the terms'),
+      termsAgreed: Yup.boolean()
+         .oneOf([true], 'You must accept the terms')
+         .required('You must accept the terms'),
    })
 
    const handleSubmit = (values) => {
@@ -65,10 +61,9 @@ export const SignUpPage = () => {
             navigate('/mainPage')
          })
          .catch((error) => {
-            console.log(error)
             showSnackbar({
-               message: 'An error occurred during sign up.',
-               additionalMessage: 'Please try again later.',
+               message: error,
+               additionalMessage: 'Please try again .',
                severity: 'error',
             })
          })
@@ -214,7 +209,7 @@ export const SignUpPage = () => {
                                  checked={values.termsAgreed}
                                  onChange={handleChange}
                               />
-                              <div>
+                              <CheckboxContainer>
                                  <TextACreatingAccount>
                                     Creating an account means you’re okay with
                                     our
@@ -222,7 +217,17 @@ export const SignUpPage = () => {
                                  <LinkACreatingAccount>
                                     Terms of Service, Privacy Policy.
                                  </LinkACreatingAccount>
-                              </div>
+                                 {touched.termsAgreed &&
+                                    !values.termsAgreed && (
+                                       <ErrorMessage name="termsAgreed">
+                                          {(msg) => (
+                                             <ErrorMessageText>
+                                                {msg}
+                                             </ErrorMessageText>
+                                          )}
+                                       </ErrorMessage>
+                                    )}
+                              </CheckboxContainer>
                            </MainWrapper>
                         </WrapperInputs>
                         <WrapperButton>
@@ -241,7 +246,17 @@ export const SignUpPage = () => {
       </div>
    )
 }
-
+const CheckboxContainer = styled('div')(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   height: '3rem',
+}))
+const ErrorMessageText = styled('p')(({ theme }) => ({
+   color: theme.palette.error.main,
+   fontSize: '0.75rem',
+   fontWeight: '400',
+   marginTop: '0.5rem',
+}))
 const Container = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',

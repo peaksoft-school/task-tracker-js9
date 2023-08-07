@@ -1,14 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { signInRequest, signUpRequest } from './authThunk'
 import { STORAGE_KEY, USER_ROLE } from '../../utils/constants/authorization'
-// import { AUTH_ROLES } from '../../utils/constants/authRoles'
 
 const getInitialState = () => {
-   const json = localStorage.getItem(STORAGE_KEY.AUTH_KEY)
+   const json = localStorage.getItem(STORAGE_KEY.TASK_TRACER_AUTH_KEY)
 
    if (json) {
       const userData = JSON.parse(json)
-      console.log('userData: ', userData)
 
       return {
          isAuthorization: true,
@@ -25,6 +23,7 @@ const getInitialState = () => {
       email: '',
       name: '',
       role: USER_ROLE.GUEST,
+      isError: '',
    }
 }
 
@@ -48,13 +47,13 @@ export const authSlice = createSlice({
             state.isAuthorization = false
             state.isLoading = true
          })
-         .addCase(signUpRequest.rejected, (state) => {
+         .addCase(signUpRequest.rejected, (state, actions) => {
             state.isAuthorization = false
             state.isLoading = false
+            state.isError = actions.error
          })
 
          .addCase(signInRequest.fulfilled, (state, actions) => {
-            console.log('actions: ', actions.payload)
             state.isAuthorization = true
             state.isLoading = false
             state.email = actions.payload.email
@@ -65,9 +64,10 @@ export const authSlice = createSlice({
             state.isAuthorization = false
             state.isLoading = true
          })
-         .addCase(signInRequest.rejected, (state) => {
+         .addCase(signInRequest.rejected, (state, actions) => {
             state.isAuthorization = false
             state.isLoading = false
+            state.isError = actions.error
          })
    },
 })

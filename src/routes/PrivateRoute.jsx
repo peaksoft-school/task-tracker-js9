@@ -5,6 +5,7 @@ export const PrivateRoute = ({ component, fallBacPath, roles }) => {
    const { role } = useSelector((state) => state.auth)
 
    const isAllowed = () => {
+      console.log('ROLES:', role)
       return roles.includes(role)
    }
 

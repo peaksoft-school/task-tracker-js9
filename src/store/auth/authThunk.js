@@ -9,12 +9,12 @@ export const signUpRequest = createAsyncThunk(
       try {
          const response = await axiosInstance.post('/auth/signUp', data)
          localStorage.setItem(
-            STORAGE_KEY.AUTH_KEY,
+            STORAGE_KEY.TASK_TRACER_AUTH_KEY,
             JSON.stringify(response.data)
          )
          return response.data
       } catch (error) {
-         return rejectWithValue(error)
+         return rejectWithValue(error.response.data.message)
       }
    }
 )
@@ -25,16 +25,15 @@ export const signInRequest = createAsyncThunk(
    async (payload, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.post('/auth/signIn', payload)
-         console.log('response: ', response.data)
 
          localStorage.setItem(
-            STORAGE_KEY.AUTH_KEY,
+            STORAGE_KEY.TASK_TRACER_AUTH_KEY,
             JSON.stringify(response.data)
          )
 
          return response.data
       } catch (error) {
-         return rejectWithValue(error.message)
+         return rejectWithValue(error.response.data.message)
       }
    }
 )

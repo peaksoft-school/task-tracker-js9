@@ -56,8 +56,8 @@ export const SignInPage = () => {
          .catch((error) => {
             console.log(error)
             showSnackbar({
-               message: 'An error occurred during sign in.',
-               additionalMessage: 'Please try again later.',
+               message: error,
+               additionalMessage: 'Please try again .',
                severity: 'error',
             })
          })

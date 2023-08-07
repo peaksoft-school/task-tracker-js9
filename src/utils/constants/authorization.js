@@ -12,5 +12,5 @@ export const USER_ROLE = {
 }
 
 export const STORAGE_KEY = {
-   AUTH_KEY: 'AUTH_KEY',
+   TASK_TRACER_AUTH_KEY: 'TASK_TRACER_AUTH_KEY',
 }
