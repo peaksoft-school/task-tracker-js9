@@ -1,10 +1,10 @@
-import { RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { Provider } from 'react-redux'
+import { RouterProvider } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material'
 import { theme } from './assets/styles/theme'
-import { routes } from './routes/AppProvider'
 import { store } from './store'
+import { routes } from './routes/AppProvider'
 
 function App() {
    return (

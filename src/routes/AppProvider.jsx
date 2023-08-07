@@ -2,8 +2,8 @@ import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
-import { Workspaces } from '../components/workspace/Workspace'
 import { Headers } from '../components/header/Header'
+import { ProfileForm } from '../components/profile/Profile'
 
 export const routes = createBrowserRouter([
    {
@@ -23,7 +23,7 @@ export const routes = createBrowserRouter([
       element: (
          <>
             <Headers />
-            <Workspaces />
+            <ProfileForm />
          </>
       ),
    },

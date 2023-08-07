@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, IconButton, TextField } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { EditIcon, HideIcon, ShowIcon } from '../../assets/icons'
 import ColorBackground from '../../assets/images/ColorsBakground.png'
-import { Header } from '../header/Header'
-import { involvedProjects, testFields } from '../../utils/constants/general'
 import { schema } from '../../utils/helpers/Helpers'
+
+import {
+   profileGetRequest,
+   profileProjectsRequest,
+} from '../../store/profile/ProfileThunk'
+import { ProfileActions } from '../../store/profile/ProfileSlice'
 
 export const ProfileForm = () => {
    const {
@@ -30,11 +34,28 @@ export const ProfileForm = () => {
    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
    const [passwordDirty, setPasswordDirty] = useState(false)
    const [confirmPasswordDirty, setConfirmPasswordDirty] = useState(false)
-   const projectCount = involvedProjects.length
 
    const handleFormSubmit = (data) => {
       console.log(data)
    }
+
+   const { item } = useSelector((state) => state.profile)
+
+   const dispatch = useDispatch()
+
+   const userRole = 'ADMIN'
+
+   useEffect(() => {
+      dispatch(profileGetRequest())
+   }, [])
+   useEffect(() => {
+      if (item?.userId) {
+         dispatch(profileProjectsRequest(item?.userId))
+         console.log('bahaaaaaa')
+      }
+   }, [item?.userId])
+
+   console.log(item)
 
    const [avatarUrl, setAvatarUrl] = useState('')
 
@@ -47,7 +68,6 @@ export const ProfileForm = () => {
          (prevShowConfirmPassword) => !prevShowConfirmPassword
       )
    }
-   const navigate = useNavigate()
 
    const handleDrop = (acceptedFiles) => {
       const file = acceptedFiles[0]
@@ -69,11 +89,8 @@ export const ProfileForm = () => {
 
    return (
       <div>
-         <Header />
          <StyledWorkspace>
-            <WorkSpaceSpan onClick={() => navigate('/')}>
-               Workspace
-            </WorkSpaceSpan>
+            <WorkSpaceSpan>Workspace</WorkSpaceSpan>
             <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
@@ -88,113 +105,138 @@ export const ProfileForm = () => {
                   <EditProfileIcon />
                </ProfileImageBox>
                <ProfileNames>
-                  <ProfileNamesSpan>ali</ProfileNamesSpan>
-                  <ProfileNamesSpan>samatov</ProfileNamesSpan>
+                  <ProfileNamesSpan>{item?.firstName}</ProfileNamesSpan>
+                  <ProfileNamesSpan>{item?.lastName}</ProfileNamesSpan>
                </ProfileNames>
             </div>
             <div>
                <StyledFormContainer onSubmit={handleSubmit(handleFormSubmit)}>
                   <div>
-                     {testFields.map((field) => (
-                        <div key={field.name}>
-                           <StyledTextField
-                              type={field.type}
-                              id={field.name}
-                              {...register(field.name)}
-                              error={!!errors[field.name]}
-                              helperText={errors[field.name]?.message}
-                              placeholder={field.placeholder}
+                     <StyledTextField
+                        id={item?.userId}
+                        value={item?.firstName}
+                        onChange={(e) =>
+                           dispatch(
+                              ProfileActions.getFirstNameValue(e.target.value)
+                           )
+                        }
+                     />
+                     <StyledTextField
+                        id={item?.userId}
+                        value={item?.lastName}
+                        onChange={(e) =>
+                           dispatch(
+                              ProfileActions.getLastNameValue(e.target.value)
+                           )
+                        }
+                     />
+                     <StyledTextField
+                        id={item?.userId}
+                        value={item?.email}
+                        onChange={(e) =>
+                           dispatch(
+                              ProfileActions.getEmailValue(e.target.value)
+                           )
+                        }
+                     />
+                  </div>
+                  {userRole === 'ADMIN' && (
+                     <PasswordFieldsContainer>
+                        <div>
+                           <StyledPasswordField
+                              type={showPassword ? 'text' : 'password'}
+                              id="password"
+                              {...register('password')}
+                              error={passwordDirty && !!errors.password}
+                              helperText={
+                                 passwordDirty && errors.password?.message
+                                    ? errors.password.message
+                                    : ''
+                              }
+                              onBlur={() => setPasswordDirty(true)}
+                              placeholder="Пароль"
+                              InputProps={{
+                                 endAdornment: (
+                                    <IconButton
+                                       onClick={handleTogglePasswordVisibility}
+                                    >
+                                       {showPassword ? (
+                                          <ShowIcon />
+                                       ) : (
+                                          <HideIcon />
+                                       )}
+                                    </IconButton>
+                                 ),
+                              }}
                            />
                         </div>
-                     ))}
-                  </div>
-                  <PasswordFieldsContainer>
-                     <div>
-                        <StyledPasswordField
-                           type={showPassword ? 'text' : 'password'}
-                           id="password"
-                           {...register('password')}
-                           error={passwordDirty && !!errors.password}
-                           helperText={
-                              passwordDirty && errors.password?.message
-                                 ? errors.password.message
-                                 : ''
-                           }
-                           onBlur={() => setPasswordDirty(true)}
-                           placeholder="Пароль"
-                           InputProps={{
-                              endAdornment: (
-                                 <IconButton
-                                    onClick={handleTogglePasswordVisibility}
-                                 >
-                                    {showPassword ? <ShowIcon /> : <HideIcon />}
-                                 </IconButton>
-                              ),
-                           }}
-                        />
-                     </div>
-                     <div>
-                        <StyledPasswordField
-                           type={showConfirmPassword ? 'text' : 'password'}
-                           id="confirmPassword"
-                           name="confirmPassword"
-                           placeholder="Подтвердите пароль"
-                           {...register('confirmPassword')}
-                           error={
-                              confirmPasswordDirty && !!errors.confirmPassword
-                           }
-                           helperText={
-                              confirmPasswordDirty &&
-                              errors.confirmPassword?.message
-                                 ? errors.confirmPassword.message
-                                 : ''
-                           }
-                           onBlur={() => setConfirmPasswordDirty(true)}
-                           InputProps={{
-                              endAdornment: (
-                                 <IconButton
-                                    onClick={
-                                       handleToggleConfirmPasswordVisibility
-                                    }
-                                 >
-                                    {showConfirmPassword ? (
-                                       <ShowIcon />
-                                    ) : (
-                                       <HideIcon />
-                                    )}
-                                 </IconButton>
-                              ),
-                           }}
-                        />
-                        <ButtonDiv>
-                           <SaveButton
-                              type="submit"
-                              variant="contained"
-                              color="primary"
-                           >
-                              add
-                           </SaveButton>
-                        </ButtonDiv>
-                     </div>
-                  </PasswordFieldsContainer>
+                        <div>
+                           <StyledPasswordField
+                              type={showConfirmPassword ? 'text' : 'password'}
+                              id="confirmPassword"
+                              name="confirmPassword"
+                              placeholder="Подтвердите пароль"
+                              {...register('confirmPassword')}
+                              error={
+                                 confirmPasswordDirty &&
+                                 !!errors.confirmPassword
+                              }
+                              helperText={
+                                 confirmPasswordDirty &&
+                                 errors.confirmPassword?.message
+                                    ? errors.confirmPassword.message
+                                    : ''
+                              }
+                              onBlur={() => setConfirmPasswordDirty(true)}
+                              InputProps={{
+                                 endAdornment: (
+                                    <IconButton
+                                       onClick={
+                                          handleToggleConfirmPasswordVisibility
+                                       }
+                                    >
+                                       {showConfirmPassword ? (
+                                          <ShowIcon />
+                                       ) : (
+                                          <HideIcon />
+                                       )}
+                                    </IconButton>
+                                 ),
+                              }}
+                           />
+                           <ButtonDiv>
+                              <SaveButton
+                                 type="submit"
+                                 variant="contained"
+                                 color="primary"
+                              >
+                                 add
+                              </SaveButton>
+                           </ButtonDiv>
+                        </div>
+                     </PasswordFieldsContainer>
+                  )}
                </StyledFormContainer>
             </div>
          </ProfileContainer>
          <ProjectsContainer>
             <ProjectsHeader>
                <p>involved in projects</p>
-               <ProjectCount>{projectCount}</ProjectCount>
+               <ProjectCount>{item?.countWorkSpaces}</ProjectCount>
             </ProjectsHeader>
             <ProjectsList>
-               {involvedProjects.map((project) => (
+               {item?.workSpaceResponse?.map((project) => (
                   <ProjectCard key={Math.random().toString()}>
                      <div>
                         <ProjectCardFirstLetter>
-                           {project.title && project.title.charAt(0)}
+                           {project.workSpaceName &&
+                              project.workSpaceName.charAt(0)}
                         </ProjectCardFirstLetter>
                      </div>
                      <div>
-                        <ProjectCardTitle>{project.title}</ProjectCardTitle>
+                        <ProjectCardTitle>
+                           {project.workSpaceName}
+                        </ProjectCardTitle>
                         <ProjectCartText>{project.text}</ProjectCartText>
                      </div>
                   </ProjectCard>
