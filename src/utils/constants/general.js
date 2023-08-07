@@ -184,3 +184,22 @@ export const rows = [
       lead: 'Almaz Almazov',
    },
 ]
+
+export const filteredLabels = [
+   {
+      id: 1,
+      labelColor: '#61BD4F',
+   },
+   {
+      id: 2,
+      labelColor: '#EB8900',
+   },
+   {
+      id: 3,
+      labelColor: '#0079BF',
+   },
+   {
+      id: 4,
+      labelColor: '#EB5A46',
+   },
+]
