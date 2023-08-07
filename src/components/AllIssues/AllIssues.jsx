@@ -5,13 +5,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import { AllIssuesTable } from './AllIssuesTable'
-import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
 import { AssigneeSection } from '../UI/assignee/AssigneeSection'
 
 export const AllIssues = () => {
-   const [start, setStart] = useState(dayjs('2023-07-10'))
-   const [value, setValue] = useState(dayjs('2023-09-17'))
-
+   const [startDate, setStartDate] = useState(null)
+   const [dueDate, setDueDate] = useState(null)
    const [labels, setLabels] = useState('All Labels')
    const [assignee, setAssignee] = useState('Assignee')
 
@@ -22,7 +20,25 @@ export const AllIssues = () => {
       setAssignee(event.target.value)
    }
    const dataLength = 24
+
    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
+   const handleStartDateChange = (newValue) => {
+      setStartDate(newValue)
+      setDueDate((prevDueDate) =>
+         prevDueDate && dayjs(newValue).isAfter(prevDueDate)
+            ? prevDueDate
+            : newValue
+      )
+   }
+
+   const handleDueDateChange = (newValue) => {
+      setDueDate(newValue)
+      setStartDate((prevStartDate) =>
+         prevStartDate && dayjs(newValue).isBefore(prevStartDate)
+            ? prevStartDate
+            : newValue
+      )
+   }
 
    return (
       <BodyContainer>
@@ -33,14 +49,17 @@ export const AllIssues = () => {
                      <ViewAllIssues>View all issues</ViewAllIssues>
                      <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePickerStyle
-                           value={start}
-                           onChange={(newValue) => setStart(newValue)}
+                           value={startDate}
+                           onChange={handleStartDateChange}
                            format="DD.MM.YYYY"
+                           maxDate={dueDate}
                         />
+
                         <DatePickerStyle
-                           value={value}
-                           onChange={(newValue) => setValue(newValue)}
+                           value={dueDate}
+                           onChange={handleDueDateChange}
                            format="DD.MM.YYYY"
+                           minDate={startDate}
                         />
                      </LocalizationProvider>
                      <MainFormControlContainer>
@@ -56,7 +75,7 @@ export const AllIssues = () => {
                               >
                                  All Labels
                               </MenuItem>
-                              <AddedLabelToCard />
+                              <h1>что-то касаемо label</h1>
                            </StyledSelect>
                         </FormControl>
                         <FormControl>
@@ -157,7 +176,7 @@ const TotalAmount = styled('span')(() => ({
 
 const DatePickerStyle = styled(DatePicker)(() => ({
    input: {
-      width: '5.11rem',
+      width: '5.31rem',
       padding: ' 0.4rem 0.7rem 0.4rem 0.8rem',
       borderRadius: '0.5rem',
       fontFamily: 'CarePro',

@@ -38,7 +38,7 @@ export const AllIssuesTable = () => {
                ) : (
                   <>
                      {assignee.assignees.slice(0, 2).map((item) => (
-                        <Avatar key={item.id}>{item.img}</Avatar>
+                        <Avatar src={item.img} key={item.id} />
                      ))}
                      <Avatar>+{assignee.assignees.length - 2}</Avatar>
                   </>

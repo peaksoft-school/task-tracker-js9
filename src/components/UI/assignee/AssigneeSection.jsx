@@ -3,11 +3,10 @@ import React, { useState } from 'react'
 import { Person } from '@mui/icons-material'
 import { SearchIcon } from '../../../assets/icons'
 import { assignee } from '../../../utils/constants/assignee'
-import { BackgroundChanger } from './BackgroundChanger'
 
 export const AssigneeSection = () => {
    const [anchorEl, setAnchorEl] = useState(null)
-   const [toogle, setToogle] = useState(false)
+   const [, setToogle] = useState(false)
 
    const [, setSelectedUserId] = useState(null)
 
@@ -18,15 +17,6 @@ export const AssigneeSection = () => {
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget)
       setToogle(true)
-   }
-
-   const handleClose = () => {
-      setAnchorEl(null)
-      setToogle(false)
-   }
-
-   const handleUnassignedClick = () => {
-      setToogle(false)
    }
 
    const open = Boolean(anchorEl)
@@ -46,16 +36,6 @@ export const AssigneeSection = () => {
          </Search>
          <div style={{ marginTop: '1rem' }}>
             <ScrollableContainer>
-               {toogle && (
-                  <BackgroundChanger
-                     open={open}
-                     onClose={handleClose}
-                     handleUnassignedClick={handleUnassignedClick}
-                     id={id}
-                     anchorEl={anchorEl}
-                  />
-               )}
-
                <UnassignedContainer aria-describedby={id}>
                   <Checkbox
                      sx={{
