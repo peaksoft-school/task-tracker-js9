@@ -33,6 +33,7 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
    }
 
    const handleFormSubmit = (values) => {
+      setShowModal(false)
       console.log(values, 'VALUES')
    }
 
@@ -142,11 +143,18 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                            <CanselButton
                               type="button"
                               onClick={() => setShowModal(false)}
-                              disabled={isValid && isSubmitting}
                            >
                               Cancel
                            </CanselButton>
-                           <SaveButton type="submit">Create</SaveButton>
+                           <SaveButton
+                              disabled={
+                                 (!isValid && !isSubmitting) ||
+                                 values.invitedMembers.length <= 0
+                              }
+                              type="submit"
+                           >
+                              Create
+                           </SaveButton>
                         </ButtonContainer>
                      </InputContainer>
                   )}
