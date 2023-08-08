@@ -12,7 +12,7 @@ import { ReactComponent as CheckIcon } from './check.svg'
 import { ReactComponent as CheckBoxEmptyIcon } from './checkboxEmpty.svg'
 import { ReactComponent as CheckBoxFilledIcon } from './checkboxFilled.svg'
 import { ReactComponent as ClockIcon } from './clock.svg'
-import { ReactComponent as CloseIcon } from './close.svg'
+import { ReactComponent as CloseIcon } from './closeIcon.svg'
 import { ReactComponent as CopyIcon } from './copy.svg'
 import { ReactComponent as DeleteIcon } from './delete.svg'
 import { ReactComponent as DoneIcon } from './done.svg'
@@ -48,10 +48,11 @@ import { ReactComponent as RealWorldIcon } from './realWorldIcon.svg'
 import { ReactComponent as TypographyIcon } from './typographyIcon.svg'
 import { ReactComponent as CommunicationIcon } from './communicationIcon.svg'
 import { ReactComponent as CheckKeyboardIcon } from './CheckKeyboardIcon.svg'
-import { ReactComponent as DeleteEmailIcon } from './x.icon.svg'
+// import { ReactComponent as closeIcon } from './closeIcon.svg'
+// import { ReactComponent as DeletemailIcon } from './'
 
 export {
-   DeleteEmailIcon,
+   // DeletemailIcon,
    CheckKeyboardIcon,
    CommunicationIcon,
    TypographyIcon,

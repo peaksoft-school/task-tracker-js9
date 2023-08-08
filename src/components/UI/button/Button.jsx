@@ -7,6 +7,7 @@ export const Button = ({
    children,
    startIcon,
    icon,
+   disabled,
    ...rest
 }) => {
    return (
@@ -14,8 +15,9 @@ export const Button = ({
          type="submit"
          variant={variant}
          onClick={onClick}
-         startIcon
-         icon
+         startIcon={startIcon}
+         icon={icon}
+         disabled={disabled}
          {...rest}
       >
          {children}
