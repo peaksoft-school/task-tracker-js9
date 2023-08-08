@@ -7,83 +7,60 @@ import { ModalUi } from '../UI/modal/Modal'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
 
+const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+
 const validationSchema = Yup.object().shape({
    workspaceName: Yup.string().required('Name of the workspace is required'),
-   inviteMember: Yup.array()
+   invitedMembers: Yup.array()
       .of(
          Yup.object().shape({
-            value: Yup.string().email('Invalid email format'),
-            label: Yup.string().email('Invalid email format'),
+            value: Yup.string()
+               .matches(emailRegExp, 'Invalid email format')
+               .required('Email is required'),
          })
       )
-      .required('At least one email is required')
-      .min(1, 'Please provide at least one email'),
-   tempValue: Yup.string().email('Invalid email format'),
+      .test('at-least-one-email', 'At least one email is required', (value) => {
+         return value && value.length > 0
+      })
+      .nullable(),
 })
-
 const NewWorkspaceForm = ({ showModal, setShowModal }) => {
-   const [value, setValue] = useState([])
+   const [tempValue, setTempValue] = useState('')
    const formikRef = useRef()
 
-   const handleFormSubmit = (values, formikBag) => {
-      if (formikRef.current) {
-         formikRef.current.setFieldValue('inviteMember', [])
-      }
-      if (!values.inviteMember || values.inviteMember.length === 0) {
-         return
-      }
-
-      formikBag.setFieldValue('todoEmails', [
-         ...values.todoEmails,
-         ...values.inviteMember,
-      ])
+   const isDuplicate = (newMember, invitedMembers) => {
+      return invitedMembers.some((member) => member.value === newMember)
    }
 
-   const createOption = (label) => ({
-      label,
-      value: label,
-   })
-
-   const handleCreatableChange = (newValue, actionMeta) => {
-      if (actionMeta.action === 'create-option') {
-         const newOption = createOption(newValue.label)
-         console.log(newOption)
-         setValue([...value, newOption])
-      } else {
-         setValue(newValue)
-      }
+   const handleFormSubmit = (values) => {
+      console.log(values, 'VALUES')
    }
 
-   const createNewWorkspace = (values) => {
-      console.log('Creating workspace...', values)
-
+   const closeModal = () => {
       setShowModal(false)
    }
-
-   console.log(value)
 
    return (
       <div>
          {showModal && (
-            <StyleModalUi open={showModal} onClose={() => setShowModal(false)}>
+            <StyleModalUi open={showModal} onClose={closeModal}>
                <NewWorkspace>Create a new workspace</NewWorkspace>
                <Formik
                   ref={formikRef}
                   initialValues={{
-                     tempValue: '',
                      workspaceName: '',
-                     inviteMember: [],
+                     invitedMembers: [],
                   }}
                   validationSchema={validationSchema}
                   onSubmit={handleFormSubmit}
                >
                   {({
                      values,
-                     isSubmitting,
-                     isValid,
-                     errors,
-                     touched,
                      handleChange,
+                     setFieldValue,
+                     errors,
+                     isValid,
+                     isSubmitting,
                   }) => (
                      <InputContainer>
                         <LebelStyle
@@ -101,9 +78,6 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                               borderRadius="0.3rem"
                               onChange={handleChange}
                               value={values.workspaceName}
-                              error={
-                                 touched.workspaceName && !!errors.workspaceName
-                              }
                            />
                            <ErrorMessage
                               name="workspaceName"
@@ -120,43 +94,59 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                               <CreatableSelect
                                  isClearable
                                  isMulti
-                                 components={{ DropdownIndicator: null }}
-                                 inputValue={values.tempValue}
-                                 options={value}
-                                 onChange={handleCreatableChange}
+                                 inputValue={tempValue}
                                  onInputChange={(newValue) =>
-                                    handleChange({
-                                       target: {
-                                          name: 'tempValue',
-                                          value: newValue,
-                                       },
-                                    })
+                                    setTempValue(newValue)
                                  }
+                                 name="invitedMembers"
+                                 value={values.invitedMembers}
+                                 components={{ DropdownIndicator: null }}
+                                 onChange={(selected) => {
+                                    setFieldValue('invitedMembers', selected)
+                                 }}
+                                 className="basic-multi-select"
+                                 onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && e.target.value) {
+                                       e.preventDefault()
+                                       const newMember = e.target.value
+                                       if (
+                                          !isDuplicate(
+                                             newMember,
+                                             values.invitedMembers
+                                          )
+                                       ) {
+                                          const member = {
+                                             value: newMember,
+                                             label: newMember,
+                                          }
+                                          setFieldValue('invitedMembers', [
+                                             ...values.invitedMembers,
+                                             member,
+                                          ])
+                                       }
+                                       setTempValue('')
+                                    }
+                                 }}
                                  placeholder="example@gmail.com"
                               />
                            </EmailInputContainer>
-                           <ErrorMessage
-                              name="inviteMember"
-                              component="div"
-                              style={{ color: 'red' }}
-                           />
+                           <p style={{ color: 'red' }}>
+                              {errors?.invitedMembers
+                                 ? errors.invitedMembers[0]?.value ||
+                                   errors.invitedMembers
+                                 : null}
+                           </p>
                         </div>
 
                         <ButtonContainer>
                            <CanselButton
                               type="button"
                               onClick={() => setShowModal(false)}
+                              disabled={isValid && isSubmitting}
                            >
                               Cancel
                            </CanselButton>
-                           <SaveButton
-                              disabled={isValid && !isSubmitting}
-                              type="button"
-                              onClick={() => createNewWorkspace(values)}
-                           >
-                              Create
-                           </SaveButton>
-                           <Button type="submit" style={{ display: 'none' }} />
+                           <SaveButton type="submit">Create</SaveButton>
                         </ButtonContainer>
                      </InputContainer>
                   )}

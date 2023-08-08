@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { styled } from '@mui/material'
 import { WorkspaceTable } from './WorkspaceTable'
 import { Button } from '../UI/button/Button'
 import NewWorkspaceForm from './WorkspaceModal'
+import { useModal } from '../../hooks/useModal'
 
 export const Workspaces = () => {
-   const [showModal, setShowModal] = useState(false)
+   const { isActive, setActive } = useModal()
 
    const openCloseModalHandler = () => {
-      setShowModal(!showModal)
+      setActive(true)
+   }
+   const closeModal = () => {
+      setActive(false)
    }
    return (
       <div>
@@ -21,7 +25,7 @@ export const Workspaces = () => {
          <TableContainer>
             <WorkspaceTable />
          </TableContainer>
-         <NewWorkspaceForm showModal={showModal} setShowModal={setShowModal} />
+         <NewWorkspaceForm showModal={isActive} setShowModal={closeModal} />
       </div>
    )
 }
