@@ -24,13 +24,13 @@ export const rows = [
             color: '#61BD4F',
          },
          {
-            color: '#6200EE',
+            color: '#0079BF',
          },
          {
             color: '#EB5A46',
          },
          {
-            color: '#F2D600',
+            color: '#ffd700',
          },
       ],
       checklist: '0/0',
@@ -62,13 +62,13 @@ export const rows = [
             color: '#61BD4F',
          },
          {
-            color: '#6200EE',
+            color: '#0079BF',
          },
          {
             color: '#EB5A46',
          },
          {
-            color: '#F2D600',
+            color: '#ffd700',
          },
       ],
       checklist: '0/0',
@@ -103,13 +103,13 @@ export const rows = [
             color: '#61BD4F',
          },
          {
-            color: '#6200EE',
+            color: '#0079BF',
          },
          {
             color: '#EB5A46',
          },
          {
-            color: '#F2D600',
+            color: '#ffd700',
          },
       ],
       checklist: '0/0',
@@ -147,13 +147,13 @@ export const rows = [
             color: '#61BD4F',
          },
          {
-            color: '#6200EE',
+            color: '#0079BF',
          },
          {
             color: '#EB5A46',
          },
          {
-            color: '#F2D600',
+            color: '#ffd700',
          },
       ],
       checklist: '0/0',
@@ -203,13 +203,13 @@ export const rows = [
             color: '#61BD4F',
          },
          {
-            color: '#6200EE',
+            color: '#0079BF',
          },
          {
             color: '#EB5A46',
          },
          {
-            color: '#F2D600',
+            color: '#ffd700',
          },
       ],
       checklist: '0/0',

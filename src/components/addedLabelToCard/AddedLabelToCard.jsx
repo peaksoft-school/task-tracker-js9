@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import { IconButton } from '@mui/material'
 import { CloseIcon, EditIcon } from '../../assets/icons'
@@ -27,10 +27,8 @@ const Labels = [
 ]
 
 export const AddedLabelToCard = () => {
-   const [editState, setEditState] = React.useState(Labels.map(() => false))
-   const [taskText, setTaskText] = React.useState(
-      Labels.map((color) => color.text)
-   )
+   const [editState, setEditState] = useState(Labels.map(() => false))
+   const [taskText, setTaskText] = useState(Labels.map((color) => color.text))
 
    const onEditHandler = (idx) => {
       setEditState((prev) => {
@@ -68,10 +66,7 @@ export const AddedLabelToCard = () => {
             <WrapperTitle>
                <Title>Label</Title>
                <IconButton>
-                  <CloseIcon
-                     style={{ display: 'inline-block' }}
-                     src={CloseIcon}
-                  />
+                  <CloseIcon />
                </IconButton>
             </WrapperTitle>
             {Labels.map((color, idx) => (

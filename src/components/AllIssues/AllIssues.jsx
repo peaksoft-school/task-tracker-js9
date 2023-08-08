@@ -3,9 +3,9 @@ import { Checkbox, FormControl, MenuItem, Select, styled } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers'
-import dayjs from 'dayjs'
 import { AllIssuesTable } from './AllIssuesTable'
 import { AssigneeSection } from '../UI/assignee/AssigneeSection'
+import { LabelForFilter } from '../UI/filteredLabel/LabelForFilter'
 
 export const AllIssues = () => {
    const [startDate, setStartDate] = useState(null)
@@ -22,22 +22,13 @@ export const AllIssues = () => {
    const dataLength = 24
 
    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
+
    const handleStartDateChange = (newValue) => {
       setStartDate(newValue)
-      setDueDate((prevDueDate) =>
-         prevDueDate && dayjs(newValue).isAfter(prevDueDate)
-            ? prevDueDate
-            : newValue
-      )
    }
 
    const handleDueDateChange = (newValue) => {
       setDueDate(newValue)
-      setStartDate((prevStartDate) =>
-         prevStartDate && dayjs(newValue).isBefore(prevStartDate)
-            ? prevStartDate
-            : newValue
-      )
    }
 
    return (
@@ -52,7 +43,7 @@ export const AllIssues = () => {
                            value={startDate}
                            onChange={handleStartDateChange}
                            format="DD.MM.YYYY"
-                           maxDate={dueDate}
+                           disableFuture
                         />
 
                         <DatePickerStyle
@@ -60,8 +51,10 @@ export const AllIssues = () => {
                            onChange={handleDueDateChange}
                            format="DD.MM.YYYY"
                            minDate={startDate}
+                           disablePast
                         />
                      </LocalizationProvider>
+
                      <MainFormControlContainer>
                         <FormControl>
                            <StyledSelect
@@ -75,7 +68,7 @@ export const AllIssues = () => {
                               >
                                  All Labels
                               </MenuItem>
-                              <h1>что-то касаемо label</h1>
+                              <LabelForFilter />
                            </StyledSelect>
                         </FormControl>
                         <FormControl>
@@ -154,6 +147,7 @@ const RoleSection = styled('div')(() => ({
 const ViewAllIssues = styled('p')(() => ({
    fontSize: '1.25rem',
    fontWeight: ' 600',
+   width: '9rem',
 }))
 
 const Total = styled('p')(() => ({
@@ -206,6 +200,7 @@ const StyledSelect = styled(Select)(() => ({
       },
       '&.Mui-focused': {
          borderColor: '#0079BF',
+         // color: 'gold',
       },
    },
    '&.MuiOutlinedInput-root': {
