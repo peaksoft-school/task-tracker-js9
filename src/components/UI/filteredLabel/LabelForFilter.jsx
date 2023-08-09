@@ -1,65 +1,95 @@
-import React from 'react'
-import { Checkbox, styled } from '@mui/material'
+import React, { useState } from 'react'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
+import { styled } from '@mui/material'
 import { filteredLabels } from '../../../utils/constants/general'
 
+const animatedComponents = makeAnimated()
+
+const SelectContainer = styled(Select)(() => ({
+   width: '100%',
+}))
+
 export const LabelForFilter = () => {
+   const [selectWidth, setSelectWidth] = useState(13)
+   const [animating, setAnimating] = useState(false)
+
+   const handleOptionRemove = () => {
+      setAnimating(true)
+      setSelectWidth(13)
+   }
+
+   const handleOptionChange = (selectedOptions) => {
+      setAnimating(true)
+      if (selectedOptions.length === 0) {
+         setSelectWidth(13)
+      } else {
+         const maxLength = Math.max(
+            ...selectedOptions.map((option) => option.label.length)
+         )
+         const newWidth = Math.min(maxLength * 2.5, 19.5)
+         setSelectWidth(newWidth)
+      }
+   }
+
+   const onAnimationEnd = () => {
+      setAnimating(false)
+   }
+
+   const colorStyles = {
+      control: (styles) => ({
+         ...styles,
+         backgroundColor: '#fff',
+         width: `${selectWidth}rem`,
+         cursor: 'pointer',
+         transition: animating ? 'width 0.5s' : 'none',
+      }),
+      menu: (styles) => ({
+         ...styles,
+         width: `${selectWidth}rem`,
+         transition: animating ? 'width 0.5s' : 'none',
+      }),
+      multiValue: (styles, { data }) => ({
+         ...styles,
+         backgroundColor: data.value.toLowerCase(),
+         borderRadius: '0.3rem',
+      }),
+      multiValueLabel: (styles) => ({
+         ...styles,
+         color: 'white',
+      }),
+      option: (styles, { data, isFocused }) => ({
+         ...styles,
+         backgroundColor: isFocused
+            ? data.value.toLowerCase()
+            : styles.backgroundColor,
+         cursor: 'pointer',
+         color: isFocused ? 'white' : styles.color,
+      }),
+      multiValueRemove: (styles, { data }) => ({
+         ...styles,
+         color: data.value.toLowerCase(),
+         ':hover': {
+            backgroundColor: data.value.toLowerCase(),
+            color: 'white',
+         },
+      }),
+   }
+
+   const getOptionLabel = (option) => option.label
+
    return (
-      <MainLabelContainer>
-         <LabelContainer>
-            <Checkbox
-               sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 25 },
-                  '&.Mui-checked': {
-                     color: ' #4798ca',
-                  },
-               }}
-            />
-            <p> no labels</p>
-         </LabelContainer>
-         {filteredLabels.map((label) => (
-            <FilteredLabelContainer key={label.id}>
-               <Checkbox
-                  sx={{
-                     '& .MuiSvgIcon-root': { fontSize: 25 },
-                     '&.Mui-checked': {
-                        color: ' #3fbd5a',
-                     },
-                  }}
-               />
-               <FilteredColorLabelContainer
-                  style={{
-                     backgroundColor: label.labelColor,
-                  }}
-               />
-            </FilteredLabelContainer>
-         ))}
-      </MainLabelContainer>
+      <SelectContainer
+         closeMenuOnSelect={false}
+         components={animatedComponents}
+         defaultValue={[filteredLabels[4], filteredLabels[5]]}
+         isMulti
+         options={filteredLabels}
+         styles={colorStyles}
+         getOptionLabel={getOptionLabel}
+         onChange={handleOptionChange}
+         onRemove={handleOptionRemove}
+         onAnimationEnd={onAnimationEnd}
+      />
    )
 }
-
-const MainLabelContainer = styled('div')(() => ({
-   width: ' 21.5rem',
-   padding: '1rem 2rem 1rem 0.3rem',
-   borderRadius: '0.625rem',
-   boxShadow: '-16px 8px 14px 0px rgba(0, 0, 0, 0.03)',
-}))
-
-const LabelContainer = styled('div')(() => ({
-   display: 'flex',
-   alignItems: 'center',
-   textTransform: 'capitalize',
-   p: {
-      fontSize: '1rem',
-      fontWeight: 500,
-   },
-}))
-const FilteredLabelContainer = styled('div')(() => ({
-   display: 'flex',
-   alignItems: 'center',
-}))
-const FilteredColorLabelContainer = styled('div')(() => ({
-   width: '14.375rem',
-   height: '2rem',
-   borderRadius: '0.385rem',
-   padding: '0.375rem 15.8125rem 0.375rem 1rem',
-}))
