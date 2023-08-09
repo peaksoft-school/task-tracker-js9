@@ -10,12 +10,8 @@ import { LabelForFilter } from '../UI/filteredLabel/LabelForFilter'
 export const AllIssues = () => {
    const [startDate, setStartDate] = useState(null)
    const [dueDate, setDueDate] = useState(null)
-   const [labels, setLabels] = useState('All Labels')
    const [assignee, setAssignee] = useState('Assignee')
 
-   const LabelsHandleChange = (event) => {
-      setLabels(event.target.value)
-   }
    const AssigneeHandleChange = (event) => {
       setAssignee(event.target.value)
    }
@@ -38,55 +34,28 @@ export const AllIssues = () => {
                <MainCont>
                   <RoleSection>
                      <ViewAllIssues>View all issues</ViewAllIssues>
-                     {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePickerStyle
-                           value={startDate}
-                           onChange={handleStartDateChange}
-                           format="DD.MM.YYYY"
-                           disableFuture
-                        />
 
-                        <DatePickerStyle
-                           value={dueDate}
-                           onChange={handleDueDateChange}
-                           format="DD.MM.YYYY"
-                           minDate={startDate}
-                           disablePast
-                        />
-                     </LocalizationProvider> */}
                      <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePickerStyle
                            value={startDate}
                            onChange={handleStartDateChange}
                            format="DD.MM.YYYY"
                            disableFuture={Boolean(dueDate)}
-                           maxDate={dueDate}
+                           // maxDate={dueDate}
                         />
 
                         <DatePickerStyle
                            value={dueDate}
                            onChange={handleDueDateChange}
                            format="DD.MM.YYYY"
-                           minDate={startDate}
+                           // minDate={startDate}
                            disablePast={Boolean(startDate)}
                         />
                      </LocalizationProvider>
 
                      <MainFormControlContainer>
                         <FormControl>
-                           <StyledSelect
-                              value={labels}
-                              onChange={LabelsHandleChange}
-                           >
-                              <MenuItem
-                                 style={{ fontFamily: 'CarePro' }}
-                                 disabled
-                                 value="All Labels"
-                              >
-                                 All Labels
-                              </MenuItem>
-                              <LabelForFilter />
-                           </StyledSelect>
+                           <LabelForFilter />
                         </FormControl>
                         <FormControl>
                            <AssigneeSelect
@@ -144,7 +113,7 @@ const GlobalContainer = styled('div')(() => ({
 const HeaderContainer = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
-   padding: '0 1.4rem 1.5rem 1.4rem ',
+   padding: ' 0.5rem 0.5rem 1.6rem 0.5rem',
 }))
 
 const MainCont = styled('div')(() => ({
@@ -158,13 +127,13 @@ const RoleSection = styled('div')(() => ({
    alignContent: 'center',
    margin: '0',
    height: '1.9rem',
-   gap: '1.25rem',
+   gap: '1.2rem',
 }))
 
 const ViewAllIssues = styled('p')(() => ({
    fontSize: '1.25rem',
    fontWeight: ' 600',
-   width: '9rem',
+   width: '8.5rem',
 }))
 
 const Total = styled('p')(() => ({
@@ -201,36 +170,6 @@ const DatePickerStyle = styled(DatePicker)(() => ({
    '& .MuiInputBase-root.MuiOutlinedInput-root': {
       borderRadius: '0.5rem',
       paddingRight: '1.2rem',
-   },
-}))
-
-const StyledSelect = styled(Select)(() => ({
-   fontFamily: 'CarePro',
-
-   '& .MuiSelect-select': {
-      borderRadius: '5rem',
-      padding: ' 0.4375rem 1rem 0.4375rem 1rem',
-      width: '5rem',
-      borderColor: '#D0D0D0',
-      '&:hover': {
-         borderColor: '#8d8c8c',
-      },
-      '&.Mui-focused': {
-         borderColor: '#0079BF',
-         // color: 'gold',
-      },
-   },
-   '&.MuiOutlinedInput-root': {
-      borderRadius: '0.5rem',
-      fieldset: {
-         borderColor: '#D0D0D0',
-      },
-      '&:hover fieldset': {
-         borderColor: '#8d8c8c',
-      },
-      '&.Mui-focused fieldset': {
-         borderColor: '#0079BF',
-      },
    },
 }))
 
@@ -271,6 +210,5 @@ const MainFormControlContainer = styled('div')(() => ({
 const CheckConatainer = styled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
-   gap: '0.4rem',
    p: { textTransform: 'capitalize', color: '#464646' },
 }))
