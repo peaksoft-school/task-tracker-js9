@@ -27,7 +27,7 @@ export const LabelForFilter = () => {
          const maxLength = Math.max(
             ...selectedOptions.map((option) => option.label.length)
          )
-         const newWidth = Math.min(maxLength * 2.8, 18.5)
+         const newWidth = Math.min(maxLength * 2.5, 19.5)
          setSelectWidth(newWidth)
       }
    }

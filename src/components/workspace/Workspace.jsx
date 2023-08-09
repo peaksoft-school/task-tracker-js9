@@ -1,9 +1,14 @@
 import React from 'react'
 import { styled } from '@mui/material'
+import { useSelector } from 'react-redux'
 import { WorkspaceTable } from './WorkspaceTable'
 import { Button } from '../UI/button/Button'
 
 export const Workspaces = () => {
+   const { isAuthorization, role } = useSelector((state) => state.auth)
+   console.log('role: ', role)
+   console.log('isAuthorization: ', isAuthorization)
+
    return (
       <div>
          <div>
