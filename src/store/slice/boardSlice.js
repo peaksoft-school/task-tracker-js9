@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const fetchBoards = createAsyncThunk('board/fetchBoards', async () => {
-   const { data } = await axios.get(`http://localhost:3001/boards/`)
+   const { data } = await axios.get(
+      `http://tasktracker.peaksoftprojects.com/api/boards/`
+   )
 
    return data
 })
@@ -12,6 +14,14 @@ export const boardRemove = createAsyncThunk(
    async (id, { dispatch }) => {
       console.log(dispatch)
       axios.delete(`http://localhost:3001/boards/${id}`)
+      dispatch(fetchBoards())
+   }
+)
+
+export const boardPost = createAsyncThunk(
+   'board/boardPost',
+   async (obj, { dispatch }) => {
+      await axios.post(`http://localhost:3001/boards`, obj)
       dispatch(fetchBoards())
    }
 )
