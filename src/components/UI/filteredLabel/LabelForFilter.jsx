@@ -8,6 +8,17 @@ const animatedComponents = makeAnimated()
 
 const SelectContainer = styled(Select)(() => ({
    width: '100%',
+
+   '& .css-jf55x3-control': {
+      borderRadius: '0.5rem',
+      height: '2.3rem',
+      maxHeight: '0.5rem',
+   },
+   '& .css-jf55x3-control:active': {
+      borderRadius: '0.5rem',
+      height: '1rem',
+      maxHeight: '0.5rem',
+   },
 }))
 
 export const LabelForFilter = () => {
