@@ -186,20 +186,8 @@ export const rows = [
 ]
 
 export const filteredLabels = [
-   {
-      id: 1,
-      labelColor: '#61BD4F',
-   },
-   {
-      id: 2,
-      labelColor: '#EB8900',
-   },
-   {
-      id: 3,
-      labelColor: '#0079BF',
-   },
-   {
-      id: 4,
-      labelColor: '#EB5A46',
-   },
+   { label: 'Kick back', value: '#EB5A46' },
+   { label: 'Final review', value: '#0079BF' },
+   { label: 'Done', value: '#61BD4F' },
+   { label: 'Code review', value: '#EB8900' },
 ]
