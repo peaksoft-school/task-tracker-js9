@@ -7,7 +7,7 @@
 // import { store } from './store'
 // import { injectStore } from './config/axiosInstance'
 
-import { AllIssues } from './components/AllIssues/AllIssues'
+import { AllIssues } from './components/allIssues/AllIssues'
 
 // injectStore(store)
 
