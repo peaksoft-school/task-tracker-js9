@@ -1,13 +1,11 @@
 import React from 'react'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-// import axios from 'axios'
 import { StarIcon } from '../../assets/icons'
 import {
-   boardRemove,
+   // boardRemove, ======> Нужен когда удалаем board
    fetchBoards,
    boardPost,
-   // setItems,
 } from '../../store/board/boardThunk'
 import { BoardModal } from './BoardModal'
 
@@ -73,19 +71,16 @@ const BoardColors = [
 export const Board = () => {
    const [openModal, setOpenModal] = React.useState(false)
    const items = useSelector((state) => state.board.items)
-   console.log(items)
    const dispatch = useDispatch()
 
    React.useEffect(() => {
       dispatch(fetchBoards(items?.workSpaceId))
    }, [])
 
-   console.log('items', items)
-   const deleteFunc = (boardId) => {
-      dispatch(boardRemove(boardId))
-      console.log(boardId)
-   }
-   console.log(items)
+   // const deleteFunc = (boardId) => {
+   //    dispatch(boardRemove(boardId))
+   //    console.log(boardId)
+   // } ======> Нужен когда удалаем board
 
    const toggleModal = () => {
       setOpenModal((prev) => !prev)
@@ -108,11 +103,7 @@ export const Board = () => {
                      <BoardBlock items={item}>
                         <BoardTitle>{item.title}</BoardTitle>
                         <StarContainer>
-                           <StarIcon
-                              onClick={() => {
-                                 deleteFunc(item.boardId)
-                              }}
-                           />
+                           <StarIcon />
                         </StarContainer>
                      </BoardBlock>
                   </div>
