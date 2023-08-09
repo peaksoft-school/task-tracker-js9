@@ -38,7 +38,7 @@ export const AllIssues = () => {
                <MainCont>
                   <RoleSection>
                      <ViewAllIssues>View all issues</ViewAllIssues>
-                     <LocalizationProvider dateAdapter={AdapterDayjs}>
+                     {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePickerStyle
                            value={startDate}
                            onChange={handleStartDateChange}
@@ -52,6 +52,23 @@ export const AllIssues = () => {
                            format="DD.MM.YYYY"
                            minDate={startDate}
                            disablePast
+                        />
+                     </LocalizationProvider> */}
+                     <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePickerStyle
+                           value={startDate}
+                           onChange={handleStartDateChange}
+                           format="DD.MM.YYYY"
+                           disableFuture={Boolean(dueDate)}
+                           maxDate={dueDate}
+                        />
+
+                        <DatePickerStyle
+                           value={dueDate}
+                           onChange={handleDueDateChange}
+                           format="DD.MM.YYYY"
+                           minDate={startDate}
+                           disablePast={Boolean(startDate)}
                         />
                      </LocalizationProvider>
 
