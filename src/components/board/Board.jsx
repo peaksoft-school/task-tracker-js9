@@ -8,7 +8,7 @@ import {
    fetchBoards,
    boardPost,
    // setItems,
-} from '../../store/slice/boardSlice'
+} from '../../store/board/boardThunk'
 import { BoardModal } from './BoardModal'
 
 const BoardColors = [
@@ -72,30 +72,29 @@ const BoardColors = [
 
 export const Board = () => {
    const [openModal, setOpenModal] = React.useState(false)
+   const items = useSelector((state) => state.board.items)
+   console.log(items)
    const dispatch = useDispatch()
-   const getPizzas = () => {
-      dispatch(fetchBoards())
-   }
 
    React.useEffect(() => {
-      getPizzas()
+      dispatch(fetchBoards(items?.workSpaceId))
    }, [])
 
-   const items = useSelector((state) => state.boardSlice.items)
-   // const [itemt, setItems] = React.useState()
-   const deleteFunc = (id) => {
-      dispatch(boardRemove(id))
+   console.log('items', items)
+   const deleteFunc = (boardId) => {
+      dispatch(boardRemove(boardId))
+      console.log(boardId)
    }
-   // console.log(itemt)
-
-   // items.map((obj) => setItems(obj))
-   const postFunc = (obj) => {
-      dispatch(boardPost(obj))
-   }
+   console.log(items)
 
    const toggleModal = () => {
       setOpenModal((prev) => !prev)
    }
+
+   const postFunc = (objBoard) => {
+      dispatch(boardPost(objBoard))
+   }
+
    return (
       <BoardWrapper>
          <AllBoards>
@@ -104,12 +103,16 @@ export const Board = () => {
                <Button onClick={toggleModal}>Create new board</Button>
             </BoardButton>
             <Boards>
-               {items.map((item) => (
-                  <div key={item.id}>
+               {items?.map((item) => (
+                  <div key={item.boardId}>
                      <BoardBlock items={item}>
                         <BoardTitle>{item.title}</BoardTitle>
                         <StarContainer>
-                           <StarIcon onClick={() => deleteFunc(item.id)} />
+                           <StarIcon
+                              onClick={() => {
+                                 deleteFunc(item.boardId)
+                              }}
+                           />
                         </StarContainer>
                      </BoardBlock>
                   </div>
@@ -148,10 +151,10 @@ const Boards = styled('div')(() => ({
 
 const BoardBlock = styled('div')(({ items }) => ({
    backgroundColor: `${
-      items.background.startsWith('#') ? items.background : ''
+      items.backGround.startsWith('#') ? items.backGround : ''
    }`,
    backgroundImage: `${
-      items.background.startsWith('#') ? 'none' : `url(${items.background})`
+      items.backGround.startsWith('#') ? 'none' : `url(${items.backGround})`
    }`,
    backgroundRepeat: 'no-repeat',
    backgroundSize: 'cover',

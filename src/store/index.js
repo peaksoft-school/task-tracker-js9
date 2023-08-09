@@ -1,9 +1,10 @@
-/* eslint-disable import/no-named-as-default */
 import { configureStore } from '@reduxjs/toolkit'
-import boardSlice from './slice/boardSlice'
+import { authSlice } from './auth/authSlice'
+import { boardSlice } from './board/boardSlice'
 
 export const store = configureStore({
    reducer: {
-      boardSlice,
+      [authSlice.name]: authSlice.reducer,
+      [boardSlice.name]: boardSlice.reducer,
    },
 })

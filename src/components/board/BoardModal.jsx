@@ -13,11 +13,11 @@ export const BoardModal = ({
    // const editColor = (id) => {
    //    setSelectedColor(id === selectedColor ? null : id)
    // }
-   const postAddBack = (color, name, favourite) => {
+   const postAddBack = (color, name) => {
       postFunc({
-         background: color,
+         backGround: color,
          title: name,
-         isFavourite: favourite,
+         workSpaceId: 2,
       })
    }
 

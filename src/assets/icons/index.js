@@ -47,7 +47,7 @@ import { ReactComponent as RealWorldIcon } from './realWorldIcon.svg'
 import { ReactComponent as TypographyIcon } from './typographyIcon.svg'
 import { ReactComponent as CommunicationIcon } from './communicationIcon.svg'
 import { ReactComponent as CheckKeyboardIcon } from './CheckKeyboardIcon.svg'
-import { ReactComponent as CloseIcon } from './close.svg'
+import { ReactComponent as CloseIcon } from './closeIcon.svg'
 
 export {
    CheckKeyboardIcon,
