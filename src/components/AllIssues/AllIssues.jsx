@@ -41,14 +41,12 @@ export const AllIssues = () => {
                            onChange={handleStartDateChange}
                            format="DD.MM.YYYY"
                            disableFuture={Boolean(dueDate)}
-                           // maxDate={dueDate}
                         />
 
                         <DatePickerStyle
                            value={dueDate}
                            onChange={handleDueDateChange}
                            format="DD.MM.YYYY"
-                           // minDate={startDate}
                            disablePast={Boolean(startDate)}
                         />
                      </LocalizationProvider>
