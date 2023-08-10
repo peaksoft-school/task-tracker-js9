@@ -1,12 +1,14 @@
 import { Avatar, IconButton, styled } from '@mui/material'
-import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { StarIcon } from '../../assets/icons'
-
-import { rows } from '../../utils/constants/general'
 import TableMui from '../UI/table/TableMui'
+import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
 
 export const WorkspaceTable = () => {
    const [favoriteIds, setFavoriteIds] = useState([])
+   const { workspaces } = useSelector((state) => state.workspaces)
+   const dispatch = useDispatch()
 
    const isFavorite = (id) => favoriteIds.includes(id)
 
@@ -17,6 +19,9 @@ export const WorkspaceTable = () => {
             : [...prevIds, id]
       )
    }
+   useEffect(() => {
+      dispatch(fetchAllWorkspaces())
+   }, [dispatch])
 
    const column = [
       {
@@ -25,13 +30,13 @@ export const WorkspaceTable = () => {
          index: true,
          align: 'left',
          minWidth: '5rem',
-         render: (data) => <h3>{data.id}</h3>,
+         render: (data) => <h3>{data.adminId}</h3>,
       },
       {
          heading: 'Name',
          key: 'name',
-         minWidth: '29rem',
-         render: (data) => <NameStyle>{data.name}</NameStyle>,
+         minWidth: '15rem',
+         render: (data) => <NameStyle>{data.workSpaceName}</NameStyle>,
       },
       {
          heading: 'Lead',
@@ -40,8 +45,8 @@ export const WorkspaceTable = () => {
             <div
                style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}
             >
-               <Avatar>{data.img}</Avatar>
-               <p>{data.lead}</p>
+               <Avatar>{data.adminImage}</Avatar>
+               <p>{data.adminFullName}</p>
             </div>
          ),
       },
@@ -63,7 +68,7 @@ export const WorkspaceTable = () => {
 
    return (
       <div>
-         <TableMui column={column} rows={rows} />
+         <TableMui column={column} rows={workspaces} />
       </div>
    )
 }
