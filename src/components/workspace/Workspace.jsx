@@ -1,22 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled } from '@mui/material'
 import { WorkspaceTable } from './WorkspaceTable'
 import { Button } from '../UI/button/Button'
+import NewWorkspaceForm from './WorkspaceModal'
 
 export const Workspaces = () => {
+   const [showModal, setShowModal] = useState(false)
+
+   const openCloseModalHandler = () => {
+      setShowModal(!showModal)
+   }
    return (
       <div>
-         <div>
-            <ContainerHead>
-               <span>
-                  <h3>Workspaces</h3>
-               </span>
-               <SaveButton>Create</SaveButton>
-            </ContainerHead>
-            <Div>
-               <WorkspaceTable />
-            </Div>
-         </div>
+         <ContainerHead>
+            <span>
+               <h3>Workspaces</h3>
+            </span>
+            <SaveButton onClick={openCloseModalHandler}>Create</SaveButton>
+         </ContainerHead>
+         <TableContainer>
+            <WorkspaceTable />
+         </TableContainer>
+         <NewWorkspaceForm showModal={showModal} setShowModal={setShowModal} />
       </div>
    )
 }
@@ -40,6 +45,6 @@ const ContainerHead = styled('div')(() => ({
    justifyContent: 'space-between',
    padding: '1rem 2rem 0rem 2.5rem',
 }))
-const Div = styled('div')(() => ({
+const TableContainer = styled('div')(() => ({
    padding: '1rem 2rem 0rem 2rem',
 }))
