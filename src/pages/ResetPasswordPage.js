@@ -37,7 +37,6 @@ export const ResetPasswordPage = () => {
                message: 'Sign In successful!',
                severity: 'success',
             })
-
             navigate('/mainPage')
          })
          .catch((error) => {
@@ -173,7 +172,6 @@ const ContainerPasswordInput = styled('div')(() => ({
    alignItems: 'center',
    justifyContent: 'center',
    width: '100%',
-   // marginRight: '0rem',
 }))
 
 const StyledInputs = styled(TextField)(() => ({

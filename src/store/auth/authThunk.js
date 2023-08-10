@@ -80,14 +80,21 @@ export const forgotPasswordRequest = createAsyncThunk(
 // RESET PASSWORD
 
 export const resetPasswordRequest = createAsyncThunk(
-   'auth/forgotPassword',
+   'auth/resetPassword',
    async (data, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.post(`/auth/reset-password`, data)
-
-         return response
+         localStorage.setItem(
+            STORAGE_KEY.TASK_TRACER_AUTH_KEY,
+            JSON.stringify(response.data)
+         )
+         return response.data
       } catch (error) {
          return rejectWithValue(error.response.data.message)
       }
    }
 )
+
+export const logOut = createAsyncThunk('auth/logOut', () => {
+   localStorage.removeItem(STORAGE_KEY.TASK_TRACER_AUTH_KEY)
+})

@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import {
    authWithGoogleRequest,
    forgotPasswordRequest,
+   logOut,
+   resetPasswordRequest,
    signInRequest,
    signUpRequest,
 } from './authThunk'
@@ -102,6 +104,17 @@ export const authSlice = createSlice({
          .addCase(forgotPasswordRequest.rejected, (state) => {
             state.isAuthorization = false
             state.isLoading = false
+         })
+         // reset password
+         .addCase(resetPasswordRequest.fulfilled, (state, actions) => {
+            state.isAuthorization = true
+            state.isLoading = false
+            state.email = actions.payload.email
+            state.token = actions.payload.token
+            state.role = actions.payload.role
+         })
+         .addCase(logOut.fulfilled, () => {
+            return { ...initialState }
          })
    },
 })

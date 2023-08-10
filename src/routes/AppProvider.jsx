@@ -30,7 +30,13 @@ export const routes = createBrowserRouter([
    },
    {
       path: `/forgotPassword/:id`,
-      element: <ResetPasswordPage />,
+      element: (
+         <PrivateRoute
+            component={<ResetPasswordPage />}
+            roles={[USER_ROLE.GUEST]}
+            fallBacPath="/mainPage"
+         />
+      ),
    },
    {
       path: '/mainPage',
