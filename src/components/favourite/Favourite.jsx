@@ -1,61 +1,84 @@
-import { useDispatch } from 'react-redux'
-import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
 import { styled, IconButton } from '@mui/material'
 import { StarFilledIcon, StarIcon } from '../../assets/icons'
-import { getFavourites } from '../../store/getFavourites/favouritesThunk'
+import {
+   getFavourites,
+   toggleFavoriteWorkSpace,
+   toggleFavoriteaBoard,
+} from '../../store/getFavourites/favouritesThunk'
 
-export const Favourite = ({ favourite }) => {
-   const [favouriteData, setFavouriteData] = useState(favourite)
+export const Favourite = () => {
+   const { favorite } = useSelector((state) => state.favourite)
+
+   console.log('favorites: ', favorite)
+
    const dispatch = useDispatch()
 
-   const handleStarClick = (id) => {
-      setFavouriteData((prevData) =>
-         prevData.map((item) =>
-            item.id === id ? { ...item, favourite: !item.favourite } : item
-         )
-      )
+   const handleStarClickBoard = (id) => {
+      console.log('ID BOARD', id)
+      dispatch(toggleFavoriteaBoard(id))
+   }
+
+   const handleStarClickWorkSpace = (id) => {
+      console.log('ID WORK_SPACE', id)
+
+      dispatch(toggleFavoriteWorkSpace(id))
    }
 
    const getIcon = (isFavourite) =>
       isFavourite ? <StarFilledIcon /> : <StarIcon />
 
-   const returnIdHandler = (id) => {
-      console.log('Clicked item ID:', id)
-   }
-
    useEffect(() => {
       dispatch(getFavourites())
    }, [dispatch])
 
+   console.log(favorite)
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
-         {favouriteData.length === 0 ? (
-            <p>Favourite empty</p>
-         ) : (
-            favouriteData.map((item) => (
-               <FavouriteBox
-                  onClick={() => returnIdHandler(item.id)}
-                  key={item.id}
-                  hoverColor="#F2F2F2"
+
+         {favorite.boardResponses?.map((item) => (
+            <FavouriteBox
+               onClick={() => handleStarClickBoard(item.boardId)}
+               key={item.boardId}
+               hoverColor="#F2F2F2"
+            >
+               {item.backGround && (
+                  <ImageContainer>
+                     <StyledImage src={item.backGround} alt="#" />
+                  </ImageContainer>
+               )}
+               <TextContainer>
+                  <div>
+                     <StyledTitle>{item.title}</StyledTitle>
+                     {/* <StyledText>{item.text}</StyledText> */}
+                  </div>
+               </TextContainer>
+               <IconButton onClick={() => handleStarClickBoard(item.boardId)}>
+                  {getIcon(item.favorite)}
+               </IconButton>
+            </FavouriteBox>
+         ))}
+         {favorite.workSpaceResponses?.map((item) => (
+            <FavouriteBox
+               onClick={() => handleStarClickWorkSpace(item.workSpaceId)}
+               key={item.W}
+               hoverColor="#F2F2F2"
+            >
+               <TextContainer>
+                  <div>
+                     <StyledTitle>{item.name}</StyledTitle>
+                     <StyledText>Workcpase</StyledText>
+                  </div>
+               </TextContainer>
+               <IconButton
+                  onClick={() => handleStarClickWorkSpace(item.workSpaceId)}
                >
-                  {item.image && (
-                     <ImageContainer>
-                        <StyledImage src={item.image} alt="favourites" />
-                     </ImageContainer>
-                  )}
-                  <TextContainer>
-                     <div>
-                        <StyledTitle>{item.title}</StyledTitle>
-                        <StyledText>{item.text}</StyledText>
-                     </div>
-                  </TextContainer>
-                  <IconButton onClick={() => handleStarClick(item.id)}>
-                     {getIcon(item.favourite)}
-                  </IconButton>
-               </FavouriteBox>
-            ))
-         )}
+                  {getIcon(item.favorite)}
+               </IconButton>
+            </FavouriteBox>
+         ))}
       </Container>
    )
 }
@@ -109,7 +132,6 @@ const StyledTitle = styled('p')({
    fontWeight: '400',
    marginLeft: '0.5rem',
 })
-
 const StyledText = styled('p')({
    color: '#919191',
    fontFamily: 'CarePro',

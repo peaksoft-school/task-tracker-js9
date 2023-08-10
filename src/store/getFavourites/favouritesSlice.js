@@ -10,7 +10,7 @@ export const favouriteSlice = createSlice({
    reducers: {},
    extraReducers: (builder) => [
       builder.addCase(getFavourites.fulfilled, (state, action) => {
-         // eslint-disable-next-line no-param-reassign
+         console.log('action: ', action.payload)
          state.favorite = action.payload
       }),
    ],

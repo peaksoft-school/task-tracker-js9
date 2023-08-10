@@ -5,14 +5,13 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { Favourite } from './components/favourite/Favourite'
 import { store } from './store'
-import { favourites } from './utils/constants/favourites'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
    <React.StrictMode>
       {/* <App /> */}
       <Provider store={store}>
-         <Favourite favourite={favourites} />
+         <Favourite />
       </Provider>
    </React.StrictMode>
 )
