@@ -3,14 +3,16 @@ import React, { useState } from 'react'
 import { Formik, Form, ErrorMessage } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
+import { signInWithPopup } from 'firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { LayoutFormPage } from './LayoutFormPage'
 import { GoogleIcon, HideIcon, ShowIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
-import { signUpRequest } from '../store/auth/authThunk'
+import { authWithGoogleRequest, signUpRequest } from '../store/auth/authThunk'
 import 'react-toastify/dist/ReactToastify.css'
 import Snackbar, { showSnackbar } from '../components/UI/snackbar/Snackbar'
 import IsLoading from '../components/UI/snackbar/IsLoading'
+import { auth, provider } from '../config/firebase'
 
 export const SignUpPage = () => {
    const [showPassword, setShowPassword] = useState(false)
@@ -29,17 +31,16 @@ export const SignUpPage = () => {
    }
 
    const initialValues = {
-      name: '',
-      surname: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
-      repeatPassword: '',
       termsAgreed: false,
    }
 
    const validationSchema = Yup.object({
-      name: Yup.string().required('Name is required'),
-      surname: Yup.string().required('Surname is required'),
+      firstName: Yup.string().required('First name is required'),
+      lastName: Yup.string().required('Last name is required'),
       email: Yup.string().email('Invalid email').required('Email is required'),
       password: Yup.string().required('Password is required'),
       repeatPassword: Yup.string()
@@ -69,6 +70,32 @@ export const SignUpPage = () => {
          })
    }
 
+   const signInWithGoogleHandler = async () => {
+      try {
+         return await signInWithPopup(auth, provider).then((data) => {
+            dispatch(authWithGoogleRequest(data.user.accessToken))
+               .unwrap()
+               .then(() => {
+                  showSnackbar({
+                     message: 'Sign In successful!',
+                     severity: 'success',
+                  })
+
+                  navigate('/mainPage')
+               })
+               .catch((error) =>
+                  showSnackbar({
+                     message: error,
+                     additionalMessage: 'Please try again .',
+                     severity: 'error',
+                  })
+               )
+         })
+      } catch (error) {
+         return error
+      }
+   }
+
    return (
       <div>
          {isLoading && <IsLoading />}
@@ -76,7 +103,7 @@ export const SignUpPage = () => {
             <Container>
                <div className="block-head">
                   <h2>Sign up</h2>
-                  <AuthWithGoogle>
+                  <AuthWithGoogle onClick={signInWithGoogleHandler}>
                      <AuthWithText>Auth with google</AuthWithText>
                      <GoogleIcon />
                   </AuthWithGoogle>
@@ -94,27 +121,27 @@ export const SignUpPage = () => {
                            <div className="input-block">
                               <StyledInputs
                                  size="small"
-                                 label="Name"
+                                 label="First Name"
                                  type="text"
-                                 placeholder="Name"
-                                 name="name"
-                                 value={values.name}
+                                 placeholder="First Name"
+                                 name="firstName"
+                                 value={values.firstName}
                                  onChange={handleChange}
-                                 error={touched.name && !!errors.name}
-                                 helperText={<ErrorMessage name="name" />}
+                                 error={touched.firstName && !!errors.firstName}
+                                 helperText={<ErrorMessage name="firstName" />}
                               />
                            </div>
                            <div className="input-block">
                               <StyledInputs
                                  size="small"
-                                 label="Surname"
+                                 label="Last Name"
                                  type="text"
-                                 placeholder="Surname"
-                                 name="surname"
-                                 value={values.surname}
+                                 placeholder="Last Name"
+                                 name="lastName"
+                                 value={values.lastName}
                                  onChange={handleChange}
-                                 error={touched.surname && !!errors.surname}
-                                 helperText={<ErrorMessage name="surname" />}
+                                 error={touched.lastName && !!errors.lastName}
+                                 helperText={<ErrorMessage name="lastName" />}
                               />
                            </div>
                            <div className="input-block">
@@ -357,7 +384,7 @@ const StyledButton = styled(Button)(() => ({
    },
    width: '8.6875rem',
    lineHeight: 'normal',
-   padding: '0.5rem 1 rem',
+   padding: '0.5rem 1rem',
    textTransform: 'capitalize',
    marginTop: '1rem',
 }))
@@ -384,3 +411,5 @@ const StyledInputs = styled(TextField)(() => ({
 const AuthWithText = styled('p')(({ theme }) => ({
    color: theme.palette.primary.blue,
 }))
+
+export default SignUpPage

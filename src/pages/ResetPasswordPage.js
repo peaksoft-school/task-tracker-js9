@@ -1,32 +1,51 @@
 import { IconButton, TextField, styled } from '@mui/material'
 import { Formik, Form } from 'formik'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 import { LayoutFormPage } from './LayoutFormPage'
 import { Button } from '../components/UI/button/Button'
 import { HideIcon, ShowIcon } from '../assets/icons'
+import { resetPasswordRequest } from '../store/auth/authThunk'
+import { showSnackbar } from '../components/UI/snackbar/Snackbar'
 
 export const ResetPasswordPage = () => {
+   const { id } = useParams()
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+
    const initialValues = {
-      password: '',
+      newPassword: '',
       repeatPassword: '',
    }
 
    const validationSchema = Yup.object({
-      password: Yup.string()
+      newPassword: Yup.string()
          .required('Password is required')
          .min(6, 'Password must be at least 6 characters long'),
       repeatPassword: Yup.string()
          .required('Repeat password is required')
-         .oneOf([Yup.ref('password')], 'Passwords must match'),
+         .oneOf([Yup.ref('newPassword')], 'Passwords must match'),
    })
 
    const handleSubmit = (values) => {
-      console.log(values)
-      if (values.password === values.repeatPassword) {
-         console.log('Success')
-      } else {
-         console.log('Error')
-      }
+      values.userId = +id
+      dispatch(resetPasswordRequest(values))
+         .unwrap()
+         .then(() => {
+            showSnackbar({
+               message: 'Sign In successful!',
+               severity: 'success',
+            })
+            navigate('/mainPage')
+         })
+         .catch((error) => {
+            showSnackbar({
+               message: error,
+               additionalMessage: 'Please try again .',
+               severity: 'error',
+            })
+         })
    }
 
    return (
@@ -50,10 +69,12 @@ export const ResetPasswordPage = () => {
                                  values.passwordVisibility ? 'text' : 'password'
                               }
                               placeholder="Password"
-                              name="password"
+                              name="newPassword"
                               as={TextField}
-                              error={touched.password && !!errors.password}
-                              value={values.password}
+                              error={
+                                 touched.newPassword && !!errors.newPassword
+                              }
+                              value={values.newPassword}
                               onChange={handleChange}
                               InputProps={{
                                  endAdornment: (
@@ -75,8 +96,8 @@ export const ResetPasswordPage = () => {
                               }}
                            />
                         </ContainerPasswordInput>
-                        {errors.password && touched.password && (
-                           <ErrorText>{errors.password}</ErrorText>
+                        {errors.newPassword && touched.newPassword && (
+                           <ErrorText>{errors.newPassword}</ErrorText>
                         )}
                         <ContainerPasswordInput>
                            <StyledInputs
@@ -96,9 +117,9 @@ export const ResetPasswordPage = () => {
                               value={values.repeatPassword}
                               onChange={handleChange}
                               className={
-                                 values.password &&
+                                 values.newPassword &&
                                  values.repeatPassword &&
-                                 values.password === values.repeatPassword
+                                 values.newPassword === values.repeatPassword
                                     ? 'matched'
                                     : ''
                               }
@@ -121,20 +142,6 @@ export const ResetPasswordPage = () => {
                                  ),
                               }}
                            />
-                           {/* <IconEyes
-                              onClick={() =>
-                                 setFieldValue(
-                                    'repeatPasswordVisibility',
-                                    !values.repeatPasswordVisibility
-                                 )
-                              }
-                           >
-                              {values.repeatPasswordVisibility ? (
-                                 <ShowIcon />
-                              ) : (
-                                 <HideIcon />
-                              )}
-                           </IconEyes> */}
                         </ContainerPasswordInput>
                         {errors.repeatPassword && touched.repeatPassword && (
                            <ErrorText>{errors.repeatPassword}</ErrorText>
@@ -209,6 +216,7 @@ const Container = styled('div')(() => ({
    justifyContent: 'center',
    alignItems: 'center',
    gap: '1rem',
+   marginRight: '4rem',
 }))
 
 const TextPassword = styled('h2')(() => ({

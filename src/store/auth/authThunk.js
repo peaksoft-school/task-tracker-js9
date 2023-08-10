@@ -38,20 +38,63 @@ export const signInRequest = createAsyncThunk(
    }
 )
 
+// AUTH WITH GOOGLE
+
+export const authWithGoogleRequest = createAsyncThunk(
+   'auth/authWithGoogle',
+   async (payload, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.post(
+            `/auth/google?tokenId=${payload}`
+         )
+
+         localStorage.setItem(
+            STORAGE_KEY.TASK_TRACER_AUTH_KEY,
+            JSON.stringify(response.data)
+         )
+
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.response.data.message)
+      }
+   }
+)
+
 // FORGOT PASSWORD
 
-export const forgotPassword = createAsyncThunk(
+export const forgotPasswordRequest = createAsyncThunk(
    'auth/forgotPassword',
    async (data, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.post(
             `/auth/forgot-password?email=${data.email}&link=${data.link}`
          )
-         console.log('response: ', response)
 
          return response
       } catch (error) {
-         return rejectWithValue(error.message)
+         return rejectWithValue(error.response.data.message)
       }
    }
 )
+
+// RESET PASSWORD
+
+export const resetPasswordRequest = createAsyncThunk(
+   'auth/resetPassword',
+   async (data, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.post(`/auth/reset-password`, data)
+         localStorage.setItem(
+            STORAGE_KEY.TASK_TRACER_AUTH_KEY,
+            JSON.stringify(response.data)
+         )
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.response.data.message)
+      }
+   }
+)
+
+export const logOut = createAsyncThunk('auth/logOut', () => {
+   localStorage.removeItem(STORAGE_KEY.TASK_TRACER_AUTH_KEY)
+})
