@@ -7,7 +7,6 @@ import TableMui from '../UI/table/TableMui'
 
 export const WorkspaceTable = () => {
    const [favoriteIds, setFavoriteIds] = useState([])
-
    const isFavorite = (id) => favoriteIds.includes(id)
 
    const toggleFavorite = (id) => {

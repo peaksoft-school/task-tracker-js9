@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
-import { styled, IconButton } from '@mui/material'
+import { styled, IconButton, Popover, keyframes } from '@mui/material'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
+import { boards } from '../../utils/constants/general'
 
 export const Colors = ({
-   boards,
    onColorSelect,
-   onLeftIconClick,
-   onExitIconClick,
+   handleLeftColorClick,
+   open,
+   onClose,
+   id,
+   anchorEl,
 }) => {
    const [selectedColor, setSelectedColor] = useState(null)
 
@@ -16,33 +19,64 @@ export const Colors = ({
    }
 
    return (
-      <AllBoard>
-         <StyledHeader>
-            <IconButton onClick={onLeftIconClick}>
-               <LeftIcon />
-            </IconButton>
-            <p>Colors</p>
-            <IconButton>
-               <ExitIcon onClick={onExitIconClick} />
-            </IconButton>
-         </StyledHeader>
-         <ColorBlocks>
-            {boards.map((board) => (
-               <div key={board.id}>
-                  <BoardBlock
-                     onClick={() => handleColorClick(board.background)}
-                     board={board}
-                     selected={selectedColor === board.background}
-                  />
-               </div>
-            ))}
-         </ColorBlocks>
-      </AllBoard>
+      <PopoverCont id={id} open={open} onClose={onClose} anchorEl={anchorEl}>
+         <AllBoard>
+            <StyledHeader>
+               <StyledIconButton onClick={handleLeftColorClick}>
+                  <StyledLeftIcon />
+               </StyledIconButton>
+               <p>Colors</p>
+               <StyledIconButton>
+                  <ExitIcon onClick={onClose} />
+               </StyledIconButton>
+            </StyledHeader>
+            <ColorBlocks>
+               {boards.map((board) => (
+                  <div key={board.id}>
+                     <BoardBlock
+                        onClick={() => handleColorClick(board.background)}
+                        board={board}
+                        selected={selectedColor === board.background}
+                     />
+                  </div>
+               ))}
+            </ColorBlocks>
+         </AllBoard>
+      </PopoverCont>
    )
 }
 
+const PopoverCont = styled(Popover)(() => ({
+   '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
+      borderRadius: '0.7rem',
+      minWidth: '23.8rem',
+      minHeight: '30.8rem',
+   },
+}))
+const rotateIcon = keyframes`
+  from {
+    transform: rotate(0);
+
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`
+
+const StyledIconButton = styled(IconButton)(() => ({
+   padding: '0',
+   animation: ` ${rotateIcon} 0.8s linear`,
+}))
+const StyledLeftIcon = styled(LeftIcon)`
+   height: 1.15rem;
+   path {
+      stroke: #919191;
+   }
+`
+
 const AllBoard = styled('div')(() => ({
    display: 'flex',
+   backgroundColor: '#fff',
    flexDirection: 'column',
    alignItems: 'center',
    gap: '10px',
@@ -58,7 +92,6 @@ const StyledHeader = styled('div')({
    justifyContent: 'space-between',
    alignItems: 'center',
    width: '100%',
-   padding: '0 1rem',
    marginBottom: '1rem',
 })
 
@@ -66,6 +99,7 @@ const ColorBlocks = styled('div')(() => ({
    display: 'flex',
    gap: '10px',
    flexWrap: 'wrap',
+   padding: '0 0 0 0.3rem',
 }))
 
 const BoardBlock = styled('div')(({ board, selected }) => ({

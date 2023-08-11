@@ -26,12 +26,14 @@ const Container = styled('header')(() => ({
 
 const MainWrapper = styled('div')(() => ({
    display: 'flex',
-   gap: '10rem ',
+   gap: '4rem ',
+   // justifyContent: 'space-between',
 }))
 
 const ImageLogoPage = styled('img')(() => ({
    width: '37.3125rem',
    // width: '100vw',
    height: '100vh',
-   marginRight: '7.69rem',
+   // overflow: 'hidden',
+   marginRight: '4.69rem',
 }))

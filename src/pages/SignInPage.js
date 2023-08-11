@@ -1,18 +1,33 @@
-import { TextField, styled } from '@mui/material'
+import { IconButton, TextField, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { signInWithPopup } from 'firebase/auth'
 import * as Yup from 'yup'
 import { LayoutFormPage } from './LayoutFormPage'
 import { ShowIcon, HideIcon, GoogleIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
 import { ModalUi } from '../components/UI/modal/Modal'
+import {
+   authWithGoogleRequest,
+   forgotPasswordRequest,
+   signInRequest,
+} from '../store/auth/authThunk'
+import Snackbar, { showSnackbar } from '../components/UI/snackbar/Snackbar'
+import IsLoading from '../components/UI/snackbar/IsLoading'
+import { auth, provider } from '../config/firebase'
 
 export const SignInPage = () => {
    const [showPassword, setShowPassword] = useState(false)
    const [isModalOpen, setIsModalOpen] = useState(false)
+   const [emailValue, setEmailValue] = useState('')
 
    const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const { isLoading } = useSelector((state) => state.auth)
+
+   const disabledButton = emailValue.length === 0 || !emailValue.includes('@')
 
    const handleTogglePasswordVisibility = () => {
       setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -34,123 +49,203 @@ export const SignInPage = () => {
    })
 
    const handleSubmit = (values) => {
-      console.log(values)
+      dispatch(signInRequest(values))
+         .unwrap()
+         .then(() => {
+            showSnackbar({
+               message: 'Sign In successful!',
+               severity: 'success',
+            })
+
+            navigate('/mainPage')
+         })
+         .catch((error) => {
+            showSnackbar({
+               message: error,
+               additionalMessage: 'Please try again .',
+               severity: 'error',
+            })
+         })
    }
 
-   const handleResetPassword = () => {
-      navigate('/resetPassword')
+   const geteEmailValue = (e) => {
+      setEmailValue(e.target.value)
    }
-   const loginHandler = () => {
-      navigate('/mainpage')
+   const handleResetPassword = async () => {
+      const data = {
+         email: emailValue,
+         link: `http://localhost:3000/forgotPassword`,
+      }
+
+      try {
+         await dispatch(forgotPasswordRequest(data)).unwrap()
+
+         showSnackbar({
+            message: 'Email send !',
+            severity: 'success',
+         })
+         handleOpenModal()
+         setEmailValue('')
+      } catch (error) {
+         showSnackbar({
+            message: error,
+            additionalMessage: 'Please try again .',
+            severity: 'error',
+         })
+      }
    }
+
+   const signInWithGoogleHandler = async () => {
+      try {
+         return await signInWithPopup(auth, provider).then((data) => {
+            dispatch(authWithGoogleRequest(data.user.accessToken))
+               .unwrap()
+               .then(() => {
+                  showSnackbar({
+                     message: 'Sign In successful!',
+                     severity: 'success',
+                  })
+
+                  navigate('/mainPage')
+               })
+               .catch((error) =>
+                  showSnackbar({
+                     message: error,
+                     additionalMessage: 'Please try again .',
+                     severity: 'error',
+                  })
+               )
+         })
+      } catch (error) {
+         return error
+      }
+   }
+
    return (
-      <LayoutFormPage>
-         <Container>
-            <div className="head">
-               <h2>Sign in</h2>
-               <AuthWithGoogle>
-                  <AuthWithText>Auth with google</AuthWithText>
-                  <GoogleIcon />
-               </AuthWithGoogle>
-               <p>or</p>
-            </div>
+      <>
+         {isLoading && <IsLoading />}
 
-            <Formik
-               initialValues={initialValues}
-               validationSchema={validationSchema}
-               onSubmit={handleSubmit}
-            >
-               {({ values, errors, touched, handleChange }) => (
-                  <Form>
-                     <MainWrapper>
-                        <WrapperInputs>
-                           <div className="inputBlock">
-                              <div>
-                                 <EmailInput
-                                    size="small"
-                                    placeholder="example@gmail.com"
-                                    name="email"
-                                    value={values.email}
-                                    onChange={handleChange}
-                                    error={touched.email && !!errors.email}
-                                 />
-                                 {errors.email && touched.email && (
-                                    <ErrorText>{errors.email}</ErrorText>
-                                 )}
-                              </div>
-                              <div className="password">
-                                 <ContainerInputs>
-                                    <PasswordInput
+         <LayoutFormPage>
+            <Container>
+               <div className="head">
+                  <h2>Sign in</h2>
+
+                  <AuthWithGoogle onClick={signInWithGoogleHandler}>
+                     <AuthWithText>Auth with google</AuthWithText>
+                     <GoogleIcon />
+                  </AuthWithGoogle>
+                  <p>or</p>
+               </div>
+
+               <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit}
+               >
+                  {({ values, errors, touched, handleChange }) => (
+                     <Form>
+                        <MainWrapper>
+                           <WrapperInputs>
+                              <div className="inputBlock">
+                                 <div>
+                                    <EmailInput
                                        size="small"
-                                       type={showPassword ? 'text' : 'password'}
-                                       placeholder="Password"
-                                       name="password"
-                                       value={values.password}
+                                       placeholder="example@gmail.com"
+                                       name="email"
+                                       value={values.email}
                                        onChange={handleChange}
-                                       error={
-                                          touched.password && !!errors.password
-                                       }
+                                       error={touched.email && !!errors.email}
                                     />
-
-                                    <ContainerEyes
-                                       onClick={handleTogglePasswordVisibility}
-                                    >
-                                       {showPassword ? (
-                                          <ShowIcon />
-                                       ) : (
-                                          <HideIcon />
-                                       )}
-                                    </ContainerEyes>
-                                 </ContainerInputs>{' '}
-                                 {errors.password && touched.password && (
-                                    <ErrorText>{errors.password}</ErrorText>
-                                 )}
+                                    {errors.email && touched.email && (
+                                       <ErrorText>{errors.email}</ErrorText>
+                                    )}
+                                 </div>
+                                 <div className="password">
+                                    <ContainerInputs>
+                                       <PasswordInput
+                                          size="small"
+                                          type={
+                                             showPassword ? 'text' : 'password'
+                                          }
+                                          placeholder="Password"
+                                          name="password"
+                                          value={values.password}
+                                          onChange={handleChange}
+                                          error={
+                                             touched.password &&
+                                             !!errors.password
+                                          }
+                                          InputProps={{
+                                             endAdornment: (
+                                                <IconButton
+                                                   onClick={
+                                                      handleTogglePasswordVisibility
+                                                   }
+                                                >
+                                                   {showPassword ? (
+                                                      <ShowIcon />
+                                                   ) : (
+                                                      <HideIcon />
+                                                   )}
+                                                </IconButton>
+                                             ),
+                                          }}
+                                       />
+                                    </ContainerInputs>
+                                    {errors.password && touched.password && (
+                                       <ErrorText>{errors.password}</ErrorText>
+                                    )}
+                                 </div>
                               </div>
-                           </div>
-                           <ForgotPassword
-                              onClick={(event) => {
-                                 event.preventDefault()
-                                 handleOpenModal()
-                              }}
-                           >
-                              Forgot password?
-                           </ForgotPassword>
-                        </WrapperInputs>
+                              <ForgotPassword
+                                 onClick={(event) => {
+                                    event.preventDefault()
+                                    handleOpenModal()
+                                 }}
+                              >
+                                 Forgot password?
+                              </ForgotPassword>
+                           </WrapperInputs>
 
-                        <LoginButton type="submit" onClick={loginHandler}>
-                           Log In
-                        </LoginButton>
-                        <MainBlock>
-                           <p>Not a member?</p>
-                           <SignUpText to="/signup"> Sign up now</SignUpText>
-                        </MainBlock>
-                     </MainWrapper>
-                  </Form>
+                           <LoginButton type="submit">Log In</LoginButton>
+                           <MainBlock>
+                              <p>Not a member?</p>
+                              <SignUpText to="/signup"> Sign up now</SignUpText>
+                           </MainBlock>
+                        </MainWrapper>
+                     </Form>
+                  )}
+               </Formik>
+               {isModalOpen && (
+                  <ModalUi open={isModalOpen} onClose={handleOpenModal}>
+                     <ModalStyle>
+                        <h3>Forgot Password ?</h3>
+                        <ModalSecondText>
+                           A link will be sent to your Email, follow the link
+                           sent to the mail
+                        </ModalSecondText>
+                        <ModalInput
+                           size="small"
+                           type="email"
+                           placeholder="example@gmail.com"
+                           value={emailValue}
+                           onChange={geteEmailValue}
+                        />
+                        <WrapperModalButton>
+                           <ModalButton
+                              disabled={disabledButton}
+                              onClick={handleResetPassword}
+                           >
+                              send
+                           </ModalButton>
+                        </WrapperModalButton>
+                     </ModalStyle>
+                  </ModalUi>
                )}
-            </Formik>
-            {isModalOpen && (
-               <ModalUi open={isModalOpen} onClose={handleOpenModal}>
-                  <ModalStyle>
-                     <h3>Forgot Password ?</h3>
-                     <ModalSecondText>
-                        A link will be sent to your Email, follow the link sent
-                        to the mail
-                     </ModalSecondText>
-                     <ModalInput
-                        size="small"
-                        type="email"
-                        placeholder="example@gmail.com"
-                     />
-                     <WrapperModalButton>
-                        <ModalButton onClick={handleResetPassword}>
-                           send
-                        </ModalButton>
-                     </WrapperModalButton>
-                  </ModalStyle>
-               </ModalUi>
-            )}
-         </Container>
-      </LayoutFormPage>
+            </Container>
+            <Snackbar />
+         </LayoutFormPage>
+      </>
    )
 }
 
@@ -162,6 +257,7 @@ const Container = styled('div')(({ theme }) => ({
    flexDirection: 'column',
    justifyContent: 'center',
    gap: '1.25rem',
+   // marginRight: '4rem',
    '.head': {
       display: 'flex',
       flexDirection: 'column',
@@ -177,7 +273,6 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const AuthWithGoogle = styled('div')(({ theme }) => ({
-   // width: '100%',
    cursor: 'pointer',
    display: 'flex',
    gap: '1rem',
@@ -187,24 +282,20 @@ const AuthWithGoogle = styled('div')(({ theme }) => ({
    alignItems: 'center',
    backgroundColor: theme.palette.secondary.lightGray,
    borderRadius: '0.5rem',
+   marginRight: '1.5rem',
 }))
-const ContainerEyes = styled('div')(() => ({
-   position: 'relative',
-   top: '8px',
-   right: '10%',
-}))
+
 const ContainerInputs = styled('div')(() => ({
    position: 'relative',
    display: 'flex',
-   //  flexDirection: 'column',
    width: '100%',
 }))
 
 const EmailInput = styled(TextField)(() => ({
    '& .MuiOutlinedInput-input': {
       borderRadius: '0.5rem',
-      width: '20.0625rem',
-      padding: '0.375rem 1rem',
+      width: '19.8rem',
+      padding: '0.575rem 1rem',
       backgroundColor: '#fff',
    },
    '& .MuiOutlinedInput-root': {
@@ -224,8 +315,10 @@ const EmailInput = styled(TextField)(() => ({
 }))
 
 const PasswordInput = styled(TextField)(() => ({
+   '& .MuiInputBase-root': {
+      width: '21.9rem',
+   },
    '& .MuiInputBase-input': {
-      width: '20.0625rem',
       borderRadius: '0.5rem',
    },
    '& .css-78trlr-MuiButtonBase-root-MuiIconButton-root': {
