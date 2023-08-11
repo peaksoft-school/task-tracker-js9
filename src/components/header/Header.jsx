@@ -2,21 +2,46 @@ import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Avatar, IconButton } from '@mui/material'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import {
    DownIcon,
    Logo,
    NotificationIcon,
-   // PersonIcon,
    SearchIcon,
    UpIcon,
 } from '../../assets/icons'
+import { logOut } from '../../store/auth/authThunk'
+import { showSnackbar } from '../UI/snackbar/Snackbar'
 
 export const Headers = ({ data }) => {
    const [isIconUp, setIsIconUp] = useState(false)
+   const [openProfile, setOpenProfile] = useState(false)
+
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
 
    const handleIconClick = () => {
       setIsIconUp(!isIconUp)
+   }
+
+   const openProfileHandler = () => {
+      setOpenProfile((prev) => !prev)
+   }
+   const logOutHandler = () => {
+      console.log('logout')
+      dispatch(logOut(), navigate)
+         .unwrap()
+         .then(() => {
+            showSnackbar({
+               message: 'Log out successful!',
+               severity: 'success',
+            })
+            navigate('/')
+         })
+         .catch((error) => {
+            console.log(error)
+         })
    }
    return (
       <div>
@@ -45,8 +70,17 @@ export const Headers = ({ data }) => {
                <IconButton>
                   <NotificationIcon src={NotificationIcon} alt="notification" />
                </IconButton>
-               {/* <PersonIcon src={PersonIcon} alt="person_Icon" /> */}
-               <Avatar> {data}</Avatar>
+               <WrapperTexts>
+                  <StyledAvatar onClick={openProfileHandler}>
+                     {data}
+                  </StyledAvatar>
+                  {openProfile ? (
+                     <ProfileTexts>
+                        <p>Profile</p>
+                        <p onClick={logOutHandler}>Log out</p>
+                     </ProfileTexts>
+                  ) : null}
+               </WrapperTexts>
             </AboutPanel>
          </GLobalContainer>
          <Outlet />
@@ -140,4 +174,47 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
       transition: theme.transitions.create('width'),
       width: '100%',
    },
+}))
+
+const StyledAvatar = muiStyled(Avatar)(() => ({
+   cursor: 'pointer',
+}))
+
+const ProfileTexts = muiStyled('div')(() => ({
+   width: '10rem',
+   height: '5rem',
+   backgroundColor: '#FFF',
+   color: '#000000',
+   position: 'absolute',
+   right: '-17px',
+   top: '3rem',
+   zIndex: '100',
+   borderRadius: '0.625rem',
+   border: '1px solid #919191',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'center',
+   alignItems: 'start',
+   padding: '1rem 4.75rem 1rem 1.5rem',
+   gap: '0.75rem',
+   '& p': {
+      cursor: 'pointer',
+   },
+   animation: ` fadeInAnimation 0.5s ease-in-out`,
+   '@keyframes fadeInAnimation': {
+      '0%': {
+         opacity: 0,
+         transform: 'translateY(-30px)',
+      },
+      '100%': {
+         opacity: 1,
+         transform: 'translateY(0)',
+      },
+   },
+}))
+const WrapperTexts = muiStyled('div')(() => ({
+   color: '#000000;',
+   position: 'relative',
+   zIndex: '100',
+   borderRadius: '0.625rem',
 }))

@@ -59,7 +59,7 @@ const BodyContainer = styled('div')(() => ({
 
 const GlobalContainer = styled('div')(() => ({
    padding: '1.4rem 0 0 0',
-   backgroundColor: '#ffffff',
+   backgroundColor: '#ffffffaa',
    width: '100%',
    minHeight: ' 10vh',
    borderRadius: ' 0.5rem',

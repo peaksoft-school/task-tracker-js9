@@ -77,7 +77,8 @@ export const DataPickers = () => {
 }
 
 const MainDateContainer = MUIStyled('div')(() => ({
-   width: '17.75rem',
+   padding: '0 1rem 0  0',
+   width: '19.75rem',
    borderRadius: '0.625rem',
    '.MuiInputBase-input.MuiOutlinedInput-input': {
       padding: ' 0.5rem 0.875rem 0.5rem 1rem',
@@ -135,7 +136,7 @@ const SelectContainer = MUIStyled('div')(() => ({
 }))
 
 const StyledButton = MUIStyled(Button)(() => ({
-   width: '16.65rem',
+   width: '17.65rem',
    padding: '0.375rem 1rem',
    color: '#FFF',
    fontFamily: 'CarePro',

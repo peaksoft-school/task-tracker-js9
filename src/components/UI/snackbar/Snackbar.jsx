@@ -8,8 +8,7 @@ const CloseButton = ({ color }) => {
       <FaTimes
          style={{
             color,
-            fontSize: '1.25rem',
-            fontWeight: 'bold',
+            fontSize: '1rem',
             cursor: 'pointer',
          }}
       />
@@ -38,7 +37,7 @@ const CustomToast = ({ message, additionalMessage, severity }) => {
       }
    } else if (severity === 'error') {
       firstWordStyle = {
-         color: '#FF0000',
+         color: '#d82f2f',
          fontSize: '1.25rem',
       }
       secondWordStyle = {
