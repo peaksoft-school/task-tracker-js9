@@ -15,17 +15,6 @@ export const profileGetRequest = createAsyncThunk(
    }
 )
 
-export const profileProjectsRequest = createAsyncThunk(
-   'profile/profileProjectsRequest',
-   async (userId, { rejectWithValue }) => {
-      try {
-         const response = await axiosInstance.get(`/api/profile/${userId}`)
-         return response.data
-      } catch (error) {
-         return rejectWithValue(error.message)
-      }
-   }
-)
 export const profilePutRequest = createAsyncThunk(
    'profile/profilePutRequest',
    async (data, { rejectWithValue }) => {

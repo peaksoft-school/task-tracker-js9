@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { EditIcon } from '../../assets/icons'
 import ColorBackground from '../../assets/images/ColorsBakground.png'
@@ -10,7 +11,6 @@ import {
    profileAvatarRemoveRequest,
    profileAvatarSThreePost,
    profileGetRequest,
-   profileProjectsRequest,
 } from '../../store/profile/ProfileThunk'
 import { ProfileForm } from './ProfileForm'
 
@@ -30,12 +30,6 @@ export const Profile = () => {
    useEffect(() => {
       dispatch(profileGetRequest())
    }, [dispatch])
-
-   useEffect(() => {
-      if (item?.userId) {
-         dispatch(profileProjectsRequest(item?.userId))
-      }
-   }, [item?.userId])
 
    const handleDrop = async (acceptedFiles) => {
       const file = acceptedFiles[0]
@@ -67,17 +61,17 @@ export const Profile = () => {
    return (
       <div>
          <StyledWorkspace>
-            <WorkSpaceSpan>Workspace</WorkSpaceSpan>
+            <WorkSpaceSpan to="/mainPage">Workspace</WorkSpaceSpan>
             <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
             <div>
-               {avatarLink ? (
-                  <ProfileImageBox src={avatarLink} alt="avatar" />
-               ) : (
+               {item.avatar === 'Default image' || item.avatar === null ? (
                   <EmptyAvatarLink>
                      <StyledAccountCircleIcon />
                   </EmptyAvatarLink>
+               ) : (
+                  <ProfileImageBox src={avatarLink} alt="avatar" />
                )}
 
                <EditProfileIcon onClick={openEditProfile} />
@@ -103,7 +97,7 @@ export const Profile = () => {
       </div>
    )
 }
-const WorkSpaceSpan = styled('span')({
+const WorkSpaceSpan = styled(NavLink)({
    color: 'white',
    cursor: 'pointer',
 })

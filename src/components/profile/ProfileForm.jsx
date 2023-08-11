@@ -18,7 +18,9 @@ export const ProfileForm = () => {
    const { item, avatarLink } = useSelector((state) => state.profile)
    const dispatch = useDispatch()
 
-   const userRole = 'ADMIN'
+   const { role } = useSelector((state) => state.auth)
+
+   const userRole = role
 
    const {
       register,

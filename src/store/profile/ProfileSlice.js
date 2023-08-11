@@ -1,9 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {
-   profileAvatarSThreePost,
-   profileGetRequest,
-   profileProjectsRequest,
-} from './ProfileThunk'
+import { profileAvatarSThreePost, profileGetRequest } from './ProfileThunk'
 
 const initialState = {
    isLoading: false,
@@ -37,19 +33,6 @@ export const ProfileSlice = createSlice({
          })
 
          .addCase(profileGetRequest.rejected, (state) => {
-            state.isLoading = false
-         })
-
-         .addCase(profileProjectsRequest.pending, (state) => {
-            state.isLoading = true
-         })
-
-         .addCase(profileProjectsRequest.fulfilled, (state, action) => {
-            state.item = action.payload
-            state.isLoading = false
-         })
-
-         .addCase(profileProjectsRequest.rejected, (state) => {
             state.isLoading = false
          })
 

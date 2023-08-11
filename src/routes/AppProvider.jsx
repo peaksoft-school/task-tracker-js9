@@ -5,6 +5,7 @@ import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
+import { Profile } from '../components/profile/Profile'
 import { Workspaces } from '../components/workspace/Workspace'
 
 export const routes = createBrowserRouter([
@@ -51,6 +52,15 @@ export const routes = createBrowserRouter([
             roles={[USER_ROLE.ADMIN, USER_ROLE.USER]}
             fallBacPath="/"
          />
+      ),
+   },
+   {
+      path: '/profile',
+      element: (
+         <>
+            <Headers />
+            <Profile />,
+         </>
       ),
    },
 
