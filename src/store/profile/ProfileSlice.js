@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { profileGetRequest, profileProjectsRequest } from './ProfileThunk'
+import {
+   profileAvatarSThreePost,
+   profileGetRequest,
+   profileProjectsRequest,
+} from './ProfileThunk'
 
 const initialState = {
    isLoading: false,
+   avatarLink: '',
+   item: {},
 }
 
 export const ProfileSlice = createSlice({
@@ -26,19 +32,36 @@ export const ProfileSlice = createSlice({
          })
          .addCase(profileGetRequest.fulfilled, (state, action) => {
             state.item = action.payload
+            state.avatarLink = action.payload.avatar
             state.isLoading = false
          })
+
          .addCase(profileGetRequest.rejected, (state) => {
             state.isLoading = false
          })
+
          .addCase(profileProjectsRequest.pending, (state) => {
             state.isLoading = true
          })
+
          .addCase(profileProjectsRequest.fulfilled, (state, action) => {
             state.item = action.payload
             state.isLoading = false
          })
+
          .addCase(profileProjectsRequest.rejected, (state) => {
+            state.isLoading = false
+         })
+
+         .addCase(profileAvatarSThreePost.pending, (state) => {
+            state.isLoading = true
+         })
+
+         .addCase(profileAvatarSThreePost.fulfilled, (state, action) => {
+            state.avatarLink = action.payload
+            state.isLoading = false
+         })
+         .addCase(profileAvatarSThreePost.rejected, (state) => {
             state.isLoading = false
          })
    },

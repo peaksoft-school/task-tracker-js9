@@ -3,7 +3,7 @@ import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { Headers } from '../components/header/Header'
-import { Workspaces } from '../components/workspace/Workspace'
+import { Profile } from '../components/profile/Profile'
 
 export const routes = createBrowserRouter([
    {
@@ -23,7 +23,7 @@ export const routes = createBrowserRouter([
       element: (
          <>
             <Headers />
-            <Workspaces />
+            <Profile />
          </>
       ),
    },

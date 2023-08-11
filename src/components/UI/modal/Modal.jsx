@@ -24,10 +24,11 @@ const Backdrop = styled(Modal)(({ ...rest }) => ({
    position: 'absolute',
    top: '0',
    left: '0',
+   right: '0',
+   bottom: '0',
    width: '100%',
-   height: 'auto',
+   height: '100vh',
    backgroundColor: 'rgba(240, 230, 230, 0.464)',
    backdropFilter: rest.backdropFilter || 'blur(2px)',
    zIndex: '998',
-   minHeight: '11.615rem',
 }))

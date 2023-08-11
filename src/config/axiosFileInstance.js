@@ -4,10 +4,10 @@ import { BASE_URL } from '../utils/constants/baseURL'
 const logoutAction = () => {}
 
 const headers = {
-   'Content-Type': 'application/json',
+   'Content-Type': 'multipart/from-data',
 }
 
-const axiosInstance = axios.create({
+const axiosFileInstance = axios.create({
    baseURL: BASE_URL,
    headers,
 })
@@ -18,7 +18,7 @@ export const injectStore = (_store) => {
    store = _store
 }
 
-axiosInstance.interceptors.request.use((config) => {
+axiosFileInstance.interceptors.request.use((config) => {
    const updatedConfig = { ...config }
    // const token = store.getState().login.accessToken
    const token =
@@ -29,7 +29,7 @@ axiosInstance.interceptors.request.use((config) => {
    return updatedConfig
 })
 
-axiosInstance.interceptors.response.use(
+axiosFileInstance.interceptors.response.use(
    (response) => {
       return Promise.resolve(response)
    },
@@ -40,4 +40,4 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error)
    }
 )
-export { axiosInstance }
+export { axiosFileInstance }
