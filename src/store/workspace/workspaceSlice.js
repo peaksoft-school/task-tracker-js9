@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchAllWorkspaces } from './workspaceThunk'
+import { fetchAllWorkspaces, getWorkspacebyId } from './workspaceThunk'
 
 export const workspacesSlice = createSlice({
    name: 'workspaces',
    initialState: {
       workspaces: [],
+      workspaceById: {},
       loading: false,
    },
    reducers: {},
@@ -18,6 +19,9 @@ export const workspacesSlice = createSlice({
       },
       [fetchAllWorkspaces.rejected]: (state) => {
          state.loading = false
+      },
+      [getWorkspacebyId.fulfilled]: (state, actions) => {
+         state.workspaceById = actions.payload
       },
    },
 })

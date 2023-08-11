@@ -1,14 +1,19 @@
 import { Avatar, IconButton, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 import React, { useEffect, useState } from 'react'
 import { StarIcon } from '../../assets/icons'
 import TableMui from '../UI/table/TableMui'
-import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
+import {
+   fetchAllWorkspaces,
+   getWorkspacebyId,
+} from '../../store/workspace/workspaceThunk'
 
 export const WorkspaceTable = () => {
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
    const [favoriteIds, setFavoriteIds] = useState([])
    const { workspaces } = useSelector((state) => state.workspaces)
-   const dispatch = useDispatch()
 
    const isFavorite = (id) => favoriteIds.includes(id)
 
@@ -19,6 +24,12 @@ export const WorkspaceTable = () => {
             : [...prevIds, id]
       )
    }
+   console.log(workspaces)
+
+   const getWorkSpaceById = (id) => {
+      dispatch(getWorkspacebyId({ id, navigate, path: 'boards' }))
+   }
+
    useEffect(() => {
       dispatch(fetchAllWorkspaces())
    }, [dispatch])
@@ -26,17 +37,21 @@ export const WorkspaceTable = () => {
    const column = [
       {
          heading: '№',
-         key: 'id',
+         key: 'workSpaceId',
          index: true,
          align: 'left',
          minWidth: '5rem',
-         render: (data) => <h3>{data.adminId}</h3>,
+         render: (data) => <h3>{data.workSpaceId}</h3>,
       },
       {
          heading: 'Name',
-         key: 'name',
+         key: 'adminFullName',
          minWidth: '15rem',
-         render: (data) => <NameStyle>{data.workSpaceName}</NameStyle>,
+         render: (data) => (
+            <NameStyle onClick={() => getWorkSpaceById(data.workSpaceId)}>
+               {data.adminFullName}
+            </NameStyle>
+         ),
       },
       {
          heading: 'Lead',
@@ -45,7 +60,7 @@ export const WorkspaceTable = () => {
             <div
                style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}
             >
-               <Avatar>{data.adminImage}</Avatar>
+               <Avatar src={data.adminImage} />
                <p>{data.adminFullName}</p>
             </div>
          ),

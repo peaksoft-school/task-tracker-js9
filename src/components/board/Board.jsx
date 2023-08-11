@@ -1,7 +1,10 @@
 import { styled } from '@mui/material'
+// import { useSelector } from 'react-redux'
 import { StarIcon } from '../../assets/icons'
 
 export const Board = ({ boards }) => {
+   // const { workspaces } = useSelector((state) => state.workspaces)
+   // console.log('id:', workspaces)
    return (
       <AllBoard>
          {boards.map((board) => (

@@ -4,9 +4,11 @@ import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { Workspaces } from '../components/workspace/Workspace'
+import { Board } from '../components/board/Board'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
+import { boards } from '../utils/constants/general'
 
 export const routes = createBrowserRouter([
    {
@@ -34,7 +36,7 @@ export const routes = createBrowserRouter([
       element: <ResetPasswordPage />,
    },
    {
-      path: '/mainPage',
+      path: '/mainPage/',
       element: (
          <PrivateRoute
             component={
@@ -47,6 +49,12 @@ export const routes = createBrowserRouter([
             fallBacPath="/"
          />
       ),
+      children: [
+         {
+            path: ':id/boards',
+            element: <Board boards={boards} />,
+         },
+      ],
    },
 
    {
