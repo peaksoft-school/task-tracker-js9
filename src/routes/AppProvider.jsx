@@ -3,10 +3,11 @@ import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
-import { Workspaces } from '../components/workspace/Workspace'
+// import { Workspaces } from '../components/workspace/Workspace'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
+import { Board } from '../components/board/Board'
 
 export const routes = createBrowserRouter([
    {
@@ -40,7 +41,8 @@ export const routes = createBrowserRouter([
             component={
                <>
                   <Headers />
-                  <Workspaces />
+                  {/* <Workspaces /> */}
+                  <Board />
                </>
             }
             roles={[USER_ROLE.ADMIN, USER_ROLE.USER]}

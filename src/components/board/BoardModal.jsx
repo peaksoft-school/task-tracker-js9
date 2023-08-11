@@ -3,21 +3,12 @@ import React from 'react'
 import { ModalUi } from '../UI/modal/Modal'
 // import { DoneIcon } from '../../assets/icons'
 
-export const BoardModal = ({
-   BoardColors,
-   // background,
-   toggleModal,
-   postFunc,
-}) => {
-   // const [selectedColor, setSelectedColor] = React.useState(null)
-   // const editColor = (id) => {
-   //    setSelectedColor(id === selectedColor ? null : id)
-   // }
+export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
    const postAddBack = (color, name) => {
       postFunc({
          backGround: color,
          title: name,
-         workSpaceId: 2,
+         workSpaceId: 31,
       })
    }
 
@@ -34,17 +25,17 @@ export const BoardModal = ({
                </TitleWrapper>
                <Photo>
                   {BoardColors.map(
-                     (item) =>
-                        item.background.slice(0, 1) !== '#' && (
+                     (boardColor) =>
+                        boardColor.background.slice(0, 1) !== '#' && (
                            <Img
                               onClick={() =>
                                  postAddBack(
-                                    item.background,
-                                    item.title,
-                                    item.isFavourite
+                                    boardColor.background,
+                                    boardColor.title,
+                                    boardColor.isFavourite
                                  )
                               }
-                              src={item.background}
+                              src={boardColor.background}
                               alt=""
                            />
                         )
@@ -56,18 +47,18 @@ export const BoardModal = ({
                </TitleWrapper>
                <Colors>
                   {BoardColors.map(
-                     (item) =>
-                        item.background.slice(0, 1) === '#' && (
+                     (boardColor) =>
+                        boardColor.background.slice(0, 1) === '#' && (
                            <Color
                               onClick={() =>
                                  postAddBack(
-                                    item.background,
-                                    item.title,
-                                    item.isFavourite
+                                    boardColor.background,
+                                    boardColor.title,
+                                    boardColor.isFavourite
                                  )
                               }
                               style={{
-                                 background: item.background,
+                                 background: boardColor.background,
                               }}
                            >
                               {/* {selectedColor === item.id && <DoneIcon />} */}

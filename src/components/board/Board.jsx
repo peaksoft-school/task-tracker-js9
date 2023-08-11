@@ -8,73 +8,15 @@ import {
    boardPost,
 } from '../../store/board/boardThunk'
 import { BoardModal } from './BoardModal'
-
-const BoardColors = [
-   {
-      id: '1',
-      title: 'Boardname',
-      isFavourite: false,
-      background:
-         'https://cdn.pixabay.com/photo/2013/02/20/11/30/bubbles-83758_640.jpg',
-   },
-   {
-      id: '2',
-      title: 'Boardname',
-      isFavourite: false,
-      background: 'https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg',
-   },
-   {
-      id: '3',
-      title: 'Boardname',
-      isFavourite: false,
-      background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
-   },
-   {
-      id: '4',
-      title: 'Boardname',
-      isFavourite: false,
-      background: '#CBCBCB',
-   },
-   {
-      id: '5',
-      title: 'Boardname',
-      isFavourite: false,
-      background: '#B04632',
-   },
-   {
-      id: '6',
-      title: 'Boardname',
-      isFavourite: false,
-      background: '#519839',
-   },
-   {
-      id: '7',
-      title: 'Boardname',
-      isFavourite: false,
-      background: '#D29034',
-   },
-   {
-      id: '8',
-      title: 'Boardname',
-      isFavourite: false,
-      background: '#89609E',
-   },
-   {
-      id: '9',
-      title: 'Boardname',
-      isFavourite: false,
-      background: '#005C92',
-   },
-]
+import { BoardColors } from '../../utils/constants/boardsColor'
 
 export const Board = () => {
    const [openModal, setOpenModal] = React.useState(false)
-   const items = useSelector((state) => state.board.items)
+   const boards = useSelector((state) => state.board.board)
    const dispatch = useDispatch()
 
    React.useEffect(() => {
-      dispatch(fetchBoards(items?.workSpaceId))
+      dispatch(fetchBoards(boards?.workSpaceId))
    }, [])
 
    // const deleteFunc = (boardId) => {
@@ -98,12 +40,16 @@ export const Board = () => {
                <Button onClick={toggleModal}>Create new board</Button>
             </BoardButton>
             <Boards>
-               {items?.map((item) => (
-                  <div key={item.boardId}>
-                     <BoardBlock items={item}>
-                        <BoardTitle>{item.title}</BoardTitle>
+               {boards?.map((board) => (
+                  <div key={board.boardId}>
+                     <BoardBlock board={board}>
+                        <BoardTitle>{board.title}</BoardTitle>
                         <StarContainer>
-                           <StarIcon />
+                           {board.favorire === true ? (
+                              <StarIcon fill="#0079BF" />
+                           ) : (
+                              <StarIcon fill="#B2B2B2" />
+                           )}
                         </StarContainer>
                      </BoardBlock>
                   </div>
@@ -112,7 +58,6 @@ export const Board = () => {
             {openModal ? (
                <BoardModal
                   BoardColors={BoardColors}
-                  {...BoardColors}
                   postFunc={postFunc}
                   toggleModal={toggleModal}
                />
@@ -140,12 +85,12 @@ const Boards = styled('div')(() => ({
    flexWrap: 'wrap',
 }))
 
-const BoardBlock = styled('div')(({ items }) => ({
+const BoardBlock = styled('div')(({ board }) => ({
    backgroundColor: `${
-      items.backGround.startsWith('#') ? items.backGround : ''
+      board.backGround.startsWith('#') ? board.backGround : ''
    }`,
    backgroundImage: `${
-      items.backGround.startsWith('#') ? 'none' : `url(${items.backGround})`
+      board.backGround.startsWith('#') ? 'none' : `url(${board.backGround})`
    }`,
    backgroundRepeat: 'no-repeat',
    backgroundSize: 'cover',
