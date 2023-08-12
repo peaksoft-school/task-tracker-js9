@@ -28,6 +28,6 @@ const Backdrop = styled(Modal)(({ ...rest }) => ({
    height: 'auto',
    backgroundColor: 'rgba(240, 230, 230, 0.464)',
    backdropFilter: rest.backdropFilter || 'blur(2px)',
-   zIndex: '998',
+   zIndex: '990',
    minHeight: '11.615rem',
 }))

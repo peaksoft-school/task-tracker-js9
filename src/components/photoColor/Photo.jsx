@@ -56,10 +56,6 @@ export const Photos = ({
 }
 
 const PopoverCont = styled(Popover)(() => ({
-   position: 'relative',
-   top: -574,
-   left: -12,
-
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       minWidth: '23.8rem',
       minHeight: '37rem',
