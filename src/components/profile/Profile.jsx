@@ -146,7 +146,7 @@ const ProfileNames = styled('div')({
    gap: '0.5rem',
 })
 const ProfileNamesSpan = styled('span')({
-   fontFamily: 'Cera Pro',
+   fontFamily: 'CarePro',
    fontSize: '1.25rem',
    fontWeight: '500',
 })

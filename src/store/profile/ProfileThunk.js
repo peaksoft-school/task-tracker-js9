@@ -17,9 +17,15 @@ export const profileGetRequest = createAsyncThunk(
 
 export const profilePutRequest = createAsyncThunk(
    'profile/profilePutRequest',
-   async (data, { rejectWithValue }) => {
+   async (data, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.put('/api/profile', data)
+
+         dispatch(profileGetRequest())
+
+         // eslint-disable-next-line no-restricted-globals
+         location.reload()
+
          return response.data
       } catch (error) {
          return rejectWithValue(error.message)

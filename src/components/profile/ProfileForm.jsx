@@ -48,6 +48,7 @@ export const ProfileForm = () => {
    }
 
    const password = watch('password')
+
    const handleSubmitPut = () => {
       const putData = {
          firstName: item.firstName,
@@ -56,6 +57,7 @@ export const ProfileForm = () => {
          password,
          avatar: avatarLink,
       }
+
       dispatch(profilePutRequest(putData))
    }
    return (
@@ -64,21 +66,21 @@ export const ProfileForm = () => {
             <div>
                <StyledTextField
                   id={item?.userId}
-                  value={item?.firstName}
+                  value={item?.firstName || ''}
                   onChange={(e) =>
                      dispatch(ProfileActions.getFirstNameValue(e.target.value))
                   }
                />
                <StyledTextField
                   id={item?.userId}
-                  value={item?.lastName}
+                  value={item?.lastName || ''}
                   onChange={(e) =>
                      dispatch(ProfileActions.getLastNameValue(e.target.value))
                   }
                />
                <StyledTextField
                   id={item?.userId}
-                  value={item?.email}
+                  value={item?.email || ''}
                   onChange={(e) =>
                      dispatch(ProfileActions.getEmailValue(e.target.value))
                   }
