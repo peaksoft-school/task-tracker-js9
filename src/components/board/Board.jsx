@@ -1,14 +1,15 @@
 import React from 'react'
-import { styled } from '@mui/material'
+import { IconButton, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { StarIcon } from '../../assets/icons'
 import {
    // boardRemove, ======> Нужен когда удалаем board
    fetchBoards,
    boardPost,
+   addFavorite,
 } from '../../store/board/boardThunk'
 import { BoardModal } from './BoardModal'
-import { BoardColors } from '../../utils/constants/boardsColor'
+import { boards as BoardColors } from '../../utils/constants/general'
 
 export const Board = () => {
    const [openModal, setOpenModal] = React.useState(false)
@@ -23,13 +24,16 @@ export const Board = () => {
    //    dispatch(boardRemove(boardId))
    //    console.log(boardId)
    // } ======> Нужен когда удалаем board
-
    const toggleModal = () => {
       setOpenModal((prev) => !prev)
    }
 
    const postFunc = (objBoard) => {
       dispatch(boardPost(objBoard))
+   }
+
+   const addFavoriteFonc = (boardId) => {
+      dispatch(addFavorite(boardId))
    }
 
    return (
@@ -45,11 +49,23 @@ export const Board = () => {
                      <BoardBlock board={board}>
                         <BoardTitle>{board.title}</BoardTitle>
                         <StarContainer>
-                           {board.favorire === true ? (
-                              <StarIcon fill="#0079BF" />
-                           ) : (
-                              <StarIcon fill="#B2B2B2" />
-                           )}
+                           <IconButton>
+                              {board.favorite ? (
+                                 <StarIcon
+                                    onClick={() =>
+                                       addFavoriteFonc(board.boardId)
+                                    }
+                                    fill="#0079BF"
+                                 />
+                              ) : (
+                                 <StarIcon
+                                    onClick={() =>
+                                       addFavoriteFonc(board.boardId)
+                                    }
+                                    fill="inherit"
+                                 />
+                              )}
+                           </IconButton>
                         </StarContainer>
                      </BoardBlock>
                   </div>
@@ -99,7 +115,7 @@ const BoardBlock = styled('div')(({ board }) => ({
    borderRadius: '8px',
    display: 'flex',
    justifyContent: 'space-between',
-   padding: '10px',
+   padding: '8px',
 }))
 
 const BoardTitle = styled('p')(() => ({

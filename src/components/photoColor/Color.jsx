@@ -1,42 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { styled, IconButton, Popover, keyframes } from '@mui/material'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
 import { boards } from '../../utils/constants/general'
 
-export const Colors = ({
-   onColorSelect,
-   handleLeftColorClick,
-   open,
-   onClose,
-   id,
-   anchorEl,
-}) => {
-   const [selectedColor, setSelectedColor] = useState(null)
-
-   const handleColorClick = (color) => {
-      setSelectedColor(color)
-      onColorSelect(color)
+export const Colors = ({ setPostColor, toggleColor }) => {
+   const handlePhotoClick = (photo) => {
+      setPostColor(photo)
+      toggleColor()
    }
 
    return (
-      <PopoverCont id={id} open={open} onClose={onClose} anchorEl={anchorEl}>
+      <PopoverCont open={toggleColor} onClose={toggleColor}>
          <AllBoard>
             <StyledHeader>
-               <StyledIconButton onClick={handleLeftColorClick}>
+               <StyledIconButton>
                   <StyledLeftIcon />
                </StyledIconButton>
                <p>Colors</p>
                <StyledIconButton>
-                  <ExitIcon onClick={onClose} />
+                  <ExitIcon onClick={toggleColor} />
                </StyledIconButton>
             </StyledHeader>
             <ColorBlocks>
                {boards.map((board) => (
                   <div key={board.id}>
                      <BoardBlock
-                        onClick={() => handleColorClick(board.background)}
+                        onClick={() => handlePhotoClick(board.background)}
                         board={board}
-                        selected={selectedColor === board.background}
                      />
                   </div>
                ))}
@@ -48,8 +38,8 @@ export const Colors = ({
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -574,
-   left: -12,
+   top: -600,
+   left: '50%',
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       borderRadius: '0.7rem',

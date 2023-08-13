@@ -1,25 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { styled, IconButton, Popover, keyframes } from '@mui/material'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
 import { boards } from '../../utils/constants/general'
 
-export const Photos = ({
-   onPhotoSelect,
-   open,
-   onClose,
-   id,
-   handleLeftPhotoClick,
-   anchorEl,
-}) => {
-   const [selectedPhoto, setSelectedPhoto] = useState(null)
-
+export const Photos = ({ setPostColor, togglePhoto }) => {
    const handlePhotoClick = (photo) => {
-      setSelectedPhoto(photo)
-      onPhotoSelect(photo)
+      setPostColor(photo)
+      togglePhoto()
    }
 
    return (
-      <PopoverCont id={id} open={open} onClose={onClose} anchorEl={anchorEl}>
+      <PopoverCont open={togglePhoto} onClose={togglePhoto}>
          <AllBoard>
             <StyledHeader
                style={{
@@ -29,26 +20,28 @@ export const Photos = ({
                   padding: '0.8rem',
                }}
             >
-               <StyledIconButton onClick={handleLeftPhotoClick}>
+               <StyledIconButton>
                   <StyledLeftIcon />
                </StyledIconButton>
                <p>Photos</p>
-               <StyledIconButton onClick={onClose}>
+               <StyledIconButton onClick={togglePhoto}>
                   <ExitIcon />
                </StyledIconButton>
             </StyledHeader>
             <PhotoBlocks>
-               {boards.map((board) => (
-                  <div key={board.id}>
-                     <BoardBlock
-                        onClick={() => handlePhotoClick(board.background)}
-                        board={board}
-                        selected={selectedPhoto === board.background}
-                     >
-                        <img src={board.background} alt={board.id} />
-                     </BoardBlock>
-                  </div>
-               ))}
+               {boards
+                  .filter(
+                     (boardColor) => boardColor.background.slice(0, 1) !== '#'
+                  )
+                  .slice(0, 3)
+                  .map((boardColor) => (
+                     <Img
+                        onClick={() => handlePhotoClick(boardColor.background)}
+                        board={boardColor}
+                        src={boardColor.background}
+                        alt=""
+                     />
+                  ))}
             </PhotoBlocks>
          </AllBoard>
       </PopoverCont>
@@ -57,9 +50,8 @@ export const Photos = ({
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -574,
-   left: -12,
-
+   top: -700,
+   left: '50%',
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       minWidth: '23.8rem',
       minHeight: '37rem',
@@ -68,14 +60,14 @@ const PopoverCont = styled(Popover)(() => ({
 }))
 
 const rotateIcon = keyframes`
-  from {
-    transform: rotate(0);
+   from {
+      transform: rotate(0);
 
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`
+   }
+   to {
+      transform: rotate(360deg);
+   }
+   `
 
 const StyledIconButton = styled(IconButton)(() => ({
    padding: '0',
@@ -115,15 +107,8 @@ const PhotoBlocks = styled('div')(() => ({
    flexWrap: 'wrap',
 }))
 
-const BoardBlock = styled('div')(({ board, selected }) => ({
-   backgroundRepeat: 'no-repeat',
-   backgroundSize: 'cover',
-   borderRadius: '0.5rem',
-   display: 'flex',
-   justifyContent: 'space-between',
-   padding: '10px',
-   backgroundImage: `url(${board.background})`,
-   width: '10rem',
-   height: '5rem',
-   border: selected ? '2px solid #000' : 'none',
+const Img = styled('img')(() => ({
+   width: '160px',
+   height: '72px',
+   borderRadius: '8px',
 }))

@@ -5,7 +5,7 @@ export const initialState = {
    board: [],
    status: 'loading',
    title: 'Boardname',
-   isFavourite: false,
+   favorite: false,
    background: '#CBCBCB',
 }
 
