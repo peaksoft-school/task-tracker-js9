@@ -16,13 +16,13 @@ export default function IsLoading() {
 const Container = styled('div')(() => ({
    backgroundColor: 'rgba(240, 230, 230, 0.464)',
    backdropFilter: 'blur(2px)',
-
    display: 'flex ',
    justifyContent: 'center',
    alignItems: 'center',
    width: '100%',
    height: '100vh',
    position: 'absolute',
+   zIndex: '999',
 }))
 
 const SpinerLoading = styled(CircularProgress)(() => ({
@@ -30,5 +30,5 @@ const SpinerLoading = styled(CircularProgress)(() => ({
    top: '50%',
    left: '50%',
    transform: 'translate(-50%, -50%)',
-   zIndex: 9999,
+   zIndex: '999',
 }))

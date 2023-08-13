@@ -1,4 +1,3 @@
-// import { useSelector } from 'react-redux'
 import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
@@ -30,8 +29,14 @@ export const routes = createBrowserRouter([
       ),
    },
    {
-      path: `/forgotPassword`,
-      element: <ResetPasswordPage />,
+      path: `/forgotPassword/:id`,
+      element: (
+         <PrivateRoute
+            component={<ResetPasswordPage />}
+            roles={[USER_ROLE.GUEST]}
+            fallBacPath="/mainPage"
+         />
+      ),
    },
    {
       path: '/mainPage',

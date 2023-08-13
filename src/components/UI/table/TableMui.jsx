@@ -85,6 +85,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
    [`&.${TableBody}`]: {
       fontSize: 14,
    },
+   fontFamily: 'CarePro',
 }))
 const TableContainerStyle = styled(TableContainer)(() => ({
    boxShadow: 'none',

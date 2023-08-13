@@ -3,14 +3,20 @@ import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { signInWithPopup } from 'firebase/auth'
 import * as Yup from 'yup'
 import { LayoutFormPage } from './LayoutFormPage'
 import { ShowIcon, HideIcon, GoogleIcon } from '../assets/icons'
 import { Button } from '../components/UI/button/Button'
 import { ModalUi } from '../components/UI/modal/Modal'
-import { signInRequest } from '../store/auth/authThunk'
+import {
+   authWithGoogleRequest,
+   forgotPasswordRequest,
+   signInRequest,
+} from '../store/auth/authThunk'
 import Snackbar, { showSnackbar } from '../components/UI/snackbar/Snackbar'
 import IsLoading from '../components/UI/snackbar/IsLoading'
+import { auth, provider } from '../config/firebase'
 
 export const SignInPage = () => {
    const [showPassword, setShowPassword] = useState(false)
@@ -54,7 +60,6 @@ export const SignInPage = () => {
             navigate('/mainPage')
          })
          .catch((error) => {
-            console.log(error)
             showSnackbar({
                message: error,
                additionalMessage: 'Please try again .',
@@ -66,9 +71,54 @@ export const SignInPage = () => {
    const geteEmailValue = (e) => {
       setEmailValue(e.target.value)
    }
-   const handleResetPassword = () => {
-      setEmailValue('')
-      handleOpenModal()
+   const handleResetPassword = async () => {
+      const data = {
+         email: emailValue,
+         link: `http://localhost:3000/forgotPassword`,
+      }
+
+      try {
+         await dispatch(forgotPasswordRequest(data)).unwrap()
+
+         showSnackbar({
+            message: 'Email send !',
+            severity: 'success',
+         })
+         handleOpenModal()
+         setEmailValue('')
+      } catch (error) {
+         showSnackbar({
+            message: error,
+            additionalMessage: 'Please try again .',
+            severity: 'error',
+         })
+      }
+   }
+
+   const signInWithGoogleHandler = async () => {
+      try {
+         return await signInWithPopup(auth, provider).then((data) => {
+            dispatch(authWithGoogleRequest(data.user.accessToken))
+               .unwrap()
+               .then(() => {
+                  showSnackbar({
+                     message: 'Sign In successful!',
+                     severity: 'success',
+                  })
+
+                  navigate('/mainPage')
+               })
+               .catch((error) =>
+                  showSnackbar({
+                     message: error,
+                     additionalMessage: 'Please try again .',
+                     severity: 'error',
+                  })
+               )
+         })
+      } catch (error) {
+         return error
+      }
    }
 
    return (
@@ -79,7 +129,8 @@ export const SignInPage = () => {
             <Container>
                <div className="head">
                   <h2>Sign in</h2>
-                  <AuthWithGoogle>
+
+                  <AuthWithGoogle onClick={signInWithGoogleHandler}>
                      <AuthWithText>Auth with google</AuthWithText>
                      <GoogleIcon />
                   </AuthWithGoogle>
@@ -206,6 +257,7 @@ const Container = styled('div')(({ theme }) => ({
    flexDirection: 'column',
    justifyContent: 'center',
    gap: '1.25rem',
+   // marginRight: '4rem',
    '.head': {
       display: 'flex',
       flexDirection: 'column',

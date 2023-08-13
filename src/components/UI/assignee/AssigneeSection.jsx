@@ -3,11 +3,10 @@ import React, { useState } from 'react'
 import { Person } from '@mui/icons-material'
 import { SearchIcon } from '../../../assets/icons'
 import { assignee } from '../../../utils/constants/assignee'
-import { BackgroundChanger } from './BackgroundChanger'
 
 export const AssigneeSection = () => {
    const [anchorEl, setAnchorEl] = useState(null)
-   const [toogle, setToogle] = useState(false)
+   const [, setToogle] = useState(false)
 
    const [, setSelectedUserId] = useState(null)
 
@@ -18,15 +17,6 @@ export const AssigneeSection = () => {
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget)
       setToogle(true)
-   }
-
-   const handleClose = () => {
-      setAnchorEl(null)
-      setToogle(false)
-   }
-
-   const handleUnassignedClick = () => {
-      setToogle(false)
    }
 
    const open = Boolean(anchorEl)
@@ -46,17 +36,7 @@ export const AssigneeSection = () => {
          </Search>
          <div style={{ marginTop: '1rem' }}>
             <ScrollableContainer>
-               {toogle && (
-                  <BackgroundChanger
-                     open={open}
-                     onClose={handleClose}
-                     handleUnassignedClick={handleUnassignedClick}
-                     id={id}
-                     anchorEl={anchorEl}
-                  />
-               )}
-
-               <UnassignedContainer aria-describedby={id} onClick={handleClick}>
+               <UnassignedContainer aria-describedby={id}>
                   <Checkbox
                      sx={{
                         '&.Mui-checked': {
@@ -64,19 +44,12 @@ export const AssigneeSection = () => {
                         },
                      }}
                   />
-                  <div
-                     style={{
-                        marginLeft: '0.6rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.54rem',
-                     }}
-                  >
+                  <UnassignedChildContainer onClick={handleClick}>
                      <Avatar>
                         <Person />
                      </Avatar>
                      <p>Unassigned</p>
-                  </div>
+                  </UnassignedChildContainer>
                </UnassignedContainer>
                {assignee.map((el) => (
                   <AssigneeMapContainer key={el.id}>
@@ -192,4 +165,10 @@ const UnassignedContainer = styled('div')(() => ({
    height: '3.5rem',
    background: ' #F2F2F2',
    cursor: 'pointer',
+}))
+const UnassignedChildContainer = styled('div')(() => ({
+   marginLeft: '0.6rem',
+   display: 'flex',
+   alignItems: 'center',
+   gap: '0.54rem',
 }))
