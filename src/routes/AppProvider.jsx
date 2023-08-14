@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
-import { SignInPage } from '../pages/SignInPage'
+// import { SignInPage } from '../pages/SignInPage'
+import { Board } from '../components/board/Board'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
@@ -13,7 +14,7 @@ export const routes = createBrowserRouter([
       path: '/',
       element: (
          <PrivateRoute
-            component={<SignInPage />}
+            component={<Board />}
             roles={[USER_ROLE.GUEST]}
             fallBacPath="/mainPage"
          />

@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { authSlice } from './auth/authSlice'
-import { ProfileSlice } from './profile/ProfileSlice'
+import { boardSlice } from './board/boardSlice'
 
 export const store = configureStore({
    reducer: {
       [authSlice.name]: authSlice.reducer,
-      [ProfileSlice.name]: ProfileSlice.reducer,
+      [boardSlice.name]: boardSlice.reducer,
    },
 })
