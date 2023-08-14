@@ -38,8 +38,8 @@ export const Colors = ({ setPostColor, toggleColor }) => {
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -574,
-   left: -12,
+   top: -510,
+   left: '50%',
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       borderRadius: '0.7rem',
