@@ -38,7 +38,7 @@ export const Colors = ({ setPostColor, toggleColor }) => {
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -700,
+   top: -600,
    left: '70%',
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
