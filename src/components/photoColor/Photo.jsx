@@ -17,7 +17,7 @@ export const Photos = ({ setPostColor, togglePhoto }) => {
                   position: 'sticky',
                   top: 1,
                   backgroundColor: '#fff',
-                  padding: '0.8rem',
+                  padding: '0.8rem 0',
                }}
             >
                <StyledIconButton>
@@ -33,7 +33,6 @@ export const Photos = ({ setPostColor, togglePhoto }) => {
                   .filter(
                      (boardColor) => boardColor.background.slice(0, 1) !== '#'
                   )
-                  .slice(0, 3)
                   .map((boardColor) => (
                      <Img
                         onClick={() => handlePhotoClick(boardColor.background)}
@@ -55,7 +54,7 @@ const PopoverCont = styled(Popover)(() => ({
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       minWidth: '23.8rem',
-      minHeight: '37rem',
+      minHeight: '35rem',
       borderRadius: '0.7rem',
    },
 }))
@@ -86,10 +85,9 @@ const AllBoard = styled('div')(() => ({
    flexDirection: 'column',
    alignItems: 'center',
    gap: '10px',
-   padding: '0 1rem',
+   paddingLeft: '1.4rem',
    height: '100%',
    borderRadius: '0.625rem',
-   marginTop: '1rem',
    backgroundColor: '#fff',
 }))
 
@@ -98,8 +96,7 @@ const StyledHeader = styled('div')({
    justifyContent: 'space-between',
    alignItems: 'center',
    width: '100%',
-   padding: '0 1rem',
-   marginBottom: '1rem',
+   // padding: '0 1rem',
 })
 
 const PhotoBlocks = styled('div')(() => ({
@@ -109,7 +106,7 @@ const PhotoBlocks = styled('div')(() => ({
 }))
 
 const Img = styled('img')(() => ({
-   width: '160px',
+   width: '162px',
    height: '72px',
    borderRadius: '8px',
 }))

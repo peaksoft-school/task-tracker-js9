@@ -44,7 +44,8 @@ const PopoverCont = styled(Popover)(() => ({
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       borderRadius: '0.7rem',
       minWidth: '23.8rem',
-      minHeight: '30.8rem',
+      minHeight: '27rem',
+      overflow: 'hidden',
    },
 }))
 const rotateIcon = keyframes`
@@ -62,7 +63,7 @@ const StyledIconButton = styled(IconButton)(() => ({
    animation: ` ${rotateIcon} 0.8s linear`,
 }))
 const StyledLeftIcon = styled(LeftIcon)`
-   height: 1.15rem;
+   // height: 1.15rem;
    path {
       stroke: #919191;
    }
@@ -76,7 +77,7 @@ const AllBoard = styled('div')(() => ({
    gap: '10px',
    padding: '0 1rem',
    width: '22.9375rem',
-   height: '26rem',
+   // height: '26rem',
    borderRadius: '0.625rem',
    marginTop: '1rem',
 }))
