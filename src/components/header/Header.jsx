@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Avatar, IconButton } from '@mui/material'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {
    DownIcon,
@@ -20,6 +20,7 @@ export const Headers = ({ data }) => {
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const location = useLocation()
 
    const handleIconClick = () => {
       setIsIconUp(!isIconUp)
@@ -43,6 +44,7 @@ export const Headers = ({ data }) => {
             console.log(error)
          })
    }
+
    return (
       <div>
          <GLobalContainer>
@@ -76,7 +78,9 @@ export const Headers = ({ data }) => {
                   </StyledAvatar>
                   {openProfile ? (
                      <ProfileTexts>
-                        <p>Profile</p>
+                        {location.pathname !== '/profile' && (
+                           <NavLink to="/profile">Profile</NavLink>
+                        )}
                         <p onClick={logOutHandler}>Log out</p>
                      </ProfileTexts>
                   ) : null}
