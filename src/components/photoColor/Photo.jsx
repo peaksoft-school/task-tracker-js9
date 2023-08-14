@@ -49,8 +49,8 @@ export const Photos = ({ setPostColor, togglePhoto }) => {
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -610,
-   left: '50%',
+   top: -710,
+   left: '70%',
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       minWidth: '23.8rem',
