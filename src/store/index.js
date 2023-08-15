@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { favouriteSlice } from './getFavourites/favouritesSlice'
+import { authSlice } from './auth/authSlice'
+import { boardSlice } from './board/boardSlice'
 
 export const store = configureStore({
    reducer: {
-      [favouriteSlice.name]: favouriteSlice.reducer,
+      [authSlice.name]: authSlice.reducer,
+      [boardSlice.name]: boardSlice.reducer,
    },
 })
