@@ -1,10 +1,11 @@
 import { Avatar, IconButton, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { StarIcon } from '../../assets/icons'
 import TableMui from '../UI/table/TableMui'
 import {
+   addtoFaworitesWorkspaces,
    fetchAllWorkspaces,
    getWorkspacebyId,
 } from '../../store/workspace/workspaceThunk'
@@ -12,19 +13,21 @@ import {
 export const WorkspaceTable = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const [favoriteIds, setFavoriteIds] = useState([])
+   // const [favoriteIds, setFavoriteIds] = useState([])
    const { workspaces } = useSelector((state) => state.workspaces)
-
-   const isFavorite = (id) => favoriteIds.includes(id)
-
-   const toggleFavorite = (id) => {
-      setFavoriteIds((prevIds) =>
-         prevIds.includes(id)
-            ? prevIds.filter((favId) => favId !== id)
-            : [...prevIds, id]
-      )
+   const addToFavouritesHandler = (id) => {
+      dispatch(addtoFaworitesWorkspaces({ id, dispatch }))
    }
-   console.log(workspaces)
+
+   // const isFavorite = (id) => favoriteIds.includes(id)
+
+   // const toggleFavorite = (id) => {
+   //    setFavoriteIds((prevIds) =>
+   //       prevIds.includes(id)
+   //          ? prevIds.filter((favId) => favId !== id)
+   //          : [...prevIds, id]
+   //    )
+   // }
 
    const getWorkSpaceById = (id) => {
       dispatch(getWorkspacebyId({ id, navigate, path: 'boards' }))
@@ -45,11 +48,11 @@ export const WorkspaceTable = () => {
       },
       {
          heading: 'Name',
-         key: 'adminFullName',
+         key: 'workSpaceName',
          minWidth: '15rem',
          render: (data) => (
             <NameStyle onClick={() => getWorkSpaceById(data.workSpaceId)}>
-               {data.adminFullName}
+               {data.workSpaceName}
             </NameStyle>
          ),
       },
@@ -70,13 +73,20 @@ export const WorkspaceTable = () => {
          key: 'action',
          align: 'right',
          render: (data) => (
-            <IconButton onClick={() => toggleFavorite(data.id)}>
-               {isFavorite(data.id) ? (
+            <IconButton onClick={() => addToFavouritesHandler(data.id)}>
+               {data.isFavorite ? (
                   <StarIcon fill="#0079BF" />
                ) : (
                   <StarIcon fill="#B2B2B2" />
                )}
             </IconButton>
+            // <IconButton onClick={() => toggleFavorite(data.id)}>
+            //    {isFavorite(data.id) ? (
+            //       <StarIcon fill="#0079BF" />
+            //    ) : (
+            //       <StarIcon fill="#B2B2B2" />
+            //    )}
+            // </IconButton>
          ),
       },
    ]

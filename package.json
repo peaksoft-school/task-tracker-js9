@@ -20,6 +20,7 @@
       "firebase": "^10.1.0",
       "formik": "^2.4.2",
       "framer-motion": "^10.15.1",
+      "json-server": "^0.17.3",
       "react": "^18.2.0",
       "react-dom": "^18.2.0",
       "react-dropzone": "^14.2.3",
@@ -37,6 +38,7 @@
       "yup": "^1.2.0"
    },
    "scripts": {
+      "json-server": "json-server --watch src/data/workspace.json --port 3001",
       "start": "react-scripts start",
       "build": "react-scripts build",
       "test": "react-scripts test",

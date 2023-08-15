@@ -1,11 +1,14 @@
 import React, { useRef, useState } from 'react'
 import CreatableSelect from 'react-select/creatable'
+import { useDispatch } from 'react-redux'
+// import { useParams } from 'react-router-dom'
 import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { styled } from '@mui/material'
 import { ModalUi } from '../UI/modal/Modal'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
+import { createNewWorkspace } from '../../store/workspace/workspaceThunk'
 
 const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
 
@@ -25,6 +28,7 @@ const validationSchema = Yup.object().shape({
       .nullable(),
 })
 const NewWorkspaceForm = ({ showModal, setShowModal }) => {
+   const dispatch = useDispatch()
    const [tempValue, setTempValue] = useState('')
    const formikRef = useRef()
 
@@ -33,8 +37,16 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
    }
 
    const handleFormSubmit = (values) => {
+      const data = values.invitedMembers.map((item) => item.value)
+
+      const newdata = {
+         emails: data,
+         name: values.workspaceName,
+         link: 'http://localhost:3001/signUp',
+      }
+      console.log(newdata)
+      dispatch(createNewWorkspace(newdata))
       setShowModal(false)
-      console.log(values, 'VALUES')
    }
 
    const closeModal = () => {

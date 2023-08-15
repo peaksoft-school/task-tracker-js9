@@ -54,12 +54,15 @@ export const routes = createBrowserRouter([
             fallBacPath="/"
          />
       ),
-      children: [
-         {
-            path: ':id/boards',
-            element: <Board boards={boards} />,
-         },
-      ],
+   },
+   {
+      path: 'mainPage/:id/boards',
+      element: (
+         <>
+            <Headers />
+            <Board boards={boards} />
+         </>
+      ),
    },
 
    {
