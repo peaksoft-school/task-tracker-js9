@@ -11,18 +11,13 @@ import {
 export const Favourite = () => {
    const { favorite } = useSelector((state) => state.favourite)
 
-   console.log('favorites: ', favorite)
-
    const dispatch = useDispatch()
 
    const handleStarClickBoard = (id) => {
-      console.log('ID BOARD', id)
       dispatch(toggleFavoriteaBoard(id))
    }
 
    const handleStarClickWorkSpace = (id) => {
-      console.log('ID WORK_SPACE', id)
-
       dispatch(toggleFavoriteWorkSpace(id))
    }
 
@@ -33,7 +28,6 @@ export const Favourite = () => {
       dispatch(getFavourites())
    }, [dispatch])
 
-   console.log(favorite)
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
