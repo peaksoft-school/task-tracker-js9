@@ -1,5 +1,6 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
    AttachIcon,
@@ -18,91 +19,101 @@ import { Input } from '../UI/input/Input'
 
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
-// import { DataPickers } from '../UI/data-picker/DataPicker'
+import { ModalUi } from '../UI/modal/Modal'
 
-export const InnerCard = () => {
+export const InnerCard = ({ handleOpenModal }) => {
+   const [showMore, setShowMore] = React.useState(false)
    return (
-      <CardContainer>
-         <Wrapper>
-            <TextContainer>
-               <EditIcon />
-               <CardText>Какая то задача, которую нужно выполнить</CardText>
-            </TextContainer>
-            <CloseIcon />
-         </Wrapper>
-         <CardWrapper>
-            <CardContainerInner>
-               <Labels />
-               <DataContainer>
-                  <div>
-                     <Title>Start Date</Title>
-                     <DateStart>
-                        Sep 9, 2022 at 12:51 PM <DownIcon />
-                     </DateStart>
-                  </div>
-                  <div>
-                     <Title>Due Date</Title>
-                     <DateStart>
-                        Sep 9, 2022 at 12:51 PM <DownIcon />
-                     </DateStart>
-                  </div>
-                  <div>
-                     <Title>Members</Title>
-                     <DateStart />
-                  </div>
-               </DataContainer>
-               <Description>
-                  <DownIcon />
-                  <DescriptionTitle>Description</DescriptionTitle>
-               </Description>
-               <DescriptionInput type="text" placeholder="Add a description" />
-               <ActionButtonsContainer>
-                  <CancelButton>Cancel</CancelButton>
-                  <AddButton>Save</AddButton>
-               </ActionButtonsContainer>
-               <CheckList />
-            </CardContainerInner>
-            <CardRight>
-               <CardRightContainer>
-                  <Title>Add</Title>
-                  <AddWrapper>
-                     <AddItem>
-                        <MemberIcon />
-                        <AddText>Members</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <ClockIcon />
-                        <AddText>Estimation</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <LabelIcon />
-                        <AddText>Label</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <AttachIcon />
-                        <AddText>Attachment</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <CheckIcon />
-                        <AddText>Checklist</AddText>
-                     </AddItem>
-                  </AddWrapper>
-                  <Title>Actions</Title>
-                  <ActionsItem>
-                     <AddItem>
-                        <DeleteIcon />
-                        <AddText>Delete</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <ArchiveIcon />
-                        <AddText>Archive</AddText>
-                     </AddItem>
-                  </ActionsItem>
-               </CardRightContainer>
-               <CommentSection />
-            </CardRight>
-         </CardWrapper>
-      </CardContainer>
+      <ModalUi open={handleOpenModal} onClose={handleOpenModal}>
+         <CardContainer>
+            <Wrapper>
+               <TextContainer>
+                  <EditIcon />
+                  <CardText>Какая то задача, которую нужно выполнить</CardText>
+               </TextContainer>
+               <CloseIcon onClick={handleOpenModal} />
+            </Wrapper>
+            <CardWrapper>
+               <CardContainerInner>
+                  <Labels />
+                  <DataContainer>
+                     <div>
+                        <Title>Start Date</Title>
+                        <DateStart>
+                           Sep 9, 2022 at 12:51 PM <DownIcon />
+                        </DateStart>
+                     </div>
+                     <div>
+                        <Title>Due Date</Title>
+                        <DateStart>
+                           Sep 9, 2022 at 12:51 PM <DownIcon />
+                        </DateStart>
+                     </div>
+                     <div>
+                        <Title>Members</Title>
+                        <DateStart />
+                     </div>
+                  </DataContainer>
+                  <Description>
+                     <DownIcon />
+                     <DescriptionTitle>Description</DescriptionTitle>
+                  </Description>
+                  <DescriptionInput
+                     type="text"
+                     placeholder="Add a description"
+                  />
+                  <ActionButtonsContainer>
+                     <CancelButton>Cancel</CancelButton>
+                     <AddButton>Save</AddButton>
+                  </ActionButtonsContainer>
+                  <CheckList />
+               </CardContainerInner>
+               <CardRight>
+                  <CardRightContainer>
+                     <Title>Add</Title>
+                     <AddWrapper>
+                        <AddItem>
+                           <MemberIcon />
+                           <AddText>Members</AddText>
+                        </AddItem>
+                        <AddItem>
+                           <ClockIcon />
+                           <AddText>Estimation</AddText>
+                        </AddItem>
+                        <AddItem>
+                           <LabelIcon />
+                           <AddText>Label</AddText>
+                        </AddItem>
+                        <AddItem>
+                           <AttachIcon />
+                           <AddText>Attachment</AddText>
+                        </AddItem>
+                        <AddItem>
+                           <CheckIcon />
+                           <AddText>Checklist</AddText>
+                        </AddItem>
+                     </AddWrapper>
+                     <Title>Actions</Title>
+                     <ActionsItem>
+                        <AddItem>
+                           <DeleteIcon />
+                           <AddText>Delete</AddText>
+                        </AddItem>
+                        <AddItem>
+                           <ArchiveIcon />
+                           <AddText>Archive</AddText>
+                        </AddItem>
+                     </ActionsItem>
+                  </CardRightContainer>
+                  <CommentSection
+                     showMore={showMore}
+                     setShowMore={setShowMore}
+                     comments={comments}
+                  />
+               </CardRight>
+            </CardWrapper>
+         </CardContainer>
+      </ModalUi>
    )
 }
 

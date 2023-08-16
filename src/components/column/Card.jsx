@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material'
-import { NavLink } from 'react-router-dom'
 
 import { MeadTables } from './MeadTables'
 import { Button } from '../UI/button/Button'
@@ -18,14 +17,19 @@ import {
 import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 import { Label } from './Label'
 import { ColumnCard } from './ColumnCard'
+import { InnerCard } from '../innerCard/InnerCard'
 
 export const Card = () => {
-   const [openModal, setOpneModal] = useState(false)
+   const [openLabel, setOpenLabel] = useState(false)
    const [openLabelText, setOpenLabelText] = useState(false)
    const [clickedLabels, setClickedLabels] = useState([])
+   const [openModal, setOpenModal] = useState(false)
 
+   const handleOpenLabel = () => {
+      setOpenLabel((state) => !state)
+   }
    const handleOpenModal = () => {
-      setOpneModal((state) => !state)
+      setOpenModal((state) => !state)
    }
 
    const handleButtonClick = () => {
@@ -73,16 +77,16 @@ export const Card = () => {
                <ControlsIcon
                   onClick={(e) => {
                      e.preventDefault()
-                     handleOpenModal()
+                     handleOpenLabel()
                   }}
                />
             </StyleMeadIcon>
             <div>
-               {openModal && (
+               {openLabel && (
                   <MenuItemStyle
                      width="16.6875rem"
-                     open={openModal}
-                     onClose={handleOpenModal}
+                     open={openLabel}
+                     onClose={handleOpenLabel}
                   >
                      <MeadTables />
                   </MenuItemStyle>
@@ -117,30 +121,28 @@ export const Card = () => {
                      ))}
                   </Labels>
                )}
-               <NavLink to="/createCard">
-                  <ParagraphText>
-                     Какая то задача, которую нужно выполнить
-                  </ParagraphText>
+               <ParagraphText onClick={handleOpenModal}>
+                  Какая то задача, которую нужно выполнить
+               </ParagraphText>
 
-                  <WraperDedline>
-                     <Deadline>
-                        <RealWorldIcon />
-                        <ParagraphDeadlineMonth>2 month</ParagraphDeadlineMonth>
-                     </Deadline>
-                     <WraperIcons>
-                        <TypographyIcon />
-                        <CommunicationIcon />
-                        <CheckMarNumberkIcon>
-                           <CheckKeyboardIcon />
-                           <NumberIcon>1/3</NumberIcon>
-                        </CheckMarNumberkIcon>
-                        <ParentPeopleIcon>
-                           <PeopleIcon />
-                           <PeopleNumber>5</PeopleNumber>
-                        </ParentPeopleIcon>
-                     </WraperIcons>
-                  </WraperDedline>
-               </NavLink>
+               <WraperDedline>
+                  <Deadline>
+                     <RealWorldIcon />
+                     <ParagraphDeadlineMonth>2 month</ParagraphDeadlineMonth>
+                  </Deadline>
+                  <WraperIcons>
+                     <TypographyIcon />
+                     <CommunicationIcon />
+                     <CheckMarNumberkIcon>
+                        <CheckKeyboardIcon />
+                        <NumberIcon>1/3</NumberIcon>
+                     </CheckMarNumberkIcon>
+                     <ParentPeopleIcon>
+                        <PeopleIcon />
+                        <PeopleNumber>5</PeopleNumber>
+                     </ParentPeopleIcon>
+                  </WraperIcons>
+               </WraperDedline>
             </ColumnCard>
             <ColumnCard>
                <ParagraphText>
@@ -210,6 +212,7 @@ export const Card = () => {
                <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
             )}
          </ParentColumnCard>
+         {openModal ? <InnerCard handleOpenModal={handleOpenModal} /> : null}
       </>
    )
 }
