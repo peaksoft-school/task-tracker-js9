@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material'
+import { NavLink } from 'react-router-dom'
 
 import { MeadTables } from './MeadTables'
 import { Button } from '../UI/button/Button'
@@ -116,29 +117,30 @@ export const Card = () => {
                      ))}
                   </Labels>
                )}
+               <NavLink to="/createCard">
+                  <ParagraphText>
+                     Какая то задача, которую нужно выполнить
+                  </ParagraphText>
 
-               <ParagraphText>
-                  Какая то задача, которую нужно выполнить
-               </ParagraphText>
-
-               <WraperDedline>
-                  <Deadline>
-                     <RealWorldIcon />
-                     <ParagraphDeadlineMonth>2 month</ParagraphDeadlineMonth>
-                  </Deadline>
-                  <WraperIcons>
-                     <TypographyIcon />
-                     <CommunicationIcon />
-                     <CheckMarNumberkIcon>
-                        <CheckKeyboardIcon />
-                        <NumberIcon>1/3</NumberIcon>
-                     </CheckMarNumberkIcon>
-                     <ParentPeopleIcon>
-                        <PeopleIcon />
-                        <PeopleNumber>5</PeopleNumber>
-                     </ParentPeopleIcon>
-                  </WraperIcons>
-               </WraperDedline>
+                  <WraperDedline>
+                     <Deadline>
+                        <RealWorldIcon />
+                        <ParagraphDeadlineMonth>2 month</ParagraphDeadlineMonth>
+                     </Deadline>
+                     <WraperIcons>
+                        <TypographyIcon />
+                        <CommunicationIcon />
+                        <CheckMarNumberkIcon>
+                           <CheckKeyboardIcon />
+                           <NumberIcon>1/3</NumberIcon>
+                        </CheckMarNumberkIcon>
+                        <ParentPeopleIcon>
+                           <PeopleIcon />
+                           <PeopleNumber>5</PeopleNumber>
+                        </ParentPeopleIcon>
+                     </WraperIcons>
+                  </WraperDedline>
+               </NavLink>
             </ColumnCard>
             <ColumnCard>
                <ParagraphText>
