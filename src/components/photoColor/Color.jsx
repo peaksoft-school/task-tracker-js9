@@ -1,12 +1,11 @@
 import React from 'react'
 import { styled, IconButton, Popover, keyframes } from '@mui/material'
-import { ExitIcon, LeftIcon } from '../../assets/icons'
+import { DoneIcon, ExitIcon, LeftIcon } from '../../assets/icons'
 import { boards } from '../../utils/constants/general'
 
-export const Colors = ({ setPostColor, toggleColor }) => {
+export const Colors = ({ editColor, toggleColor, selectedColor }) => {
    const handlePhotoClick = (photo) => {
-      setPostColor(photo)
-      toggleColor()
+      editColor(photo)
    }
 
    return (
@@ -23,11 +22,42 @@ export const Colors = ({ setPostColor, toggleColor }) => {
             </StyledHeader>
             <ColorBlocks>
                {boards.map((board) => (
-                  <div key={board.id}>
+                  <div
+                     key={board.id}
+                     style={{
+                        position: 'relative',
+                     }}
+                  >
                      <BoardBlock
-                        onClick={() => handlePhotoClick(board.background)}
+                        onClick={() => handlePhotoClick(board)}
                         board={board}
                      />
+                     {selectedColor === board.id && (
+                        <div
+                           style={{
+                              position: 'absolute',
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              width: '160px',
+                              height: '80px',
+                              borderRadius: '8px',
+                              background: 'rgba(0,0,0, 0.4)',
+                           }}
+                        >
+                           <Choose
+                              fill="#FFFFFF"
+                              style={{
+                                 position: 'absolute',
+                                 top: '50%',
+                                 left: '50%',
+                                 transform: 'translate(-50%, -50%)',
+                                 width: '50px',
+                                 height: '50px',
+                              }}
+                           />
+                        </div>
+                     )}
                   </div>
                ))}
             </ColorBlocks>
@@ -38,8 +68,8 @@ export const Colors = ({ setPostColor, toggleColor }) => {
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -600,
-   left: '70%',
+   top: -650,
+   left: '62%',
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       borderRadius: '0.7rem',
@@ -108,4 +138,13 @@ const BoardBlock = styled('div')(({ board, selected }) => ({
    width: '10rem',
    height: '5rem',
    border: selected ? '2px solid #000' : 'none',
+}))
+
+const Choose = styled(DoneIcon)(() => ({
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: '25px',
+   height: '25px',
 }))

@@ -1,12 +1,11 @@
 import React from 'react'
 import { styled, IconButton, Popover, keyframes } from '@mui/material'
-import { ExitIcon, LeftIcon } from '../../assets/icons'
+import { DoneIcon, ExitIcon, LeftIcon } from '../../assets/icons'
 import { boards } from '../../utils/constants/general'
 
-export const Photos = ({ setPostColor, togglePhoto }) => {
+export const Photos = ({ editPhoto, togglePhoto, selectedPhoto }) => {
    const handlePhotoClick = (photo) => {
-      setPostColor(photo)
-      togglePhoto()
+      editPhoto(photo)
    }
 
    return (
@@ -34,12 +33,44 @@ export const Photos = ({ setPostColor, togglePhoto }) => {
                      (boardColor) => boardColor.background.slice(0, 1) !== '#'
                   )
                   .map((boardColor) => (
-                     <Img
-                        onClick={() => handlePhotoClick(boardColor.background)}
-                        board={boardColor}
-                        src={boardColor.background}
-                        alt=""
-                     />
+                     <div
+                        style={{
+                           position: 'relative',
+                        }}
+                     >
+                        <Img
+                           onClick={() => handlePhotoClick(boardColor)}
+                           board={boardColor}
+                           src={boardColor.background}
+                           alt=""
+                        />
+                        {selectedPhoto === boardColor.id && (
+                           <div
+                              style={{
+                                 position: 'absolute',
+                                 top: '46%',
+                                 left: '50%',
+                                 transform: 'translate(-50%, -50%)',
+                                 width: '162px',
+                                 height: '72px',
+                                 borderRadius: '8px',
+                                 background: 'rgba(0,0,0, 0.4)',
+                              }}
+                           >
+                              <Choose
+                                 fill="#FFFFFF"
+                                 style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                    width: '45px',
+                                    height: '45px',
+                                 }}
+                              />
+                           </div>
+                        )}
+                     </div>
                   ))}
             </PhotoBlocks>
          </AllBoard>
@@ -49,12 +80,12 @@ export const Photos = ({ setPostColor, togglePhoto }) => {
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -710,
-   left: '70%',
+   top: -790,
+   left: '62%',
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
       minWidth: '23.8rem',
-      minHeight: '35rem',
+      minHeight: '36rem',
       borderRadius: '0.7rem',
    },
 }))
@@ -109,4 +140,13 @@ const Img = styled('img')(() => ({
    width: '162px',
    height: '72px',
    borderRadius: '8px',
+}))
+
+const Choose = styled(DoneIcon)(() => ({
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: '25px',
+   height: '25px',
 }))
