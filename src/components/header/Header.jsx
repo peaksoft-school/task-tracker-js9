@@ -13,6 +13,8 @@ import {
 } from '../../assets/icons'
 import { logOut } from '../../store/auth/authThunk'
 import { showSnackbar } from '../UI/snackbar/Snackbar'
+import { Favourite } from '../favourite/Favourite'
+import { ModalUi } from '../UI/modal/Modal'
 
 export const Headers = ({ data }) => {
    const [isIconUp, setIsIconUp] = useState(false)
@@ -55,7 +57,12 @@ export const Headers = ({ data }) => {
                   <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
                   <IconButton onClick={handleIconClick}>
                      {isIconUp ? (
-                        <UpIcon src={UpIcon} alt="up_arrow" />
+                        <>
+                           <UpIcon src={UpIcon} alt="up_arrow" />
+                           <ModalUi onClose={handleIconClick} open={isIconUp}>
+                              <Favourite />
+                           </ModalUi>
+                        </>
                      ) : (
                         <DownIcon src={DownIcon} alt="down_arrow" />
                      )}

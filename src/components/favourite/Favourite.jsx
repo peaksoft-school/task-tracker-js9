@@ -9,7 +9,8 @@ import {
 } from '../../store/getFavourites/favouritesThunk'
 
 export const Favourite = () => {
-   const { favorite } = useSelector((state) => state.favourite)
+   const { favoriteData } = useSelector((state) => state.favorite)
+   console.log('favoriteData', favoriteData)
 
    const dispatch = useDispatch()
 
@@ -31,8 +32,7 @@ export const Favourite = () => {
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
-
-         {favorite.boardResponses?.map((item) => (
+         {favoriteData?.boardResponses?.map((item) => (
             <FavouriteBox
                onClick={() => handleStarClickBoard(item.boardId)}
                key={item.boardId}
@@ -54,7 +54,7 @@ export const Favourite = () => {
                </IconButton>
             </FavouriteBox>
          ))}
-         {favorite.workSpaceResponses?.map((item) => (
+         {favoriteData.workSpaceResponses?.map((item) => (
             <FavouriteBox
                onClick={() => handleStarClickWorkSpace(item.workSpaceId)}
                key={item.W}
