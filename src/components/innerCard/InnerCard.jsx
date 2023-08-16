@@ -68,33 +68,34 @@ export const InnerCard = () => {
                   <AddWrapper>
                      <AddItem>
                         <MemberIcon />
-                        Members
+                        <AddText>Members</AddText>
                      </AddItem>
                      <AddItem>
                         <ClockIcon />
-                        Estimation
+                        <AddText>Estimation</AddText>
                      </AddItem>
                      <AddItem>
                         <LabelIcon />
-                        Label
+                        <AddText>Label</AddText>
                      </AddItem>
                      <AddItem>
                         <AttachIcon />
-                        Attachment
+                        <AddText>Attachment</AddText>
                      </AddItem>
                      <AddItem>
                         <CheckIcon />
-                        Checklist
+                        <AddText>Checklist</AddText>
                      </AddItem>
                   </AddWrapper>
                   <Title>Actions</Title>
                   <ActionsItem>
                      <AddItem>
-                        <DeleteIcon /> Delete
+                        <DeleteIcon />
+                        <AddText>Delete</AddText>
                      </AddItem>
                      <AddItem>
                         <ArchiveIcon />
-                        Archive
+                        <AddText>Archive</AddText>
                      </AddItem>
                   </ActionsItem>
                </CardRightContainer>
@@ -106,7 +107,7 @@ export const InnerCard = () => {
 }
 
 const CardContainer = styled('div')(() => ({
-   width: '1100px',
+   width: '1150px',
    borderRadius: '8px',
    padding: '16px 20px',
 }))
@@ -141,7 +142,7 @@ const Title = styled('h4')(() => ({
    color: '#919191',
    fontSize: '0.875rem',
    fontWeight: '400',
-   marginBottom: '8px',
+   marginBottom: '6px',
 }))
 const DateStart = styled('div')(() => ({
    display: 'flex',
@@ -228,7 +229,7 @@ const ActionsItem = styled('div')(() => ({
    gap: '8px',
 }))
 const AddWrapper = styled('div')(() => ({
-   marginTop: '8px',
+   margin: '8px 0',
    display: 'flex',
    flexWrap: 'wrap',
    gap: '8px',
@@ -240,4 +241,8 @@ const AddItem = styled('div')(() => ({
    borderRadius: '8px',
    display: 'flex',
    alignItems: 'center',
+}))
+
+const AddText = styled('p')(() => ({
+   marginLeft: '8px',
 }))
