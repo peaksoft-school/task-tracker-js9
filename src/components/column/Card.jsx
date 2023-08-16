@@ -17,19 +17,14 @@ import {
 import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 import { Label } from './Label'
 import { ColumnCard } from './ColumnCard'
-import { InnerCard } from '../innerCard/InnerCard'
 
 export const Card = () => {
-   const [openLabel, setOpenLabel] = useState(false)
+   const [openModal, setOpneModal] = useState(false)
    const [openLabelText, setOpenLabelText] = useState(false)
    const [clickedLabels, setClickedLabels] = useState([])
-   const [openModal, setOpenModal] = useState(false)
 
-   const handleOpenLabel = () => {
-      setOpenLabel((state) => !state)
-   }
    const handleOpenModal = () => {
-      setOpenModal((state) => !state)
+      setOpneModal((state) => !state)
    }
 
    const handleButtonClick = () => {
@@ -77,16 +72,16 @@ export const Card = () => {
                <ControlsIcon
                   onClick={(e) => {
                      e.preventDefault()
-                     handleOpenLabel()
+                     handleOpenModal()
                   }}
                />
             </StyleMeadIcon>
             <div>
-               {openLabel && (
+               {openModal && (
                   <MenuItemStyle
                      width="16.6875rem"
-                     open={openLabel}
-                     onClose={handleOpenLabel}
+                     open={openModal}
+                     onClose={handleOpenModal}
                   >
                      <MeadTables />
                   </MenuItemStyle>
@@ -121,7 +116,7 @@ export const Card = () => {
                      ))}
                   </Labels>
                )}
-               <ParagraphText onClick={handleOpenModal}>
+               <ParagraphText>
                   Какая то задача, которую нужно выполнить
                </ParagraphText>
 
@@ -212,7 +207,6 @@ export const Card = () => {
                <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
             )}
          </ParentColumnCard>
-         {openModal ? <InnerCard handleOpenModal={handleOpenModal} /> : null}
       </>
    )
 }
