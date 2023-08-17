@@ -1,8 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
-// import { SignInPage } from '../pages/SignInPage'
-// import { Board } from '../components/board/Board'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { Workspaces } from '../components/workspace/Workspace'
 import { Headers } from '../components/header/Header'

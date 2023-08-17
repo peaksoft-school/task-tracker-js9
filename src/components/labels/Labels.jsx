@@ -1,7 +1,8 @@
 import { Tooltip, styled } from '@mui/material'
 import { ExitIcon } from '../../assets/icons'
+import { labels } from '../../utils/constants/labels'
 
-export const Labels = ({ labels, onRemoveLabel }) => {
+export const Labels = () => {
    return (
       <div>
          <HeadingLabel>Labels</HeadingLabel>
@@ -14,7 +15,7 @@ export const Labels = ({ labels, onRemoveLabel }) => {
                   <TextLabels title={item.title} arrow>
                      {item.title}
                   </TextLabels>
-                  <ExitIcon onClick={() => onRemoveLabel(item.id)} />
+                  <ExitIcon />
                </ContainerLabels>
             ))}
          </AllContainer>

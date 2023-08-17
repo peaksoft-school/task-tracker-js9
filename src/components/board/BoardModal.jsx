@@ -3,15 +3,19 @@ import React from 'react'
 import { ModalUi } from '../UI/modal/Modal'
 import { Photos } from '../photoColor/Photo'
 import { Colors } from '../photoColor/Color'
+import { DoneIcon } from '../../assets/icons'
 
 export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
    const [backGround, setPostColor] = React.useState()
    const [title, setPostTitle] = React.useState()
    const [openPhoto, setOpenPhoto] = React.useState(false)
    const [openColor, setOpenColor] = React.useState(false)
+   const [selectedColor, setSelectedColor] = React.useState(null)
+   const [selectedPhoto, setSelectedPhoto] = React.useState(null)
    const postAddBack = () => {
-      postFunc({ backGround, title })
+      postFunc({ backGround, title, workSpaceId: 49 })
       toggleModal()
+      console.log(backGround)
    }
 
    const titleChange = (event) => {
@@ -20,10 +24,21 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
 
    const togglePhoto = () => {
       setOpenPhoto((prev) => !prev)
+      setOpenColor(false)
    }
 
    const toggleColor = () => {
       setOpenColor((prev) => !prev)
+      setOpenPhoto(false)
+   }
+
+   const editColor = (boardColor) => {
+      setSelectedColor(boardColor.id === selectedColor ? null : boardColor.id)
+      setPostColor(boardColor.background)
+   }
+   const editPhoto = (boardColor) => {
+      setSelectedPhoto(boardColor.id === selectedPhoto ? null : boardColor.id)
+      setPostColor(boardColor.background)
    }
 
    return (
@@ -38,8 +53,9 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
                   <PhotoLink onClick={togglePhoto}>See more</PhotoLink>
                   {openPhoto ? (
                      <PhotosModal
-                        setPostColor={setPostColor}
+                        editPhoto={editPhoto}
                         togglePhoto={togglePhoto}
+                        selectedPhoto={selectedPhoto}
                      />
                   ) : null}
                </TitleWrapper>
@@ -49,11 +65,47 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
                   )
                      .slice(0, 3)
                      .map((boardColor) => (
-                        <Img
-                           onClick={() => setPostColor(boardColor.background)}
-                           src={boardColor.background}
-                           alt=""
-                        />
+                        <div
+                           key={boardColor.id}
+                           style={{
+                              position: 'relative',
+                              marginRight: '16px',
+                              '&:not(:last-child)': {
+                                 marginRight: '16px',
+                              },
+                           }}
+                        >
+                           <Img
+                              onClick={() => editPhoto(boardColor)}
+                              src={boardColor.background}
+                              alt=""
+                           />
+                           {selectedPhoto === boardColor.id && (
+                              <div
+                                 style={{
+                                    position: 'absolute',
+                                    top: '46%',
+                                    left: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                    width: '135px',
+                                    height: '60px',
+                                    borderRadius: '8px',
+                                    background: 'rgba(0,0,0, 0.4)',
+                                 }}
+                              >
+                                 <Choose
+                                    style={{
+                                       position: 'absolute',
+                                       top: '50%',
+                                       left: '50%',
+                                       width: '40px',
+                                       height: '40px',
+                                       transform: 'translate(-50%, -50%)',
+                                    }}
+                                 />
+                              </div>
+                           )}
+                        </div>
                      ))}
                </Photo>
                <TitleWrapper>
@@ -61,26 +113,61 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
                   <PhotoLink onClick={toggleColor}>See more</PhotoLink>
                   {openColor ? (
                      <Colors
-                        setPostColor={setPostColor}
+                        editColor={editColor}
                         toggleColor={toggleColor}
+                        selectedColor={selectedColor}
                      />
                   ) : null}
                </TitleWrapper>
                <Color>
                   {BoardColors.filter((boardColor) => boardColor)
                      .slice(0, 6)
-                     .map(
-                        (boardColor) =>
-                           boardColor.background.slice(0, 1) === '#' && (
+                     .map((boardColor) =>
+                        boardColor.background.slice(0, 1) === '#' ? (
+                           <div
+                              key={boardColor.id}
+                              style={{
+                                 position: 'relative',
+                                 marginRight: '16px',
+                                 '&:not(:last-child)': {
+                                    marginRight: '16px',
+                                 },
+                              }}
+                           >
                               <Colour
-                                 onClick={() =>
-                                    setPostColor(boardColor.background)
-                                 }
+                                 onClick={() => editColor(boardColor)}
                                  style={{
                                     background: boardColor.background,
                                  }}
                               />
-                           )
+                              {selectedColor === boardColor.id && (
+                                 <div
+                                    style={{
+                                       position: 'absolute',
+                                       top: '50%',
+                                       left: '50%',
+                                       transform: 'translate(-50%, -50%)',
+                                       width: '59px',
+                                       height: '31px',
+                                       borderRadius: '8px',
+                                       background: 'rgba(0,0,0, 0.4)',
+                                    }}
+                                 >
+                                    <Choose
+                                       fill="#FFFFFF"
+                                       style={{
+                                          position: 'absolute',
+                                          top: '50%',
+                                          left: '50%',
+                                          transform: 'translate(-50%, -50%)',
+                                          width: '25px',
+                                          height: '25px',
+                                       }}
+                                    />
+                                 </div>
+                              )}
+                           </div>
+                        ) : null
                      )}
                </Color>
             </ColorContainer>
@@ -135,10 +222,10 @@ const PhotoLink = styled('a')(() => ({
 }))
 
 const TitleWrapper = styled('div')(() => ({
-   position: 'relative',
    display: 'flex',
    justifyContent: 'space-between',
    padding: '8px 0',
+   position: 'relative',
 }))
 
 const PhotoTitle = styled('h5')(() => ({
@@ -148,15 +235,13 @@ const PhotoTitle = styled('h5')(() => ({
 }))
 const Color = styled('div')(() => ({
    display: 'flex',
+   position: 'relative',
 }))
 
 const Img = styled('img')(() => ({
    width: '135px',
    height: '62px',
    borderRadius: '8px',
-   '&:not(:last-child)': {
-      marginRight: '16px',
-   },
 
    '&:hover': {
       border: '1px solid #000',
@@ -167,9 +252,6 @@ const Colour = styled('div')(() => ({
    width: '59px',
    height: '31px',
    borderRadius: '8px',
-   '&:not(:last-child)': {
-      marginRight: '16px',
-   },
    '&:hover': {
       border: '1px solid #000',
    },
@@ -197,3 +279,11 @@ const ButtonCreate = styled('button')(() => ({
 }))
 
 const PhotosModal = styled(Photos)(() => ({}))
+const Choose = styled(DoneIcon)(() => ({
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: '25px',
+   height: '25px',
+}))
