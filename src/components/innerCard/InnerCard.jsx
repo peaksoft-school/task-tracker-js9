@@ -21,17 +21,17 @@ import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
 
-export const InnerCard = ({ handleOpenModal }) => {
+export const InnerCard = ({ open, handleClose }) => {
    const [showMore, setShowMore] = React.useState(false)
    return (
-      <ModalUi open={handleOpenModal} onClose={handleOpenModal}>
+      <ModalUi open={open} onClose={handleClose}>
          <CardContainer>
             <Wrapper>
                <TextContainer>
                   <EditIcon />
                   <CardText>Какая то задача, которую нужно выполнить</CardText>
                </TextContainer>
-               <CloseIcon onClick={handleOpenModal} />
+               <CloseIcon />
             </Wrapper>
             <CardWrapper>
                <CardContainerInner>
