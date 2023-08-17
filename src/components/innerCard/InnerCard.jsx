@@ -31,7 +31,7 @@ export const InnerCard = ({ open, handleClose }) => {
                   <EditIcon />
                   <CardText>Какая то задача, которую нужно выполнить</CardText>
                </TextContainer>
-               <CloseIcon />
+               <CloseIcon onClick={handleClose} />
             </Wrapper>
             <CardWrapper>
                <CardContainerInner>
