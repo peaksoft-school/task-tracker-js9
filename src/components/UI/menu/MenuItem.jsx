@@ -66,7 +66,7 @@ const MenuWrapper = styled('div')(({ animation, ...props }) => {
 
 const Backdrop = styled('div')(() => ({
    position: 'absolute',
-   width: '100%',
-   height: '100%',
+   // width: '100%',
+   // height: '100%',
    top: '0',
 }))
