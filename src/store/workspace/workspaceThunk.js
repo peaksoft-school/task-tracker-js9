@@ -1,10 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
-   addtoFawotites,
+   // addtoFawotites,
    createWorkspaces,
+   deleteWorkspaces,
    getWorkspaces,
    getWorkspacesById,
+   updateWorkspacesById,
 } from '../../api/workspaceServise'
+import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 
 export const fetchAllWorkspaces = createAsyncThunk(
    'workspaces/work_spaces',
@@ -20,14 +23,15 @@ export const fetchAllWorkspaces = createAsyncThunk(
 export const getWorkspacebyId = createAsyncThunk(
    'workspaces/getById',
    async (payload, { rejectWithValue }) => {
-      const { id, navigate, path } = payload
-      console.log(payload, 'ssssss')
+      const { workspaceData, navigate, path } = payload
+
       try {
-         const { data } = await getWorkspacesById(id)
+         const { data } = await getWorkspacesById(workspaceData.workSpaceId)
          if (navigate) {
-            navigate(`/mainPage/${id}/${path}`)
+            navigate(`/mainPage/${workspaceData.workSpaceId}/${path}`, {
+               state: { name: workspaceData.workSpaceName },
+            })
          }
-         console.log('data:', data)
          return data
       } catch (error) {
          return rejectWithValue(error.data.message)
@@ -47,15 +51,54 @@ export const createNewWorkspace = createAsyncThunk(
    }
 )
 
-export const addtoFaworitesWorkspaces = createAsyncThunk(
-   'workspaces/faworites',
+export const deleteWorkspaceById = createAsyncThunk(
+   'workspaces/deleteWorkspaceById',
    async (payload, { rejectWithValue }) => {
-      const { dispatch, id } = payload
       try {
-         const data = await addtoFawotites(id)
-         dispatch(fetchAllWorkspaces())
+         const { data } = await deleteWorkspaces(payload.id)
+         if (payload.navigate) {
+            payload.navigate('/mainPage')
+         }
+         showSnackbar({
+            message: 'deleted workspace',
+            severity: 'success',
+         })
+
          return data
       } catch (error) {
+         showSnackbar({
+            message: error,
+            additionalMessage: 'Please try again .',
+            severity: 'error',
+         })
+         return rejectWithValue(error.data.message)
+      }
+   }
+)
+export const updateWorkspace = createAsyncThunk(
+   'workspaces/updateWorkspaceById',
+   async (
+      { workspaceId, name, getWorkspace },
+      { rejectWithValue, dispatch }
+   ) => {
+      try {
+         const { data } = await updateWorkspacesById({
+            id: workspaceId,
+            name,
+         })
+         getWorkspace()
+         dispatch(fetchAllWorkspaces())
+         showSnackbar({
+            message: 'updated workspace',
+            severity: 'success',
+         })
+         return data
+      } catch (error) {
+         showSnackbar({
+            message: error,
+            additionalMessage: 'Please try again .',
+            severity: 'error',
+         })
          return rejectWithValue(error.data.message)
       }
    }

@@ -3,11 +3,9 @@ import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import MuiDrawer from '@mui/material/Drawer'
 import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
+import { IconButton, ListItemIcon } from '@mui/material'
 import { SideHead } from './SideHead'
 import { SideMain } from './SideMain'
-
 import {
    FilesAndFoldersIcon,
    PeopleIcon,
@@ -83,8 +81,12 @@ export function Sidenav({ data, dataLength, workspacedata }) {
    ]
    return (
       <div style={{ display: 'flex' }}>
-         <Box sx={{ zIndex: '0' }}>
-            <Drawer variant="permanent" open={openDrawer}>
+         <StyledBox sx={{ zIndex: '0', marginTop: '200px' }}>
+            <Drawer
+               variant="permanent"
+               open={openDrawer}
+               // style={{ top: '20px' }}
+            >
                <SideHead
                   handleItemClick={handleItemClick}
                   handleDrawerToggle={handleDrawerToggle}
@@ -92,6 +94,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   data={data}
                   activeItem={activeItem}
                   menuItems={menuItems}
+                  // toggle={toggle}
                />
                <DividerStyle open={openDrawer} />
                <SideMain
@@ -102,8 +105,8 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   handleItemClick={handleItemClick}
                />
             </Drawer>
-         </Box>
-         <div style={{ margin: '-1.6rem 0 0 -2.5rem' }}>
+         </StyledBox>
+         <div style={{ margin: '1rem 0 0 -1.9rem' }}>
             <ListItemIcon
                style={{
                   display: 'flex',
@@ -118,8 +121,9 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   edge="start"
                   style={{
                      backgroundColor: '#fff',
-                     borderRadius: ' 0rem 0.5rem 0.5rem 0rem',
-                     position: 'relative',
+                     borderRadius: '0rem 0.5rem 0.5rem 0rem',
+                     position: 'fixed',
+                     top: '6rem',
                      zIndex: '10',
                   }}
                >
@@ -165,6 +169,9 @@ const Drawer = styled(MuiDrawer, {
    whiteSpace: 'nowrap',
    boxSizing: 'border-box',
    backgroundColor: '#f8f8f8a4',
+   '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
+      marginTop: '80px',
+   },
    ...(open && {
       ...openedMixin(theme),
       '& .MuiDrawer-paper': openedMixin(theme),
@@ -179,4 +186,7 @@ const DividerStyle = styled(Divider)(({ open }) => ({
    width: open ? '75%' : '35%',
    marginLeft: '1.8rem',
    borderBottom: '2px solid #E0E0E0',
+}))
+const StyledBox = styled(Box)(() => ({
+   backgroundColor: 'red',
 }))

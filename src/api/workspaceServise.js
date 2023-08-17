@@ -9,6 +9,9 @@ export const getWorkspacesById = (id) => {
 export const createWorkspaces = (newdata) => {
    return axiosInstance.post('/api/work_spaces', newdata)
 }
-export const addtoFawotites = (newdata) => {
-   return axiosInstance.put(`/api/work_spaces/${newdata.id}`, newdata)
+export const deleteWorkspaces = (workSpaceId) => {
+   return axiosInstance.delete(`/api/work_spaces/${workSpaceId}`)
+}
+export const updateWorkspacesById = ({ id, name }) => {
+   return axiosInstance.put(`/api/work_spaces/${id}`, { name })
 }

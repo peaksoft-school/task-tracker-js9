@@ -1,213 +1,103 @@
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, IconButton, TextField } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
-import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { EditIcon, HideIcon, ShowIcon } from '../../assets/icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { EditIcon } from '../../assets/icons'
 import ColorBackground from '../../assets/images/ColorsBakground.png'
-import { Header } from '../header/Header'
-import { involvedProjects, testFields } from '../../utils/constants/general'
-import { schema } from '../../utils/helpers/Helpers'
+import { ProfileProjects } from './ProfileProjects'
+import {
+   profileAvatarRemoveRequest,
+   profileAvatarSThreePost,
+   profileGetRequest,
+} from '../../store/profile/ProfileThunk'
+import { ProfileForm } from './ProfileForm'
 
-export const ProfileForm = () => {
-   const {
-      register,
-      handleSubmit,
-      formState: { errors },
-   } = useForm({
-      defaultValues: {
-         firstName: 'Ваше имя',
-         lastName: 'Ваша фамилия',
-         email: 'example@example.com',
-         confirmPassword: '',
-      },
-      resolver: yupResolver(schema),
-   })
+export const Profile = () => {
+   const [avatarUrl, setAvatarUrl] = useState('')
+   const [openProfile, setOpenProfile] = useState(false)
+   const { item, avatarLink } = useSelector((state) => state.profile)
 
-   const [showPassword, setShowPassword] = useState(false)
-   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-   const [passwordDirty, setPasswordDirty] = useState(false)
-   const [confirmPasswordDirty, setConfirmPasswordDirty] = useState(false)
-   const projectCount = involvedProjects.length
-
-   const handleFormSubmit = (data) => {
-      console.log(data)
-   }
-
-   const [avatarUrl, setAvatarUrl] = useState(
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSFTPsr3IXU1GSbXyXhd1nOZSkTYRriwNtYg&usqp=CAU'
-   )
-
-   const handleTogglePasswordVisibility = () => {
-      setShowPassword((prevShowPassword) => !prevShowPassword)
-   }
-
-   const handleToggleConfirmPasswordVisibility = () => {
-      setShowConfirmPassword(
-         (prevShowConfirmPassword) => !prevShowConfirmPassword
-      )
-   }
-   const navigate = useNavigate()
-
-   const handleDrop = (acceptedFiles) => {
-      const file = acceptedFiles[0]
-      const reader = new FileReader()
-
-      reader.onload = (event) => {
-         const uploadedImageUrl = event.target.result
-         setAvatarUrl(uploadedImageUrl)
-      }
-
-      reader.readAsDataURL(file)
-   }
+   const dispatch = useDispatch()
 
    useEffect(() => {
-      console.log('Avatar URL changed:', avatarUrl)
+      if (avatarUrl) {
+         setAvatarUrl(avatarUrl)
+      }
    }, [avatarUrl])
 
-   const { getRootProps, getInputProps } = useDropzone({ onDrop: handleDrop })
+   useEffect(() => {
+      dispatch(profileGetRequest())
+   }, [dispatch])
+
+   const handleDrop = async (acceptedFiles) => {
+      const file = acceptedFiles[0]
+      const newAvatarUrl = URL.createObjectURL(file)
+
+      setAvatarUrl(newAvatarUrl)
+      setOpenProfile(false)
+
+      try {
+         const formData = new FormData()
+         formData.append('file', file)
+
+         dispatch(profileAvatarSThreePost(formData))
+      } catch (error) {
+         console.error('Error uploading avatar:', error)
+      }
+   }
+
+   const { getRootProps } = useDropzone({ onDrop: handleDrop })
+
+   const openEditProfile = () => {
+      setOpenProfile((prev) => !prev)
+   }
+
+   const removeAvatarHandler = () => {
+      dispatch(profileAvatarRemoveRequest(avatarLink))
+   }
 
    return (
-      <div>
-         <Header />
+      <div style={{ paddingTop: '6rem' }}>
          <StyledWorkspace>
-            <WorkSpaceSpan onClick={() => navigate('/')}>
-               Workspace
-            </WorkSpaceSpan>
+            <WorkSpaceSpan to="/mainPage">Workspace</WorkSpaceSpan>
             <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
             <div>
-               <ProfileImageBox {...getRootProps()} photo={avatarUrl}>
-                  <input
-                     {...getInputProps()}
-                     type="file"
-                     onChange={(event) => handleDrop(event.target.files)}
-                  />
-                  <ProfileImageEdit type="file" placeholder="ali" />
-                  <EditProfileIcon />
-               </ProfileImageBox>
+               {item.avatar === 'Default image' || item.avatar === null ? (
+                  <EmptyAvatarLink>
+                     <StyledAccountCircleIcon />
+                  </EmptyAvatarLink>
+               ) : (
+                  <ProfileImageBox src={avatarLink} alt="avatar" />
+               )}
+
+               <EditProfileIcon onClick={openEditProfile} />
+               {openProfile ? (
+                  <EditProfileBox>
+                     <EditProfileBoxP {...getRootProps()}>
+                        Change profile photo
+                     </EditProfileBoxP>
+                     <EditProfileBoxP onClick={removeAvatarHandler}>
+                        Remove
+                     </EditProfileBoxP>
+                  </EditProfileBox>
+               ) : null}
+
                <ProfileNames>
-                  <ProfileNamesSpan>ali</ProfileNamesSpan>
-                  <ProfileNamesSpan>samatov</ProfileNamesSpan>
+                  <ProfileNamesSpan>{item?.firstName}</ProfileNamesSpan>
+                  <ProfileNamesSpan>{item?.lastName}</ProfileNamesSpan>
                </ProfileNames>
             </div>
-            <div>
-               <StyledFormContainer onSubmit={handleSubmit(handleFormSubmit)}>
-                  <div>
-                     {testFields.map((field) => (
-                        <div key={field.name}>
-                           <StyledTextField
-                              type={field.type}
-                              id={field.name}
-                              {...register(field.name)}
-                              error={!!errors[field.name]}
-                              helperText={errors[field.name]?.message}
-                              placeholder={field.placeholder}
-                           />
-                        </div>
-                     ))}
-                  </div>
-                  <PasswordFieldsContainer>
-                     <div>
-                        <StyledPasswordField
-                           type={showPassword ? 'text' : 'password'}
-                           id="password"
-                           {...register('password')}
-                           error={passwordDirty && !!errors.password}
-                           helperText={
-                              passwordDirty && errors.password?.message
-                                 ? errors.password.message
-                                 : ''
-                           }
-                           onBlur={() => setPasswordDirty(true)}
-                           placeholder="Пароль"
-                           InputProps={{
-                              endAdornment: (
-                                 <IconButton
-                                    onClick={handleTogglePasswordVisibility}
-                                 >
-                                    {showPassword ? <ShowIcon /> : <HideIcon />}
-                                 </IconButton>
-                              ),
-                           }}
-                        />
-                     </div>
-                     <div>
-                        <StyledPasswordField
-                           type={showConfirmPassword ? 'text' : 'password'}
-                           id="confirmPassword"
-                           name="confirmPassword"
-                           placeholder="Подтвердите пароль"
-                           {...register('confirmPassword')}
-                           error={
-                              confirmPasswordDirty && !!errors.confirmPassword
-                           }
-                           helperText={
-                              confirmPasswordDirty &&
-                              errors.confirmPassword?.message
-                                 ? errors.confirmPassword.message
-                                 : ''
-                           }
-                           onBlur={() => setConfirmPasswordDirty(true)}
-                           InputProps={{
-                              endAdornment: (
-                                 <IconButton
-                                    onClick={
-                                       handleToggleConfirmPasswordVisibility
-                                    }
-                                 >
-                                    {showConfirmPassword ? (
-                                       <ShowIcon />
-                                    ) : (
-                                       <HideIcon />
-                                    )}
-                                 </IconButton>
-                              ),
-                           }}
-                        />
-                        <ButtonDiv>
-                           <SaveButton
-                              type="submit"
-                              variant="contained"
-                              color="primary"
-                           >
-                              add
-                           </SaveButton>
-                        </ButtonDiv>
-                     </div>
-                  </PasswordFieldsContainer>
-               </StyledFormContainer>
-            </div>
          </ProfileContainer>
-         <ProjectsContainer>
-            <ProjectsHeader>
-               <p>involved in projects</p>
-               <ProjectCount>{projectCount}</ProjectCount>
-            </ProjectsHeader>
-            <ProjectsList>
-               {involvedProjects.map((project) => (
-                  <ProjectCard key={Math.random().toString()}>
-                     <div>
-                        <ProjectCardFirstLetter>
-                           {project.title && project.title.charAt(0)}
-                        </ProjectCardFirstLetter>
-                     </div>
-                     <div>
-                        <ProjectCardTitle>{project.title}</ProjectCardTitle>
-                        <ProjectCartText>{project.text}</ProjectCartText>
-                     </div>
-                  </ProjectCard>
-               ))}
-            </ProjectsList>
-         </ProjectsContainer>
+         <ProfileForm />
+         <ProfileProjects />
       </div>
    )
 }
-
-const WorkSpaceSpan = styled('span')({
+const WorkSpaceSpan = styled(NavLink)({
    color: 'white',
    cursor: 'pointer',
 })
@@ -221,42 +111,16 @@ const WorkSpaceSpanTwo = styled('span')({
 const ProfileContainer = styled('div')({
    alignItems: 'center',
    width: '46.625rem',
-   height: '18.6875rem',
    marginLeft: '3.75rem',
    position: 'relative',
    bottom: '3.8rem',
 })
 
-const StyledFormContainer = styled('form')({
-   gap: '1.87rem',
-   display: 'flex',
-})
-
-const ProfileImageEdit = styled('input')({
-   width: '2.25rem',
-   height: '2.25rem',
-   padding: '0.375rem',
-   borderRadius: '1.5rem',
-   gap: '0.5rem',
-   position: 'relative',
-   top: '3rem',
-   left: '4rem',
-})
-
-const ProfileImageBox = styled('div')(({ photo }) => ({
-   width: '8.8125rem',
-   height: '8.8125rem',
+const ProfileImageBox = styled('img')(() => ({
+   width: '7.8125rem',
+   height: '7.8125rem',
    borderRadius: '50%',
-   backgroundSize: 'cover',
-   marginRight: '1.25rem',
-   marginBottom: '2rem',
-   border: '0.3rem solid white',
    boxSizing: 'border-box',
-   backgroundImage: `url(${photo})`,
-   display: 'flex',
-   alignItems: 'center',
-   justifyContent: 'center',
-   cursor: 'pointer',
 }))
 
 const EditProfileIcon = styled(EditIcon)({
@@ -265,140 +129,26 @@ const EditProfileIcon = styled(EditIcon)({
    padding: '0.375rem',
    borderRadius: '1.5rem',
    gap: '0.5rem',
-   position: 'relative',
-   top: '3rem',
-   left: '2rem',
+   position: 'absolute',
+   top: '5.5rem',
+   left: '6.5rem',
    backgroundColor: '#d1c9c9',
+   zIndex: 1000,
+   cursor: 'pointer',
 })
 
 const ProfileNames = styled('div')({
-   position: 'relative',
+   position: 'absolute',
    left: '10rem',
+   top: '5rem',
    bottom: '5rem',
    display: 'flex',
    gap: '0.5rem',
 })
 const ProfileNamesSpan = styled('span')({
-   fontFamily: 'Cera Pro',
+   fontFamily: 'CarePro',
    fontSize: '1.25rem',
    fontWeight: '500',
-})
-
-const StyledTextField = styled('input')({
-   display: 'flex',
-   width: '20.0625rem',
-   height: '2.125rem',
-   padding: '0.375rem 1rem',
-   justifyContent: 'space-between',
-   alignItems: 'center',
-   borderRadius: '0.5rem',
-   border: '1px solid #D0D0D0',
-   marginBottom: '1rem',
-   fontWeight: '500',
-   fontFamily: 'CarePro',
-})
-
-const StyledPasswordField = styled(TextField)({
-   width: '20.0625rem',
-   marginBottom: '1rem',
-   '& .MuiInputBase-root': {
-      height: '2.125rem',
-      borderRadius: '0.5rem',
-   },
-})
-
-const PasswordFieldsContainer = styled('div')({
-   display: 'flex',
-   flexDirection: 'column',
-})
-
-const ButtonDiv = styled('div')({
-   display: 'flex',
-   justifyContent: 'end',
-})
-
-const SaveButton = styled(Button)({
-   background: '#0079BF',
-   display: 'flex',
-   width: '4rem',
-   height: '2.125rem',
-   borderRadius: '1.5rem',
-   gap: '0.5rem',
-   fontFamily: 'CarePro',
-   fontWeight: '400',
-})
-
-const ProjectsContainer = styled('div')({
-   marginTop: '2rem',
-   display: 'flex',
-   flexDirection: 'column',
-   marginLeft: '3.75rem',
-   flexWrap: 'wrap',
-})
-
-const ProjectsHeader = styled('div')({
-   display: 'flex',
-   marginBottom: '1rem',
-})
-
-const ProjectCount = styled('span')({
-   marginLeft: '0.5rem',
-   fontWeight: 'bold',
-   fontSize: '0.8rem',
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-   backgroundColor: 'grey',
-   borderRadius: '50%',
-   width: '1.3rem',
-   height: '1.3rem',
-   color: 'white',
-})
-
-const ProjectsList = styled('div')({
-   display: 'flex',
-   flexDirection: 'column',
-   gap: '1rem',
-   flexWrap: 'wrap',
-   height: '20rem',
-})
-
-const ProjectCard = styled('div')({
-   display: 'flex',
-   alignItems: 'center',
-   width: '9.125rem',
-   height: '4.125rem',
-   borderRadius: '0.5rem',
-   gap: '0.7rem',
-   cursor: 'pointer',
-})
-
-const ProjectCardFirstLetter = styled('div')({
-   width: '4.25rem',
-   height: '4.125rem',
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-   backgroundColor: ' #0079BF',
-   padding: '0.3125rem 0.8125rem 0.3125rem 0.8125rem',
-   borderRadius: '0.625rem',
-   gap: '0.5rem',
-   color: 'white',
-   fontFamily: 'Gilroy',
-   fontWeight: '600',
-   fontSize: '2rem',
-})
-
-const ProjectCardTitle = styled('h2')({
-   fontFamily: 'CarePro',
-   fontWeight: '500',
-   color: '#000000',
-})
-
-const ProjectCartText = styled('p')({
-   fontFamily: 'CarePro',
-   fontWeight: '400',
-   color: '#919191',
 })
 
 const StyledWorkspace = styled('div')({
@@ -409,4 +159,43 @@ const StyledWorkspace = styled('div')({
    backgroundRepeat: 'no-repeat',
    paddingTop: '0.625rem',
    paddingLeft: '0.625rem',
+})
+
+const EditProfileBox = styled('div')({
+   width: '12.9375rem',
+   backgroundColor: '#ebe7e7',
+   borderRadius: '10px',
+   zIndex: 100,
+   position: 'absolute',
+   top: '7rem',
+   left: '8rem',
+   height: '5.25rem',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'center',
+   alignItems: 'start',
+   paddingLeft: '1rem',
+   gap: '1rem',
+})
+
+const EditProfileBoxP = styled('p')({
+   '&:hover': {
+      cursor: 'pointer',
+      borderBottom: '1px solid black',
+   },
+})
+
+const EmptyAvatarLink = styled('div')({
+   width: '7.8125rem',
+   height: '7.8125rem',
+   borderRadius: '50%',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: 'white',
+})
+
+const StyledAccountCircleIcon = styled(AccountCircleIcon)({
+   width: '7.8125rem',
+   height: '7.8125rem',
 })

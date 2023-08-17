@@ -1,20 +1,35 @@
 import { styled } from '@mui/system'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ModalUi } from '../UI/modal/Modal'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
+import { deleteWorkspaceById } from '../../store/workspace/workspaceThunk'
 
 export const ModalSideBar = ({
    showModal,
    setShowModal,
    editInput,
    etidChangeInput,
+   changeTitleHandler,
 }) => {
    const [showSecondModal, setShowSecondModal] = useState(false)
 
    const openDeleteModal = () => {
       setShowSecondModal(!showSecondModal)
       setShowModal(false)
+   }
+   const { id } = useParams()
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const deleteWorkspacesHandler = () => {
+      const data = {
+         id,
+         navigate,
+      }
+      dispatch(deleteWorkspaceById(data))
+      openDeleteModal()
    }
    return (
       <div>
@@ -24,7 +39,7 @@ export const ModalSideBar = ({
                <SettingStyle>Setting</SettingStyle>
                <InputStyle
                   value={editInput}
-                  onChange={etidChangeInput}
+                  onChange={(e) => etidChangeInput(e)}
                   type="text"
                />
                <ClarifyStyle onClick={openDeleteModal}>
@@ -34,7 +49,7 @@ export const ModalSideBar = ({
                   <CanselButton onClick={() => setShowModal(false)}>
                      Cancel
                   </CanselButton>
-                  <SaveButton>Save</SaveButton>
+                  <SaveButton onClick={changeTitleHandler}>Save</SaveButton>
                </ButtonContainer>
             </StyleModalUi>
          ) : null}
@@ -46,7 +61,9 @@ export const ModalSideBar = ({
                </ClarifyStyled>
                <ButtonContainerSecond>
                   <CanselButton onClick={openDeleteModal}>Cancel</CanselButton>
-                  <DeleteButton>Delete</DeleteButton>
+                  <DeleteButton onClick={deleteWorkspacesHandler}>
+                     Delete
+                  </DeleteButton>
                </ButtonContainerSecond>
             </StyleModalUi>
          ) : null}

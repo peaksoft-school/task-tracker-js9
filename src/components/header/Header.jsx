@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Avatar, IconButton } from '@mui/material'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {
    DownIcon,
@@ -20,6 +20,7 @@ export const Headers = ({ data }) => {
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const location = useLocation()
 
    const handleIconClick = () => {
       setIsIconUp(!isIconUp)
@@ -43,6 +44,7 @@ export const Headers = ({ data }) => {
             console.log(error)
          })
    }
+
    return (
       <div>
          <GLobalContainer>
@@ -65,7 +67,7 @@ export const Headers = ({ data }) => {
                   <SearchIconWrapper>
                      <SearchIcon src={SearchIcon} alt="Search_Icon" />
                   </SearchIconWrapper>
-                  <StyledInputBase placeholder="Search" />
+                  <StyledInputBase placeholder="Search" type="search" />
                </Search>
                <IconButton>
                   <NotificationIcon src={NotificationIcon} alt="notification" />
@@ -76,7 +78,9 @@ export const Headers = ({ data }) => {
                   </StyledAvatar>
                   {openProfile ? (
                      <ProfileTexts>
-                        <p>Profile</p>
+                        {location.pathname !== '/profile' && (
+                           <NavLink to="/profile">Profile</NavLink>
+                        )}
                         <p onClick={logOutHandler}>Log out</p>
                      </ProfileTexts>
                   ) : null}
@@ -96,6 +100,8 @@ const GLobalContainer = muiStyled('header')(() => ({
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
+   position: 'fixed',
+   zIndex: 999,
 }))
 
 const LogoContainer = muiStyled('div')(() => ({
@@ -167,12 +173,13 @@ const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
 const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
    fontFamily: 'CarePro',
    color: 'inherit',
+
    '& .MuiInputBase-input': {
       borderRadius: 8,
-      padding: theme.spacing(1.3, 18, 1.3, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(5)})`,
+      padding: theme.spacing(1.3, 1.3, 1.3, 0),
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
-      width: '100%',
+      width: '27rem',
    },
 }))
 

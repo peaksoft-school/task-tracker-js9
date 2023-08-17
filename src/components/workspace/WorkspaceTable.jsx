@@ -5,7 +5,6 @@ import React, { useEffect } from 'react'
 import { StarIcon } from '../../assets/icons'
 import TableMui from '../UI/table/TableMui'
 import {
-   addtoFaworitesWorkspaces,
    fetchAllWorkspaces,
    getWorkspacebyId,
 } from '../../store/workspace/workspaceThunk'
@@ -13,24 +12,11 @@ import {
 export const WorkspaceTable = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   // const [favoriteIds, setFavoriteIds] = useState([])
+
    const { workspaces } = useSelector((state) => state.workspaces)
-   const addToFavouritesHandler = (id) => {
-      dispatch(addtoFaworitesWorkspaces({ id, dispatch }))
-   }
 
-   // const isFavorite = (id) => favoriteIds.includes(id)
-
-   // const toggleFavorite = (id) => {
-   //    setFavoriteIds((prevIds) =>
-   //       prevIds.includes(id)
-   //          ? prevIds.filter((favId) => favId !== id)
-   //          : [...prevIds, id]
-   //    )
-   // }
-
-   const getWorkSpaceById = (id) => {
-      dispatch(getWorkspacebyId({ id, navigate, path: 'boards' }))
+   const getWorkSpaceByIdHandler = (workspaceData) => {
+      dispatch(getWorkspacebyId({ workspaceData, navigate, path: 'boards' }))
    }
 
    useEffect(() => {
@@ -50,9 +36,9 @@ export const WorkspaceTable = () => {
          heading: 'Name',
          key: 'workSpaceName',
          minWidth: '15rem',
-         render: (data) => (
-            <NameStyle onClick={() => getWorkSpaceById(data.workSpaceId)}>
-               {data.workSpaceName}
+         render: (workspaceData) => (
+            <NameStyle onClick={() => getWorkSpaceByIdHandler(workspaceData)}>
+               {workspaceData.workSpaceName}
             </NameStyle>
          ),
       },
@@ -73,7 +59,7 @@ export const WorkspaceTable = () => {
          key: 'action',
          align: 'right',
          render: (data) => (
-            <IconButton onClick={() => addToFavouritesHandler(data.id)}>
+            <IconButton>
                {data.isFavorite ? (
                   <StarIcon fill="#0079BF" />
                ) : (

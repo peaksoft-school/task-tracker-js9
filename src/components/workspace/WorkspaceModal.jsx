@@ -42,9 +42,8 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
       const newdata = {
          emails: data,
          name: values.workspaceName,
-         link: 'http://localhost:3001/signUp',
+         link: 'http://localhost:3000/signUp',
       }
-      console.log(newdata)
       dispatch(createNewWorkspace(newdata))
       setShowModal(false)
    }
