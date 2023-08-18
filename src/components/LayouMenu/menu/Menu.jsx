@@ -62,7 +62,7 @@ export const Menu = () => {
                               </IconButton>
                               <p>Change the background</p>
                               <IconButton>
-                                 <ExitIcon />
+                                 <ExitIcon onClick={openMenuHanlder} />
                               </IconButton>
                            </ChangeBackgroundHeader>
                            <ImageBox>
@@ -90,12 +90,12 @@ export const Menu = () => {
                                     padding: '0.8rem',
                                  }}
                               >
-                                 <StyledIconButton>
+                                 <StyledIconButton onClick={openPhotosHandler}>
                                     <StyledLeftIcon />
                                  </StyledIconButton>
                                  <p>Photos</p>
                                  <StyledIconButton>
-                                    <ExitIcon onClick={openPhotosHandler} />
+                                    <ExitIcon onClick={openMenuHanlder} />
                                  </StyledIconButton>
                               </StyledHeader>
                               <PhotoBlocks>
@@ -123,11 +123,13 @@ export const Menu = () => {
                                  }}
                               >
                                  <StyledIconButtonColor>
-                                    <StyledLeftIconColor />
+                                    <StyledLeftIconColor
+                                       onClick={openColorsHandler}
+                                    />
                                  </StyledIconButtonColor>
                                  <p>Colors</p>
                                  <StyledIconButtonColor>
-                                    <ExitIcon onClick={openColorsHandler} />
+                                    <ExitIcon onClick={openMenuHanlder} />
                                  </StyledIconButtonColor>
                               </StyledHeaderColor>
                               <PhotoBlocksColor>

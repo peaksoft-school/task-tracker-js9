@@ -4,8 +4,9 @@ import { EditIcon, FrameIcon } from '../../assets/icons'
 import { StarFilter } from './filter/StarFilter'
 import { Filter } from './filter/Filter'
 import { Menu } from './menu/Menu'
-import { InviteModal } from './inviteModal/InviteModal'
+// import { InviteModal } from './inviteModal/InviteModal'
 import { Avatars } from './avatars/Avatars'
+import { Participant } from './inviteModal/Participant'
 
 export const LayoutMenu = () => {
    const [openModal, setOpenModal] = useState(false)
@@ -30,7 +31,8 @@ export const LayoutMenu = () => {
          {openModal && (
             <>
                <BackDrop onClick={openModalHandler} />
-               <InviteModal openModalHandler={openModalHandler} />
+               <Participant openModalHandler={openModalHandler} />
+               {/* <InviteModal openModalHandler={openModalHandler} /> */}
             </>
          )}
          <FilterCont>

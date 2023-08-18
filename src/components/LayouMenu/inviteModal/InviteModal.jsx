@@ -7,7 +7,7 @@ import {
 } from '../../../assets/icons'
 import { Button } from '../../UI/button/Button'
 
-export const InviteModal = ({ openModalHandler }) => {
+export const InviteNewParticipant = ({ openInviteNewModal }) => {
    const [isMemberSelected, setIsMemberSelected] = useState(false)
    const [isAdminSelected, setIsAdminSelected] = useState(false)
    const [email, setEmail] = useState('')
@@ -26,7 +26,7 @@ export const InviteModal = ({ openModalHandler }) => {
                <p>{}</p>
                <p>Invite a new participant</p>
                <IconButton>
-                  <ExitIcon onClick={openModalHandler} />
+                  <ExitIcon onClick={openInviteNewModal} />
                </IconButton>
             </InviteHeader>
             <div>
@@ -73,8 +73,8 @@ const InviteParticipantModal = styled('div')({
    padding: '1rem',
    boxSizing: 'border-box',
    position: 'absolute',
-   left: '26rem',
-   top: '12rem',
+   right: '0.010rem',
+   bottom: '1rem',
    borderRadius: '0.5rem',
    background: 'white',
    zIndex: '999',
