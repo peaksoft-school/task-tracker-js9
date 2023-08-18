@@ -51,14 +51,14 @@ export const InnerCard = ({ open, handleClose }) => {
    }, [inputText])
 
    return (
-      <ModalUi open={open} handleClose={handleClose}>
+      <ModalUi open={open} onClose={handleClose}>
          <CardContainer>
             <Wrapper>
                <TextContainer>
                   <EditIcon />
                   <CardText>Какая то задача, которую нужно выполнить</CardText>
                </TextContainer>
-               <CloseIcon handleClose={handleClose} />
+               <CloseIcon onClose={handleClose} />
             </Wrapper>
             <CardWrapper>
                <CardContainerInner>
