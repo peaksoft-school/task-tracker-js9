@@ -1,16 +1,97 @@
-import React from 'react'
-import { Button, IconButton } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import {
+   Button,
+   DialogActions,
+   DialogContent,
+   DialogTitle,
+   IconButton,
+   Button as MuiButton,
+} from '@mui/material'
+
 import { styled } from '@mui/material/styles'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Input } from '../input/Input'
 import { UpIcon, DownIcon } from '../../../assets/icons'
+import {
+   deleteComment,
+   editComment,
+   getAllComments,
+   getCommentsbyId,
+   postComments,
+} from '../../../store/crud-comments/commentsThunk'
+import { ModalUi } from '../modal/Modal'
 
-export const CommentSection = ({ comments, showMore, setShowMore }) => {
+export const CommentSection = () => {
+   const [showMore, setShowMore] = useState(false)
+   const [commentText, setCommentText] = useState('')
+   const [editingCommentId, setEditingCommentId] = useState(null)
+   const [editedCommentText, setEditedCommentText] = useState('')
+   const [showDeleteModal, setShowDeleteModal] = useState(false)
+   const [deleteCommentId, setDeleteCommentId] = useState(null)
+   const [showEditModal, setShowEditModal] = useState(false)
+
+   const { comments } = useSelector((state) => state.comments)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+
    const toggleComments = () => {
       setShowMore((prevShowComments) => !prevShowComments)
    }
 
+   useEffect(() => {
+      dispatch(getAllComments())
+   }, [dispatch])
+
+   const handleCommentSubmit = (e) => {
+      e.preventDefault()
+
+      dispatch(
+         postComments({
+            comment: commentText,
+            cardId: 22,
+         })
+      )
+      dispatch(getAllComments())
+
+      setCommentText('')
+   }
+
+   const getCommentsID = (id) => {
+      dispatch(getCommentsbyId({ id, navigate, path: 'profile' }))
+   }
+
+   const handleEditClick = (commentId, commentText) => {
+      setEditingCommentId(commentId)
+      setEditedCommentText(commentText)
+      setShowEditModal(true)
+   }
+
+   const handleSaveClick = () => {
+      dispatch(
+         editComment({
+            commentId: editingCommentId,
+            comment: editedCommentText,
+         })
+      )
+      setShowEditModal(false)
+
+      setEditingCommentId(null)
+      setEditedCommentText('')
+   }
+
+   const handleDeleteClick = (commentId) => {
+      setDeleteCommentId(commentId)
+      setShowDeleteModal(true)
+   }
+
+   const handleCloseDeleteModal = () => {
+      setShowDeleteModal(false)
+      setDeleteCommentId(null)
+   }
+
    return (
-      <GLobalContainer>
+      <GLobalContainer key={comments.id}>
          <CommentsPanel>
             <p>Comments</p>
             <IconButton
@@ -30,16 +111,83 @@ export const CommentSection = ({ comments, showMore, setShowMore }) => {
                            <MainContainer
                               key={comments.id}
                               isLastItem={isLastItem}
+                              onClick={getCommentsID()}
                            >
-                              <PersonIcon src={comments.img} alt="Member" />
+                              <PersonIcon
+                                 src={comments.creatorAvatar}
+                                 alt="Member"
+                              />
                               <AboutComments>
-                                 <PostName>{comments.name}</PostName>
+                                 <PostName>{comments.creatorName}</PostName>
                                  <PostComments>{comments.comment}</PostComments>
                                  <NecessaryContainer>
-                                    <PostDate>{comments.date}</PostDate>
+                                    <PostDate>{comments.createdDate}</PostDate>
                                     <MyStyledBtnCont>
-                                       <MyStyledBtn>edit</MyStyledBtn>
-                                       <MyStyledBtn>delete</MyStyledBtn>
+                                       <MyStyledBtn
+                                          onClick={() =>
+                                             handleEditClick(
+                                                comments.commentId,
+                                                comments.comment
+                                             )
+                                          }
+                                       >
+                                          edit
+                                       </MyStyledBtn>
+                                       <ModalUi
+                                          open={showEditModal}
+                                          onClose={() =>
+                                             setShowEditModal(false)
+                                          }
+                                          key={comments.id}
+                                       >
+                                          <div
+                                             style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '1rem',
+                                             }}
+                                          >
+                                             <PersonIcon
+                                                src={comments.creatorAvatar}
+                                                alt="Member"
+                                             />
+                                             <PostName>
+                                                {comments.creatorName}
+                                             </PostName>
+                                          </div>
+                                          <DialogContent>
+                                             <StyledInput
+                                                placeholder="Edit your comment"
+                                                value={editedCommentText}
+                                                onChange={(e) =>
+                                                   setEditedCommentText(
+                                                      e.target.value
+                                                   )
+                                                }
+                                             />
+                                          </DialogContent>
+                                          <DialogActions>
+                                             <Button
+                                                onClick={() =>
+                                                   setShowEditModal(false)
+                                                }
+                                             >
+                                                Cancel
+                                             </Button>
+                                             <Button onClick={handleSaveClick}>
+                                                Save
+                                             </Button>
+                                          </DialogActions>
+                                       </ModalUi>
+                                       <MyStyledBtn
+                                          onClick={() =>
+                                             handleDeleteClick(
+                                                comments.commentId
+                                             )
+                                          }
+                                       >
+                                          delete
+                                       </MyStyledBtn>
                                     </MyStyledBtnCont>
                                  </NecessaryContainer>
                               </AboutComments>
@@ -55,13 +203,35 @@ export const CommentSection = ({ comments, showMore, setShowMore }) => {
             </div>
          )}
 
-         <FormContainer>
+         <FormContainer onSubmit={handleCommentSubmit}>
             <StyledInput
                id="outlined-basic"
                variant="outlined"
                placeholder="Write a comment"
+               value={commentText}
+               onChange={(e) => setCommentText(e.target.value)}
             />
          </FormContainer>
+         <ModalUi open={showDeleteModal} onClose={handleCloseDeleteModal}>
+            <DialogTitle style={{ textAlign: 'center', fontFamily: 'CarePro' }}>
+               Delete comment?
+            </DialogTitle>
+            <DialogContent>
+               Deleting a comment is forever. There is no undo.
+            </DialogContent>
+            <DialogActions>
+               <Button onClick={handleCloseDeleteModal}>Cancel</Button>
+               <Button
+                  onClick={() => {
+                     dispatch(deleteComment(deleteCommentId))
+                     handleCloseDeleteModal()
+                  }}
+                  color="error"
+               >
+                  Delete
+               </Button>
+            </DialogActions>
+         </ModalUi>
       </GLobalContainer>
    )
 }
@@ -69,7 +239,7 @@ export const CommentSection = ({ comments, showMore, setShowMore }) => {
 const GLobalContainer = styled('div')(() => ({
    backgroundColor: '#F4F5F7',
    width: ' 24.9rem',
-
+   margin: '0 5rem',
    padding: ' 0.9rem 0.75rem ',
    borderRadius: '0.5rem',
 }))
@@ -79,6 +249,7 @@ const CommentsPanel = styled('div')(() => ({
    gap: '16rem',
 }))
 const ScrollableContainer = styled('div')(() => ({
+   width: '100%',
    height: ' 25rem ',
    overflowY: 'auto ',
    scrollbarWidth: 'thin',
@@ -98,11 +269,15 @@ const ScrollableContainer = styled('div')(() => ({
    },
 }))
 const MainContainer = styled('div')(({ isLastItem }) => ({
+   overflow: 'hidden',
+   textOverflow: 'ellipsis',
+   width: '100%',
    display: 'flex',
+   // gap: '0.8rem',
+   alignItems: 'flex-start',
    justifyContent: 'space-between',
-   padding: '0.7rem',
+   padding: '0.7rem ',
    borderBottom: '2px solid #E4E4E4',
-   width: ' 22.8rem',
 
    ...(isLastItem && {
       borderBottom: 'none',
@@ -118,6 +293,7 @@ const StyledInput = styled(Input)(() => ({
    input: {
       display: 'flex',
       width: '20rem',
+      fontFamily: 'CarePro',
       height: '1.7rem',
       borderRadius: '0.5rem',
       background: '#F4F5F7',
@@ -139,6 +315,7 @@ const PersonIcon = styled('img')(() => ({
    width: '3.125rem',
    height: '3.125rem',
    borderRadius: '50%',
+   marginRight: '0.7rem',
 }))
 
 const PostDate = styled('p')(() => ({
@@ -156,6 +333,7 @@ const PostName = styled('p')(() => ({
    fontSize: '0.975rem',
    fontStyle: 'normal',
    fontWeight: '400',
+   textTransform: 'capitalize',
 }))
 
 const PostComments = styled('p')(() => ({
@@ -164,6 +342,7 @@ const PostComments = styled('p')(() => ({
    fontSize: '0.875rem',
    fontStyle: 'normal',
    fontWeight: '400',
+   wordWrap: 'break-word',
 }))
 
 const AboutComments = styled('div')(() => ({
@@ -175,10 +354,9 @@ const AboutComments = styled('div')(() => ({
 const NecessaryContainer = styled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
-   gap: '0.5rem',
 }))
 
-const MyStyledBtn = styled(Button)(() => ({
+const MyStyledBtn = styled(MuiButton)(() => ({
    color: '#919191',
    fontFamily: 'CarePro',
    fontSize: '0.8rem',
