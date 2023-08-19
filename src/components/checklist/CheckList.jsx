@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IconButton, Checkbox, styled } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
 import {
@@ -9,6 +10,7 @@ import {
    DeleteIcon,
    EditIcon,
 } from '../../assets/icons'
+import { checkListGetRequest } from '../../store/checkList/CheckListThunk'
 
 export const CheckList = ({ title }) => {
    const [showInputs, setShowInputs] = useState(false)
@@ -22,6 +24,12 @@ export const CheckList = ({ title }) => {
    const [editTitle, setEditTitle] = useState('')
    const [edit, setEdit] = useState([])
    const [state, setState] = useState(false)
+   const [showModal, setShowModal] = useState(false)
+   const [itemToDeleteId, setItemToDeleteId] = useState(null)
+   const { item } = useSelector((state) => state.checkList)
+
+   const dispatch = useDispatch()
+
    const maxTaskCount = 5
    const isAddDisabled = taskCount >= maxTaskCount
 
@@ -96,9 +104,6 @@ export const CheckList = ({ title }) => {
       setEditId(false)
    }
 
-   const [showModal, setShowModal] = useState(false)
-   const [itemToDeleteId, setItemToDeleteId] = useState(null)
-
    const openModal = (id) => {
       setItemToDeleteId(id)
       setShowModal(true)
@@ -115,6 +120,10 @@ export const CheckList = ({ title }) => {
          closeModal()
       }
    }
+
+   useEffect(() => {
+      dispatch(checkListGetRequest())
+   })
 
    return (
       <ChecklistContainer>
