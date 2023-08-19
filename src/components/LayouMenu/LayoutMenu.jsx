@@ -4,7 +4,6 @@ import { EditIcon, FrameIcon } from '../../assets/icons'
 import { StarFilter } from './filter/StarFilter'
 import { Filter } from './filter/Filter'
 import { Menu } from './menu/Menu'
-// import { InviteModal } from './inviteModal/InviteModal'
 import { Avatars } from './avatars/Avatars'
 import { Participant } from './inviteModal/Participant'
 
@@ -32,7 +31,6 @@ export const LayoutMenu = () => {
             <>
                <BackDrop onClick={openModalHandler} />
                <Participant openModalHandler={openModalHandler} />
-               {/* <InviteModal openModalHandler={openModalHandler} /> */}
             </>
          )}
          <FilterCont>
@@ -89,7 +87,7 @@ const BackDrop = styled('div')({
    backgroundColor: '#b6b6b6',
    width: '100%',
    height: '100vh',
-   zIndex: '-1',
+   zIndex: '1',
 })
 
 const CountSpan = styled('span')({

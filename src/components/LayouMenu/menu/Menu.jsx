@@ -1,161 +1,161 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { styled, Popover, IconButton, keyframes } from '@mui/material'
 import { ExitIcon, LeftIcon, MenuIcon } from '../../../assets/icons'
 import { MenuItem } from '../../UI/menu/MenuItem'
 import { boards } from '../../../utils/constants/general'
+import { backgroundImage, backgroundPhoto } from '../../../assets/images'
 
 export const Menu = () => {
-   const [openMenu, setOpenMenu] = useState(false)
-   const [openPhotoColor, setOpenPhotoColor] = useState(false)
-   const [openPhotos, setOpenPhotos] = useState(false)
-   const [openColors, setOpenColors] = useState(false)
-   const openMenuHanlder = () => {
-      setOpenMenu((prev) => !prev)
+   const [open, setOpen] = useState(null)
+
+   const openMenuHandler = () => {
+      setOpen('menu')
    }
-   const openPhotoColorHandler = () => {
-      setOpenPhotoColor((prev) => !prev)
+
+   const openBackgroundHandler = () => {
+      setOpen('background')
    }
+
    const openPhotosHandler = () => {
-      setOpenPhotos((prev) => !prev)
+      setOpen('photos')
    }
+
    const openColorsHandler = () => {
-      setOpenColors((prev) => !prev)
+      setOpen('colors')
    }
+
+   const closeHandler = () => {
+      setOpen('close')
+   }
+
    const photoBoards = boards.filter(
       (board) =>
          board.background.startsWith('http') ||
          board.background.startsWith('https')
    )
+
    const colorBoards = boards.filter((board) =>
       board.background.startsWith('#')
    )
 
    return (
       <div>
-         <StlyedContainerMenu onClick={openMenuHanlder}>
+         <StlyedContainerMenu onClick={openMenuHandler}>
             <MenuIcon />
             <MenuPargraph>Menu</MenuPargraph>
          </StlyedContainerMenu>
-         {openMenu && (
+
+         {open === 'menu' && (
             <MenuItemContainer
                animation="slideIn"
-               open={openMenuHanlder}
-               onClose={openMenuHanlder}
+               open={openMenuHandler}
+               onClose={openMenuHandler}
             >
                <MenuHeader>
                   <p>{}</p>
                   <p>Menu</p>
-                  <ExitIconStyled onClick={openMenuHanlder} />
+                  <ExitIconStyled onClick={closeHandler} />
                </MenuHeader>
-               <div>
-                  <ChangeDiv onClick={openPhotoColorHandler}>
-                     <p>Change the background</p>
+               <ChangeDivContainer>
+                  <ChangeDiv onClick={openBackgroundHandler}>
+                     <ChangeBadkgroundP>
+                        Change the background
+                     </ChangeBadkgroundP>
                      <ImageStyled
-                        src="https://img.freepik.com/free-photo/green-field-tree-blue-skygreat-as-backgroundweb-banner-generative-ai_1258-152184.jpg?w=2000"
-                        alt=""
+                        src={backgroundPhoto}
+                        alt="Background Photo"
                      />
-                     {openPhotoColor && (
-                        <ChangeBackgroundContainer animation="slideIn">
-                           <ChangeBackgroundHeader>
-                              <IconButton>
-                                 <LeftIcon fill="grey" />
-                              </IconButton>
-                              <p>Change the background</p>
-                              <IconButton>
-                                 <ExitIcon onClick={openMenuHanlder} />
-                              </IconButton>
-                           </ChangeBackgroundHeader>
-                           <ImageBox>
-                              <ImagePhoto
-                                 onClick={openPhotosHandler}
-                                 src="https://img.freepik.com/free-photo/green-field-tree-blue-skygreat-as-backgroundweb-banner-generative-ai_1258-152184.jpg?w=2000"
-                                 alt=""
-                              />
-                              <ImagePhoto
-                                 onClick={openColorsHandler}
-                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACoCAMAAABt9SM9AAAAKlBMVEUAef//3QD/Jgb/lQB4FNQA2igAd///lwD/nABqAN5+AN0A5AD/5wD/AAZPfSoUAAABCklEQVR4nO3QyRGAIAAEMBSRQ+m/XWvYpzNJCSkldfcaGvMKraeljtS7z1R8JUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUuWLFmyZMmSJUvWP7I+GNYPv1eVDTYAAAAASUVORK5CYII="
-                                 alt=""
-                              />
-                           </ImageBox>
-                        </ChangeBackgroundContainer>
-                     )}
-                     {openPhotos && (
-                        <PopoverCont open={openPhotosHandler}>
-                           <AllBoard>
-                              <StyledHeader
-                                 style={{
-                                    position: 'sticky',
-                                    top: 1,
-                                    backgroundColor: '#fff',
-                                    padding: '0.8rem',
-                                 }}
-                              >
-                                 <StyledIconButton onClick={openPhotosHandler}>
-                                    <StyledLeftIcon />
-                                 </StyledIconButton>
-                                 <p>Photos</p>
-                                 <StyledIconButton>
-                                    <ExitIcon onClick={openMenuHanlder} />
-                                 </StyledIconButton>
-                              </StyledHeader>
-                              <PhotoBlocks>
-                                 {photoBoards.map((board) => (
-                                    <div key={board.id}>
-                                       <Photos
-                                          src={board.background}
-                                          alt={`Board ${board.id}`}
-                                       />
-                                    </div>
-                                 ))}
-                              </PhotoBlocks>
-                           </AllBoard>
-                        </PopoverCont>
-                     )}
-                     {openColors && (
-                        <PopoverContColor open={openColorsHandler}>
-                           <AllBoardColor>
-                              <StyledHeaderColor
-                                 style={{
-                                    position: 'sticky',
-                                    top: 1,
-                                    backgroundColor: '#fff',
-                                    padding: '0.8rem',
-                                 }}
-                              >
-                                 <StyledIconButtonColor>
-                                    <StyledLeftIconColor
-                                       onClick={openColorsHandler}
-                                    />
-                                 </StyledIconButtonColor>
-                                 <p>Colors</p>
-                                 <StyledIconButtonColor>
-                                    <ExitIcon onClick={openMenuHanlder} />
-                                 </StyledIconButtonColor>
-                              </StyledHeaderColor>
-                              <PhotoBlocksColor>
-                                 {colorBoards.map((board) => (
-                                    <div key={board.id}>
-                                       <ColorBlock
-                                          style={{
-                                             backgroundColor: board.background,
-                                          }}
-                                          alt={`Board ${board.id}`}
-                                       />
-                                    </div>
-                                 ))}
-                              </PhotoBlocksColor>
-                           </AllBoardColor>
-                        </PopoverContColor>
-                     )}
                   </ChangeDiv>
+
                   <Archive>
-                     <p>In archive</p>
+                     <ArchiveButton>In archive</ArchiveButton>
                   </Archive>
+
                   <DeleteBox>
-                     <p>Delete this board</p>
+                     <DeleteP>Delete this board</DeleteP>
                   </DeleteBox>
-               </div>
+               </ChangeDivContainer>
             </MenuItemContainer>
+         )}
+
+         {open === 'background' && (
+            <ChangeBackgroundContainer animation="slideIn">
+               <ChangeBackgroundHeader>
+                  <IconButton onClick={openMenuHandler}>
+                     <LeftIcon fill="grey" />
+                  </IconButton>
+                  <p>Change the background</p>
+                  <IconButton>
+                     <ExitIcon onClick={closeHandler} />
+                  </IconButton>
+               </ChangeBackgroundHeader>
+               <ImageBox>
+                  <ImagePhoto
+                     onClick={openPhotosHandler}
+                     alt=""
+                     src={backgroundPhoto}
+                  />
+                  <ImagePhoto
+                     onClick={openColorsHandler}
+                     src={backgroundImage}
+                     alt=""
+                  />
+               </ImageBox>
+            </ChangeBackgroundContainer>
+         )}
+
+         {open === 'photos' && (
+            <PopoverCont open={openPhotosHandler}>
+               <AllBoard>
+                  <StyledHeader>
+                     <StyledIconButton>
+                        <StyledLeftIcon onClick={openBackgroundHandler} />
+                     </StyledIconButton>
+                     <p>Photos</p>
+                     <StyledIconButton>
+                        <ExitIcon onClick={closeHandler} />
+                     </StyledIconButton>
+                  </StyledHeader>
+                  <PhotoBlocks>
+                     {photoBoards.map((board) => (
+                        <div key={board.id}>
+                           <Photos
+                              src={board.background}
+                              alt={`Board ${board.id}`}
+                           />
+                        </div>
+                     ))}
+                  </PhotoBlocks>
+               </AllBoard>
+            </PopoverCont>
+         )}
+
+         {open === 'colors' && (
+            <PopoverContColor open={openColorsHandler}>
+               <AllBoardColor>
+                  <StyledHeaderColor>
+                     <StyledIconButtonColor>
+                        <StyledLeftIconColor onClick={openBackgroundHandler} />
+                     </StyledIconButtonColor>
+                     <p>Colors</p>n
+                     <StyledIconButtonColor>
+                        <ExitIcon onClick={closeHandler} />
+                     </StyledIconButtonColor>
+                  </StyledHeaderColor>
+                  <PhotoBlocksColor>
+                     {colorBoards.map((board) => (
+                        <div key={board.id}>
+                           <ColorBlock
+                              style={{
+                                 backgroundColor: board.background,
+                              }}
+                              alt={`Board ${board.id}`}
+                           />
+                        </div>
+                     ))}
+                  </PhotoBlocksColor>
+               </AllBoardColor>
+            </PopoverContColor>
          )}
       </div>
    )
@@ -172,7 +172,7 @@ const StlyedContainerMenu = styled('div')({
    gap: '0.3rem',
    cursor: 'pointer',
 })
-
+const ChangeDivContainer = styled('div')({})
 const MenuPargraph = styled('p')({
    color: '#438AB4',
 })
@@ -180,17 +180,29 @@ const MenuHeader = styled('div')({
    display: 'flex',
    marginBottom: '0.6rem',
    justifyContent: 'space-between',
+   marginRight: '0.5rem',
 })
 const Archive = styled('div')({
    display: 'flex',
    alignItems: 'center',
    height: '2.625rem',
+
    '&:hover': {
       backgroundColor: '#f3f0f0',
       cursor: 'pointer',
    },
 })
+const ArchiveButton = styled('p')({
+   marginLeft: '1rem',
+})
 
+const DeleteP = styled('p')({
+   marginLeft: '1rem',
+})
+
+const ChangeBadkgroundP = styled('p')({
+   marginLeft: '1rem',
+})
 const DeleteBox = styled('div')({
    display: 'flex',
    alignItems: 'center',
@@ -205,6 +217,7 @@ const ChangeDiv = styled('div')({
    alignItems: 'center',
    height: '2.625rem',
    cursor: 'pointer',
+   transition: 'background-color 0.3s',
    '&:hover': {
       backgroundColor: '#f3f0f0',
    },
@@ -214,11 +227,13 @@ const ExitIconStyled = styled(ExitIcon)({
 })
 const MenuItemContainer = styled(MenuItem)({
    width: '22.9375rem',
-   height: '30vh',
+   height: '28vh',
    borderRadius: '1rem',
-   margin: '1rem',
    position: 'absolute',
    right: '2rem',
+   marginLeft: '1rem',
+   padding: '0.5rem 0',
+   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
 })
 const ImageStyled = styled('img')({
    width: '3.6875rem',
@@ -252,8 +267,8 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
    return {
       width: '22.9375rem',
       height: '33vh',
-      marginTop: '2rem',
       position: 'absolute',
+      right: '2rem',
       backgroundColor: '#ffff',
       display: 'flex',
       flexDirection: 'column',
@@ -294,6 +309,17 @@ const ImagePhoto = styled('img')({
    borderRadius: '0.5rem',
    cursor: 'pointer',
 })
+const slideInAnimation = keyframes`
+   0% {
+      transform: translateX(100%);
+      opacity: 0;
+   }
+   100% {
+      transform: translateX(0);
+      opacity: 1;
+   }
+`
+
 const PopoverCont = styled(Popover)(() => ({
    position: 'absolute',
    left: '54rem',
@@ -301,18 +327,19 @@ const PopoverCont = styled(Popover)(() => ({
       minWidth: '23.8rem',
       minHeight: '37rem',
       borderRadius: '0.7rem',
+      animation: `${slideInAnimation} 0.3s ease-in-out`,
    },
 }))
 
 const rotateIcon = keyframes`
-   from {
-     transform: rotate(0);
- 
-   }
-   to {
-     transform: rotate(360deg);
-   }
- `
+      from {
+      transform: rotate(0);
+   
+      }
+      to {
+      transform: rotate(360deg);
+      }
+   `
 
 const StyledIconButton = styled(IconButton)(() => ({
    padding: '0',
@@ -365,6 +392,7 @@ const PopoverContColor = styled(Popover)(() => ({
       minWidth: '23.8rem',
       minHeight: '37rem',
       borderRadius: '0.7rem',
+      animation: `${slideInAnimation} 0.3s ease-in-out`,
    },
 }))
 

@@ -77,10 +77,11 @@ const ParticipantContainer = styled('div')({
    height: '17.3125rem',
    padding: '1rem',
    position: 'absolute',
-   left: '25rem',
+   left: '28rem',
    top: '8rem',
    borderRadius: '0.5rem',
    backgroundColor: 'white',
+   zIndex: '2',
 })
 
 const ParticipantHeader = styled('div')({
