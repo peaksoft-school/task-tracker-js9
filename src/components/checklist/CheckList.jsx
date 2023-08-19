@@ -246,10 +246,12 @@ const ModalContainer = styled('div')({
    top: 0,
    left: 0,
    width: '100%',
+   height: '100%',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
    backgroundColor: 'rgba(62, 60, 60, 0.5)',
+   zIndex: 1,
 })
 
 const ModalContent = styled('div')({
@@ -258,6 +260,10 @@ const ModalContent = styled('div')({
    borderRadius: '5px',
    width: '30rem',
    height: '20vh',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'center',
+   alignItems: 'center',
 })
 
 const ModalText = styled('p')({
