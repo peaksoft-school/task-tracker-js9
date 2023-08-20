@@ -1,74 +1,76 @@
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect } from 'react'
 import { styled, IconButton } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import { StarFilledIcon, StarIcon } from '../../assets/icons'
 import {
    getFavourites,
-   toggleFavoriteWorkSpace,
    toggleFavoriteaBoard,
 } from '../../store/getFavourites/favouritesThunk'
 
-export const Favourite = () => {
+export const Favourite = ({ openCloseModalHandler }) => {
    const { favoriteData } = useSelector((state) => state.favorite)
-   console.log('favoriteData', favoriteData)
 
    const dispatch = useDispatch()
 
-   const handleStarClickBoard = (id) => {
-      dispatch(toggleFavoriteaBoard(id))
+   const navigate = useNavigate()
+
+   const handleStarClickWorkSpace = () => {
+      navigate('/mainPage')
    }
 
-   const handleStarClickWorkSpace = (id) => {
-      dispatch(toggleFavoriteWorkSpace(id))
-   }
+   const deleteHandler = async (id) => {
+      try {
+         await dispatch(toggleFavoriteaBoard(id))
+         await dispatch(getFavourites())
 
-   const getIcon = (isFavourite) =>
-      isFavourite ? <StarFilledIcon /> : <StarIcon />
+         openCloseModalHandler(true)
+
+         navigate('/mainPage')
+      } catch (error) {
+         console.log(error)
+      }
+   }
 
    useEffect(() => {
       dispatch(getFavourites())
    }, [dispatch])
 
+   const getIcon = (isFavourite) =>
+      isFavourite ? <StarFilledIcon /> : <StarIcon />
+
    return (
       <Container>
          <FavouriteText>Favourites</FavouriteText>
-         {favoriteData?.boardResponses?.map((item) => (
-            <FavouriteBox
-               onClick={() => handleStarClickBoard(item.boardId)}
-               key={item.boardId}
-               hoverColor="#F2F2F2"
-            >
-               {item.backGround && (
+         {favoriteData.data?.boardResponses?.map((item) => (
+            <FavouriteBox key={item.boardId} hoverColor="#F2F2F2">
+               {item.backGround && item.backGround.startsWith('https') ? (
                   <ImageContainer>
                      <StyledImage src={item.backGround} alt="#" />
                   </ImageContainer>
+               ) : (
+                  <ColoredBackground color={item.backGround} />
                )}
                <TextContainer>
                   <div>
                      <StyledTitle>{item.title}</StyledTitle>
-                     {/* <StyledText>{item.text}</StyledText> */}
                   </div>
                </TextContainer>
-               <IconButton onClick={() => handleStarClickBoard(item.boardId)}>
+               <IconButton onClick={() => deleteHandler(item.boardId)}>
                   {getIcon(item.favorite)}
                </IconButton>
             </FavouriteBox>
          ))}
-         {favoriteData.workSpaceResponses?.map((item) => (
-            <FavouriteBox
-               onClick={() => handleStarClickWorkSpace(item.workSpaceId)}
-               key={item.W}
-               hoverColor="#F2F2F2"
-            >
+
+         {favoriteData.data?.workSpaceResponses?.map((item) => (
+            <FavouriteBox key={item.W} hoverColor="#F2F2F2">
                <TextContainer>
                   <div>
                      <StyledTitle>{item.name}</StyledTitle>
                      <StyledText>Workcpase</StyledText>
                   </div>
                </TextContainer>
-               <IconButton
-                  onClick={() => handleStarClickWorkSpace(item.workSpaceId)}
-               >
+               <IconButton onClick={handleStarClickWorkSpace}>
                   {getIcon(item.favorite)}
                </IconButton>
             </FavouriteBox>
@@ -82,7 +84,18 @@ const Container = styled('div')({
    height: '28.875rem',
    borderRadius: '0.625rem',
    padding: '1rem',
+   maxHeight: '100%',
+   overflow: 'auto',
+   '&::-webkit-scrollbar': {
+      width: 4,
+   },
 })
+const ColoredBackground = styled('div')(({ color }) => ({
+   backgroundColor: color,
+   width: '5.25rem',
+   height: '2.475rem',
+   borderRadius: '0.5rem',
+}))
 
 const ImageContainer = styled('div')({
    flex: '0 0 auto',

@@ -15,3 +15,4 @@ export const favouriteSlice = createSlice({
       }),
    ],
 })
+export const favouriteActions = favouriteSlice.actions

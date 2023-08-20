@@ -2,20 +2,20 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
 
 export const getFavourites = createAsyncThunk(
-   'favourite/get',
+   'favorite/get',
    async (_, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get('/api/favorites')
-         console.log('response:', response)
-         return response.data
+         const responce = await axiosInstance.get('/api/favorites')
+         console.log('responce: ', responce.data)
+         return responce
       } catch (error) {
-         console.log('ERROR', error)
-         rejectWithValue(error.response.data)
+         console.log('error: ', error)
+         return rejectWithValue(error)
       }
    }
 )
 export const toggleFavoriteaBoard = createAsyncThunk(
-   'favourite/toggle',
+   'favorite/toggle',
    async (id, { rejectWithValue, dispatch }) => {
       try {
          await axiosInstance.post(`/api/favorites/board/${id}`)
