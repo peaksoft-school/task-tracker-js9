@@ -20,7 +20,7 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
       setIsAdminSelected((prev) => !prev)
    }
    return (
-      <div>
+      <Container>
          <InviteParticipantModal>
             <InviteHeader>
                <p>{}</p>
@@ -61,9 +61,14 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
                <ButtonCreate>Create</ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
-      </div>
+      </Container>
    )
 }
+const Container = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+}))
 
 const InviteParticipantModal = styled('div')({
    width: '26.5625rem',
@@ -72,12 +77,10 @@ const InviteParticipantModal = styled('div')({
    gap: '1rem',
    padding: '1rem',
    boxSizing: 'border-box',
-   position: 'absolute',
-   right: '0.010rem',
-   bottom: '1rem',
+   backgroundColor: 'white',
    borderRadius: '0.5rem',
-   background: 'white',
-   zIndex: '999',
+   position: 'fixed',
+   zIndex: '9999',
 })
 
 const InviteHeader = styled('div')({

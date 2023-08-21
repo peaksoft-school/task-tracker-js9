@@ -3,8 +3,11 @@ import { MenuItem, styled, FormControl, Select } from '@mui/material'
 import { ExitIcon, PlusIcon, SearchIcon } from '../../../assets/icons'
 import { InviteNewParticipant } from './InviteModal'
 
-export const Participant = ({ openModalHandler }) => {
-   const [openNewInvite, setOpenNewInvite] = useState(false)
+export const Participant = ({
+   openModalHandler,
+   openNewInvite,
+   setOpenNewInvite,
+}) => {
    const kindaSelect = [
       { label: 'Admin', value: 'Admin' },
       { label: 'Member', value: 'Member' },
@@ -27,60 +30,64 @@ export const Participant = ({ openModalHandler }) => {
       setUsers(updatedUsers)
    }
 
-   return (
-      <ParticipantContainer>
-         <ParticipantHeader>
-            <p>{}</p>
-            <p>Participant</p>
-            <ExitIconStyled onClick={openModalHandler} />
-         </ParticipantHeader>
-         <InputBox>
-            <SearchIconStyled />
-            <InputEmail placeholder="example@gmail.com" type="email" />
-         </InputBox>
-         <UsersBox>
-            <AdminBox>
-               <p>Ali (you)</p>
-               <AdminP>Admin</AdminP>
-            </AdminBox>
-            {users.map((user, index) => (
-               <UsersSelectBox key={user.id}>
-                  <p>{user.name}</p>
-                  <FormControlMui>
-                     <SelectStyledMui
-                        value={user.role}
-                        onChange={(e) => handleRolesChange(e, index)}
-                     >
-                        {kindaSelect.map((item) => (
-                           <MenuItem key={item.value} value={item.value}>
-                              {item.label}
-                           </MenuItem>
-                        ))}
-                     </SelectStyledMui>
-                  </FormControlMui>
-               </UsersSelectBox>
-            ))}
-         </UsersBox>
-         <InviteNewBox onClick={openInviteNewModal}>
-            <PlusIcon fill="#727272" />
-            <p>Invite a new participant</p>
-         </InviteNewBox>
-         {openNewInvite && (
-            <InviteNewParticipant openInviteNewModal={openInviteNewModal} />
-         )}
-      </ParticipantContainer>
+   return openNewInvite ? (
+      <InviteNewParticipant openInviteNewModal={openInviteNewModal} />
+   ) : (
+      <Container>
+         <ParticipantContainer>
+            <ParticipantHeader>
+               <p>{}</p>
+               <p>Participant</p>
+               <ExitIconStyled onClick={openModalHandler} />
+            </ParticipantHeader>
+            <InputBox>
+               <SearchIconStyled />
+               <InputEmail placeholder="example@gmail.com" type="email" />
+            </InputBox>
+            <UsersBox>
+               <AdminBox>
+                  <p>Ali (you)</p>
+                  <AdminP>Admin</AdminP>
+               </AdminBox>
+               {users.map((user, index) => (
+                  <UsersSelectBox key={user.id}>
+                     <p>{user.name}</p>
+                     <FormControlMui>
+                        <SelectStyledMui
+                           value={user.role}
+                           onChange={(e) => handleRolesChange(e, index)}
+                        >
+                           {kindaSelect.map((item) => (
+                              <MenuItem key={item.value} value={item.value}>
+                                 {item.label}
+                              </MenuItem>
+                           ))}
+                        </SelectStyledMui>
+                     </FormControlMui>
+                  </UsersSelectBox>
+               ))}
+            </UsersBox>
+            <InviteNewBox onClick={openInviteNewModal}>
+               <PlusIcon fill="#727272" />
+               <p>Invite a new participant</p>
+            </InviteNewBox>
+         </ParticipantContainer>
+      </Container>
    )
 }
-
+const Container = styled('div')(() => ({
+   width: '100%',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+}))
 const ParticipantContainer = styled('div')({
    width: '26.5625rem',
    height: '17.3125rem',
    padding: '1rem',
-   position: 'absolute',
-   left: '28rem',
-   top: '8rem',
    borderRadius: '0.5rem',
    backgroundColor: 'white',
+   position: 'fixed',
    zIndex: '2',
 })
 
@@ -91,7 +98,10 @@ const ParticipantHeader = styled('div')({
    marginBottom: '1rem',
 })
 
-const InputBox = styled('div')({})
+const InputBox = styled('div')({
+   display: 'flex',
+   alignItems: 'center',
+})
 
 const InputEmail = styled('input')({
    width: '24.0625rem',
@@ -100,7 +110,7 @@ const InputEmail = styled('input')({
    border: '1px solid grey',
    padding: '0.375rem 1rem 0.375rem 2rem',
    boxSizing: 'border-box',
-   marginBottom: '1rem',
+   margin: '0rem 1rem 1rem 0rem',
 })
 
 const UsersBox = styled('div')({
@@ -109,8 +119,8 @@ const UsersBox = styled('div')({
 })
 
 const SearchIconStyled = styled(SearchIcon)({
-   position: 'absolute',
-   top: '3.8rem',
+   position: 'relative',
+   top: '-0.5rem',
    left: '1.5rem',
 })
 

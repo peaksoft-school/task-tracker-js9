@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { styled, Popover, IconButton, keyframes } from '@mui/material'
+import React from 'react'
+import { styled, IconButton, keyframes } from '@mui/material'
 import { ExitIcon, LeftIcon, MenuIcon } from '../../../assets/icons'
 import { MenuItem } from '../../UI/menu/MenuItem'
 import { boards } from '../../../utils/constants/general'
 import { backgroundImage, backgroundPhoto } from '../../../assets/images'
+import { Button } from '../../UI/button/Button'
 
-export const Menu = () => {
-   const [open, setOpen] = useState(null)
-
+export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const openMenuHandler = () => {
       setOpen('menu')
+      setOpenFilterModal(false)
    }
 
    const openBackgroundHandler = () => {
@@ -72,7 +72,7 @@ export const Menu = () => {
                   </Archive>
 
                   <DeleteBox>
-                     <DeleteP>Delete this board</DeleteP>
+                     <DeleteButton>Delete this board</DeleteButton>
                   </DeleteBox>
                </ChangeDivContainer>
             </MenuItemContainer>
@@ -129,7 +129,6 @@ export const Menu = () => {
                </AllBoard>
             </PopoverCont>
          )}
-
          {open === 'colors' && (
             <PopoverContColor open={openColorsHandler}>
                <AllBoardColor>
@@ -137,7 +136,7 @@ export const Menu = () => {
                      <StyledIconButtonColor>
                         <StyledLeftIconColor onClick={openBackgroundHandler} />
                      </StyledIconButtonColor>
-                     <p>Colors</p>n
+                     <p>Colors</p>
                      <StyledIconButtonColor>
                         <ExitIcon onClick={closeHandler} />
                      </StyledIconButtonColor>
@@ -172,7 +171,11 @@ const StlyedContainerMenu = styled('div')({
    gap: '0.3rem',
    cursor: 'pointer',
 })
-const ChangeDivContainer = styled('div')({})
+const ChangeDivContainer = styled('div')({
+   display: 'flex',
+   flexDirection: 'column',
+   flex: '1',
+})
 const MenuPargraph = styled('p')({
    color: '#438AB4',
 })
@@ -185,19 +188,26 @@ const MenuHeader = styled('div')({
 const Archive = styled('div')({
    display: 'flex',
    alignItems: 'center',
-   height: '2.625rem',
-
+   justifyContent: 'space-between',
    '&:hover': {
       backgroundColor: '#f3f0f0',
       cursor: 'pointer',
    },
 })
-const ArchiveButton = styled('p')({
-   marginLeft: '1rem',
+const ArchiveButton = styled(Button)({
+   background: 'none',
+   color: 'black',
+   textTransform: 'capitalize',
+   fontFamily: 'CarePro',
+   fontSize: '1rem',
 })
 
-const DeleteP = styled('p')({
-   marginLeft: '1rem',
+const DeleteButton = styled(Button)({
+   background: 'none',
+   color: 'black',
+   textTransform: 'capitalize',
+   fontFamily: 'CarePro',
+   fontSize: '1rem',
 })
 
 const ChangeBadkgroundP = styled('p')({
@@ -206,7 +216,6 @@ const ChangeBadkgroundP = styled('p')({
 const DeleteBox = styled('div')({
    display: 'flex',
    alignItems: 'center',
-   height: '2.625rem',
    '&:hover': {
       backgroundColor: '#f3f0f0',
       cursor: 'pointer',
@@ -215,9 +224,11 @@ const DeleteBox = styled('div')({
 const ChangeDiv = styled('div')({
    display: 'flex',
    alignItems: 'center',
-   height: '2.625rem',
    cursor: 'pointer',
    transition: 'background-color 0.3s',
+   height: '2.5rem',
+
+   flexGrow: 1,
    '&:hover': {
       backgroundColor: '#f3f0f0',
    },
@@ -227,13 +238,16 @@ const ExitIconStyled = styled(ExitIcon)({
 })
 const MenuItemContainer = styled(MenuItem)({
    width: '22.9375rem',
-   height: '28vh',
-   borderRadius: '1rem',
+   height: '10.6rem',
+   borderRadius: '0.625rem',
    position: 'absolute',
    right: '2rem',
-   marginLeft: '1rem',
+   top: '0',
    padding: '0.5rem 0',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+   transition: 'height 0.3s',
+   overflow: 'hidden',
+   backgroundColor: 'white',
 })
 const ImageStyled = styled('img')({
    width: '3.6875rem',
@@ -269,6 +283,7 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
       height: '33vh',
       position: 'absolute',
       right: '2rem',
+      top: '0',
       backgroundColor: '#ffff',
       display: 'flex',
       flexDirection: 'column',
@@ -320,15 +335,16 @@ const slideInAnimation = keyframes`
    }
 `
 
-const PopoverCont = styled(Popover)(() => ({
+const PopoverCont = styled('div')(() => ({
    position: 'absolute',
-   left: '54rem',
-   '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
-      minWidth: '23.8rem',
-      minHeight: '37rem',
-      borderRadius: '0.7rem',
-      animation: `${slideInAnimation} 0.3s ease-in-out`,
-   },
+   right: '0',
+   top: '0',
+   minWidth: '23.8rem',
+   minHeight: '37rem',
+   backgroundColor: '#FFFFFF',
+   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+   borderRadius: '0.7rem',
+   animation: `${slideInAnimation} 0.3s ease-in-out`,
 }))
 
 const rotateIcon = keyframes`
@@ -385,15 +401,16 @@ const Photos = styled('img')({
    borderRadius: '0.5rem',
 })
 
-const PopoverContColor = styled(Popover)(() => ({
+const PopoverContColor = styled('div')(() => ({
    position: 'absolute',
-   left: '54rem',
-   '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
-      minWidth: '23.8rem',
-      minHeight: '37rem',
-      borderRadius: '0.7rem',
-      animation: `${slideInAnimation} 0.3s ease-in-out`,
-   },
+   right: '0',
+   top: '0',
+   minWidth: '23.8rem',
+   minHeight: '37rem',
+   backgroundColor: '#FFFFFF',
+   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+   borderRadius: '0.7rem',
+   animation: `${slideInAnimation} 0.3s ease-in-out`,
 }))
 
 const StyledIconButtonColor = styled(IconButton)(() => ({
