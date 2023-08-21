@@ -101,7 +101,7 @@ const GLobalContainer = muiStyled('header')(() => ({
    justifyContent: 'space-between',
    alignItems: 'center',
    position: 'fixed',
-   zIndex: 999,
+   zIndex: 990,
 }))
 
 const LogoContainer = muiStyled('div')(() => ({
