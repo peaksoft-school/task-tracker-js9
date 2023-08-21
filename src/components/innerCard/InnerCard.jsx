@@ -20,27 +20,50 @@ import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
 
-export const InnerCard = ({ open, handleClose }) => {
+export const InnerCard = ({
+   handleClose,
+   setSaveTitle,
+   setSaveDescription,
+   displayText,
+   setDisplayText,
+   displayTitle,
+   setDisplayTitle,
+}) => {
    const [showMore, setShowMore] = React.useState(false)
    const inputRef = React.useRef(null)
-
+   const titleRef = React.useRef(null)
+   const [titleText, setTitleText] = React.useState('')
    const [inputText, setInputText] = React.useState('')
-   const [displayText, setDisplayText] = React.useState('')
    const [isEditing, setIsEditing] = React.useState(true)
+   const [isEditTitle, setIsEditTitle] = React.useState(true)
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
+   }
+   const handleTitleChange = (e) => {
+      setTitleText(e.target.value)
    }
 
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
          setDisplayText(inputText)
+         setSaveDescription(inputText)
          setIsEditing(false)
+      }
+   }
+   const documentClick = (event) => {
+      if (titleRef.current && !titleRef.current.contains(event.target)) {
+         setDisplayTitle(titleText)
+         setSaveTitle(titleText)
+         setIsEditTitle(true)
       }
    }
 
    const handleEditClick = () => {
       setIsEditing(true)
+   }
+   const handleEditTitleClick = () => {
+      setIsEditTitle(false)
    }
 
    React.useEffect(() => {
@@ -49,14 +72,31 @@ export const InnerCard = ({ open, handleClose }) => {
          document.removeEventListener('mousedown', handleDocumentClick)
       }
    }, [inputText])
-
+   React.useEffect(() => {
+      document.addEventListener('mousedown', documentClick)
+      return () => {
+         document.removeEventListener('mousedown', documentClick)
+      }
+   }, [titleText])
+   const open = true
    return (
       <ModalUi open={open} onClose={handleClose}>
          <CardContainer>
             <Wrapper>
                <TextContainer>
-                  <EditIcon />
-                  <CardText>Какая то задача, которую нужно выполнить</CardText>
+                  <EditIcon onClick={handleEditTitleClick} />
+                  {isEditTitle ? (
+                     <CardText onClick={handleEditTitleClick}>
+                        {displayTitle}
+                     </CardText>
+                  ) : (
+                     <TitileInput
+                        ref={titleRef}
+                        type="text"
+                        value={titleText}
+                        onChange={handleTitleChange}
+                     />
+                  )}
                </TextContainer>
                <CloseIcon onClose={handleClose} />
             </Wrapper>
@@ -188,6 +228,7 @@ const CardText = styled('p')(() => ({
 
 const TextContainer = styled('div')(() => ({
    display: 'flex',
+   alignItems: 'center',
 }))
 
 const CardContainerInner = styled('div')(() => ({}))
@@ -265,4 +306,14 @@ const AddItem = styled('div')(() => ({
 const AddText = styled('p')(() => ({
    marginLeft: '8px',
    width: '95px',
+}))
+
+const TitileInput = styled(Input)(() => ({
+   input: {
+      backgroundColor: 'none',
+      fontSize: '1rem',
+      width: '20rem',
+      borderRadius: '5rem',
+      padding: '1rem 0',
+   },
 }))
