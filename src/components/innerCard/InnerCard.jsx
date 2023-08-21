@@ -1,5 +1,6 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
    AttachIcon,
@@ -13,96 +14,154 @@ import {
    MemberIcon,
 } from '../../assets/icons'
 import { Labels } from '../labels/Labels'
-import { Button } from '../UI/button/Button'
 import { Input } from '../UI/input/Input'
 
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
-// import { DataPickers } from '../UI/data-picker/DataPicker'
+import { ModalUi } from '../UI/modal/Modal'
 
-export const InnerCard = () => {
+export const InnerCard = ({ open, handleClose }) => {
+   const [showMore, setShowMore] = React.useState(false)
+   const inputRef = React.useRef(null)
+
+   const [inputText, setInputText] = React.useState('')
+   const [displayText, setDisplayText] = React.useState('')
+   const [isEditing, setIsEditing] = React.useState(true)
+
+   const handleInputChange = (e) => {
+      setInputText(e.target.value)
+   }
+
+   const handleDocumentClick = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+         setDisplayText(inputText)
+         setIsEditing(false)
+      }
+   }
+
+   const handleEditClick = () => {
+      setIsEditing(true)
+   }
+
+   React.useEffect(() => {
+      document.addEventListener('mousedown', handleDocumentClick)
+      return () => {
+         document.removeEventListener('mousedown', handleDocumentClick)
+      }
+   }, [inputText])
+
    return (
-      <CardContainer>
-         <Wrapper>
-            <TextContainer>
-               <EditIcon />
-               <CardText>Какая то задача, которую нужно выполнить</CardText>
-            </TextContainer>
-            <CloseIcon />
-         </Wrapper>
-         <CardWrapper>
-            <CardContainerInner>
-               <Labels />
-               <DataContainer>
-                  <div>
-                     <Title>Start Date</Title>
-                     <DateStart>
-                        Sep 9, 2022 at 12:51 PM <DownIcon />
-                     </DateStart>
-                  </div>
-                  <div>
-                     <Title>Due Date</Title>
-                     <DateStart>
-                        Sep 9, 2022 at 12:51 PM <DownIcon />
-                     </DateStart>
-                  </div>
-                  <div>
-                     <Title>Members</Title>
-                     <DateStart />
-                  </div>
-               </DataContainer>
-               <Description>
-                  <DownIcon />
-                  <DescriptionTitle>Description</DescriptionTitle>
-               </Description>
-               <DescriptionInput type="text" placeholder="Add a description" />
-               <ActionButtonsContainer>
-                  <CancelButton>Cancel</CancelButton>
-                  <AddButton>Save</AddButton>
-               </ActionButtonsContainer>
-               <CheckList />
-            </CardContainerInner>
-            <CardRight>
-               <CardRightContainer>
-                  <Title>Add</Title>
-                  <AddWrapper>
-                     <AddItem>
-                        <MemberIcon />
-                        <AddText>Members</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <ClockIcon />
-                        <AddText>Estimation</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <LabelIcon />
-                        <AddText>Label</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <AttachIcon />
-                        <AddText>Attachment</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <CheckIcon />
-                        <AddText>Checklist</AddText>
-                     </AddItem>
-                  </AddWrapper>
-                  <Title>Actions</Title>
-                  <ActionsItem>
-                     <AddItem>
-                        <DeleteIcon />
-                        <AddText>Delete</AddText>
-                     </AddItem>
-                     <AddItem>
-                        <ArchiveIcon />
-                        <AddText>Archive</AddText>
-                     </AddItem>
-                  </ActionsItem>
-               </CardRightContainer>
-               <CommentSection />
-            </CardRight>
-         </CardWrapper>
-      </CardContainer>
+      <ModalUi open={open} onClose={handleClose}>
+         <CardContainer>
+            <Wrapper>
+               <TextContainer>
+                  <EditIcon />
+                  <CardText>Какая то задача, которую нужно выполнить</CardText>
+               </TextContainer>
+               <CloseIcon onClose={handleClose} />
+            </Wrapper>
+            <CardWrapper>
+               <CardContainerInner>
+                  <Labels />
+                  <DataContainer>
+                     <div>
+                        <Title>Start Date</Title>
+                        <DateStart>
+                           Sep 9, 2022 at 12:51 PM
+                           <DownIcon style={{ marginLeft: '0.5rem' }} />
+                        </DateStart>
+                     </div>
+                     <div>
+                        <Title>Due Date</Title>
+                        <DateStart>
+                           Sep 9, 2022 at 12:51 PM
+                           <DownIcon style={{ marginLeft: '0.5rem' }} />
+                        </DateStart>
+                     </div>
+                     <div>
+                        <Title>Members</Title>
+                        <DateStart />
+                     </div>
+                  </DataContainer>
+                  <Description>
+                     <DownIcon />
+                     <DescriptionTitle>Description</DescriptionTitle>
+                  </Description>
+                  {isEditing ? (
+                     <DescriptionInput
+                        type="text"
+                        ref={inputRef}
+                        placeholder="Add a description"
+                        value={inputText}
+                        onChange={handleInputChange}
+                     />
+                  ) : (
+                     <DescriptionText onClick={handleEditClick}>
+                        {displayText}
+                     </DescriptionText>
+                  )}
+                  <CheckList />
+               </CardContainerInner>
+               <CardRight>
+                  <CardRightContainer>
+                     <Title>Add</Title>
+                     <AddWrapper>
+                        <AddItem>
+                           <MemberIcon />
+                           {showMore === false ? (
+                              <AddText>Members</AddText>
+                           ) : null}
+                        </AddItem>
+                        <AddItem>
+                           <ClockIcon style={{ width: '16px' }} />
+                           {showMore === false ? (
+                              <AddText>Estimation</AddText>
+                           ) : null}
+                        </AddItem>
+                        <AddItem>
+                           <LabelIcon />
+                           {showMore === false ? (
+                              <AddText>Label</AddText>
+                           ) : null}
+                        </AddItem>
+                        <AddItem>
+                           <AttachIcon />
+                           {showMore === false ? (
+                              <AddText>Attachment</AddText>
+                           ) : null}
+                        </AddItem>
+                        <AddItem>
+                           <CheckIcon />
+                           {showMore === false ? (
+                              <AddText>Checklist</AddText>
+                           ) : null}
+                        </AddItem>
+                     </AddWrapper>
+                     <Title>Actions</Title>
+                     <ActionsItem>
+                        <AddItem>
+                           <DeleteIcon />
+                           {showMore === false ? (
+                              <AddText>Delete</AddText>
+                           ) : null}
+                        </AddItem>
+                        <AddItem>
+                           <ArchiveIcon />
+                           {showMore === false ? (
+                              <AddText>Archive</AddText>
+                           ) : null}
+                        </AddItem>
+                     </ActionsItem>
+                  </CardRightContainer>
+                  <CommentSection
+                     showMore={showMore}
+                     setShowMore={setShowMore}
+                     comments={comments}
+                  />
+               </CardRight>
+            </CardWrapper>
+         </CardContainer>
+      </ModalUi>
    )
 }
 
@@ -156,7 +215,9 @@ const Description = styled('div')(() => ({
    display: 'flex',
 }))
 
-const DescriptionTitle = styled('h4')(() => ({}))
+const DescriptionTitle = styled('h4')(() => ({
+   marginLeft: '0.5rem',
+}))
 
 const DescriptionInput = styled(Input)(() => ({
    input: {
@@ -169,50 +230,9 @@ const DescriptionInput = styled(Input)(() => ({
    marginTop: '0.5rem',
 }))
 
-const ActionButtonsContainer = styled('div')({
-   display: 'flex',
-   justifyContent: 'flex-end',
-   margin: '10px 10px 0 0',
-   gap: '1rem',
-})
-
-const AddButton = styled(Button)({
-   fontFamily: 'CarePro',
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-   color: '#fff',
-   borderRadius: ' 1.5rem',
-   padding: '6px 16px',
-   textTransform: 'capitalize',
-   fontSize: '0.875rem',
-   '&:hover': {
-      backgroundColor: '#015C91',
-      '&:active': {
-         backgroundColor: '#0079BF',
-      },
-   },
-})
-
-const CancelButton = styled(Button)({
-   fontFamily: 'CarePro',
-   color: '#919191',
-   borderRadius: ' 1.5rem',
-   height: '2.1rem',
-   width: '5.41313rem',
-   padding: '0.275rem 1rem 0.375rem 0.5rem ',
-   backgroundColor: '#F0F0F0',
-   textAlign: 'center',
-   fontSize: '0.91rem',
-   textTransform: 'capitalize',
-   '&:hover': {
-      backgroundColor: '#cecdcd',
-      color: '#fff',
-      '&:active': {
-         backgroundColor: '#F0F0F0',
-      },
-   },
-})
+const DescriptionText = styled('p')(() => ({
+   margin: '15px 25px 20px',
+}))
 
 const CardRight = styled('div')(() => ({
    margin: '0 20px',
@@ -235,8 +255,7 @@ const AddWrapper = styled('div')(() => ({
    gap: '8px',
 }))
 const AddItem = styled('div')(() => ({
-   padding: '6px 0 6px 16px',
-   width: '154px',
+   padding: '6px 16px 6px 16px',
    backgroundColor: '#F4F5F7',
    borderRadius: '8px',
    display: 'flex',
@@ -245,4 +264,5 @@ const AddItem = styled('div')(() => ({
 
 const AddText = styled('p')(() => ({
    marginLeft: '8px',
+   width: '95px',
 }))
