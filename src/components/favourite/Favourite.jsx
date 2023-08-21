@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { StarFilledIcon, StarIcon } from '../../assets/icons'
 import {
    getFavourites,
+   toggleFavoriteWorkSpace,
    toggleFavoriteaBoard,
 } from '../../store/getFavourites/favouritesThunk'
 
-export const Favourite = ({ openCloseModalHandler }) => {
+export const Favourite = () => {
    const { favoriteData } = useSelector((state) => state.favorite)
 
    const dispatch = useDispatch()
@@ -18,13 +19,14 @@ export const Favourite = ({ openCloseModalHandler }) => {
    const handleStarClickWorkSpace = () => {
       navigate('/mainPage')
    }
+   const handleDeleteWorkSpaceId = (id) => {
+      dispatch(toggleFavoriteWorkSpace(id))
+   }
 
    const deleteHandler = async (id) => {
       try {
          await dispatch(toggleFavoriteaBoard(id))
          await dispatch(getFavourites())
-
-         openCloseModalHandler(true)
 
          navigate('/mainPage')
       } catch (error) {
@@ -64,13 +66,15 @@ export const Favourite = ({ openCloseModalHandler }) => {
 
          {favoriteData.data?.workSpaceResponses?.map((item) => (
             <FavouriteBox key={item.W} hoverColor="#F2F2F2">
-               <TextContainer>
+               <TextContainer onClick={handleStarClickWorkSpace}>
                   <div>
                      <StyledTitle>{item.name}</StyledTitle>
                      <StyledText>Workcpase</StyledText>
                   </div>
                </TextContainer>
-               <IconButton onClick={handleStarClickWorkSpace}>
+               <IconButton
+                  onClick={() => handleDeleteWorkSpaceId(item.workSpaceId)}
+               >
                   {getIcon(item.favorite)}
                </IconButton>
             </FavouriteBox>

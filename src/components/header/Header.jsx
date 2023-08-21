@@ -38,7 +38,7 @@ export const Headers = ({ data }) => {
    const navigate = useNavigate()
    const location = useLocation()
 
-   const openCloseModalHandler = () => {
+   const openFavoriteModalHandler = () => {
       setShowModal(!showModal)
    }
 
@@ -46,6 +46,9 @@ export const Headers = ({ data }) => {
       setOpenProfile((prev) => !prev)
    }
 
+   const handleModalContentClick = (event) => {
+      event.stopPropagation()
+   }
    const logOutHandler = () => {
       console.log('logout')
       dispatch(logOut(), navigate)
@@ -72,18 +75,17 @@ export const Headers = ({ data }) => {
                   <ParagraphFavorite>
                      Favourites ({favoriteSum})
                   </ParagraphFavorite>
-                  <IconButton onClick={openCloseModalHandler}>
+                  <IconButton onClick={openFavoriteModalHandler}>
                      {showModal ? (
                         <>
                            <UpIcon src={UpIcon} alt="up_arrow" />
-                           <ModalUii
-                              onClose={openCloseModalHandler}
+                           <ModalUi
+                              handleModalContentClick={handleModalContentClick}
+                              onClose={openFavoriteModalHandler}
                               open={showModal}
                            >
-                              <Favourite
-                                 openCloseModalHandler={openCloseModalHandler}
-                              />
-                           </ModalUii>
+                              <Favourite setShowModal={setShowModal} />
+                           </ModalUi>
                         </>
                      ) : (
                         <DownIcon src={DownIcon} alt="down_arrow" />
@@ -213,9 +215,9 @@ const StyledAvatar = muiStyled(Avatar)(() => ({
    cursor: 'pointer',
 }))
 
-const ModalUii = muiStyled(ModalUi)(() => ({
-   marginTop: '0px',
-}))
+// const ModalUii = muiStyled(ModalUi)(() => ({
+//    marginTop: '0px',
+// }))
 
 const ProfileTexts = muiStyled('div')(() => ({
    width: '10rem',
