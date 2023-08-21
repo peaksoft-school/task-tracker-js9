@@ -19,11 +19,11 @@ export const Favourite = () => {
    const handleStarClickWorkSpace = () => {
       navigate('/mainPage')
    }
-   const handleDeleteWorkSpaceId = (id) => {
+   const handleDeleteClickWorkSpace = (id) => {
       dispatch(toggleFavoriteWorkSpace(id))
    }
 
-   const deleteHandler = async (id) => {
+   const deleteHandlerBoard = async (id) => {
       try {
          await dispatch(toggleFavoriteaBoard(id))
          await dispatch(getFavourites())
@@ -34,12 +34,12 @@ export const Favourite = () => {
       }
    }
 
+   const getIcon = (isFavourite) =>
+      isFavourite ? <StarFilledIcon /> : <StarIcon />
+
    useEffect(() => {
       dispatch(getFavourites())
    }, [dispatch])
-
-   const getIcon = (isFavourite) =>
-      isFavourite ? <StarFilledIcon /> : <StarIcon />
 
    return (
       <Container>
@@ -58,7 +58,7 @@ export const Favourite = () => {
                      <StyledTitle>{item.title}</StyledTitle>
                   </div>
                </TextContainer>
-               <IconButton onClick={() => deleteHandler(item.boardId)}>
+               <IconButton onClick={() => deleteHandlerBoard(item.boardId)}>
                   {getIcon(item.favorite)}
                </IconButton>
             </FavouriteBox>
@@ -73,7 +73,7 @@ export const Favourite = () => {
                   </div>
                </TextContainer>
                <IconButton
-                  onClick={() => handleDeleteWorkSpaceId(item.workSpaceId)}
+                  onClick={() => handleDeleteClickWorkSpace(item.workSpaceId)}
                >
                   {getIcon(item.favorite)}
                </IconButton>
@@ -91,7 +91,7 @@ const Container = styled('div')({
    maxHeight: '100%',
    overflow: 'auto',
    '&::-webkit-scrollbar': {
-      width: 4,
+      width: 3,
    },
 })
 const ColoredBackground = styled('div')(({ color }) => ({
