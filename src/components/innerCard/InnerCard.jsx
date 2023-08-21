@@ -21,6 +21,7 @@ import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
 
 export const InnerCard = ({
+   open,
    handleClose,
    setSaveTitle,
    setSaveDescription,
@@ -78,10 +79,9 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', documentClick)
       }
    }, [titleText])
-   const open = true
    return (
       <ModalUi open={open} onClose={handleClose}>
-         <CardContainer>
+         <CardContainer ref={(inputRef, titleRef)}>
             <Wrapper>
                <TextContainer>
                   <EditIcon onClick={handleEditTitleClick} />
@@ -91,7 +91,6 @@ export const InnerCard = ({
                      </CardText>
                   ) : (
                      <TitileInput
-                        ref={titleRef}
                         type="text"
                         value={titleText}
                         onChange={handleTitleChange}
@@ -130,7 +129,6 @@ export const InnerCard = ({
                   {isEditing ? (
                      <DescriptionInput
                         type="text"
-                        ref={inputRef}
                         placeholder="Add a description"
                         value={inputText}
                         onChange={handleInputChange}
