@@ -1,20 +1,35 @@
 import { Tooltip, styled } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 import { ExitIcon } from '../../assets/icons'
+import { deleteLabel, getLabels } from '../../store/getLabels/labelsThunk'
 
-export const Labels = ({ labels, onRemoveLabel }) => {
+export const Labels = () => {
+   const dispatch = useDispatch()
+   const labelsData = useSelector((state) => state.labels)
+
+   useEffect(() => {
+      dispatch(getLabels())
+   }, [dispatch])
+
+   const onRemoveLabel = (id) => {
+      dispatch(deleteLabel(id))
+      console.log(id)
+   }
    return (
       <div>
          <HeadingLabel>Labels</HeadingLabel>
+
          <AllContainer>
-            {labels.map((item) => (
+            {labelsData?.label.map((item) => (
                <ContainerLabels
-                  style={{ backgroundColor: item.backgroundColor }}
-                  key={item.id}
+                  style={{ backgroundColor: item.color }}
+                  key={item.labelId}
                >
-                  <TextLabels title={item.title} arrow>
-                     {item.title}
+                  <TextLabels title={item.description} arrow>
+                     {item.description}
                   </TextLabels>
-                  <ExitIcon onClick={() => onRemoveLabel(item.id)} />
+                  <ExitIcon onClick={() => onRemoveLabel(item.labelId)} />
                </ContainerLabels>
             ))}
          </AllContainer>
