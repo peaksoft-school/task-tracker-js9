@@ -29,7 +29,10 @@ export const Labels = () => {
                   <TextLabels title={item.description} arrow>
                      {item.description}
                   </TextLabels>
-                  <ExitIcon onClick={() => onRemoveLabel(item.labelId)} />
+                  <ExitIcon
+                     style={{ cursor: 'pointer' }}
+                     onClick={() => onRemoveLabel(item.labelId)}
+                  />
                </ContainerLabels>
             ))}
          </AllContainer>
