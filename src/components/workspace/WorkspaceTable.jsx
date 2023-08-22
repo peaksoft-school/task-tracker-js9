@@ -1,6 +1,6 @@
 import { Avatar, IconButton, styled } from '@mui/material'
 import React, { useState } from 'react'
-import { StarIcon } from '../../assets/icons'
+import StarIcon from '../../assets/icons'
 
 import { rows } from '../../utils/constants/general'
 import TableMui from '../UI/table/TableMui'
