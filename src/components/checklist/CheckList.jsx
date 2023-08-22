@@ -251,6 +251,7 @@ const ModalContainer = styled('div')({
    justifyContent: 'center',
    alignItems: 'center',
    backgroundColor: 'rgba(62, 60, 60, 0.5)',
+   zIndex: 1,
 })
 
 const ModalContent = styled('div')({
@@ -259,6 +260,10 @@ const ModalContent = styled('div')({
    borderRadius: '5px',
    width: '30rem',
    height: '20vh',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'center',
+   alignItems: 'center',
 })
 
 const ModalText = styled('p')({
@@ -350,7 +355,6 @@ const StyledInput = styled(Input)({
 
 const ChecklistContainer = styled('div')({
    width: '100%',
-   height: '100vh',
    borderRadius: '5px',
    padding: '10px',
    marginBottom: '10px',

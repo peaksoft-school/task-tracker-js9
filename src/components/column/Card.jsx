@@ -116,7 +116,6 @@ export const Card = () => {
                      ))}
                   </Labels>
                )}
-
                <ParagraphText>
                   Какая то задача, которую нужно выполнить
                </ParagraphText>
