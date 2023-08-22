@@ -1,17 +1,11 @@
-import { useState } from 'react'
 import { styled, Checkbox, IconButton, keyframes } from '@mui/material'
 import { ExitIcon, FrameThreeIcon } from '../../../assets/icons'
 
-export const Filter = () => {
-   const [openFilterModal, setOpenFilterModal] = useState(false)
-
-   const openFilterModalHandler = () => {
-      setOpenFilterModal((prev) => !prev)
-   }
-   const closeFilterModalHandler = () => {
-      setOpenFilterModal(false)
-   }
-
+export const Filter = ({
+   openFilterModal,
+   openFilterModalHandler,
+   closeFilterModalHandler,
+}) => {
    return (
       <div>
          <FilterCont onClick={openFilterModalHandler}>
@@ -22,6 +16,7 @@ export const Filter = () => {
          {openFilterModal && (
             <ModalFilter animation="slideIn">
                <ModalFilterHeader>
+                  <p>{}</p>
                   <p>Filter</p>
                   <IconButton>
                      <ExitIcon onClick={closeFilterModalHandler} />
@@ -112,6 +107,7 @@ const FilterCont = styled('div')({
    backgroundColor: '#E9E9E9',
    paddingTop: '0.4rem',
    cursor: 'pointer',
+   flex: 10,
 })
 
 const FilterText = styled('p')({
@@ -136,11 +132,14 @@ const ModalFilter = styled('div')(({ animation }) => {
 
    return {
       width: '22.9375rem',
-      height: '38.5rem',
+      top: '0',
+      flex: 10,
+      height: '110vh',
       display: 'flex',
       flexDirection: 'column',
       padding: '1rem',
       gap: '1rem',
+      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
       borderRadius: '0.5rem',
       position: 'absolute',
       right: '3rem',
@@ -153,11 +152,13 @@ const ModalFilterHeader = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
+   flex: 10,
 })
 
 const ModalDateBox = styled('div')({
    display: 'flex',
    flexDirection: 'column',
+   flex: 10,
 })
 
 const ModalLabelsBox = styled('div')({
@@ -190,6 +191,7 @@ const DoneText = styled('p')({
    backgroundColor: '#61BD4F',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
+   flex: 10,
 })
 
 const AttentionFirst = styled('p')({
@@ -197,6 +199,7 @@ const AttentionFirst = styled('p')({
    width: '18.3125rem',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
+   flex: 10,
 })
 
 const AttentionSecond = styled('p')({
@@ -204,6 +207,7 @@ const AttentionSecond = styled('p')({
    width: '18.3125rem',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
+   flex: 10,
 })
 
 const AttentionThird = styled('p')({
@@ -211,4 +215,5 @@ const AttentionThird = styled('p')({
    width: '18.3125rem',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
+   flex: 10,
 })

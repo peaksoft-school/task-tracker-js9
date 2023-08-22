@@ -7,7 +7,7 @@ import {
 } from '../../../assets/icons'
 import { Button } from '../../UI/button/Button'
 
-export const InviteModal = ({ openModalHandler }) => {
+export const InviteNewParticipant = ({ openInviteNewModal }) => {
    const [isMemberSelected, setIsMemberSelected] = useState(false)
    const [isAdminSelected, setIsAdminSelected] = useState(false)
    const [email, setEmail] = useState('')
@@ -20,13 +20,13 @@ export const InviteModal = ({ openModalHandler }) => {
       setIsAdminSelected((prev) => !prev)
    }
    return (
-      <div>
+      <Container>
          <InviteParticipantModal>
             <InviteHeader>
                <p>{}</p>
                <p>Invite a new participant</p>
                <IconButton>
-                  <ExitIcon onClick={openModalHandler} />
+                  <ExitIcon onClick={openInviteNewModal} />
                </IconButton>
             </InviteHeader>
             <div>
@@ -61,9 +61,14 @@ export const InviteModal = ({ openModalHandler }) => {
                <ButtonCreate>Create</ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
-      </div>
+      </Container>
    )
 }
+const Container = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+}))
 
 const InviteParticipantModal = styled('div')({
    width: '26.5625rem',
@@ -72,12 +77,10 @@ const InviteParticipantModal = styled('div')({
    gap: '1rem',
    padding: '1rem',
    boxSizing: 'border-box',
-   position: 'absolute',
-   left: '26rem',
-   top: '12rem',
+   backgroundColor: 'white',
    borderRadius: '0.5rem',
-   background: 'white',
-   zIndex: '999',
+   position: 'fixed',
+   zIndex: '9999',
 })
 
 const InviteHeader = styled('div')({

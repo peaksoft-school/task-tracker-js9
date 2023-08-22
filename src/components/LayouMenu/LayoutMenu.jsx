@@ -4,46 +4,75 @@ import { EditIcon, FrameIcon } from '../../assets/icons'
 import { StarFilter } from './filter/StarFilter'
 import { Filter } from './filter/Filter'
 import { Menu } from './menu/Menu'
-import { InviteModal } from './inviteModal/InviteModal'
 import { Avatars } from './avatars/Avatars'
+import { Participant } from './inviteModal/Participant'
 
 export const LayoutMenu = () => {
    const [openModal, setOpenModal] = useState(false)
+   const [openFilterModal, setOpenFilterModal] = useState(false)
+   const [openNewInvite, setOpenNewInvite] = useState(false)
+   const [open, setOpen] = useState(null)
+
+   const openFilterModalHandler = () => {
+      setOpenFilterModal((prev) => !prev)
+      setOpen('close')
+   }
+   const closeFilterModalHandler = () => {
+      setOpenFilterModal(false)
+   }
 
    const openModalHandler = () => {
       setOpenModal((prev) => !prev)
+      setOpenNewInvite(false)
    }
    return (
-      <LayoutMenuContainer>
-         <div>
-            <TitleBox>
-               <IconButton>
-                  <EditIcon />
-               </IconButton>
-               <TitleText>Title</TitleText>
-            </TitleBox>
+      <>
+         <LayoutMenuContainer>
             <div>
-               <span>Columns:</span>
-               <CountSpan>24</CountSpan>
+               <TitleBox>
+                  <IconButton>
+                     <EditIcon />
+                  </IconButton>
+                  <TitleText>Title</TitleText>
+               </TitleBox>
+               <div>
+                  <span>Columns:</span>
+                  <CountSpan>24</CountSpan>
+               </div>
             </div>
-         </div>
+            <FilterCont>
+               <Avatars />
+               <InviteBox onClick={openModalHandler}>
+                  <InviteText>Invite</InviteText>
+                  <FrameIcon />
+               </InviteBox>
+               <StarFilter />
+               <Filter
+                  openFilterModal={openFilterModal}
+                  openFilterModalHandler={openFilterModalHandler}
+                  closeFilterModalHandler={closeFilterModalHandler}
+                  setOpenFilterModal={setOpenFilterModal}
+               />
+               <Menu
+                  open={open}
+                  setOpen={setOpen}
+                  setOpenFilterModal={setOpenFilterModal}
+               />
+            </FilterCont>
+         </LayoutMenuContainer>
          {openModal && (
             <>
                <BackDrop onClick={openModalHandler} />
-               <InviteModal openModalHandler={openModalHandler} />
+               <ParticipantConentContainer>
+                  <Participant
+                     openNewInvite={openNewInvite}
+                     openModalHandler={openModalHandler}
+                     setOpenNewInvite={setOpenNewInvite}
+                  />
+               </ParticipantConentContainer>
             </>
          )}
-         <FilterCont>
-            <Avatars />
-            <InviteBox onClick={openModalHandler}>
-               <InviteText>Invite</InviteText>
-               <FrameIcon />
-            </InviteBox>
-            <StarFilter />
-            <Filter />
-            <Menu />
-         </FilterCont>
-      </LayoutMenuContainer>
+      </>
    )
 }
 
@@ -83,11 +112,15 @@ const InviteText = styled('p')({
 })
 
 const BackDrop = styled('div')({
-   position: 'absolute',
-   backgroundColor: '#b6b6b6',
+   position: 'fixed',
+   backgroundColor: 'rgba(0, 0, 0, 0.6)',
    width: '100%',
    height: '100vh',
-   zIndex: '-1',
+   zIndex: 1,
+   top: '0',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
 })
 
 const CountSpan = styled('span')({
@@ -96,4 +129,12 @@ const CountSpan = styled('span')({
    background: '#B2B2B2',
    color: '#FFFFFF',
    fontSize: '0.875rem',
+})
+
+const ParticipantConentContainer = styled('div')({
+   width: '100%',
+   height: '90vh',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
 })
