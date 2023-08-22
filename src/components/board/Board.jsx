@@ -30,6 +30,7 @@ export const Board = () => {
 
    const postFunc = (objBoard) => {
       dispatch(boardPost(objBoard))
+      console.log(objBoard)
    }
 
    const addFavoriteFonc = (boardId) => {
