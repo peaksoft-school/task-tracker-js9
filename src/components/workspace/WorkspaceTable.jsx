@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { StarIcon } from '../../assets/icons'
 import TableMui from '../UI/table/TableMui'
 import {
+   addWorkspaceToFavorites,
    fetchAllWorkspaces,
    getWorkspacebyId,
 } from '../../store/workspace/workspaceThunk'
@@ -14,9 +15,13 @@ export const WorkspaceTable = () => {
    const navigate = useNavigate()
 
    const { workspaces } = useSelector((state) => state.workspaces)
+   console.log('workspaces:', workspaces)
 
    const getWorkSpaceByIdHandler = (workspaceData) => {
       dispatch(getWorkspacebyId({ workspaceData, navigate, path: 'boards' }))
+   }
+   const addtoFavouriteHandler = (workspaceId) => {
+      dispatch(addWorkspaceToFavorites(workspaceId))
    }
 
    useEffect(() => {
@@ -60,19 +65,18 @@ export const WorkspaceTable = () => {
          align: 'right',
          render: (data) => (
             <IconButton>
-               {data.isFavorite ? (
-                  <StarIcon fill="#0079BF" />
+               {data?.isFavorite ? (
+                  <StarIcon
+                     fill="#0079BF"
+                     onClick={() => addtoFavouriteHandler(data.workSpaceId)}
+                  />
                ) : (
-                  <StarIcon fill="#B2B2B2" />
+                  <StarIcon
+                     fill="#B2B2B2"
+                     onClick={() => addtoFavouriteHandler(data.workSpaceId)}
+                  />
                )}
             </IconButton>
-            // <IconButton onClick={() => toggleFavorite(data.id)}>
-            //    {isFavorite(data.id) ? (
-            //       <StarIcon fill="#0079BF" />
-            //    ) : (
-            //       <StarIcon fill="#B2B2B2" />
-            //    )}
-            // </IconButton>
          ),
       },
    ]

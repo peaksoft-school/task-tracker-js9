@@ -9,14 +9,13 @@ import {
    ListItemText,
    styled,
 } from '@mui/material'
-import { DownIcon, GraphicIcon, PlusIcon } from '../../assets/icons'
+import { DownIcon, GraphicIcon, PlusIcon, UpIcon } from '../../assets/icons'
 import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
 
 export const SideMain = ({
    open,
    activeItem,
    handleItemClick,
-   workspacedata,
    menuItemsWorspace,
 }) => {
    const [workspaceId, setWorkspaceId] = useState(null)
@@ -69,7 +68,7 @@ export const SideMain = ({
 
             <ListSummaryStyle>
                {workspaces
-                  .slice(0, showMore ? workspaces.length : 6)
+                  .slice(0, showMore ? workspaces.length : 4)
                   .map((item) => (
                      <>
                         <Accounting>
@@ -130,10 +129,14 @@ export const SideMain = ({
                   ))}
             </ListSummaryStyle>
 
-            {workspacedata.length > 6 && (
+            {workspaces.length > 4 && (
                <ListItemStyle>
                   <ListItemIcon>
-                     <DownIcon onClick={showMoreHandler} fill="919191" />
+                     {showMore ? (
+                        <UpIcon onClick={showMoreHandler} fill="919191" />
+                     ) : (
+                        <DownIcon onClick={showMoreHandler} fill="919191" />
+                     )}
                   </ListItemIcon>
                   <StyledListItemText>Show more</StyledListItemText>
                </ListItemStyle>

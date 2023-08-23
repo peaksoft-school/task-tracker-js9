@@ -13,18 +13,13 @@ const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
 
 const validationSchema = Yup.object().shape({
    workspaceName: Yup.string().required('Name of the workspace is required'),
-   invitedMembers: Yup.array()
-      .of(
-         Yup.object().shape({
-            value: Yup.string()
-               .matches(emailRegExp, 'Invalid email format')
-               .required('Email is required'),
-         })
-      )
-      .test('at-least-one-email', 'At least one email is required', (value) => {
-         return value && value.length > 0
+   invitedMembers: Yup.array().of(
+      Yup.object().shape({
+         value: Yup.string()
+            .matches(emailRegExp, 'Invalid email format')
+            .required('Email is required'),
       })
-      .nullable(),
+   ),
 })
 
 const NewWorkspaceForm = ({ showModal, setShowModal }) => {
@@ -72,7 +67,6 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                      setFieldValue,
                      errors,
                      isValid,
-                     isSubmitting,
                   }) => (
                      <InputContainer>
                         <LebelStyle htmlFor="workspaceName">
@@ -172,13 +166,7 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                            >
                               Cancel
                            </CanselButton>
-                           <SaveButton
-                              disabled={
-                                 (!isValid && !isSubmitting) ||
-                                 values.invitedMembers.length <= 0
-                              }
-                              type="submit"
-                           >
+                           <SaveButton disabled={!isValid} type="submit">
                               Create
                            </SaveButton>
                         </ButtonContainer>

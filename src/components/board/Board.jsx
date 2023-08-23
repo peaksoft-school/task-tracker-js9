@@ -55,12 +55,11 @@ export const Board = () => {
             </BoardButton>
             <Boards>
                {boards?.map((board) => (
-                  <div
-                     key={board.boardId}
-                     onClick={() => boardHandler(board.boardId)}
-                  >
+                  <div key={board.boardId}>
                      <BoardBlock board={board}>
-                        <BoardTitle>{board.title}</BoardTitle>
+                        <BoardTitle onClick={() => boardHandler(board.boardId)}>
+                           {board.title}
+                        </BoardTitle>
                         <StarContainer>
                            <IconButton>
                               {board.favorite ? (
@@ -140,6 +139,7 @@ const BoardTitle = styled('p')(() => ({
    fontFamily: 'CarePro',
    fontSize: '1rem',
    fontWeight: '500',
+   cursor: 'pointer',
 }))
 
 const StarContainer = styled('div')(() => ({

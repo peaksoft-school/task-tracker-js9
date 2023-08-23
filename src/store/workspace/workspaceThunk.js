@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
-   // addtoFawotites,
    createWorkspaces,
    deleteWorkspaces,
    getWorkspaces,
@@ -8,6 +7,7 @@ import {
    updateWorkspacesById,
 } from '../../api/workspaceServise'
 import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
+import { axiosInstance } from '../../config/axiosInstance'
 
 export const fetchAllWorkspaces = createAsyncThunk(
    'workspaces/work_spaces',
@@ -44,8 +44,17 @@ export const createNewWorkspace = createAsyncThunk(
       try {
          const data = await createWorkspaces(newdata)
          dispatch(fetchAllWorkspaces())
+         showSnackbar({
+            message: 'Created workspace',
+            severity: 'success',
+         })
          return data
       } catch (error) {
+         showSnackbar({
+            message: error,
+            additionalMessage: 'Something went wrong .',
+            severity: 'error',
+         })
          return rejectWithValue(error.data.message)
       }
    }
@@ -60,7 +69,7 @@ export const deleteWorkspaceById = createAsyncThunk(
             payload.navigate('/mainPage')
          }
          showSnackbar({
-            message: 'deleted workspace',
+            message: 'Deleted workspace',
             severity: 'success',
          })
 
@@ -89,7 +98,7 @@ export const updateWorkspace = createAsyncThunk(
          getWorkspace()
          dispatch(fetchAllWorkspaces())
          showSnackbar({
-            message: 'updated workspace',
+            message: 'Updated workspace',
             severity: 'success',
          })
          return data
@@ -99,6 +108,19 @@ export const updateWorkspace = createAsyncThunk(
             additionalMessage: 'Please try again .',
             severity: 'error',
          })
+         return rejectWithValue(error.data.message)
+      }
+   }
+)
+
+export const addWorkspaceToFavorites = createAsyncThunk(
+   'favorite/addFavorite',
+   async (workspaceId, { rejectWithValue, dispatch }) => {
+      console.log(workspaceId, 'adding')
+      try {
+         await axiosInstance.post(`api/favorites/work_space/${workspaceId}`)
+         dispatch(fetchAllWorkspaces())
+      } catch (error) {
          return rejectWithValue(error.data.message)
       }
    }

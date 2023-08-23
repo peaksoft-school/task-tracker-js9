@@ -5,7 +5,9 @@ export const fetchBoards = createAsyncThunk(
    'board/fetchBoards',
    async (workSpaceId, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(`/api/boards/get-all/${49}`)
+         const response = await axiosInstance.get(
+            `/api/boards/get-all/${workSpaceId}`
+         )
          return response.data
       } catch (error) {
          return rejectWithValue(error)
