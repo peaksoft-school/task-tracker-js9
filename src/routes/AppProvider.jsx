@@ -1,11 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
-// import { SignInPage } from '../pages/SignInPage'
+import { SignInPage } from '../pages/SignInPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
-import { Workspaces } from '../components/workspace/Workspace'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
+// import { Workspaces } from '../components/workspace/Workspace'
 import { CheckList } from '../components/checklist/CheckList'
 
 export const routes = createBrowserRouter([
@@ -13,7 +13,7 @@ export const routes = createBrowserRouter([
       path: '/',
       element: (
          <PrivateRoute
-            component={<CheckList />}
+            component={<SignInPage />}
             roles={[USER_ROLE.GUEST]}
             fallBacPath="/mainPage"
          />
@@ -46,7 +46,8 @@ export const routes = createBrowserRouter([
             component={
                <>
                   <Headers />
-                  <Workspaces />
+                  <CheckList />
+                  {/* <Workspaces /> */}
                </>
             }
             roles={[USER_ROLE.ADMIN, USER_ROLE.USER]}

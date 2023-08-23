@@ -22,5 +22,9 @@ export const checkListSlice = createSlice({
          .addCase(checkListGetRequest.rejected, (state) => {
             state.isLoading = false
          })
+      // .addCase(checkListPutRequest.fulfilled, (state, action) => {
+      //    state.item = action.payload
+      //    state.isLoading = false
+      // })
    },
 })
