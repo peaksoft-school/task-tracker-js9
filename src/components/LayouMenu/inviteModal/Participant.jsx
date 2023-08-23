@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MenuItem, styled, FormControl, Select } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
 import { ExitIcon, PlusIcon, SearchIcon } from '../../../assets/icons'
 import { InviteNewParticipant } from './InviteModal'
+import { allinviteMember } from '../../../store/inviteMember/inviteThunk'
 
 export const Participant = ({
    openModalHandler,
@@ -13,13 +15,18 @@ export const Participant = ({
       { label: 'Member', value: 'Member' },
    ]
 
-   const initialUsers = [
-      { name: 'Aidana', role: 'Member' },
-      { name: 'Nazira ', role: 'Member' },
-      { name: 'Nazira ', role: 'Member' },
-   ]
+   // const initialUsers = [
+   //    { name: 'Aidana', role: 'Member' },
+   //    { name: 'Nazira ', role: 'Member' },
+   //    { name: 'Nazira ', role: 'Member' },
+   // ]
 
-   const [users, setUsers] = useState(initialUsers)
+   const { inviteMember } = useSelector((state) => state.inviteMember)
+   const dispatch = useDispatch()
+   const [users, setUsers] = useState(inviteMember)
+   useEffect(() => {
+      dispatch(allinviteMember())
+   }, [dispatch])
 
    const openInviteNewModal = () => {
       setOpenNewInvite((prev) => !prev)
