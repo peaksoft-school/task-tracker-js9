@@ -7,6 +7,7 @@ import { deleteLabel, getLabels } from '../../store/getLabels/labelsThunk'
 export const Labels = () => {
    const dispatch = useDispatch()
    const labelsData = useSelector((state) => state.labels)
+   console.log(labelsData)
 
    useEffect(() => {
       dispatch(getLabels())

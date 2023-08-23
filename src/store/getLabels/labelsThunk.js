@@ -16,14 +16,14 @@ export const getLabels = createAsyncThunk(
 )
 
 export const deleteLabel = createAsyncThunk(
-   'api/deleteLessons',
+   'labels/delete',
    async (labelId, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.delete(`/api/labels/${labelId}`)
          dispatch(getLabels())
          return response.data
       } catch (error) {
-         return rejectWithValue(error.message)
+         return rejectWithValue(error.response.data)
       }
    }
 )
