@@ -5,7 +5,9 @@ export const fetchBoards = createAsyncThunk(
    'board/fetchBoards',
    async (workSpaceId, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(`/api/boards/get-all/${79}`)
+         const response = await axiosInstance.get(
+            `/api/boards/get-all/${workSpaceId}`
+         )
          return response.data
       } catch (error) {
          return rejectWithValue(error)
@@ -27,10 +29,10 @@ export const boardRemove = createAsyncThunk(
 
 export const boardPost = createAsyncThunk(
    'board/boardPost',
-   async (objBoard, { rejectWithValue, dispatch }) => {
+   async ({ objBoard, workSpaceId }, { rejectWithValue, dispatch }) => {
       try {
          await axiosInstance.post('/api/boards', objBoard)
-         dispatch(fetchBoards())
+         dispatch(fetchBoards(workSpaceId))
       } catch (error) {
          return rejectWithValue(error)
       }
@@ -39,10 +41,11 @@ export const boardPost = createAsyncThunk(
 
 export const addFavorite = createAsyncThunk(
    'favorite/addFavorite',
-   async (boardId, { rejectWithValue, dispatch }) => {
+   async ({ boardId, workSpaceId }, { rejectWithValue, dispatch }) => {
+      console.log('boardId', boardId)
       try {
          await axiosInstance.post(`/api/favorites/board/${boardId}`)
-         dispatch(fetchBoards())
+         dispatch(fetchBoards(workSpaceId))
       } catch (error) {
          return rejectWithValue(error)
       }

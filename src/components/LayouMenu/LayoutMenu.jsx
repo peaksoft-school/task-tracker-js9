@@ -25,6 +25,7 @@ export const LayoutMenu = () => {
       setOpenModal((prev) => !prev)
       setOpenNewInvite(false)
    }
+
    return (
       <>
          <LayoutMenuContainer>
@@ -80,6 +81,7 @@ const LayoutMenuContainer = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
    width: 'auto',
+   marginTop: '5rem',
 })
 
 const FilterCont = styled('div')({

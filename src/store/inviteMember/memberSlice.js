@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { allinviteMember } from './inviteThunk'
 
+const initialState = {
+   inviteMember: [],
+   loading: false,
+}
+
 export const memberSlice = createSlice({
    name: 'inviteMember',
-   inntialState: {
-      inviteMember: [],
-      loading: false,
-   },
+   initialState,
    reducers: {},
    extraReducers: (builder) => [
       builder.addCase(allinviteMember.fulfilled, (state, action) => {

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+// import IconButton from '@mui/material/IconButton'
 import {
    Avatar,
    Box,
@@ -8,8 +9,12 @@ import {
    ListItemButton,
    ListItemIcon,
    ListItemText,
+   MenuItem,
+   MenuList,
    styled,
 } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import {
    DownIcon,
    LayoutWhite,
@@ -17,13 +22,17 @@ import {
    PlusIcon,
    TemplateIcon,
    ToolsIcon,
+   // SecondMenu,
+   // FirstMenu,
 } from '../../assets/icons'
 
 import { ModalSideBar } from './ModalSideBar'
+import { updateWorkspace } from '../../store/workspace/workspaceThunk'
+import { getWorkspacesById } from '../../api/workspaceServise'
 
 export const SideHead = ({
    open,
-   data,
+   // toggle,
    activeItem,
    handleItemClick,
    menuItems,
@@ -31,11 +40,41 @@ export const SideHead = ({
 }) => {
    const [toggleButton, setToggleButton] = useState(false)
    const [showModal, setShowModal] = useState(false)
-   const [editInput, setEditInput] = useState(() =>
-      data.map((item) => item.name)
-   )
+
+   const { board } = useSelector((state) => state.board)
+   const [workspaceId, setWorkspaceId] = useState({})
+   const [editInput, setEditInput] = useState('')
+   const { id } = useParams()
+
+   const dispatch = useDispatch()
+
+   const getWorkspace = async () => {
+      try {
+         const { data } = await getWorkspacesById(id)
+         setEditInput(data.workSpaceName)
+         setWorkspaceId(data)
+      } catch (error) {
+         return error
+      }
+   }
+
+   useEffect(() => {
+      getWorkspace()
+   }, [])
+
    const etidChangeInput = (e) => {
       setEditInput(e.target.value)
+   }
+
+   const changeTitleHandler = () => {
+      dispatch(
+         updateWorkspace({
+            workspaceId: workspaceId.workSpaceId,
+            name: editInput,
+            getWorkspace,
+         })
+      )
+      setShowModal(false)
    }
 
    const openCloseModalHandler = (text, icon) => {
@@ -52,36 +91,30 @@ export const SideHead = ({
    return (
       <div>
          <List>
-            {data.map((item) => {
-               return (
-                  <ListItem disablePadding>
-                     <ListItemButton>
-                        <StyleListItemIcon>
-                           {open ? (
-                              <LeftIcon
-                                 onClick={handleDrawerToggle}
-                                 fill="3C3C3C"
-                              />
-                           ) : (
-                              <AvatarStyledHeader
-                                 sx={{ bgcolor: '#0079BF' }}
-                                 alt="photo"
-                              >
-                                 <p>
-                                    <p style={{ fontSize: '1.3rem' }}>
-                                       {item.name[0]}
-                                    </p>
-                                 </p>
-                              </AvatarStyledHeader>
-                           )}
-                        </StyleListItemIcon>
+            <ListItem disablePadding>
+               <ListItemButton>
+                  <StyleListItemIcon>
+                     {open ? (
+                        <LeftIcon onClick={handleDrawerToggle} fill="3C3C3C" />
+                     ) : (
+                        <AvatarStyledHeader
+                           sx={{ bgcolor: '#0079BF' }}
+                           alt="photo"
+                        >
+                           <p>
+                              <p style={{ fontSize: '1.3rem' }}>
+                                 {editInput[0]}
+                              </p>
+                           </p>
+                        </AvatarStyledHeader>
+                     )}
+                  </StyleListItemIcon>
 
-                        <ListItemText primary={item.name} />
-                     </ListItemButton>
-                  </ListItem>
-               )
-            })}
+                  <ListItemText primary={editInput} />
+               </ListItemButton>
+            </ListItem>
             <List />
+
             <DividerStyle open={open} />
             <List>
                <ActiveListItem
@@ -121,9 +154,11 @@ export const SideHead = ({
                   >
                      <DividerStyleItem orientation="vertical" flexItem />
                      <ListItemStyleTitle disablePadding>
-                        <ListItemButton>
-                           <ListItemText primary="Item 1" />
-                        </ListItemButton>
+                        <MenuList>
+                           {board.map((item) => (
+                              <MenuItem>{item.title}</MenuItem>
+                           ))}
+                        </MenuList>
                      </ListItemStyleTitle>
                   </Box>
                ) : null}
@@ -170,6 +205,7 @@ export const SideHead = ({
             setShowModal={setShowModal}
             editInput={editInput}
             etidChangeInput={etidChangeInput}
+            changeTitleHandler={changeTitleHandler}
          />
       </div>
    )

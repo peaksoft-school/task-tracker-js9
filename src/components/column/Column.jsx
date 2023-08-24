@@ -1,4 +1,6 @@
 import { styled } from '@mui/material'
+
+// import { useParams } from 'react-router-dom'
 import { Columns } from './Columns'
 
 export const Column = () => {

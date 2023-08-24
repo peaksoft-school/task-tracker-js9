@@ -1,4 +1,5 @@
 import { styled, IconButton } from '@mui/material'
+import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import {
    ExitIcon,
@@ -6,11 +7,16 @@ import {
    RadioFilledIcon,
 } from '../../../assets/icons'
 import { Button } from '../../UI/button/Button'
+import { createInviteMember } from '../../../store/inviteMember/inviteThunk'
 
-export const InviteNewParticipant = ({ openInviteNewModal }) => {
+export const InviteNewParticipant = ({
+   openInviteNewModal,
+   setOpenNewInvite,
+}) => {
    const [isMemberSelected, setIsMemberSelected] = useState(false)
    const [isAdminSelected, setIsAdminSelected] = useState(false)
    const [email, setEmail] = useState('')
+   const dispatch = useDispatch()
 
    const toggleMemberSelection = () => {
       setIsMemberSelected((prev) => !prev)
@@ -18,6 +24,14 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
 
    const toggleAdminSelection = () => {
       setIsAdminSelected((prev) => !prev)
+   }
+   const createNewInviteMember = () => {
+      const newdata = {
+         emails: '',
+         role: '',
+      }
+      dispatch(createInviteMember(newdata))
+      setOpenNewInvite(false)
    }
    return (
       <Container>
@@ -58,7 +72,9 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
             </MembersCont>
             <ButtonsCont>
                <ButtonDelete disabled={!email}>Delete</ButtonDelete>
-               <ButtonCreate>Create</ButtonCreate>
+               <ButtonCreate onClick={createNewInviteMember}>
+                  Create
+               </ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
       </Container>

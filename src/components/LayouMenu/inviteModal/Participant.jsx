@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { MenuItem, styled, FormControl, Select } from '@mui/material'
+import { useParams } from 'react-router'
+import {
+   MenuItem,
+   styled,
+   FormControl,
+   Select,
+   IconButton,
+} from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { ExitIcon, PlusIcon, SearchIcon } from '../../../assets/icons'
 import { InviteNewParticipant } from './InviteModal'
 import { allinviteMember } from '../../../store/inviteMember/inviteThunk'
 
 export const Participant = ({
-   openModalHandler,
    openNewInvite,
+   openParticipantHandler,
    setOpenNewInvite,
 }) => {
-   const kindaSelect = [
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Member', value: 'Member' },
-   ]
+   // const kindaSelect = [
+   //    { label: 'Admin', value: 'Admin' },
+   //    { label: 'Member', value: 'Member' },
+   // ]
 
    // const initialUsers = [
    //    { name: 'Aidana', role: 'Member' },
@@ -23,16 +30,19 @@ export const Participant = ({
 
    const { inviteMember } = useSelector((state) => state.inviteMember)
    const dispatch = useDispatch()
+   const { boardId } = useParams()
+
    const [users, setUsers] = useState(inviteMember)
-   useEffect(() => {
-      dispatch(allinviteMember())
-   }, [dispatch])
 
    const openInviteNewModal = () => {
       setOpenNewInvite((prev) => !prev)
    }
+   useEffect(() => {
+      dispatch(allinviteMember(boardId))
+   }, [dispatch])
+
    const handleRolesChange = (event, index) => {
-      const updatedUsers = [...users]
+      const updatedUsers = [...inviteMember]
       updatedUsers[index].role = event.target.value
       setUsers(updatedUsers)
    }
@@ -45,7 +55,9 @@ export const Participant = ({
             <ParticipantHeader>
                <p>{}</p>
                <p>Participant</p>
-               <ExitIconStyled onClick={openModalHandler} />
+               <IconButton>
+                  <ExitIconStyled onClick={openParticipantHandler} />
+               </IconButton>
             </ParticipantHeader>
             <InputBox>
                <SearchIconStyled />
@@ -58,15 +70,15 @@ export const Participant = ({
                </AdminBox>
                {users.map((user, index) => (
                   <UsersSelectBox key={user.id}>
-                     <p>{user.name}</p>
+                     <p>{user.firstName}</p>
                      <FormControlMui>
                         <SelectStyledMui
                            value={user.role}
                            onChange={(e) => handleRolesChange(e, index)}
                         >
-                           {kindaSelect.map((item) => (
-                              <MenuItem key={item.value} value={item.value}>
-                                 {item.label}
+                           {users.map((item) => (
+                              <MenuItem key={item.role} value={item.role}>
+                                 {item.role}
                               </MenuItem>
                            ))}
                         </SelectStyledMui>
@@ -74,7 +86,10 @@ export const Participant = ({
                   </UsersSelectBox>
                ))}
             </UsersBox>
-            <InviteNewBox onClick={openInviteNewModal}>
+            <InviteNewBox
+               setOpenNewInvite={setOpenNewInvite}
+               onClick={openInviteNewModal}
+            >
                <PlusIcon fill="#727272" />
                <p>Invite a new participant</p>
             </InviteNewBox>
@@ -90,7 +105,7 @@ const Container = styled('div')(() => ({
 }))
 const ParticipantContainer = styled('div')({
    width: '26.5625rem',
-   height: '17.3125rem',
+   height: '18.3125rem',
    padding: '1rem',
    borderRadius: '0.5rem',
    backgroundColor: 'white',
