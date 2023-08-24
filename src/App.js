@@ -1,14 +1,10 @@
-// import { BrowserRouter } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import { ThemeProvider } from '@mui/material'
 import { RouterProvider } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import { Provider } from 'react-redux'
+import { ThemeProvider } from '@mui/material'
 import { theme } from './assets/styles/theme'
-import { store } from './store'
-import { injectStore } from './config/axiosInstance'
 import { routes } from './routes/AppProvider'
-
-injectStore(store)
+import { store } from './store'
 
 function App() {
    return (

@@ -2,7 +2,7 @@ import { Avatar, IconButton, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import React, { useEffect } from 'react'
-import { StarIcon } from '../../assets/icons'
+import { OneStarIcon } from '../../assets/icons'
 import TableMui from '../UI/table/TableMui'
 import {
    addWorkspaceToFavorites,
@@ -15,7 +15,6 @@ export const WorkspaceTable = () => {
    const navigate = useNavigate()
 
    const { workspaces } = useSelector((state) => state.workspaces)
-   console.log('workspaces:', workspaces)
 
    const getWorkSpaceByIdHandler = (workspaceData) => {
       dispatch(getWorkspacebyId({ workspaceData, navigate, path: 'boards' }))
@@ -66,12 +65,12 @@ export const WorkspaceTable = () => {
          render: (data) => (
             <IconButton>
                {data?.isFavorite ? (
-                  <StarIcon
+                  <OneStarIcon
                      fill="#0079BF"
                      onClick={() => addtoFavouriteHandler(data.workSpaceId)}
                   />
                ) : (
-                  <StarIcon
+                  <OneStarIcon
                      fill="#B2B2B2"
                      onClick={() => addtoFavouriteHandler(data.workSpaceId)}
                   />

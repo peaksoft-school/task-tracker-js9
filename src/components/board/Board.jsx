@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IconButton, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { StarIcon } from '../../assets/icons'
+import { OneStarIcon } from '../../assets/icons'
 import {
    // boardRemove, ======> Нужен когда удалаем board
    fetchBoards,
@@ -63,14 +63,14 @@ export const Board = () => {
                         <StarContainer>
                            <IconButton>
                               {board.favorite ? (
-                                 <StarIcon
+                                 <OneStarIcon
                                     onClick={() =>
                                        addFavoriteFonc(board.boardId)
                                     }
                                     fill="#0079BF"
                                  />
                               ) : (
-                                 <StarIcon
+                                 <OneStarIcon
                                     onClick={() =>
                                        addFavoriteFonc(board.boardId)
                                     }

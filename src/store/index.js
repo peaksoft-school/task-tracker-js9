@@ -5,6 +5,7 @@ import { workspacesSlice } from './workspace/workspaceSlice'
 
 import { boardSlice } from './board/boardSlice'
 import { ProfileSlice } from './profile/ProfileSlice'
+import { favouriteSlice } from './getFavourites/favouritesSlice'
 
 export const store = configureStore({
    reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
       [workspacesSlice.name]: workspacesSlice.reducer,
       [boardSlice.name]: boardSlice.reducer,
       [ProfileSlice.name]: ProfileSlice.reducer,
+      [favouriteSlice.name]: favouriteSlice.reducer,
    },
 })
