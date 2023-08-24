@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
-import { MenuItem, styled, FormControl, Select } from '@mui/material'
+import {
+   MenuItem,
+   styled,
+   FormControl,
+   Select,
+   IconButton,
+} from '@mui/material'
 import { ExitIcon, PlusIcon, SearchIcon } from '../../../assets/icons'
 import { InviteNewParticipant } from './InviteModal'
 
 export const Participant = ({
-   openModalHandler,
    openNewInvite,
-   setOpenNewInvite,
+   openInviteNewModal,
+   openParticipantHandler,
 }) => {
    const kindaSelect = [
       { label: 'Admin', value: 'Admin' },
@@ -21,9 +27,6 @@ export const Participant = ({
 
    const [users, setUsers] = useState(initialUsers)
 
-   const openInviteNewModal = () => {
-      setOpenNewInvite((prev) => !prev)
-   }
    const handleRolesChange = (event, index) => {
       const updatedUsers = [...users]
       updatedUsers[index].role = event.target.value
@@ -38,7 +41,9 @@ export const Participant = ({
             <ParticipantHeader>
                <p>{}</p>
                <p>Participant</p>
-               <ExitIconStyled onClick={openModalHandler} />
+               <IconButton>
+                  <ExitIconStyled onClick={openParticipantHandler} />
+               </IconButton>
             </ParticipantHeader>
             <InputBox>
                <SearchIconStyled />
@@ -83,7 +88,7 @@ const Container = styled('div')(() => ({
 }))
 const ParticipantContainer = styled('div')({
    width: '26.5625rem',
-   height: '17.3125rem',
+   height: '18.3125rem',
    padding: '1rem',
    borderRadius: '0.5rem',
    backgroundColor: 'white',

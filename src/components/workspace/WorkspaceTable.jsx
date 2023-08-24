@@ -1,36 +1,50 @@
 import { Avatar, IconButton, styled } from '@mui/material'
-import React, { useState } from 'react'
-
-import { rows } from '../../utils/constants/general'
-import TableMui from '../UI/table/TableMui'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import React, { useEffect } from 'react'
 import { OneStarIcon } from '../../assets/icons'
+import TableMui from '../UI/table/TableMui'
+import {
+   addWorkspaceToFavorites,
+   fetchAllWorkspaces,
+   getWorkspacebyId,
+} from '../../store/workspace/workspaceThunk'
 
 export const WorkspaceTable = () => {
-   const [favoriteIds, setFavoriteIds] = useState([])
-   const isFavorite = (id) => favoriteIds.includes(id)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
 
-   const toggleFavorite = (id) => {
-      setFavoriteIds((prevIds) =>
-         prevIds.includes(id)
-            ? prevIds.filter((favId) => favId !== id)
-            : [...prevIds, id]
-      )
+   const { workspaces } = useSelector((state) => state.workspaces)
+
+   const getWorkSpaceByIdHandler = (workspaceData) => {
+      dispatch(getWorkspacebyId({ workspaceData, navigate, path: 'boards' }))
    }
+   const addtoFavouriteHandler = (workspaceId) => {
+      dispatch(addWorkspaceToFavorites(workspaceId))
+   }
+
+   useEffect(() => {
+      dispatch(fetchAllWorkspaces())
+   }, [dispatch])
 
    const column = [
       {
          heading: '№',
-         key: 'id',
+         key: 'workSpaceId',
          index: true,
          align: 'left',
          minWidth: '5rem',
-         render: (data) => <h3>{data.id}</h3>,
+         render: (data) => <h3>{data.workSpaceId}</h3>,
       },
       {
          heading: 'Name',
-         key: 'name',
-         minWidth: '29rem',
-         render: (data) => <NameStyle>{data.name}</NameStyle>,
+         key: 'workSpaceName',
+         minWidth: '15rem',
+         render: (workspaceData) => (
+            <NameStyle onClick={() => getWorkSpaceByIdHandler(workspaceData)}>
+               {workspaceData.workSpaceName}
+            </NameStyle>
+         ),
       },
       {
          heading: 'Lead',
@@ -39,8 +53,8 @@ export const WorkspaceTable = () => {
             <div
                style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}
             >
-               <Avatar>{data.img}</Avatar>
-               <p>{data.lead}</p>
+               <Avatar src={data.adminImage} />
+               <p>{data.adminFullName}</p>
             </div>
          ),
       },
@@ -49,11 +63,17 @@ export const WorkspaceTable = () => {
          key: 'action',
          align: 'right',
          render: (data) => (
-            <IconButton onClick={() => toggleFavorite(data.id)}>
-               {isFavorite(data.id) ? (
-                  <OneStarIcon fill="#0079BF" />
+            <IconButton>
+               {data?.isFavorite ? (
+                  <OneStarIcon
+                     fill="#0079BF"
+                     onClick={() => addtoFavouriteHandler(data.workSpaceId)}
+                  />
                ) : (
-                  <OneStarIcon fill="#B2B2B2" />
+                  <OneStarIcon
+                     fill="#B2B2B2"
+                     onClick={() => addtoFavouriteHandler(data.workSpaceId)}
+                  />
                )}
             </IconButton>
          ),
@@ -62,7 +82,7 @@ export const WorkspaceTable = () => {
 
    return (
       <div>
-         <TableMui column={column} rows={rows} />
+         <TableMui column={column} rows={workspaces} />
       </div>
    )
 }

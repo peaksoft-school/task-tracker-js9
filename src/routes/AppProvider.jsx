@@ -6,8 +6,9 @@ import { Workspaces } from '../components/workspace/Workspace'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
-// import { Labels } from '../components/labels/Labels'
-// import { AddedLabelToCard } from '../components/addedLabelToCard/AddedLabelToCard'
+import { Profile } from '../components/profile/Profile'
+import { BoardPage } from '../pages/BoardPage'
+import { InnerPage } from '../pages/InnerPage'
 
 export const routes = createBrowserRouter([
    {
@@ -42,7 +43,7 @@ export const routes = createBrowserRouter([
       ),
    },
    {
-      path: '/mainPage',
+      path: '/mainPage/',
       element: (
          <PrivateRoute
             component={
@@ -54,6 +55,33 @@ export const routes = createBrowserRouter([
             roles={[USER_ROLE.ADMIN, USER_ROLE.USER]}
             fallBacPath="/"
          />
+      ),
+   },
+   {
+      path: 'mainPage/:id/boards/',
+      element: (
+         <>
+            <Headers />
+            <BoardPage />
+         </>
+      ),
+   },
+   {
+      path: '/profile',
+      element: (
+         <>
+            <Headers />
+            <Profile />
+         </>
+      ),
+   },
+   {
+      path: 'mainPage/:id/boards/:boardId/board',
+      element: (
+         <>
+            <Headers />
+            <InnerPage />
+         </>
       ),
    },
 
