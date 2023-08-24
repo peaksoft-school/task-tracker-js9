@@ -1,7 +1,7 @@
 import { Tooltip, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { ExitIcon, PLUSICON, PlusIcon } from '../../assets/icons'
+import { ExitIcon, PLUSICON } from '../../assets/icons'
 import { deleteLabel, getLabels } from '../../store/getLabels/labelsThunk'
 import { labelActions } from '../../store/getLabels/labelsSlice'
 import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
@@ -45,9 +45,10 @@ export const Labels = () => {
                   />
                </ContainerLabels>
             ))}
-            <PLUSICON onClick={addLabelOpenModal} style={{ cursor: 'pointer' }}>
-               <PlusIcon />
-            </PLUSICON>
+            <PLUSICON
+               onClick={addLabelOpenModal}
+               style={{ cursor: 'pointer', marginTop: '2px' }}
+            />
             {labelDrop && (
                <ModalUi open={labelDrop}>
                   <AddedLabelToCard addLabelCloseModal={addLabelCloseModal} />
