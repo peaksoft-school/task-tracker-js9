@@ -1,10 +1,18 @@
 import { Box, Modal, styled } from '@mui/material'
 import React from 'react'
 
-export const ModalUi = ({ open, onClose, children, ...rest }) => {
+export const ModalUi = ({
+   handleModalContentClick,
+   open,
+   onClose,
+   children,
+   ...rest
+}) => {
    return (
       <Backdrop open={open} onClose={onClose}>
-         <ModalStyle {...rest}>{children}</ModalStyle>
+         <ModalStyle onClick={handleModalContentClick} {...rest}>
+            {children}
+         </ModalStyle>
       </Backdrop>
    )
 }

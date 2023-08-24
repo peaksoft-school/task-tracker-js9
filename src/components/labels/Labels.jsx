@@ -1,13 +1,15 @@
 import { Tooltip, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { ExitIcon } from '../../assets/icons'
+import { ExitIcon, PLUSICON, PlusIcon } from '../../assets/icons'
 import { deleteLabel, getLabels } from '../../store/getLabels/labelsThunk'
+import { labelActions } from '../../store/getLabels/labelsSlice'
+import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
+import { ModalUi } from '../UI/modal/Modal'
 
 export const Labels = () => {
    const dispatch = useDispatch()
-   const labelsData = useSelector((state) => state.labels)
-   console.log(labelsData)
+   const { label, labelDrop } = useSelector((state) => state.labels)
 
    useEffect(() => {
       dispatch(getLabels())
@@ -17,12 +19,19 @@ export const Labels = () => {
       dispatch(deleteLabel(id))
       console.log(id)
    }
+   const addLabelOpenModal = () => {
+      dispatch(labelActions.openModal())
+   }
+
+   const addLabelCloseModal = () => {
+      dispatch(labelActions.closeModal())
+   }
    return (
       <div>
          <HeadingLabel>Labels</HeadingLabel>
 
          <AllContainer>
-            {labelsData?.label.map((item) => (
+            {label?.map((item) => (
                <ContainerLabels
                   style={{ backgroundColor: item.color }}
                   key={item.labelId}
@@ -36,6 +45,14 @@ export const Labels = () => {
                   />
                </ContainerLabels>
             ))}
+            <PLUSICON onClick={addLabelOpenModal} style={{ cursor: 'pointer' }}>
+               <PlusIcon />
+            </PLUSICON>
+            {labelDrop && (
+               <ModalUi open={labelDrop}>
+                  <AddedLabelToCard addLabelCloseModal={addLabelCloseModal} />
+               </ModalUi>
+            )}
          </AllContainer>
       </div>
    )

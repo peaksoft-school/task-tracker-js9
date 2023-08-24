@@ -6,7 +6,7 @@ export const labels = [
    },
    {
       id: 2,
-      title: 'hello hellwo rldaasfkdjk asdfljkhasdlfhsadf asjfdkhaskldhflkashf asdfasjhfkjadhslka ',
+      title: 'hello hellwo rldaasfkdjk',
       backgroundColor: 'blue',
    },
    {

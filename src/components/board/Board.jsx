@@ -30,6 +30,7 @@ export const Board = () => {
 
    const postFunc = (objBoard) => {
       dispatch(boardPost(objBoard))
+      console.log(objBoard)
    }
 
    const addFavoriteFonc = (boardId) => {
@@ -103,10 +104,10 @@ const Boards = styled('div')(() => ({
 
 const BoardBlock = styled('div')(({ board }) => ({
    backgroundColor: `${
-      board.backGround.startsWith('#') ? board.backGround : ''
+      board?.backGround?.startsWith('#') ? board?.backGround : ''
    }`,
    backgroundImage: `${
-      board.backGround.startsWith('#') ? 'none' : `url(${board.backGround})`
+      board?.backGround?.startsWith('#') ? 'none' : `url(${board?.backGround})`
    }`,
    backgroundRepeat: 'no-repeat',
    backgroundSize: 'cover',

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Avatar, IconButton } from '@mui/material'
 import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
    DownIcon,
    Logo,
@@ -17,19 +17,37 @@ import { Favourite } from '../favourite/Favourite'
 import { ModalUi } from '../UI/modal/Modal'
 
 export const Headers = ({ data }) => {
-   const [isIconUp, setIsIconUp] = useState(false)
+   const [showModal, setShowModal] = useState(false)
    const [openProfile, setOpenProfile] = useState(false)
+
+   const { favoriteData } = useSelector((state) => state.favorite)
+
+   const boardLength = favoriteData.data?.boardResponses?.length || 0
+   const workSpaceLength = favoriteData.data?.workSpaceResponses?.length || 0
+   const sumLength = boardLength + workSpaceLength
+
+   const [favoriteSum, setFavoriteSum] = useState(0)
+
+   useEffect(() => {
+      if (sumLength > 0) {
+         setFavoriteSum(sumLength)
+      }
+   }, [sumLength])
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const location = useLocation()
 
-   const handleIconClick = () => {
-      setIsIconUp(!isIconUp)
+   const openFavoriteModalHandler = () => {
+      setShowModal(!showModal)
    }
 
    const openProfileHandler = () => {
       setOpenProfile((prev) => !prev)
+   }
+
+   const handleModalContentClick = (event) => {
+      event.stopPropagation()
    }
    const logOutHandler = () => {
       console.log('logout')
@@ -54,13 +72,19 @@ export const Headers = ({ data }) => {
                <Logotype src={Logo} alt="task-tracker_logo" />
                <LogoWords>Task Tracker</LogoWords>
                <Favorite>
-                  <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
-                  <IconButton onClick={handleIconClick}>
-                     {isIconUp ? (
+                  <ParagraphFavorite>
+                     Favourites ({favoriteSum})
+                  </ParagraphFavorite>
+                  <IconButton onClick={openFavoriteModalHandler}>
+                     {showModal ? (
                         <>
                            <UpIcon src={UpIcon} alt="up_arrow" />
-                           <ModalUi onClose={handleIconClick} open={isIconUp}>
-                              <Favourite />
+                           <ModalUi
+                              handleModalContentClick={handleModalContentClick}
+                              onClose={openFavoriteModalHandler}
+                              open={showModal}
+                           >
+                              <Favourite setShowModal={setShowModal} />
                            </ModalUi>
                         </>
                      ) : (
@@ -190,6 +214,10 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
 const StyledAvatar = muiStyled(Avatar)(() => ({
    cursor: 'pointer',
 }))
+
+// const ModalUii = muiStyled(ModalUi)(() => ({
+//    marginTop: '0px',
+// }))
 
 const ProfileTexts = muiStyled('div')(() => ({
    width: '10rem',

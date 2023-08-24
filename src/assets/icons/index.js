@@ -32,7 +32,6 @@ import { ReactComponent as PeopleIcon } from './people.svg'
 import { ReactComponent as PlusIcon } from './plus.svg'
 import { ReactComponent as ShowIcon } from './show.svg'
 import { ReactComponent as SearchIcon } from './search.svg'
-import { ReactComponent as StarIcon } from './star.svg'
 import { ReactComponent as StarFilledIcon } from './starFilled.svg'
 import { ReactComponent as TemplateIcon } from './template.svg'
 import { ReactComponent as ToolsIcon } from './tools.svg'
@@ -48,9 +47,20 @@ import { ReactComponent as RealWorldIcon } from './realWorldIcon.svg'
 import { ReactComponent as TypographyIcon } from './typographyIcon.svg'
 import { ReactComponent as CommunicationIcon } from './communicationIcon.svg'
 import { ReactComponent as CheckKeyboardIcon } from './CheckKeyboardIcon.svg'
+import { ReactComponent as MenuIcon } from './menuIcon.svg'
+import { ReactComponent as FrameIcon } from './Frame 150.svg'
+import { ReactComponent as FrameThreeIcon } from './FrameThree.svg'
+import { ReactComponent as StarEmptyIcon } from './starEmpty.svg'
+import { ReactComponent as StarBlue } from './starBlue.svg'
+import { ReactComponent as PLUSICON } from './PLUSiCON.svg'
 
 export {
+   PLUSICON,
    CheckKeyboardIcon,
+   FrameIcon,
+   StarBlue,
+   StarEmptyIcon,
+   FrameThreeIcon,
    CommunicationIcon,
    TypographyIcon,
    RealWorldIcon,
@@ -91,7 +101,6 @@ export {
    PlusIcon,
    ShowIcon,
    SearchIcon,
-   StarIcon,
    StarFilledIcon,
    TemplateIcon,
    ToolsIcon,
@@ -100,4 +109,5 @@ export {
    BlueIcon,
    GoogleIcon,
    CloseIcon,
+   MenuIcon,
 }
