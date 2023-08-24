@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
 
 export const allinviteMember = createAsyncThunk(
-   'board-invite/inviteGet',
+   'inviteMember/inviteGet',
    async (boardId, { rejectWithValue }) => {
       try {
          const { data } = await axiosInstance.get(
@@ -16,7 +16,7 @@ export const allinviteMember = createAsyncThunk(
 )
 
 export const createInviteMember = createAsyncThunk(
-   'bord-invite/invitePost',
+   'inviteMember/invitePost',
    async (newdata, { rejectWithValue }) => {
       try {
          const { data } = await axiosInstance.post(

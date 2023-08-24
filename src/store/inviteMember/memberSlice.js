@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { allinviteMember } from './inviteThunk'
 
-export const inviteMemberSlice = createSlice({
+export const memberSlice = createSlice({
    name: 'inviteMember',
    inntialState: {
       inviteMember: [],
@@ -14,3 +14,4 @@ export const inviteMemberSlice = createSlice({
       }),
    ],
 })
+export const inviteActions = memberSlice.actions

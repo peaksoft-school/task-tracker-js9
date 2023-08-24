@@ -1,6 +1,6 @@
 import { Avatar, IconButton, styled } from '@mui/material'
 import React, { useState } from 'react'
-import StarIcon from '../../assets/icons'
+import { OneStarIcon } from '../../assets/icons'
 
 import { rows } from '../../utils/constants/general'
 import TableMui from '../UI/table/TableMui'
@@ -51,9 +51,9 @@ export const WorkspaceTable = () => {
          render: (data) => (
             <IconButton onClick={() => toggleFavorite(data.id)}>
                {isFavorite(data.id) ? (
-                  <StarIcon fill="#0079BF" />
+                  <OneStarIcon fill="#0079BF" />
                ) : (
-                  <StarIcon fill="#B2B2B2" />
+                  <OneStarIcon fill="#B2B2B2" />
                )}
             </IconButton>
          ),

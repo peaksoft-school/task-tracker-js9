@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect } from 'react'
 import { styled, IconButton } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { StarFilledIcon, StarIcon } from '../../assets/icons'
+import { StarFilledIcon, StarBlue } from '../../assets/icons'
 import {
    getFavourites,
    toggleFavoriteWorkSpace,
@@ -35,7 +35,7 @@ export const Favourite = () => {
    }
 
    const getIcon = (isFavourite) =>
-      isFavourite ? <StarFilledIcon /> : <StarIcon />
+      isFavourite ? <StarFilledIcon /> : <StarBlue fill="#0079BF" />
 
    useEffect(() => {
       dispatch(getFavourites())
