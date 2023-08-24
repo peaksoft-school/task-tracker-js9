@@ -98,7 +98,7 @@ export const Headers = ({ data }) => {
                   <SearchIconWrapper>
                      <SearchIcon src={SearchIcon} alt="Search_Icon" />
                   </SearchIconWrapper>
-                  <StyledInputBase placeholder="Search" />
+                  <StyledInputBase placeholder="Search" type="search" />
                </Search>
                <IconButton>
                   <NotificationIcon src={NotificationIcon} alt="notification" />
@@ -131,6 +131,8 @@ const GLobalContainer = muiStyled('header')(() => ({
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
+   position: 'fixed',
+   zIndex: 990,
 }))
 
 const LogoContainer = muiStyled('div')(() => ({
@@ -202,12 +204,13 @@ const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
 const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
    fontFamily: 'CarePro',
    color: 'inherit',
+
    '& .MuiInputBase-input': {
       borderRadius: 8,
-      padding: theme.spacing(1.3, 18, 1.3, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(5)})`,
+      padding: theme.spacing(1.3, 1.3, 1.3, 0),
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
-      width: '100%',
+      width: '27rem',
    },
 }))
 

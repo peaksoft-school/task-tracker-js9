@@ -24,7 +24,7 @@ export const signInRequest = createAsyncThunk(
    'auth/signIn',
    async (payload, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.post('/auth/signIn', payload)
+         const response = await axiosInstance.post('auth/signIn', payload)
 
          localStorage.setItem(
             STORAGE_KEY.TASK_TRACER_AUTH_KEY,
