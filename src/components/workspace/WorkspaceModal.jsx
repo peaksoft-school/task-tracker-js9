@@ -1,30 +1,30 @@
 import React, { useRef, useState } from 'react'
+// eslint-disable-next-line import/no-unresolved
 import CreatableSelect from 'react-select/creatable'
+import { useDispatch } from 'react-redux'
 import { Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { styled } from '@mui/material'
 import { ModalUi } from '../UI/modal/Modal'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
+import { createNewWorkspace } from '../../store/workspace/workspaceThunk'
 
 const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
 
 const validationSchema = Yup.object().shape({
    workspaceName: Yup.string().required('Name of the workspace is required'),
-   invitedMembers: Yup.array()
-      .of(
-         Yup.object().shape({
-            value: Yup.string()
-               .matches(emailRegExp, 'Invalid email format')
-               .required('Email is required'),
-         })
-      )
-      .test('at-least-one-email', 'At least one email is required', (value) => {
-         return value && value.length > 0
+   invitedMembers: Yup.array().of(
+      Yup.object().shape({
+         value: Yup.string()
+            .matches(emailRegExp, 'Invalid email format')
+            .required('Email is required'),
       })
-      .nullable(),
+   ),
 })
+
 const NewWorkspaceForm = ({ showModal, setShowModal }) => {
+   const dispatch = useDispatch()
    const [tempValue, setTempValue] = useState('')
    const formikRef = useRef()
 
@@ -33,8 +33,15 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
    }
 
    const handleFormSubmit = (values) => {
+      const data = values.invitedMembers.map((item) => item.value)
+
+      const newdata = {
+         emails: data,
+         name: values.workspaceName,
+         link: 'http://localhost:3000/signup',
+      }
+      dispatch(createNewWorkspace(newdata))
       setShowModal(false)
-      console.log(values, 'VALUES')
    }
 
    const closeModal = () => {
@@ -61,13 +68,9 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                      setFieldValue,
                      errors,
                      isValid,
-                     isSubmitting,
                   }) => (
                      <InputContainer>
-                        <LebelStyle
-                           sx={{ padding: '0 0 0.5rem 0' }}
-                           htmlFor="workspaceName"
-                        >
+                        <LebelStyle htmlFor="workspaceName">
                            Name of the workspace*
                         </LebelStyle>
                         <div>
@@ -87,50 +90,68 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                            />
                         </div>
 
+                        <LebelStyle htmlFor="inviteMember">
+                           Invite a member
+                        </LebelStyle>
                         <div>
-                           <LebelStyle htmlFor="inviteMember">
-                              Invite a member
-                           </LebelStyle>
-                           <EmailInputContainer>
-                              <CreatableSelect
-                                 isClearable
-                                 isMulti
-                                 inputValue={tempValue}
-                                 onInputChange={(newValue) =>
-                                    setTempValue(newValue)
-                                 }
-                                 name="invitedMembers"
-                                 value={values.invitedMembers}
-                                 components={{ DropdownIndicator: null }}
-                                 onChange={(selected) => {
-                                    setFieldValue('invitedMembers', selected)
-                                 }}
-                                 className="basic-multi-select"
-                                 onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && e.target.value) {
-                                       e.preventDefault()
-                                       const newMember = e.target.value
-                                       if (
-                                          !isDuplicate(
-                                             newMember,
-                                             values.invitedMembers
-                                          )
-                                       ) {
-                                          const member = {
-                                             value: newMember,
-                                             label: newMember,
-                                          }
-                                          setFieldValue('invitedMembers', [
-                                             ...values.invitedMembers,
-                                             member,
-                                          ])
+                           <CreatableSelect
+                              className="basic-multi-select"
+                              styles={{
+                                 control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    borderColor: '#D0D0D0',
+                                    '&:hover': {
+                                       border: '1px solid #0079BF',
+                                    },
+                                    '&:active': {
+                                       border: '1px solid #999898',
+                                    },
+
+                                    borderRadius: '0.5rem',
+                                    height: '1rem',
+                                 }),
+                                 placeholder: (baseStyles) => ({
+                                    ...baseStyles,
+                                    color: '#AFAFAF',
+                                 }),
+                              }}
+                              isClearable
+                              isMulti
+                              inputValue={tempValue}
+                              onInputChange={(newValue) =>
+                                 setTempValue(newValue)
+                              }
+                              name="invitedMembers"
+                              value={values.invitedMembers}
+                              components={{ DropdownIndicator: null }}
+                              onChange={(selected) => {
+                                 setFieldValue('invitedMembers', selected)
+                              }}
+                              onKeyDown={(e) => {
+                                 if (e.key === 'Enter' && e.target.value) {
+                                    e.preventDefault()
+                                    const newMember = e.target.value
+                                    if (
+                                       !isDuplicate(
+                                          newMember,
+                                          values.invitedMembers
+                                       )
+                                    ) {
+                                       const member = {
+                                          value: newMember,
+                                          label: newMember,
                                        }
-                                       setTempValue('')
+                                       setFieldValue('invitedMembers', [
+                                          ...values.invitedMembers,
+                                          member,
+                                       ])
                                     }
-                                 }}
-                                 placeholder="example@gmail.com"
-                              />
-                           </EmailInputContainer>
+                                    setTempValue('')
+                                 }
+                              }}
+                              placeholder="example@gmail.com"
+                           />
+                           {/* </EmailInputContainer> */}
                            <p style={{ color: 'red' }}>
                               {errors?.invitedMembers
                                  ? errors.invitedMembers[0]?.value ||
@@ -146,13 +167,7 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                            >
                               Cancel
                            </CanselButton>
-                           <SaveButton
-                              disabled={
-                                 (!isValid && !isSubmitting) ||
-                                 values.invitedMembers.length <= 0
-                              }
-                              type="submit"
-                           >
+                           <SaveButton disabled={!isValid} type="submit">
                               Create
                            </SaveButton>
                         </ButtonContainer>
@@ -178,7 +193,7 @@ const StyleModalUi = styled(ModalUi)(() => ({
 const LebelStyle = styled('label')(() => ({
    color: '#919191',
    fontSize: '0.875rem',
-   marginTop: '1.25rem',
+   padding: '0.5rem 0  0 0.3rem',
 }))
 const InputContainer = styled(Form)(() => ({
    display: 'flex',
@@ -227,16 +242,14 @@ const NewWorkspace = styled('span')(() => ({
 }))
 
 const InputStyle = styled(Input)(() => ({
+   '& .MuiOutlinedInput-root': {
+      borderRadius: '0.5rem',
+   },
    input: {
-      width: '20.5625rem',
-      height: '1.8rem',
+      width: '20.4625rem',
+      height: '1.65rem',
       padding: ' 0.375rem 1rem',
       alignItems: ' center',
       borderRadius: '0.5rem',
    },
-}))
-const EmailInputContainer = styled('div')(() => ({
-   width: '100%',
-   borderRadius: ' 0.3rem',
-   border: ' 1px solid #D0D0D0',
 }))

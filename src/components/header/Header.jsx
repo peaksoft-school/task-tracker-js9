@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Avatar, IconButton } from '@mui/material'
 import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
    DownIcon,
    Logo,
@@ -13,21 +13,41 @@ import {
 } from '../../assets/icons'
 import { logOut } from '../../store/auth/authThunk'
 import { showSnackbar } from '../UI/snackbar/Snackbar'
+import { Favourite } from '../favourite/Favourite'
+import { ModalUi } from '../UI/modal/Modal'
 
 export const Headers = ({ data }) => {
-   const [isIconUp, setIsIconUp] = useState(false)
+   const [showModal, setShowModal] = useState(false)
    const [openProfile, setOpenProfile] = useState(false)
+
+   const { favoriteData } = useSelector((state) => state.favorite)
+
+   const boardLength = favoriteData.data?.boardResponses?.length || 0
+   const workSpaceLength = favoriteData.data?.workSpaceResponses?.length || 0
+   const sumLength = boardLength + workSpaceLength
+
+   const [favoriteSum, setFavoriteSum] = useState(0)
+
+   useEffect(() => {
+      if (sumLength > 0) {
+         setFavoriteSum(sumLength)
+      }
+   }, [sumLength])
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const location = useLocation()
 
-   const handleIconClick = () => {
-      setIsIconUp(!isIconUp)
+   const openFavoriteModalHandler = () => {
+      setShowModal(!showModal)
    }
 
    const openProfileHandler = () => {
       setOpenProfile((prev) => !prev)
+   }
+
+   const handleModalContentClick = (event) => {
+      event.stopPropagation()
    }
    const logOutHandler = () => {
       console.log('logout')
@@ -52,10 +72,21 @@ export const Headers = ({ data }) => {
                <Logotype src={Logo} alt="task-tracker_logo" />
                <LogoWords>Task Tracker</LogoWords>
                <Favorite>
-                  <ParagraphFavorite>Favourites (2)</ParagraphFavorite>
-                  <IconButton onClick={handleIconClick}>
-                     {isIconUp ? (
-                        <UpIcon src={UpIcon} alt="up_arrow" />
+                  <ParagraphFavorite>
+                     Favourites ({favoriteSum})
+                  </ParagraphFavorite>
+                  <IconButton onClick={openFavoriteModalHandler}>
+                     {showModal ? (
+                        <>
+                           <UpIcon src={UpIcon} alt="up_arrow" />
+                           <ModalUi
+                              handleModalContentClick={handleModalContentClick}
+                              onClose={openFavoriteModalHandler}
+                              open={showModal}
+                           >
+                              <Favourite setShowModal={setShowModal} />
+                           </ModalUi>
+                        </>
                      ) : (
                         <DownIcon src={DownIcon} alt="down_arrow" />
                      )}
@@ -67,7 +98,7 @@ export const Headers = ({ data }) => {
                   <SearchIconWrapper>
                      <SearchIcon src={SearchIcon} alt="Search_Icon" />
                   </SearchIconWrapper>
-                  <StyledInputBase placeholder="Search" />
+                  <StyledInputBase placeholder="Search" type="search" />
                </Search>
                <IconButton>
                   <NotificationIcon src={NotificationIcon} alt="notification" />
@@ -100,6 +131,8 @@ const GLobalContainer = muiStyled('header')(() => ({
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
+   position: 'fixed',
+   zIndex: 990,
 }))
 
 const LogoContainer = muiStyled('div')(() => ({
@@ -171,18 +204,23 @@ const SearchIconWrapper = muiStyled('div')(({ theme }) => ({
 const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
    fontFamily: 'CarePro',
    color: 'inherit',
+
    '& .MuiInputBase-input': {
       borderRadius: 8,
-      padding: theme.spacing(1.3, 18, 1.3, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(5)})`,
+      padding: theme.spacing(1.3, 1.3, 1.3, 0),
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
-      width: '100%',
+      width: '27rem',
    },
 }))
 
 const StyledAvatar = muiStyled(Avatar)(() => ({
    cursor: 'pointer',
 }))
+
+// const ModalUii = muiStyled(ModalUi)(() => ({
+//    marginTop: '0px',
+// }))
 
 const ProfileTexts = muiStyled('div')(() => ({
    width: '10rem',

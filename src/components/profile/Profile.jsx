@@ -70,7 +70,7 @@ export const Profile = () => {
    }
 
    return (
-      <div>
+      <div style={{ paddingTop: '6rem' }}>
          <StyledWorkspace>
             <WorkSpaceSpan to="/mainPage">Workspace</WorkSpaceSpan>
             <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>

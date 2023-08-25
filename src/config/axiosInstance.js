@@ -2,22 +2,17 @@ import axios from 'axios'
 import { BASE_URL } from '../utils/constants/authorization'
 
 const logoutAction = () => {}
-
 const headers = {
    'Content-Type': 'application/json',
 }
-
 const axiosInstance = axios.create({
    baseURL: BASE_URL,
    headers,
 })
-
 let store
-
 export const injectStore = (_store) => {
    store = _store
 }
-
 axiosInstance.interceptors.request.use((config) => {
    const updatedConfig = { ...config }
    const { token } = store.getState().auth
@@ -26,7 +21,6 @@ axiosInstance.interceptors.request.use((config) => {
    }
    return updatedConfig
 })
-
 axiosInstance.interceptors.response.use(
    (response) => {
       return Promise.resolve(response)
@@ -38,5 +32,4 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error)
    }
 )
-
 export { axiosInstance }

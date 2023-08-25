@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://tasktracker.peaksoftprojects.com'
+export const BASE_URL = 'http://18.195.216.178'
 export const role = 'ADMIN'
 
 export const isAllowed = (roles) => {
