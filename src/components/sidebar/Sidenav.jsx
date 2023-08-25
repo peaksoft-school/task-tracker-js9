@@ -84,7 +84,11 @@ export function Sidenav({ data, dataLength, workspacedata }) {
    return (
       <div style={{ display: 'flex' }}>
          <Box sx={{ zIndex: '0' }}>
-            <Drawer variant="permanent" open={openDrawer}>
+            <Drawer
+               variant="permanent"
+               open={openDrawer}
+               style={{ position: 'relative', top: '20px' }}
+            >
                <SideHead
                   handleItemClick={handleItemClick}
                   handleDrawerToggle={handleDrawerToggle}
@@ -120,6 +124,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                      backgroundColor: '#fff',
                      borderRadius: ' 0rem 0.5rem 0.5rem 0rem',
                      position: 'relative',
+                     // top: '2rem',
                      zIndex: '10',
                   }}
                >

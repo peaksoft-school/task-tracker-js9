@@ -1,27 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { deleteComment, getAllComments, postComments } from './commentsThunk'
+import { getAllComments, postComments, deleteComment } from './commentsThunk'
 
 const initialState = {
    comments: [],
    isLoading: false,
    isError: '',
+   isMyComment: false,
 }
 
 export const commentsSlice = createSlice({
    name: 'comments',
    initialState,
-   reducers: {
-      updateComment: (state, action) => {
-         const { commentId, newText } = action.payload
-         const commentToUpdate = state.comments.find(
-            (comment) => comment.commentId === commentId
-         )
-
-         if (commentToUpdate) {
-            commentToUpdate.comment = newText
-         }
-      },
-   },
+   reducers: {},
    extraReducers: (builder) => {
       builder
          // get all comments
@@ -29,14 +19,13 @@ export const commentsSlice = createSlice({
             state.comments = action.payload
             state.isLoading = false
             state.isError = ''
+            state.isMyComment = action.payload.isMyComment
          })
          .addCase(getAllComments.pending, (state) => {
-            state.comments = []
             state.isLoading = true
             state.isError = ''
          })
          .addCase(getAllComments.rejected, (state, action) => {
-            state.comments = []
             state.isLoading = false
             state.isError = action.payload
          })
@@ -59,11 +48,8 @@ export const commentsSlice = createSlice({
             state.isLoading = true
             state.isError = null
          })
-         .addCase(deleteComment.fulfilled, (state, action) => {
+         .addCase(deleteComment.fulfilled, (state) => {
             state.isLoading = false
-            state.comments = state.comments.filter(
-               (comment) => comment.id !== action.payload
-            )
          })
          .addCase(deleteComment.rejected, (state, action) => {
             state.isLoading = false
@@ -71,5 +57,3 @@ export const commentsSlice = createSlice({
          })
    },
 })
-
-export const { updateComment } = commentsSlice.actions

@@ -19,10 +19,10 @@ export const getAllComments = createAsyncThunk(
 
 export const postComments = createAsyncThunk(
    'comments/postComments',
-   async (payload, { rejectWithValue }) => {
+   async (payload, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.post(`/api/comments`, payload)
-         // dispatch(getAllComments())
+         dispatch(getAllComments())
          return response
       } catch (error) {
          return rejectWithValue(
@@ -36,12 +36,15 @@ export const editComment = createAsyncThunk(
    'comments/editComment',
    async (payload, { rejectWithValue, dispatch }) => {
       try {
-         console.log(payload)
-         await axiosInstance.put(`/api/comments/${payload.commentId}`, {
-            comment: payload.comment,
-            cardId: payload.commentId,
-         })
-         return dispatch(getAllComments())
+         const { data } = await axiosInstance.put(
+            `/api/comments/${payload.commentId}`,
+            {
+               comment: payload.comment,
+               cardId: payload.commentId,
+            }
+         )
+         dispatch(getAllComments())
+         return data
       } catch (error) {
          return rejectWithValue(
             error?.response?.data || 'Something went wrong!'
@@ -54,11 +57,11 @@ export const deleteComment = createAsyncThunk(
    'comments/deleteComment',
    async (deleteCommentById, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axiosInstance.delete(
+         const { data } = await axiosInstance.delete(
             `/api/comments/${deleteCommentById}`
          )
          dispatch(getAllComments())
-         return response.data
+         return data
       } catch (error) {
          return rejectWithValue(
             error?.response?.data || 'Something went wrong!'
@@ -70,16 +73,18 @@ export const deleteComment = createAsyncThunk(
 export const getCommentsbyId = createAsyncThunk(
    'comments/getCommentsbyId',
    async (payload, { rejectWithValue }) => {
-      const { id, navigate, path } = payload
+      const { commentId, navigate } = payload
 
       try {
-         const { data } = await getCommentsbyId(`/api/comments/${id}`)
+         const response = await axiosInstance.get(`/api/comments/${commentId}`)
          if (navigate) {
-            navigate(`/profile/${id}/${path}`)
+            navigate(`/profile/${commentId}`, { state: { edit: 'true' } })
          }
-         return data
+         return response.data
       } catch (error) {
-         return rejectWithValue(error.data.message)
+         return rejectWithValue(
+            error?.response?.data || 'Something went wrong!'
+         )
       }
    }
 )

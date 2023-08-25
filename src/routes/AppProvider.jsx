@@ -2,11 +2,11 @@ import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
-// import { Workspaces } from '../components/workspace/Workspace'
+import { Workspaces } from '../components/workspace/Workspace'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
-import { CommentSection } from '../components/UI/comments/CommentsSection'
+import { Profile } from '../components/profile/Profile'
 
 export const routes = createBrowserRouter([
    {
@@ -40,14 +40,22 @@ export const routes = createBrowserRouter([
       ),
    },
    {
+      path: '/profile/:id',
+      element: (
+         <>
+            <Headers />
+            <Profile />
+         </>
+      ),
+   },
+   {
       path: '/mainPage',
       element: (
          <PrivateRoute
             component={
                <>
                   <Headers />
-                  {/* <Workspaces /> */}
-                  <CommentSection />
+                  <Workspaces />
                </>
             }
             roles={[USER_ROLE.ADMIN, USER_ROLE.USER]}

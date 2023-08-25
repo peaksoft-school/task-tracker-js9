@@ -52,81 +52,84 @@ export const boards = [
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://cdn.pixabay.com/photo/2013/02/20/11/30/bubbles-83758_640.jpg',
+         'https://images.unsplash.com/photo-1688383213635-9bc2fc25103d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
    },
    {
       id: 10,
       title: 'Boardname',
       isFavourite: false,
-      background: 'https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg',
+      background:
+         'https://images.unsplash.com/photo-1686740172488-6a680069affb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
    },
    {
       id: 11,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://images.unsplash.com/photo-1689236913171-2f53681b8e82?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
    },
    {
       id: 12,
       title: 'Boardname',
       isFavourite: false,
-      background: 'https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg',
+      background:
+         'https://images.unsplash.com/photo-1690184432588-81068877d852?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80',
    },
    {
       id: 13,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://images.unsplash.com/photo-1688367785293-6d75934ba847?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1075&q=80',
    },
    {
       id: 14,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://images.unsplash.com/photo-1688291091364-9658c26c1749?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1032&q=80',
    },
    {
       id: 15,
       title: 'Boardname',
       isFavourite: false,
-      background: 'https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg',
+      background:
+         'https://images.unsplash.com/photo-1689442529342-3f1c7513d9ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
    },
    {
       id: 16,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://cdn.pixabay.com/photo/2013/02/20/11/30/bubbles-83758_640.jpg',
+         'https://images.unsplash.com/photo-1670879300315-4237f6ec38d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
    },
    {
       id: 17,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://images.unsplash.com/photo-1680254321973-f5e235a20c54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80',
    },
    {
       id: 18,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://www.befunky.com/images/prismic/f5ca4181-01da-4237-92bf-b6938359503e_hero-blur-image-5.jpg?auto=avif,webp&format=jpg&width=896',
+         'https://images.unsplash.com/photo-1687991496856-0485cd320b37?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
    },
    {
       id: 19,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://cdn.pixabay.com/photo/2013/02/20/11/30/bubbles-83758_640.jpg',
+         'https://images.unsplash.com/photo-1689443111384-1cf214df988a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
    },
    {
       id: 20,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrKHPsvNDJHY9tWpkHrfkfo8Dkf0LvZU3Hdg&usqp=CAU',
+         'https://images.unsplash.com/photo-1688494930045-328d0f95efe9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
    },
 ]
 
@@ -186,7 +189,7 @@ export const rows = [
 ]
 
 export const filteredLabels = [
-   { label: 'Code review', value: '#ffd700' },
+   { label: 'In review', value: '#ffd700' },
    { label: 'Kick back', value: '#EB5A46' },
    { label: 'Final review', value: '#0079BF' },
    { label: 'Complate', value: '#61BD4F' },
