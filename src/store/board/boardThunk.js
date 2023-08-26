@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
+import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 
 export const fetchBoards = createAsyncThunk(
    'board/fetchBoards',
@@ -15,13 +16,37 @@ export const fetchBoards = createAsyncThunk(
    }
 )
 
+export const getBoardById = createAsyncThunk(
+   'board/getBoardById',
+   async (boardId, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.get(`/api/boards/${boardId}`)
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error)
+      }
+   }
+)
+
 export const boardRemove = createAsyncThunk(
    'board/boardRemove',
-   async (boardId, { dispatch, rejectWithValue }) => {
+   async (
+      { boardId, showSnackbar, navigate },
+      { dispatch, rejectWithValue }
+   ) => {
       try {
          await axiosInstance.delete(`/api/boards/${boardId}`)
          dispatch(fetchBoards())
+         showSnackbar({
+            message: 'Successfully deleted',
+            severity: 'success',
+         })
+         navigate('/mainPage')
       } catch (error) {
+         showSnackbar({
+            message: 'error deleting',
+            severity: 'error',
+         })
          return rejectWithValue(error)
       }
    }
@@ -42,11 +67,30 @@ export const boardPost = createAsyncThunk(
 export const addFavorite = createAsyncThunk(
    'favorite/addFavorite',
    async ({ boardId, workSpaceId }, { rejectWithValue, dispatch }) => {
-      console.log('boardId', boardId)
       try {
          await axiosInstance.post(`/api/favorites/board/${boardId}`)
          dispatch(fetchBoards(workSpaceId))
       } catch (error) {
+         return rejectWithValue(error)
+      }
+   }
+)
+
+export const updateBord = createAsyncThunk(
+   'board/updateBord',
+   async ({ data, boardId }, { rejectWithValue, dispatch }) => {
+      try {
+         await axiosInstance.put(`/api/boards`, data)
+         dispatch(getBoardById(boardId))
+         showSnackbar({
+            message: 'Successfully updated board',
+            severity: 'success',
+         })
+      } catch (error) {
+         showSnackbar({
+            message: 'Error updating board',
+            severity: 'error',
+         })
          return rejectWithValue(error)
       }
    }

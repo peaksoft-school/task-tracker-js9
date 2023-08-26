@@ -10,7 +10,6 @@ export const favouriteSlice = createSlice({
    reducers: {},
    extraReducers: (builder) => [
       builder.addCase(getFavourites.fulfilled, (state, action) => {
-         console.log('action: ', action.payload)
          state.favoriteData = action.payload
       }),
    ],

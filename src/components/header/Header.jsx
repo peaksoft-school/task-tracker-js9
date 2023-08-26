@@ -69,8 +69,14 @@ export const Headers = ({ data }) => {
       <div>
          <GLobalContainer>
             <LogoContainer>
-               <Logotype src={Logo} alt="task-tracker_logo" />
-               <LogoWords>Task Tracker</LogoWords>
+               <Logotype
+                  onClick={() => navigate('/mainPage')}
+                  src={Logo}
+                  alt="task-tracker_logo"
+               />
+               <LogoWords onClick={() => navigate('/mainPage')}>
+                  Task Tracker
+               </LogoWords>
                <Favorite>
                   <ParagraphFavorite>
                      Favourites ({favoriteSum})
@@ -146,6 +152,7 @@ const LogoWords = muiStyled('h1')(() => ({
    fontFamily: 'Open Sans',
    fontSize: '1.25rem',
    fontWeight: '600',
+   cursor: 'pointer',
 }))
 const Favorite = muiStyled('div')(() => ({
    display: 'flex',
@@ -163,6 +170,7 @@ const ParagraphFavorite = muiStyled('p')(() => ({
 const Logotype = muiStyled(Logo)(() => ({
    width: '3.5vw',
    height: '6.2vh',
+   cursor: 'pointer',
 }))
 
 const AboutPanel = muiStyled('div')(() => ({
@@ -217,10 +225,6 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
 const StyledAvatar = muiStyled(Avatar)(() => ({
    cursor: 'pointer',
 }))
-
-// const ModalUii = muiStyled(ModalUi)(() => ({
-//    marginTop: '0px',
-// }))
 
 const ProfileTexts = muiStyled('div')(() => ({
    width: '10rem',

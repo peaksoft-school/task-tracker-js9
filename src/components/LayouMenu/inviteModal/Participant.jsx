@@ -10,9 +10,9 @@ import { ExitIcon, PlusIcon, SearchIcon } from '../../../assets/icons'
 import { InviteNewParticipant } from './InviteModal'
 
 export const Participant = ({
+   openModalHandler,
    openNewInvite,
-   openInviteNewModal,
-   openParticipantHandler,
+   setOpenNewInvite,
 }) => {
    const kindaSelect = [
       { label: 'Admin', value: 'Admin' },
@@ -27,6 +27,9 @@ export const Participant = ({
 
    const [users, setUsers] = useState(initialUsers)
 
+   const openInviteNewModal = () => {
+      setOpenNewInvite((prev) => !prev)
+   }
    const handleRolesChange = (event, index) => {
       const updatedUsers = [...users]
       updatedUsers[index].role = event.target.value
@@ -42,7 +45,7 @@ export const Participant = ({
                <p>{}</p>
                <p>Participant</p>
                <IconButton>
-                  <ExitIconStyled onClick={openParticipantHandler} />
+                  <ExitIcon fill="gray" onClick={openModalHandler} />
                </IconButton>
             </ParticipantHeader>
             <InputBox>
@@ -88,7 +91,7 @@ const Container = styled('div')(() => ({
 }))
 const ParticipantContainer = styled('div')({
    width: '26.5625rem',
-   height: '18.3125rem',
+   height: '17.3125rem',
    padding: '1rem',
    borderRadius: '0.5rem',
    backgroundColor: 'white',
@@ -118,10 +121,26 @@ const InputEmail = styled('input')({
    margin: '0rem 1rem 1rem 0rem',
 })
 
-const UsersBox = styled('div')({
-   maxHeight: '8rem',
-   overflowY: 'auto',
-})
+const UsersBox = styled('div')(() => ({
+   width: '100%',
+   maxHeight: '7.8rem',
+   padding: '0.7rem ',
+   overflowY: 'auto ',
+   scrollbarWidth: 'thin',
+   scrollbarColor: ' #D9D9D9 transparent',
+   cursor: 'pointer',
+
+   ' &::-webkit-scrollbar ': {
+      width: '0.5rem',
+   },
+   '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+   },
+   ' &::-webkit-scrollbar-thumb ': {
+      backgroundColor: ' #D9D9D9',
+      borderRadius: '0.25rem',
+   },
+}))
 
 const SearchIconStyled = styled(SearchIcon)({
    position: 'relative',
@@ -140,12 +159,9 @@ const InviteNewBox = styled('div')({
    justifyContent: 'start',
    alignItems: 'center',
    cursor: 'pointer',
-   color: '#727272',
+   color: '#525050',
+   padding: '0.2rem 0rem  ',
    fontWeight: 500,
-})
-
-const ExitIconStyled = styled(ExitIcon)({
-   cursor: 'pointer',
 })
 
 const SelectStyledMui = styled(Select)({

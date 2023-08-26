@@ -31,6 +31,7 @@ export const Board = () => {
    //    dispatch(boardRemove(boardId))
    //    console.log(boardId)
    // } ======> Нужен когда удалаем board
+
    const toggleModal = () => {
       setOpenModal((prev) => !prev)
    }
@@ -97,8 +98,8 @@ export const Board = () => {
 
 const BoardWrapper = styled('div')(() => ({
    display: 'flex',
-   width: '100%',
-   height: '100vh',
+   // width: '100%',
+   // height: '100%',
    marginTop: '5rem',
    // minWidth: '90vw',
 }))
@@ -106,14 +107,15 @@ const BoardWrapper = styled('div')(() => ({
 const AllBoards = styled('div')(() => ({
    background: '#F0F0F0;',
    width: '100%',
-   margin: ' 0 auto',
-   height: '100vh',
+   // margin: ' 0 auto',
+   height: '89vh',
    padding: '0 1rem',
 }))
 
 const Boards = styled('div')(() => ({
    display: 'flex',
    gap: '10px',
+   width: '100%',
    flexWrap: 'wrap',
 }))
 

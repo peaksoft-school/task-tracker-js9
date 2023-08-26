@@ -1,12 +1,21 @@
 import React from 'react'
 import { styled, IconButton, keyframes } from '@mui/material'
+import { useNavigate, useParams } from 'react-router'
+import { useDispatch } from 'react-redux'
 import { ExitIcon, LeftIcon, MenuIcon } from '../../../assets/icons'
 import { MenuItem } from '../../UI/menu/MenuItem'
 import { boards } from '../../../utils/constants/general'
 import { backgroundImage, backgroundPhoto } from '../../../assets/images'
 import { Button } from '../../UI/button/Button'
+import { boardRemove } from '../../../store/board/boardThunk'
+import { showSnackbar } from '../../UI/snackbar/Snackbar'
 
 export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
+   const { boardId } = useParams()
+
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+
    const openMenuHandler = () => {
       setOpen('menu')
       setOpenFilterModal(false)
@@ -37,6 +46,9 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const colorBoards = boards.filter((board) =>
       board.background.startsWith('#')
    )
+   const deleteBoardHandler = () => {
+      dispatch(boardRemove({ boardId, showSnackbar, navigate }))
+   }
 
    return (
       <div>
@@ -54,7 +66,9 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                <MenuHeader>
                   <p>{}</p>
                   <p>Menu</p>
-                  <ExitIconStyled onClick={closeHandler} />
+                  <IconButton>
+                     <ExitIcon fill="gray" onClick={closeHandler} />
+                  </IconButton>
                </MenuHeader>
                <ChangeDivContainer>
                   <ChangeDiv onClick={openBackgroundHandler}>
@@ -72,7 +86,9 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                   </Archive>
 
                   <DeleteBox>
-                     <DeleteButton>Delete this board</DeleteButton>
+                     <DeleteButton onClick={deleteBoardHandler}>
+                        Delete this board
+                     </DeleteButton>
                   </DeleteBox>
                </ChangeDivContainer>
             </MenuItemContainer>
@@ -233,16 +249,13 @@ const ChangeDiv = styled('div')({
       backgroundColor: '#f3f0f0',
    },
 })
-const ExitIconStyled = styled(ExitIcon)({
-   cursor: 'pointer',
-})
+
 const MenuItemContainer = styled(MenuItem)({
    width: '22.9375rem',
-   height: '10.6rem',
+   height: '11.6rem',
    borderRadius: '0.625rem',
    position: 'absolute',
    right: '2rem',
-   top: '0',
    padding: '0.5rem 0',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    transition: 'height 0.3s',
@@ -269,6 +282,7 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
          animationStyles = {
             animation: 'slideInAnimation 0.3s ease-in-out',
          }
+
          break
       case 'fadeIn':
          animationStyles = {
@@ -283,7 +297,7 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
       height: '33vh',
       position: 'absolute',
       right: '2rem',
-      top: '0',
+      // top: '0',
       backgroundColor: '#ffff',
       display: 'flex',
       flexDirection: 'column',
@@ -324,21 +338,21 @@ const ImagePhoto = styled('img')({
    borderRadius: '0.5rem',
    cursor: 'pointer',
 })
-const slideInAnimation = keyframes`
-   0% {
-      transform: translateX(100%);
-      opacity: 0;
-   }
-   100% {
-      transform: translateX(0);
-      opacity: 1;
-   }
+const slideInAnimation = keyframes` 
+   0% { 
+      transform: translateX(100%); 
+      opacity: 0; 
+   } 
+   100% { 
+      transform: translateX(0); 
+      opacity: 1; 
+   } 
 `
 
 const PopoverCont = styled('div')(() => ({
    position: 'absolute',
    right: '0',
-   top: '0',
+   // top: '0',
    minWidth: '23.8rem',
    minHeight: '37rem',
    backgroundColor: '#FFFFFF',
@@ -347,19 +361,19 @@ const PopoverCont = styled('div')(() => ({
    animation: `${slideInAnimation} 0.3s ease-in-out`,
 }))
 
-const rotateIcon = keyframes`
-      from {
-      transform: rotate(0);
-   
-      }
-      to {
-      transform: rotate(360deg);
-      }
+const rotateIcon = keyframes` 
+      from { 
+      transform: rotate(0); 
+    
+      } 
+      to { 
+      transform: rotate(360deg); 
+      } 
    `
 
 const StyledIconButton = styled(IconButton)(() => ({
    padding: '0',
-   animation: ` ${rotateIcon} 0.8s linear`,
+   animation: `${rotateIcon} 0.8s linear`,
 }))
 const StyledLeftIcon = styled(LeftIcon)`
    height: 1.15rem;
@@ -404,9 +418,8 @@ const Photos = styled('img')({
 const PopoverContColor = styled('div')(() => ({
    position: 'absolute',
    right: '0',
-   top: '0',
    minWidth: '23.8rem',
-   minHeight: '37rem',
+   minHeight: '30rem',
    backgroundColor: '#FFFFFF',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    borderRadius: '0.7rem',
@@ -415,7 +428,7 @@ const PopoverContColor = styled('div')(() => ({
 
 const StyledIconButtonColor = styled(IconButton)(() => ({
    padding: '0',
-   animation: ` ${rotateIcon} 0.8s linear`,
+   animation: `${rotateIcon} 0.8s linear`,
 }))
 const StyledLeftIconColor = styled(LeftIcon)`
    height: 1.15rem;
