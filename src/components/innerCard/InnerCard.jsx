@@ -23,12 +23,12 @@ import { ModalUi } from '../UI/modal/Modal'
 export const InnerCard = ({
    open,
    handleClose,
-   setSaveTitle,
+   // setSaveTitle,
    setSaveDescription,
    displayText,
    setDisplayText,
    displayTitle,
-   setDisplayTitle,
+   // setDisplayTitle,
 }) => {
    const [showMore, setShowMore] = React.useState(false)
    const inputRef = React.useRef(null)
@@ -54,8 +54,8 @@ export const InnerCard = ({
    }
    const documentClick = (event) => {
       if (titleRef.current && !titleRef.current.contains(event.target)) {
-         setDisplayTitle(titleText)
-         setSaveTitle(titleText)
+         // setDisplayTitle(titleText)
+         // setSaveTitle(titleText)
          setIsEditTitle(true)
       }
    }
