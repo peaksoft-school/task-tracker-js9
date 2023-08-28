@@ -31,7 +31,7 @@ export const getBoardById = createAsyncThunk(
 export const boardRemove = createAsyncThunk(
    'board/boardRemove',
    async (
-      { boardId, showSnackbar, navigate },
+      { boardId, showSnackbar, navigate, id },
       { dispatch, rejectWithValue }
    ) => {
       try {
@@ -41,7 +41,7 @@ export const boardRemove = createAsyncThunk(
             message: 'Successfully deleted',
             severity: 'success',
          })
-         navigate('/mainPage')
+         navigate(`/mainPage/${id}/boards`)
       } catch (error) {
          showSnackbar({
             message: 'error deleting',
@@ -58,7 +58,15 @@ export const boardPost = createAsyncThunk(
       try {
          await axiosInstance.post('/api/boards', objBoard)
          dispatch(fetchBoards(workSpaceId))
+         showSnackbar({
+            message: 'Successfully',
+            severity: 'success',
+         })
       } catch (error) {
+         showSnackbar({
+            message: error.response.data.message,
+            severity: 'error',
+         })
          return rejectWithValue(error)
       }
    }

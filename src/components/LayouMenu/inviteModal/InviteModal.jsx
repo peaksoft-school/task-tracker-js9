@@ -9,7 +9,6 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
    const handleCreate = () => {
       console.log('Selected Role:', selectedRole)
       console.log('Email:', email)
-      // Дополнительные действия, которые вы хотите выполнить
    }
 
    return (

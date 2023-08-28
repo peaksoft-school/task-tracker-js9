@@ -11,7 +11,7 @@ export const InnerPage = () => {
             dataLength={dataLength}
             workspacedata={workspacedata}
          />
-         <div>
+         <div style={{ width: '100%' }}>
             <LayoutMenu />
             <Column />
          </div>

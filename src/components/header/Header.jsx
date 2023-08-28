@@ -27,16 +27,15 @@ export const Headers = ({ data }) => {
    const sumLength = boardLength + workSpaceLength
 
    const [favoriteSum, setFavoriteSum] = useState(0)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const location = useLocation()
 
    useEffect(() => {
       if (sumLength > 0) {
          setFavoriteSum(sumLength)
       }
    }, [sumLength])
-
-   const dispatch = useDispatch()
-   const navigate = useNavigate()
-   const location = useLocation()
 
    const openFavoriteModalHandler = () => {
       setShowModal(!showModal)
@@ -50,7 +49,6 @@ export const Headers = ({ data }) => {
       event.stopPropagation()
    }
    const logOutHandler = () => {
-      console.log('logout')
       dispatch(logOut(), navigate)
          .unwrap()
          .then(() => {
@@ -59,6 +57,7 @@ export const Headers = ({ data }) => {
                severity: 'success',
             })
             navigate('/')
+            location.reload()
          })
          .catch((error) => {
             console.log(error)

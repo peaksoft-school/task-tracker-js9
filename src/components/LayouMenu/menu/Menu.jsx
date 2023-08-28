@@ -1,20 +1,25 @@
 import React from 'react'
 import { styled, IconButton, keyframes } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ExitIcon, LeftIcon, MenuIcon } from '../../../assets/icons'
 import { MenuItem } from '../../UI/menu/MenuItem'
 import { boards } from '../../../utils/constants/general'
 import { backgroundImage, backgroundPhoto } from '../../../assets/images'
 import { Button } from '../../UI/button/Button'
-import { boardRemove } from '../../../store/board/boardThunk'
+import { boardRemove, getBoardById } from '../../../store/board/boardThunk'
 import { showSnackbar } from '../../UI/snackbar/Snackbar'
+import { axiosInstance } from '../../../config/axiosInstance'
 
 export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
-   const { boardId } = useParams()
-
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { boardId, id } = useParams()
+   const { boardById } = useSelector((state) => state.board)
+
+   React.useEffect(() => {
+      dispatch(getBoardById(boardId))
+   }, [])
 
    const openMenuHandler = () => {
       setOpen('menu')
@@ -47,9 +52,35 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       board.background.startsWith('#')
    )
    const deleteBoardHandler = () => {
-      dispatch(boardRemove({ boardId, showSnackbar, navigate }))
+      dispatch(boardRemove({ boardId, showSnackbar, navigate, id }))
    }
 
+   const handleclick = async (item, board) => {
+      console.log('item: ', item)
+      try {
+         const data = {
+            boardI: boardId,
+            backGround: item || board,
+            title: boardById?.title || '',
+         }
+         console.log('handleClick:', data)
+
+         const response = await axiosInstance.put('/api/boards', data)
+         console.log('response: ', response)
+         showSnackbar({
+            message: 'Successfully updated board',
+            severity: 'success',
+         })
+         closeHandler()
+         return response.data
+      } catch (error) {
+         showSnackbar({
+            message: 'Error ',
+            severity: 'error',
+         })
+         return error
+      }
+   }
    return (
       <div>
          <StlyedContainerMenu onClick={openMenuHandler}>
@@ -129,7 +160,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                      </StyledIconButton>
                      <p>Photos</p>
                      <StyledIconButton>
-                        <ExitIcon onClick={closeHandler} />
+                        <ExitIcon fill="gray" onClick={closeHandler} />
                      </StyledIconButton>
                   </StyledHeader>
                   <PhotoBlocks>
@@ -138,6 +169,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                            <Photos
                               src={board.background}
                               alt={`Board ${board.id}`}
+                              onClick={() => handleclick(board.background)}
                            />
                         </div>
                      ))}
@@ -165,6 +197,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                                  backgroundColor: board.background,
                               }}
                               alt={`Board ${board.id}`}
+                              onClick={() => handleclick(board.background)}
                            />
                         </div>
                      ))}

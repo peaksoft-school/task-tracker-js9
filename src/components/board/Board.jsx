@@ -1,11 +1,9 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IconButton, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { OneStarIcon } from '../../assets/icons'
+import { OneStarIcon, StarFilledIcon } from '../../assets/icons'
 import {
-   // boardRemove, ======> Нужен когда удалаем board
    fetchBoards,
    boardPost,
    addFavorite,
@@ -23,14 +21,6 @@ export const Board = () => {
    React.useEffect(() => {
       dispatch(fetchBoards(id))
    }, [])
-   // const { board } = useSelector((state) => state.board)
-   // const boardId = board.map((booard) => booard.id)
-   // console.log('boardId:', boardId)
-
-   // const deleteFunc = (boardId) => {
-   //    dispatch(boardRemove(boardId))
-   //    console.log(boardId)
-   // } ======> Нужен когда удалаем board
 
    const toggleModal = () => {
       setOpenModal((prev) => !prev)
@@ -43,47 +33,54 @@ export const Board = () => {
    const addFavoriteFonc = (boardId) => {
       dispatch(addFavorite({ boardId, workSpaceId: id }))
    }
+
    const boardHandler = (id) => {
       navigate(`${id}/board`)
    }
 
    return (
-      <BoardWrapper>
+      <BoardWrapper noBoards={boards.length === 0}>
          <AllBoards>
             <BoardButton>
                <Title>All boards</Title>
                <Button onClick={toggleModal}>Create new board</Button>
             </BoardButton>
-            <Boards>
-               {boards?.map((board) => (
-                  <div key={board.boardId}>
-                     <BoardBlock board={board}>
-                        <BoardTitle onClick={() => boardHandler(board.boardId)}>
-                           {board.title}
-                        </BoardTitle>
-                        <StarContainer>
-                           <IconButton>
-                              {board.favorite ? (
-                                 <OneStarIcon
-                                    onClick={() =>
-                                       addFavoriteFonc(board.boardId)
-                                    }
-                                    fill="#0079BF"
-                                 />
-                              ) : (
-                                 <OneStarIcon
-                                    onClick={() =>
-                                       addFavoriteFonc(board.boardId)
-                                    }
-                                    fill="inherit"
-                                 />
-                              )}
-                           </IconButton>
-                        </StarContainer>
-                     </BoardBlock>
-                  </div>
-               ))}
-            </Boards>
+            {boards.length === 0 ? (
+               <NoBoardsMessage>No boards</NoBoardsMessage>
+            ) : (
+               <Boards>
+                  {boards?.map((board) => (
+                     <div key={board.boardId}>
+                        <BoardBlock board={board}>
+                           <BoardTitle
+                              onClick={() => boardHandler(board.boardId)}
+                           >
+                              {board.title}
+                           </BoardTitle>
+                           <StarContainer>
+                              <IconButton>
+                                 {board.favorite ? (
+                                    <StarFilledIcon
+                                       onClick={() =>
+                                          addFavoriteFonc(board.boardId)
+                                       }
+                                       fill="#0079BF"
+                                    />
+                                 ) : (
+                                    <OneStarIcon
+                                       onClick={() =>
+                                          addFavoriteFonc(board.boardId)
+                                       }
+                                       fill="#B2B2B2"
+                                    />
+                                 )}
+                              </IconButton>
+                           </StarContainer>
+                        </BoardBlock>
+                     </div>
+                  ))}
+               </Boards>
+            )}
             {openModal ? (
                <BoardModal
                   BoardColors={BoardColors}
@@ -96,18 +93,15 @@ export const Board = () => {
    )
 }
 
-const BoardWrapper = styled('div')(() => ({
+const BoardWrapper = styled('div')(({ noBoards }) => ({
    display: 'flex',
-   // width: '100%',
-   // height: '100%',
+   width: noBoards ? '100%' : '100%',
    marginTop: '5rem',
-   // minWidth: '90vw',
 }))
 
 const AllBoards = styled('div')(() => ({
    background: '#F0F0F0;',
    width: '100%',
-   // margin: ' 0 auto',
    height: '89vh',
    padding: '0 1rem',
 }))
@@ -165,5 +159,13 @@ const BoardButton = styled('div')(() => ({
    justifyContent: 'space-between',
    alignItems: 'center',
    padding: '25px 0 20px',
-   // width: '130px',
+}))
+
+const NoBoardsMessage = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   height: '100px', // Adjust the height as needed
+   fontSize: '1.5rem',
+   color: '#777',
 }))

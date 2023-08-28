@@ -37,7 +37,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             activeItem === 'All issues' ? (
                <FilesAndFoldersIcon fill="#FFFFFF" />
             ) : (
-               <FilesAndFoldersIcon fill="#3C3C3C" />
+               <FilesAndFoldersIcon fill="#919191" />
             ),
          count: dataLength,
       },
@@ -47,7 +47,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             activeItem === 'Participants' ? (
                <PeopleIcon fill="#FFFFFF" />
             ) : (
-               <PeopleIcon fill="3C3C3C" />
+               <PeopleIcon fill="#919191" />
             ),
          count: data.partisipants,
       },
@@ -57,7 +57,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             activeItem === 'Settings' ? (
                <ToolsIcon fill="#FFFFFF" />
             ) : (
-               <ToolsIcon fill="3C3C3C" />
+               <ToolsIcon fill="#919191" />
             ),
       },
    ]

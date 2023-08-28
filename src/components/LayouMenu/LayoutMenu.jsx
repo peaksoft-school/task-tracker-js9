@@ -40,14 +40,20 @@ export const LayoutMenu = () => {
    // Создание схемы валидации
    const validationSchema = Yup.object().shape({
       title: Yup.string().required('Title is required'),
-      img: Yup.string().required('IMG is required'),
+      img: Yup.string()
+         .required('IMG is required')
+         .test('is-url', 'Invalid image URL', (value) => {
+            if (!value) return true // Allow empty value (not required)
+            const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
+            return urlPattern.test(value)
+         }),
    })
 
    // Использование Formik
    const formik = useFormik({
       initialValues: {
          title: boardById?.title || '',
-         img: 'asdawawd',
+         img: boardById?.img || '',
       },
       validationSchema,
       onSubmit: (values) => {
@@ -179,7 +185,7 @@ const LayoutMenuContainer = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
    marginTop: '6rem',
-   width: '82vw',
+   width: '100%',
 })
 
 const ModalButton = styled(Button)(() => ({
@@ -232,7 +238,7 @@ const ContainerInputs = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
    height: '10.2rem',
-   padding: '0.5rem',
+   padding: '1rem 0  ',
    gap: '0.6rem',
    '.block-input': {
       height: '4.5rem',
