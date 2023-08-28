@@ -26,7 +26,7 @@ const ModalStyle = styled(Box)(({ ...rest }) => ({
    border: 'none',
    backgroundColor: 'white',
    padding: rest.padding || '16px 20px',
-   top: '40%',
+   top: '50%',
 }))
 const Backdrop = styled(Modal)(({ ...rest }) => ({
    position: 'absolute',

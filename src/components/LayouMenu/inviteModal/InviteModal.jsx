@@ -1,46 +1,38 @@
+/* eslint-disable eqeqeq */
 import { styled, IconButton } from '@mui/material'
-import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import {
-   ExitIcon,
-   RadioEmptyIcon,
-   RadioFilledIcon,
-} from '../../../assets/icons'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
+import { ExitIcon, LeftIcon } from '../../../assets/icons'
 import { Button } from '../../UI/button/Button'
 import { createInviteMember } from '../../../store/inviteMember/inviteThunk'
 
-export const InviteNewParticipant = ({
-   openInviteNewModal,
-   setOpenNewInvite,
-}) => {
-   const [isMemberSelected, setIsMemberSelected] = useState(false)
-   const [isAdminSelected, setIsAdminSelected] = useState(false)
+export const InviteNewParticipant = ({ openInviteNewModal }) => {
+   const [selectedRole, setSelectedRole] = useState('')
    const [email, setEmail] = useState('')
    const dispatch = useDispatch()
+   const { boardId } = useParams()
 
-   const toggleMemberSelection = () => {
-      setIsMemberSelected((prev) => !prev)
-   }
-
-   const toggleAdminSelection = () => {
-      setIsAdminSelected((prev) => !prev)
-   }
-   const createNewInviteMember = () => {
+   const createNewMember = () => {
       const newdata = {
-         emails: '',
-         role: '',
+         boardId,
+         email,
+         role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
+         link: 'http://localhost:3000/signup',
       }
-      dispatch(createInviteMember(newdata))
-      setOpenNewInvite(false)
+      console.log('newData:', newdata)
+      dispatch(createInviteMember({ newdata, boardId }))
    }
    return (
       <Container>
          <InviteParticipantModal>
             <InviteHeader>
-               <p>{}</p>
+               <IconButton>
+                  <LeftIcon fill="gray" onClick={openInviteNewModal} />
+               </IconButton>
                <p>Invite a new participant</p>
                <IconButton>
-                  <ExitIcon onClick={openInviteNewModal} />
+                  <ExitIcon fill="gray" onClick={openInviteNewModal} />
                </IconButton>
             </InviteHeader>
             <div>
@@ -53,28 +45,25 @@ export const InviteNewParticipant = ({
             </div>
             <MembersCont>
                <MemberBox>
-                  {isMemberSelected ? (
-                     <RadioFilledIcon onClick={toggleMemberSelection} />
-                  ) : (
-                     <RadioEmptyIcon onClick={toggleMemberSelection} />
-                  )}
-
-                  <p>Member</p>
-               </MemberBox>
-               <MemberBox>
-                  {isAdminSelected ? (
-                     <RadioEmptyIcon onClick={toggleAdminSelection} />
-                  ) : (
-                     <RadioFilledIcon onClick={toggleAdminSelection} />
-                  )}
-                  <p>Admin</p>
+                  <input
+                     type="radio"
+                     id="contactChoice1"
+                     checked={selectedRole == 'MEMBER'}
+                     onChange={() => setSelectedRole('MEMBER')}
+                  />
+                  <label htmlFor="contactChoice1">Member</label>
+                  <input
+                     type="radio"
+                     id="contactChoice2"
+                     checked={selectedRole == 'ADMIN'}
+                     onChange={() => setSelectedRole('ADMIN')}
+                  />
+                  <label htmlFor="contactChoice2">Admin</label>
                </MemberBox>
             </MembersCont>
             <ButtonsCont>
                <ButtonDelete disabled={!email}>Delete</ButtonDelete>
-               <ButtonCreate onClick={createNewInviteMember}>
-                  Create
-               </ButtonCreate>
+               <ButtonCreate onClick={createNewMember}>Create</ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
       </Container>

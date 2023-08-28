@@ -12,7 +12,7 @@ export const memberSlice = createSlice({
    reducers: {},
    extraReducers: (builder) => [
       builder.addCase(allinviteMember.fulfilled, (state, action) => {
-         state.loading = action.payload
+         state.inviteMember = action.payload
       }),
    ],
 })

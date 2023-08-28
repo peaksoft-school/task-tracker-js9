@@ -15,7 +15,7 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
    const [selectedColor, setSelectedColor] = React.useState(null)
    const [selectedPhoto, setSelectedPhoto] = React.useState(null)
    const postAddBack = () => {
-      postFunc({ backGround, title, workSpaceId: { id } })
+      postFunc({ backGround, title, workSpaceId: +id })
       toggleModal()
       console.log(backGround)
    }
