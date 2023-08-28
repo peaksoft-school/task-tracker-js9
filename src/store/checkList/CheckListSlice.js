@@ -2,8 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import { checkListGetRequest } from './CheckListThunk'
 
 const initialState = {
-   item: [],
+   checkListData: [],
+   itemObject: {},
    isLoading: false,
+   items: [],
 }
 
 export const checkListSlice = createSlice({
@@ -17,14 +19,10 @@ export const checkListSlice = createSlice({
          })
          .addCase(checkListGetRequest.fulfilled, (state, action) => {
             state.isLoading = true
-            state.item = action.payload
+            state.checkListData = action.payload
          })
          .addCase(checkListGetRequest.rejected, (state) => {
             state.isLoading = false
          })
-      // .addCase(checkListPutRequest.fulfilled, (state, action) => {
-      //    state.item = action.payload
-      //    state.isLoading = false
-      // })
    },
 })

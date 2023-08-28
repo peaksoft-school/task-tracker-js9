@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
    Avatar,
    List,
@@ -8,17 +9,18 @@ import {
    ListItemText,
    styled,
 } from '@mui/material'
-import { DownIcon, GraphicIcon, PlusIcon } from '../../assets/icons'
+import { DownIcon, GraphicIcon, PlusIcon, UpIcon } from '../../assets/icons'
+import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
 
 export const SideMain = ({
    open,
    activeItem,
    handleItemClick,
-   workspacedata,
    menuItemsWorspace,
 }) => {
    const [workspaceId, setWorkspaceId] = useState(null)
    const [showMore, setShowMore] = useState(false)
+   const dispatch = useDispatch()
 
    const toggleButtonHadler = (id) => {
       setWorkspaceId(id)
@@ -29,6 +31,13 @@ export const SideMain = ({
    const showMoreHandler = () => {
       setShowMore(!showMore)
    }
+
+   const { workspaces } = useSelector((state) => state.workspaces)
+
+   useEffect(() => {
+      dispatch(fetchAllWorkspaces())
+   }, [dispatch])
+
    return (
       <div>
          <List>
@@ -58,28 +67,30 @@ export const SideMain = ({
             </ActiveListItem>
 
             <ListSummaryStyle>
-               {workspacedata
-                  .slice(0, showMore ? workspacedata.length : 6)
+               {workspaces
+                  .slice(0, showMore ? workspaces.length : 4)
                   .map((item) => (
                      <>
                         <Accounting>
-                           <AccountingListItemIcon key={item.name}>
+                           <AccountingListItemIcon key={item.workSpaceName}>
                               <StyledForSpace>
                                  <StyledAvatar
                                     sx={{ bgcolor: '#2CB107' }}
                                     alt="photo"
                                  >
                                     <span style={{ fontSize: '1.3rem' }}>
-                                       {item.name[0]}
+                                       {item.workSpaceName[0]}
                                     </span>
                                  </StyledAvatar>
                                  <StyledAccountingText>
-                                    {item.name}
+                                    {item.workSpaceName}
                                  </StyledAccountingText>
                               </StyledForSpace>
                               <StyledForSpaceSecond>
                                  <DownIcon
-                                    onClick={() => toggleButtonHadler(item.id)}
+                                    onClick={() =>
+                                       toggleButtonHadler(item.workSpaceId)
+                                    }
                                     fill="3C3C3C"
                                     style={{
                                        marginLeft: '4.1rem',
@@ -89,7 +100,7 @@ export const SideMain = ({
                               </StyledForSpaceSecond>
                            </AccountingListItemIcon>
                         </Accounting>
-                        {workspaceId === item.id ? (
+                        {workspaceId === item.workSpaceId ? (
                            <ListStyled>
                               {menuItemsWorspace.map((item) => (
                                  <ListItemStyle>
@@ -118,10 +129,14 @@ export const SideMain = ({
                   ))}
             </ListSummaryStyle>
 
-            {workspacedata.length > 6 && (
+            {workspaces.length > 4 && (
                <ListItemStyle>
                   <ListItemIcon>
-                     <DownIcon onClick={showMoreHandler} fill="919191" />
+                     {showMore ? (
+                        <UpIcon onClick={showMoreHandler} fill="919191" />
+                     ) : (
+                        <DownIcon onClick={showMoreHandler} fill="919191" />
+                     )}
                   </ListItemIcon>
                   <StyledListItemText>Show more</StyledListItemText>
                </ListItemStyle>

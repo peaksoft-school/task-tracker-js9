@@ -1,28 +1,18 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Checkbox, IconButton, styled } from '@mui/material'
-import { DeleteIcon, PlusIcon } from '../../assets/icons'
-import { Input } from '../UI/input/Input'
-import { Button } from '../UI/button/Button'
+import { useDispatch } from 'react-redux'
+import { styled } from '@mui/material'
+import { PlusIcon } from '../../../assets/icons'
+import { Input } from '../../UI/input/Input'
+import { Button } from '../../UI/button/Button'
+import { postItemToItems } from '../../../store/checkList/CheckListThunk'
+import CheckListMainItem from './CheckListMainItem'
 
-export const CheckListMain = ({
-   isAddDisabled,
-   items,
-   setItems,
-   setTaskCount,
-   taskCount,
-   setTaskListVisible,
-   isTaskListVisible,
-   toggleCompleted,
-   openModal,
-   toggleInputs,
-   open,
-   setNewItemValue,
-   newItemValue,
-}) => {
+export const CheckListMain = ({ isAddDisabled, itemResponseList, id }) => {
    const [idCounter, setIdCounter] = useState(0)
-   const { item } = useSelector((state) => state.checkList)
-   console.log('item: ', item)
+   const [newItemValue, setNewItemValue] = useState('')
+   const [open, setOpen] = useState(false)
+
+   const dispatch = useDispatch()
 
    const handleNewItemChange = (e) => {
       setNewItemValue(e.target.value)
@@ -34,34 +24,28 @@ export const CheckListMain = ({
       }
 
       const newItem = {
-         id: idCounter,
-         value: newItemValue,
-         completed: false,
+         checkListId: id,
+         title: newItemValue,
       }
-      setItems([...items, newItem])
+
+      dispatch(postItemToItems(newItem))
+
       setIdCounter(idCounter + 1)
       setNewItemValue('')
-      setTaskCount(taskCount + 1)
-      setTaskListVisible(true)
+   }
+
+   const toggleInputs = () => {
+      setOpen((prev) => !prev)
    }
 
    return (
       <Main>
          <div>
-            {isTaskListVisible &&
-               items.map((item) => (
-                  <ItemContainer key={item.id} completed={item.completed}>
-                     <Checkbox
-                        checked={item.completed}
-                        onChange={() => toggleCompleted(item.id)}
-                     />
-                     <ItemText>{item.value}</ItemText>
-                     <StyledIconButton onClick={() => openModal(item.id)}>
-                        <DeleteIcon />
-                     </StyledIconButton>
-                  </ItemContainer>
-               ))}
+            {itemResponseList?.map((item) => {
+               return <CheckListMainItem item={item} key={item.itemId} />
+            })}
          </div>
+
          {open ? (
             <div>
                <ItemContainer>
@@ -73,9 +57,7 @@ export const CheckListMain = ({
                </ItemContainer>
                <ActionButtonsContainer>
                   <CancelButton onClick={toggleInputs}>Cancel</CancelButton>
-                  <AddButton onClick={addItem} disabled={isAddDisabled}>
-                     Add
-                  </AddButton>
+                  <AddButton onClick={addItem}>Add</AddButton>
                </ActionButtonsContainer>
             </div>
          ) : (
@@ -106,19 +88,6 @@ const ItemContainer = styled('div')(({ completed }) => ({
    border: '0.0625rem',
    background: completed ? '#F2F2F2' : 'transparent',
 }))
-
-const ItemText = styled('p')({
-   margin: '0 10px',
-   flex: 1,
-   fontSize: '14px',
-})
-
-const StyledIconButton = styled(IconButton)({
-   height: '1.875rem',
-   borderRadius: '0.5rem',
-   border: '0.0625rem',
-   gap: '0.25rem',
-})
 
 const StyledInput = styled(Input)({
    input: {

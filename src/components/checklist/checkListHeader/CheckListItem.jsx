@@ -1,67 +1,52 @@
+import { IconButton, styled, Button } from '@mui/material'
 import React, { useState } from 'react'
-import { styled, IconButton } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { DeleteIcon, DownIcon, EditIcon, UpIcon } from '../../assets/icons'
-import { Button } from '../UI/button/Button'
-import { checkListPutRequest } from '../../store/checkList/CheckListThunk'
+import { DeleteIcon, DownIcon, EditIcon, UpIcon } from '../../../assets/icons'
+import {
+   checkListPutRequest,
+   deleteListInLists,
+} from '../../../store/checkList/CheckListThunk'
+import { CheckListModal } from '../checkListModal/ChecklistModal'
 
-export const CheckListHeader = ({
-   cancelAddItem,
-   showInputs,
-   editId,
-   editTitle,
-   setEditTitle,
-   setEditId,
-   title,
-   openModal,
-   items,
-   taskCount,
-}) => {
-   const [edit] = useState([])
-   const [state, setState] = useState(false)
-   const { item } = useSelector((state) => state.checkList)
-   console.log('item: ', item)
-
+const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
+   const { checkListData } = useSelector((state) => state.checkList)
    const dispatch = useDispatch()
 
-   const getProgress = () => {
-      if (items.length === 0) {
-         return 0
-      }
-      const completedCount = items.filter((item) => item.completed).length
-      return Math.floor((completedCount / items.length) * 100)
-   }
+   const [showModal, setShowModal] = useState(false)
+   const [editId, setEditId] = useState(false)
+   const [editTitle, setEditTitle] = useState('')
 
    const saveHandler = () => {
       const newData = {
          title: editTitle,
-         checkListId: item.checkListId,
-         percent: getProgress(),
-         counter: taskCount.toString(),
-         itemResponseList: items.map((item) => ({
-            itemId: item.id,
-            title: item.value,
-            isDone: item.completed,
-         })),
+         checkListId: id,
+         itemResponseList: checkListData.itemResponseList,
       }
 
-      dispatch(
-         checkListPutRequest({
-            checkListId: item.checkListId,
-            data: newData,
-         })
-      )
+      dispatch(checkListPutRequest(newData))
+
       setEditId(false)
    }
 
    const editHandler = (title) => {
       setEditTitle(title)
       setEditId(true)
-      setState(true)
+   }
+
+   const closeModal = () => {
+      setShowModal(false)
+   }
+
+   const openModal = () => {
+      setShowModal(true)
+   }
+
+   const deleteList = () => {
+      dispatch(deleteListInLists(id))
    }
 
    return (
-      <CheckListHeaderContainer>
+      <>
          <ChecklistHeader>
             <CheckListBox>
                <StyledIconButton onClick={cancelAddItem}>
@@ -85,57 +70,57 @@ export const CheckListHeader = ({
                      <StyledIconButton>
                         <EditIcon onClick={() => editHandler(title)} />
                      </StyledIconButton>
-                     {state ? (
-                        <Title>
-                           {edit.map((e) => (
-                              <Title key={item.checkListId}>{e.title}</Title>
-                           ))}
-                        </Title>
-                     ) : (
-                        <Title>
-                           {item.map((e) => (
-                              <Title key={item.checkListId}>{e.title}</Title>
-                           ))}
-                        </Title>
-                     )}
+
+                     <Title>{title}</Title>
                   </>
                )}
             </CheckListBox>
             <DeleteBox>
-               <IconButton onClick={() => openModal(title)}>
+               <IconButton onClick={openModal}>
                   <DeleteIcon />
                </IconButton>
                <p>Delete</p>
             </DeleteBox>
          </ChecklistHeader>
-         <ProgressContainer>
-            <TaskCountContainer>
-               <p>
-                  {item.map((e) => (
-                     <span>{e.counter}</span>
-                  ))}
-               </p>
-            </TaskCountContainer>
-            <ProgressLine>
-               <ProgressBar progress={getProgress()} />
-            </ProgressLine>
-            {item.map((e) => (
-               <ProgressLabel>{e.percent}%</ProgressLabel>
-            ))}
-         </ProgressContainer>
-      </CheckListHeaderContainer>
+         {checkListData.map((checkListItem) => {
+            if (checkListItem.checkListId === id) {
+               return (
+                  <ProgressContainer key={checkListItem.id}>
+                     <TaskCountContainer>
+                        <div>
+                           <span>{checkListItem.counter}</span>
+                        </div>
+                     </TaskCountContainer>
+                     <ProgressBarContainer>
+                        <ProgressBarBackground>
+                           <ProgressBarFill progress={checkListItem.percent} />
+                        </ProgressBarBackground>
+                     </ProgressBarContainer>
+                     <ProgressLabel>{checkListItem.percent}%</ProgressLabel>
+                  </ProgressContainer>
+               )
+            }
+            return null
+         })}
+
+         {showModal && (
+            <CheckListModal
+               showModal={showModal}
+               deleteHandler={deleteList}
+               closeModal={closeModal}
+            />
+         )}
+      </>
    )
 }
+export default CheckListItem
 
 const StyledIconButton = styled(IconButton)({
    height: '1.875rem',
    borderRadius: '0.5rem',
    border: '0.0625rem',
-   gap: '0.25rem',
-})
 
-const CheckListHeaderContainer = styled('div')({
-   width: '41.875rem',
+   gap: '0.25rem',
 })
 
 const ChecklistHeader = styled('div')({
@@ -155,15 +140,15 @@ const EditInput = styled('input')({
 })
 
 const ButtonSave = styled(Button)({
-   width: '3rem',
+   width: '2rem',
    height: '1.5rem',
    fontSize: '0.6rem',
    marginLeft: '1rem',
    marginRight: '0.5rem',
    paddingTop: '0.3rem',
-   paddingRight: '1.5rem',
+   borderRadius: '0.5rem',
    '&:hover': {
-      backgroundColor: '#015C91',
+      backgroundColor: '#cccfd1',
       '&:active': {
          backgroundColor: '#0079BF',
       },
@@ -175,9 +160,10 @@ const ButtonCancel = styled(Button)({
    height: '1.5rem',
    fontSize: '0.6rem',
    paddingTop: '0.3rem',
-   paddingRight: '1.3rem',
+   borderRadius: '0.5rem',
+
    '&:hover': {
-      backgroundColor: '#015C91',
+      backgroundColor: '#cecfd0',
       '&:active': {
          backgroundColor: '#0079BF',
       },
@@ -219,20 +205,6 @@ const TaskCountContainer = styled('div')({
    fontWeight: '400',
 })
 
-const ProgressLine = styled('div')({
-   height: '0.625rem',
-   borderRadius: '5px',
-   backgroundColor: '#ccc',
-   flex: 1,
-})
-
-const ProgressBar = styled('div')(({ progress }) => ({
-   borderRadius: '5px',
-   backgroundColor: '#007bff',
-   width: `${progress}%`,
-   height: '0.625rem',
-}))
-
 const ProgressLabel = styled('span')({
    fontSize: '1rem',
    marginLeft: '0.63rem',
@@ -240,3 +212,24 @@ const ProgressLabel = styled('span')({
    fontFamily: 'Gilroy',
    fontWeight: '400',
 })
+
+const ProgressBarContainer = styled('div')({
+   height: '0.625rem',
+   borderRadius: '5px',
+   backgroundColor: '#ccc',
+   flex: 1,
+   overflow: 'hidden',
+})
+
+const ProgressBarBackground = styled('div')({
+   height: '100%',
+   borderRadius: '5px',
+   width: '100%',
+})
+
+const ProgressBarFill = styled('div')(({ progress }) => ({
+   height: '100%',
+   width: `${progress}%`,
+   backgroundColor: '#007bff',
+   borderRadius: '5px',
+}))

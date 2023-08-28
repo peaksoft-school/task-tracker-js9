@@ -35,7 +35,7 @@ export default function TableMui({ column, rows }) {
             </TableHead>
 
             <TableBody>
-               {rows.map((row, rowIndex) => (
+               {rows?.map((row, rowIndex) => (
                   <StyledTableRow key={row.id || row.appointmentId}>
                      {column.map((column) => {
                         if (column.render) {

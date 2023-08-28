@@ -1,58 +1,30 @@
 import React from 'react'
 import { styled } from '@mui/material'
-import { Button } from '../UI/button/Button'
+import { Button } from '../../UI/button/Button'
+import { ModalUi } from '../../UI/modal/Modal'
 
-export const CheckListModal = ({
-   itemToDeleteId,
-   removeItem,
-   setShowModal,
-   setItemToDeleteId,
-}) => {
-   const closeModal = () => {
-      setShowModal(false)
-      setItemToDeleteId(null)
-   }
-   const handleDeleteItem = () => {
-      if (itemToDeleteId !== null) {
-         removeItem(itemToDeleteId)
-         closeModal()
-      }
-   }
-
+export const CheckListModal = ({ deleteHandler, showModal, closeModal }) => {
    return (
-      <ModalContainer>
+      <ModalUi open={showModal} onClose={closeModal}>
          <ModalContent>
             <ModalText>Are you sure you want to delete?</ModalText>
             <ModalButtons>
-               <ModalButtonAdd onClick={handleDeleteItem}>Yes</ModalButtonAdd>
                <ModalButtonCancel onClick={closeModal}>
                   Cancel
                </ModalButtonCancel>
+               <ModalButtonAdd onClick={deleteHandler}>Yes</ModalButtonAdd>
             </ModalButtons>
          </ModalContent>
-      </ModalContainer>
+      </ModalUi>
    )
 }
-
-const ModalContainer = styled('div')({
-   position: 'fixed',
-   top: 0,
-   left: 0,
-   width: '100%',
-   height: '100%',
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-   backgroundColor: 'rgba(62, 60, 60, 0.5)',
-   zIndex: 1,
-})
 
 const ModalContent = styled('div')({
    backgroundColor: '#fff',
    padding: '1rem',
    borderRadius: '5px',
-   width: '30rem',
-   height: '20vh',
+   width: '20rem',
+   height: '15vh',
    display: 'flex',
    flexDirection: 'column',
    justifyContent: 'center',
@@ -75,10 +47,6 @@ const ModalButtons = styled('div')({
 })
 
 const ModalButtonAdd = styled(Button)({
-   width: '6rem',
-   height: '3rem',
-   paddingTop: '0.8rem',
-   paddingRight: '1.6rem',
    '&:hover': {
       backgroundColor: '#015C91',
       '&:active': {
@@ -88,10 +56,6 @@ const ModalButtonAdd = styled(Button)({
 })
 
 const ModalButtonCancel = styled(Button)({
-   width: '6rem',
-   height: '3rem',
-   paddingTop: '0.8rem',
-   paddingRight: '1.6rem',
    '&:hover': {
       backgroundColor: '#015C91',
       '&:active': {
