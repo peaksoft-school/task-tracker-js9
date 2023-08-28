@@ -32,8 +32,18 @@ export const AddedLabelToCard = ({ addLabelCloseModal }) => {
 
    const onEditHandler = (idx) => {
       setEditState((prev) => {
-         return prev.map((state, i) => i === idx)
+         return prev.map((state, i) => (i === idx ? !state : state))
       })
+   }
+
+   const onTaskClick = async (idx) => {
+      await dispatch(
+         postLabel({
+            description: taskText[idx],
+            color: Labels[idx].backgroundColor,
+         })
+      )
+      addLabelCloseModal()
    }
 
    const onEditTask = (event, idx) => {
@@ -64,6 +74,7 @@ export const AddedLabelToCard = ({ addLabelCloseModal }) => {
                return updatedTaskText
             })
          }
+         addLabelCloseModal()
       }
    }
 
@@ -88,7 +99,11 @@ export const AddedLabelToCard = ({ addLabelCloseModal }) => {
                         placeholder="empty"
                      />
                   ) : (
-                     <Task key={color.id} style={color}>
+                     <Task
+                        onClick={() => onTaskClick(idx)}
+                        key={color.id}
+                        style={color}
+                     >
                         {taskText[idx]}
                      </Task>
                   )}
