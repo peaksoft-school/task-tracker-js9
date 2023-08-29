@@ -52,8 +52,10 @@ import { ReactComponent as FrameIcon } from './Frame 150.svg'
 import { ReactComponent as FrameThreeIcon } from './FrameThree.svg'
 import { ReactComponent as StarEmptyIcon } from './starEmpty.svg'
 import { ReactComponent as StarBlue } from './starBlue.svg'
+import { ReactComponent as PLUSICON } from './PLUSiCON.svg'
 
 export {
+   PLUSICON,
    CheckKeyboardIcon,
    FrameIcon,
    StarBlue,

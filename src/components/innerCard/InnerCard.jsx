@@ -1,5 +1,6 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
@@ -19,16 +20,15 @@ import { Input } from '../UI/input/Input'
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
+import { labelActions } from '../../store/getLabels/labelsSlice'
 
 export const InnerCard = ({
    open,
    handleClose,
-   setSaveTitle,
    setSaveDescription,
    displayText,
    setDisplayText,
    displayTitle,
-   setDisplayTitle,
 }) => {
    const [showMore, setShowMore] = React.useState(false)
    const inputRef = React.useRef(null)
@@ -37,6 +37,12 @@ export const InnerCard = ({
    const [inputText, setInputText] = React.useState('')
    const [isEditing, setIsEditing] = React.useState(true)
    const [isEditTitle, setIsEditTitle] = React.useState(true)
+
+   const dispatch = useDispatch()
+
+   const addLabelOpenModalInInnerCard = () => {
+      dispatch(labelActions.openModal())
+   }
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -54,8 +60,8 @@ export const InnerCard = ({
    }
    const documentClick = (event) => {
       if (titleRef.current && !titleRef.current.contains(event.target)) {
-         setDisplayTitle(titleText)
-         setSaveTitle(titleText)
+         // setDisplayTitle(titleText)
+         // setSaveTitle(titleText)
          setIsEditTitle(true)
       }
    }
@@ -159,7 +165,9 @@ export const InnerCard = ({
                         <AddItem>
                            <LabelIcon />
                            {showMore === false ? (
-                              <AddText>Label</AddText>
+                              <AddText onClick={addLabelOpenModalInInnerCard}>
+                                 Label
+                              </AddText>
                            ) : null}
                         </AddItem>
                         <AddItem>
