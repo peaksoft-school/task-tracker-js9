@@ -20,7 +20,7 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
          role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
          link: 'http://localhost:3000/signup',
       }
-      console.log('newData:', newdata)
+
       dispatch(createInviteMember({ newdata, boardId }))
    }
    return (

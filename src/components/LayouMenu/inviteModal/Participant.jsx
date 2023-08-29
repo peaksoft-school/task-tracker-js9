@@ -27,7 +27,6 @@ export const Participant = ({
    const [, setUserRoles] = useState({})
    const { inviteMember } = useSelector((state) => state.inviteMember)
 
-   console.log(inviteMember)
    const dispatch = useDispatch()
    const { boardId } = useParams()
 
@@ -35,7 +34,6 @@ export const Participant = ({
       setOpenNewInvite((prev) => !prev)
    }
    const onRoleChange = (memberId, newRole) => {
-      console.log(newRole)
       setUserRoles((prevRoles) => ({
          ...prevRoles,
          [memberId]: newRole,
