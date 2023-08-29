@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
+import { Labels } from '../../labels/Labels'
 
 export default function TableMui({ column, rows }) {
    return (
@@ -33,9 +34,8 @@ export default function TableMui({ column, rows }) {
                   ))}
                </TableRow>
             </TableHead>
-
             <TableBody>
-               {rows.map((row, rowIndex) => (
+               {rows?.map((row, rowIndex) => (
                   <StyledTableRow key={row.id || row.appointmentId}>
                      {column.map((column) => {
                         if (column.render) {
@@ -74,6 +74,7 @@ export default function TableMui({ column, rows }) {
                ))}
             </TableBody>
          </Table>
+         <Labels />
       </TableContainerStyle>
    )
 }
