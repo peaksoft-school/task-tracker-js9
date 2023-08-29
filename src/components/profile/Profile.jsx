@@ -24,7 +24,7 @@ export const Profile = () => {
    const { state } = useLocation()
    const { id } = useParams()
 
-   console.log(state)
+   // console.log(state)
 
    const dispatch = useDispatch()
 
