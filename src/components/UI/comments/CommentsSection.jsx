@@ -13,7 +13,7 @@ import {
    getCommentsbyId,
    postComments,
 } from '../../../store/crud-comments/commentsThunk'
-import { CommentsMap } from './comments-part/CommentsMap'
+import { MapCommets } from './comments-part/MapCommets'
 import CommentDelete from './comments-part/CommentDelete'
 import { CommentsUpdate } from './comments-part/CommentsUpdate'
 
@@ -105,7 +105,7 @@ export const CommentSection = () => {
 
             {showMore ? (
                <div>
-                  <CommentsMap
+                  <MapCommets
                      getCommentsID={getCommentsID}
                      handleEditClick={handleEditClick}
                      handleDeleteClick={handleDeleteClick}

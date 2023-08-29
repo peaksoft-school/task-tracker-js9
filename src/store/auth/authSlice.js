@@ -44,7 +44,6 @@ export const authSlice = createSlice({
       // регистрация
       builder
          .addCase(signUpRequest.fulfilled, (state, actions) => {
-            console.log('actions: ', actions.payload)
             state.isAuthorization = true
             state.isLoading = false
             state.email = actions.payload.email
@@ -62,8 +61,6 @@ export const authSlice = createSlice({
          })
          //  войти
          .addCase(signInRequest.fulfilled, (state, actions) => {
-            console.log('actions: ', actions)
-            console.log('state: ', state)
             state.isAuthorization = true
             state.isLoading = false
             state.email = actions.payload.email

@@ -35,7 +35,7 @@ export const Profile = () => {
    }, [avatarUrl])
 
    useEffect(() => {
-      if (state.edit !== null) {
+      if (state?.edit !== null) {
          dispatch(profileGetByIdRequest(id))
       } else {
          dispatch(profileGetRequest())
@@ -99,7 +99,7 @@ export const Profile = () => {
 
                <ProfileNames>
                   <ProfileNamesSpan>
-                     {state.edit === null
+                     {state?.edit === null
                         ? item?.firstName
                         : getItemById?.firstName}
                   </ProfileNamesSpan>
