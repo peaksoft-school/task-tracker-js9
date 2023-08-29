@@ -1,11 +1,13 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { useParams } from 'react-router'
 import { ModalUi } from '../UI/modal/Modal'
 import { Photos } from '../photoColor/Photo'
 import { Colors } from '../photoColor/Color'
 import { DoneIcon } from '../../assets/icons'
 
 export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
+   const { id } = useParams()
    const [backGround, setPostColor] = React.useState()
    const [title, setPostTitle] = React.useState()
    const [openPhoto, setOpenPhoto] = React.useState(false)
@@ -13,7 +15,7 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
    const [selectedColor, setSelectedColor] = React.useState(null)
    const [selectedPhoto, setSelectedPhoto] = React.useState(null)
    const postAddBack = () => {
-      postFunc({ backGround, title, workSpaceId: 79 })
+      postFunc({ backGround, title, workSpaceId: +id })
       toggleModal()
       console.log(backGround)
    }
