@@ -1,47 +1,59 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDropzone } from 'react-dropzone'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DeleteIcon, DownIcon, UpIcon } from '../../assets/icons'
 
-import Photo from '../../assets/images/ImageInLogoPage.png'
-import { AttachmentPos, AttachmentRemove } from '../../store/card/cardThunk'
+import {
+   AttachmentPos,
+   attachmentRemove,
+   attachmentGet,
+   attachmentPhotoPost,
+} from '../../store/card/cardThunk'
 
 export const Attachment = () => {
    const dispatch = useDispatch()
-   const [selectedImage, setSelectedImage] = React.useState([])
-   const [selectedImageName, setSelectedImageName] = React.useState('')
+   const [selectedImageName, setSelectedImageName] = React.useState(null)
    const [downState, setDownSate] = React.useState(false)
 
-   const onDrop = React.useCallback((acceptedFiles) => {
+   const photoLink = useSelector((state) => state.card.documentLink)
+   console.log(photoLink)
+   const images = useSelector((state) => state.card.images)
+   console.log(images)
+
+   const onDrop = React.useCallback(async (acceptedFiles) => {
       const file = acceptedFiles[0]
       setSelectedImageName(file.name)
 
-      if (file) {
-         const reader = new FileReader()
-         reader.onload = () => {
-            console.log()
-            setSelectedImage(reader.result)
-            dispatch(
-               AttachmentPos({
-                  documentLink:
-                     'https://images.unsplash.com/photo-1682686579688-c2ba945eda0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-                  cardId: 59,
-               })
-            )
-         }
-         reader.readAsDataURL(file)
+      const formData = new FormData()
+      formData.append('file', file)
+      try {
+         const response = await dispatch(attachmentPhotoPost(formData))
+         const photoLink = response.payload
+         console.log(photoLink)
+         dispatch(
+            AttachmentPos({
+               documentLink: photoLink,
+               cardId: 28,
+            })
+         )
+      } catch (error) {
+         console.error(error)
       }
    }, [])
    const { getRootProps, getInputProps } = useDropzone({ onDrop })
    const deleteImg = (id) => {
-      dispatch(AttachmentRemove(id))
+      dispatch(attachmentRemove(id))
+      console.log(id)
    }
+
+   React.useEffect(() => {
+      dispatch(attachmentGet())
+   }, [onDrop])
 
    const onClickDown = () => {
       setDownSate((prev) => !prev)
    }
-
    return (
       <Container>
          <ContainerInner>
@@ -60,26 +72,20 @@ export const Attachment = () => {
          </ContainerInner>
          {!downState && (
             <Section>
-               <SectionContainer>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                     <Img src={Photo} alt="" />
-                     <TextContainer>
-                        <PhotoName>title.pdf</PhotoName>
-                        <Date>12 Sep, 2021 / 6:30 PM</Date>
-                     </TextContainer>
-                  </div>
-                  <Button>Delete</Button>
-               </SectionContainer>
-               <SectionContainer>
-                  <div style={{ display: 'flex' }}>
-                     <Img src={selectedImage} alt="" />
-                     <TextContainer>
-                        <PhotoName>{selectedImageName}</PhotoName>
-                        <Date>12 Sep, 2021 / 6:30 PM</Date>
-                     </TextContainer>
-                  </div>
-                  <Button onClick={(id) => deleteImg(id)}>Delete</Button>
-               </SectionContainer>
+               {images?.map((image) => (
+                  <SectionContainer key={image.attachmentId}>
+                     <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                        <Img src={image.documentLink} alt="" />
+                        <TextContainer>
+                           <PhotoName>{selectedImageName}</PhotoName>
+                           <DateText>{image.createdAt}</DateText>
+                        </TextContainer>
+                        <Button onClick={() => deleteImg(image.attachmentId)}>
+                           Delete
+                        </Button>
+                     </div>
+                  </SectionContainer>
+               ))}
             </Section>
          )}
          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -117,14 +123,16 @@ const SectionContainer = styled('div')(() => ({
       marginBottom: '0.62rem',
    },
 }))
-const TextContainer = styled('div')(() => ({}))
+const TextContainer = styled('div')(() => ({
+   margin: '20px 0',
+}))
 const PhotoName = styled('div')(() => ({
    color: '#111',
    fintSize: '0.875rem',
    fontWeight: '400',
    width: '500px',
 }))
-const Date = styled('div')(() => ({
+const DateText = styled('div')(() => ({
    fontSize: '0.75rem',
    fontWeight: 400,
    color: '#919191',

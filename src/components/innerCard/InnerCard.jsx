@@ -19,17 +19,19 @@ import { Input } from '../UI/input/Input'
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
+import { Attachment } from '../attachment/Attachment'
 
 export const InnerCard = ({
-   open,
+   // open,
    handleClose,
-   setSaveTitle,
-   setSaveDescription,
+   // setSaveTitle,
+   // setSaveDescription,
    displayText,
-   setDisplayText,
+   // setDisplayText,
    displayTitle,
-   setDisplayTitle,
+   // setDisplayTitle,
 }) => {
+   const open = true
    const [showMore, setShowMore] = React.useState(false)
    const inputRef = React.useRef(null)
    const titleRef = React.useRef(null)
@@ -37,6 +39,7 @@ export const InnerCard = ({
    const [inputText, setInputText] = React.useState('')
    const [isEditing, setIsEditing] = React.useState(true)
    const [isEditTitle, setIsEditTitle] = React.useState(true)
+   const [openAttachment, setOpenAttachment] = React.useState(false)
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -47,15 +50,15 @@ export const InnerCard = ({
 
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
-         setDisplayText(inputText)
-         setSaveDescription(inputText)
+         // setDisplayText(inputText)
+         // setSaveDescription(inputText)
          setIsEditing(false)
       }
    }
    const documentClick = (event) => {
       if (titleRef.current && !titleRef.current.contains(event.target)) {
-         setDisplayTitle(titleText)
-         setSaveTitle(titleText)
+         // setDisplayTitle(titleText)
+         // setSaveTitle(titleText)
          setIsEditTitle(true)
       }
    }
@@ -79,6 +82,9 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', documentClick)
       }
    }, [titleText])
+   const openDoor = () => {
+      setOpenAttachment((prev) => !prev)
+   }
    return (
       <ModalUi open={open} onClose={handleClose}>
          <CardContainer ref={(inputRef, titleRef)}>
@@ -139,6 +145,7 @@ export const InnerCard = ({
                      </DescriptionText>
                   )}
                   <CheckList />
+                  {openAttachment && <Attachment />}
                </CardContainerInner>
                <CardRight>
                   <CardRightContainer>
@@ -165,7 +172,7 @@ export const InnerCard = ({
                         <AddItem>
                            <AttachIcon />
                            {showMore === false ? (
-                              <AddText>Attachment</AddText>
+                              <AddText onClick={openDoor}>Attachment</AddText>
                            ) : null}
                         </AddItem>
                         <AddItem>
