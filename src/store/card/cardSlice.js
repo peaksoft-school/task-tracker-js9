@@ -13,11 +13,9 @@ export const cardSlice = createSlice({
    extraReducers: (builder) => {
       builder
          .addCase(attachmentGet.fulfilled, (state, actions) => {
-            console.log(actions)
             state.images = actions.payload
          })
          .addCase(attachmentPhotoPost.fulfilled, (state, actions) => {
-            console.log(actions)
             state.documentLink = actions.payload
          })
    },

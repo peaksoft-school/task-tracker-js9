@@ -16,8 +16,7 @@ export const attachmentGet = createAsyncThunk(
    'card/attachmentGet',
    async (cardId, { rejectWithValue }) => {
       try {
-         const { data } = await axiosInstance.get(`/api/attachments/${28}`)
-         console.log(data)
+         const { data } = await axiosInstance.get(`/api/attachments/${33}`)
          return data
       } catch (error) {
          rejectWithValue(error)
@@ -25,7 +24,7 @@ export const attachmentGet = createAsyncThunk(
    }
 )
 
-export const AttachmentPos = createAsyncThunk(
+export const attachmentPost = createAsyncThunk(
    'card/attachmentPost',
    async (objCard, { rejectWithValue, dispatch }) => {
       try {
@@ -40,9 +39,9 @@ export const AttachmentPos = createAsyncThunk(
 export const attachmentRemove = createAsyncThunk(
    'card/attachmentRemove',
    async (id, { rejectWithValue, dispatch }) => {
-      console.log(id)
       try {
          await axiosInstance.delete(`/api/attachments/${id}`)
+
          dispatch(attachmentGet())
       } catch (error) {
          rejectWithValue(error)
@@ -52,11 +51,18 @@ export const attachmentRemove = createAsyncThunk(
 
 export const attachmentPhotoPost = createAsyncThunk(
    'card/attachmentPhotoPost',
-   async (obj, { rejectWithValue }) => {
+   async (obj, { rejectWithValue, dispatch }) => {
       try {
          const { data } = await axiosInstance.post(`/api/file`, obj, {
             headers: { 'Content-Type': 'multipart/form-data' },
          })
+         dispatch(
+            attachmentPost({
+               documentLink: data.Link,
+               cardId: 33,
+            })
+         )
+         dispatch(attachmentPost())
          return data.Link
       } catch (error) {
          rejectWithValue(error)

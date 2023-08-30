@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DeleteIcon, DownIcon, UpIcon } from '../../assets/icons'
 
 import {
-   AttachmentPos,
    attachmentRemove,
    attachmentGet,
    attachmentPhotoPost,
@@ -13,38 +12,21 @@ import {
 
 export const Attachment = () => {
    const dispatch = useDispatch()
-   const [selectedImageName, setSelectedImageName] = React.useState(null)
+
    const [downState, setDownSate] = React.useState(false)
 
-   const photoLink = useSelector((state) => state.card.documentLink)
-   console.log(photoLink)
    const images = useSelector((state) => state.card.images)
-   console.log(images)
 
    const onDrop = React.useCallback(async (acceptedFiles) => {
       const file = acceptedFiles[0]
-      setSelectedImageName(file.name)
 
       const formData = new FormData()
       formData.append('file', file)
-      try {
-         const response = await dispatch(attachmentPhotoPost(formData))
-         const photoLink = response.payload
-         console.log(photoLink)
-         dispatch(
-            AttachmentPos({
-               documentLink: photoLink,
-               cardId: 28,
-            })
-         )
-      } catch (error) {
-         console.error(error)
-      }
+      dispatch(attachmentPhotoPost(formData))
    }, [])
    const { getRootProps, getInputProps } = useDropzone({ onDrop })
    const deleteImg = (id) => {
       dispatch(attachmentRemove(id))
-      console.log(id)
    }
 
    React.useEffect(() => {
@@ -54,6 +36,7 @@ export const Attachment = () => {
    const onClickDown = () => {
       setDownSate((prev) => !prev)
    }
+
    return (
       <Container>
          <ContainerInner>
@@ -65,30 +48,59 @@ export const Attachment = () => {
                )}
                <Title>Attachment</Title>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+               style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+               }}
+            >
                <DeleteIcon />
                <DeleteTitle>Delete</DeleteTitle>
             </div>
          </ContainerInner>
          {!downState && (
             <Section>
-               {images?.map((image) => (
-                  <SectionContainer key={image.attachmentId}>
-                     <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                        <Img src={image.documentLink} alt="" />
-                        <TextContainer>
-                           <PhotoName>{selectedImageName}</PhotoName>
-                           <DateText>{image.createdAt}</DateText>
-                        </TextContainer>
-                        <Button onClick={() => deleteImg(image.attachmentId)}>
-                           Delete
-                        </Button>
-                     </div>
-                  </SectionContainer>
-               ))}
+               {images?.length > 0 ? (
+                  images?.map((image) => (
+                     <SectionContainer key={image.attachmentId}>
+                        <div
+                           style={{ display: 'flex', alignItems: 'flex-end' }}
+                        >
+                           <Img src={image.documentLink} alt="" />
+                           <TextContainer>
+                              <PhotoName>
+                                 {/* {image.documentLink.substring(
+                                    image.documentLink.lastIndexOf('/') + 1
+                                 )} */}
+                                 {image.documentLink
+                                    .split('/')
+                                    .pop()
+                                    .split('/')
+                                    .pop()}
+                              </PhotoName>
+                              <DateText>{image.createdAt}</DateText>
+                           </TextContainer>
+                           <Button
+                              onClick={() => deleteImg(image.attachmentId)}
+                              style={{ cursor: 'pointer' }}
+                           >
+                              Delete
+                           </Button>
+                        </div>
+                     </SectionContainer>
+                  ))
+               ) : (
+                  <EmptyText>No attachments available</EmptyText>
+               )}
             </Section>
          )}
-         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+         <div
+            style={{
+               display: 'flex',
+               justifyContent: 'flex-end',
+            }}
+         >
             <div {...getRootProps()}>
                <input {...getInputProps()} />
                <AddButton>Add an attachment</AddButton>
@@ -165,4 +177,11 @@ const AddButton = styled('div')(() => ({
    backgroundColor: '#0079BF',
    borderRadius: '24px',
    cursor: 'pointer',
+}))
+
+const EmptyText = styled('div')(() => ({
+   color: '#919191',
+   textAlign: 'center',
+   fontSize: '1rem',
+   margin: '20px',
 }))

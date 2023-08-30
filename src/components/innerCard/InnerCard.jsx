@@ -24,15 +24,16 @@ import { Attachment } from '../attachment/Attachment'
 import { labelActions } from '../../store/getLabels/labelsSlice'
 
 export const InnerCard = ({
-   open,
+   // open,
    handleClose,
-   setSaveTitle,
-   setSaveDescription,
+   // setSaveTitle,
+   // setSaveDescription,
    displayText,
-   setDisplayText,
+   // setDisplayText,
    displayTitle,
-   setDisplayTitle,
+   // setDisplayTitle,
 }) => {
+   const open = true
    const [showMore, setShowMore] = React.useState(false)
    const inputRef = React.useRef(null)
    const titleRef = React.useRef(null)
@@ -57,15 +58,15 @@ export const InnerCard = ({
 
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
-         setDisplayText(inputText)
-         setSaveDescription(inputText)
+         // setDisplayText(inputText)
+         // setSaveDescription(inputText)
          setIsEditing(false)
       }
    }
    const documentClick = (event) => {
       if (titleRef.current && !titleRef.current.contains(event.target)) {
-         setDisplayTitle(titleText)
-         setSaveTitle(titleText)
+         // setDisplayTitle(titleText)
+         // setSaveTitle(titleText)
          setIsEditTitle(true)
       }
    }
@@ -89,7 +90,7 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', documentClick)
       }
    }, [titleText])
-   const openDoor = () => {
+   const onOpenAttachment = () => {
       setOpenAttachment((prev) => !prev)
    }
    return (
@@ -178,12 +179,14 @@ export const InnerCard = ({
                               </AddText>
                            ) : null}
                         </AddItem>
-                        <AddItem>
+
+                        <AddItem onClick={onOpenAttachment}>
                            <AttachIcon />
                            {showMore === false ? (
-                              <AddText onClick={openDoor}>Attachment</AddText>
+                              <AddText>Attachment</AddText>
                            ) : null}
                         </AddItem>
+
                         <AddItem>
                            <CheckIcon />
                            {showMore === false ? (
@@ -315,6 +318,7 @@ const AddItem = styled('div')(() => ({
    borderRadius: '8px',
    display: 'flex',
    alignItems: 'center',
+   cursor: 'pointer',
 }))
 
 const AddText = styled('p')(() => ({
