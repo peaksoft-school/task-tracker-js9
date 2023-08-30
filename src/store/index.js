@@ -7,6 +7,7 @@ import { boardSlice } from './board/boardSlice'
 import { ProfileSlice } from './profile/ProfileSlice'
 import { favouriteSlice } from './getFavourites/favouritesSlice'
 import { labelsSlice } from './getLabels/labelsSlice'
+import { allIssuesSlice } from './get-all-issues/get.all.issuesSlice'
 
 export const store = configureStore({
    reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
       [ProfileSlice.name]: ProfileSlice.reducer,
       [favouriteSlice.name]: favouriteSlice.reducer,
       [labelsSlice.name]: labelsSlice.reducer,
+      [allIssuesSlice.name]: allIssuesSlice.reducer,
    },
 })

@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Checkbox, FormControl, MenuItem, Select, styled } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
 import { AllIssuesTable } from './AllIssuesTable'
 import { AssigneeSection } from '../UI/assignee/AssigneeSection'
 import { LabelForFilter } from '../UI/filteredLabel/LabelForFilter'
+import { getAllIssues } from '../../store/get-all-issues/get.all.issuesThunk'
 
 export const AllIssues = () => {
    const [startDate, setStartDate] = useState(null)
    const [dueDate, setDueDate] = useState(null)
    const [assignee, setAssignee] = useState('Assignee')
+   const dispatch = useDispatch()
+   const { id } = useParams()
 
    const AssigneeHandleChange = (event) => {
       setAssignee(event.target.value)
@@ -26,6 +31,10 @@ export const AllIssues = () => {
    const handleDueDateChange = (newValue) => {
       setDueDate(newValue)
    }
+
+   useEffect(() => {
+      dispatch(getAllIssues(id))
+   })
 
    return (
       <BodyContainer>
@@ -96,7 +105,9 @@ export const AllIssues = () => {
 }
 
 const BodyContainer = styled('div')(() => ({
-   padding: '0.76rem 1.25rem 0rem 1.25rem',
+   // padding: '0.76rem 1.25rem 0rem 1.25rem',
+   marginTop: '5rem',
+   width: '100%',
 }))
 
 const GlobalContainer = styled('div')(() => ({

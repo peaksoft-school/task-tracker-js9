@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
+import { useNavigate, useParams } from 'react-router'
 import MuiDrawer from '@mui/material/Drawer'
 import Divider from '@mui/material/Divider'
 import { IconButton, ListItemIcon } from '@mui/material'
@@ -20,6 +21,8 @@ export function Sidenav({ data, dataLength, workspacedata }) {
    const [openDrawer, setOpenDrawer] = useState(false)
    const [activeItem, setActiveItem] = useState(null)
    const [toggle, setToggle] = useState(false)
+   const navigate = useNavigate()
+   const { id } = useParams()
 
    const handleDrawerToggle = () => {
       setOpenDrawer((prev) => !prev)
@@ -28,6 +31,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
 
    const handleItemClick = (item) => {
       setActiveItem(item)
+      navigate(`/mainPage/${id}/boards/allissues/`)
    }
 
    const menuItems = [

@@ -9,6 +9,7 @@ import { USER_ROLE } from '../utils/constants/authorization'
 import { Profile } from '../components/profile/Profile'
 import { BoardPage } from '../pages/BoardPage'
 import { InnerPage } from '../pages/InnerPage'
+import { AllIssuesPage } from '../pages/AllIssuesPage'
 
 export const routes = createBrowserRouter([
    {
@@ -63,6 +64,15 @@ export const routes = createBrowserRouter([
          <>
             <Headers />
             <BoardPage />
+         </>
+      ),
+   },
+   {
+      path: 'mainPage/:id/boards/allissues/',
+      element: (
+         <>
+            <Headers />
+            <AllIssuesPage />
          </>
       ),
    },

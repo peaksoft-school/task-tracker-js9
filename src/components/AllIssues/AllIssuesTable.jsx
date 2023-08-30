@@ -1,9 +1,10 @@
 import React from 'react'
 import { Avatar, styled } from '@mui/material'
+import { useSelector } from 'react-redux'
 import TableMui from '../UI/table/TableMui'
-import { rows } from '../../utils/constants/allIssues'
 
 export const AllIssuesTable = () => {
+   const { allIssues } = useSelector((state) => state.allIssues)
    const column = [
       {
          heading: 'Created',
@@ -26,21 +27,22 @@ export const AllIssuesTable = () => {
          key: 'Column',
          render: (column) => <Column>{column.column}</Column>,
       },
+
       {
          heading: 'Assignee',
          key: 'Assignee',
          render: (assignee) => (
             <Assignee>
-               {assignee.assignees.length <= 2 ? (
-                  assignee.assignees.map((item) => (
-                     <Avatar key={item.id}>{item.img}</Avatar>
+               {assignee.length <= 2 ? (
+                  assignee.map((item) => (
+                     <Avatar key={item.id}>{item.image}</Avatar>
                   ))
                ) : (
                   <>
-                     {assignee.assignees.slice(0, 2).map((item) => (
-                        <Avatar src={item.img} key={item.id} />
+                     {assignee.assignee.slice(0, 2).map((item) => (
+                        <Avatar src={item.image} key={item.id} />
                      ))}
-                     <Avatar>+{assignee.assignees.length - 2}</Avatar>
+                     <Avatar>{assignee.assignee.length - 2}</Avatar>
                   </>
                )}
             </Assignee>
@@ -52,8 +54,8 @@ export const AllIssuesTable = () => {
          key: 'Labels',
          render: (label) => (
             <Labels>
-               {label.labels.map((item) => (
-                  <p style={{ backgroundColor: item.color }} />
+               {label.labelResponses.map((item) => (
+                  <p style={{ backgroundColor: item.labelResponses }} />
                ))}
             </Labels>
          ),
@@ -61,7 +63,7 @@ export const AllIssuesTable = () => {
       {
          heading: 'Checklist',
          key: 'Checklist',
-         render: (data) => <p>{data.checklist}</p>,
+         render: (data) => <p>{data.checkListResponse}</p>,
       },
       {
          heading: 'Description',
@@ -74,7 +76,7 @@ export const AllIssuesTable = () => {
    ]
    return (
       <div>
-         <StyledTable column={column} rows={rows} />
+         <StyledTable column={column} rows={allIssues} />
       </div>
    )
 }
