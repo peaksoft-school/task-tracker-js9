@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation, useParams } from 'react-router-dom'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { EditIcon } from '../../assets/icons'
 import ColorBackground from '../../assets/images/ColorsBakground.png'
@@ -10,6 +10,7 @@ import { ProfileProjects } from './ProfileProjects'
 import {
    profileAvatarRemoveRequest,
    profileAvatarSThreePost,
+   profileGetByIdRequest,
    profileGetRequest,
 } from '../../store/profile/ProfileThunk'
 import { ProfileForm } from './ProfileForm'
@@ -17,7 +18,13 @@ import { ProfileForm } from './ProfileForm'
 export const Profile = () => {
    const [avatarUrl, setAvatarUrl] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
-   const { item, avatarLink } = useSelector((state) => state.profile)
+   const { item, avatarLink, getItemById } = useSelector(
+      (state) => state.profile
+   )
+   const { state } = useLocation()
+   const { id } = useParams()
+
+   // console.log(state)
 
    const dispatch = useDispatch()
 
@@ -28,7 +35,11 @@ export const Profile = () => {
    }, [avatarUrl])
 
    useEffect(() => {
-      dispatch(profileGetRequest())
+      if (state?.edit !== null) {
+         dispatch(profileGetByIdRequest(id))
+      } else {
+         dispatch(profileGetRequest())
+      }
    }, [dispatch])
 
    const handleDrop = async (acceptedFiles) => {
@@ -87,8 +98,16 @@ export const Profile = () => {
                ) : null}
 
                <ProfileNames>
-                  <ProfileNamesSpan>{item?.firstName}</ProfileNamesSpan>
-                  <ProfileNamesSpan>{item?.lastName}</ProfileNamesSpan>
+                  <ProfileNamesSpan>
+                     {state?.edit === null
+                        ? item?.firstName
+                        : getItemById?.firstName}
+                  </ProfileNamesSpan>
+                  <ProfileNamesSpan>
+                     {state.edit === null
+                        ? item?.lastName
+                        : getItemById?.lastName}
+                  </ProfileNamesSpan>
                </ProfileNames>
             </div>
          </ProfileContainer>
