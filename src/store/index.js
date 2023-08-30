@@ -1,11 +1,12 @@
+/* eslint-disable import/no-unresolved */
 import { configureStore } from '@reduxjs/toolkit'
 import { authSlice } from './auth/authSlice'
-
 import { workspacesSlice } from './workspace/workspaceSlice'
-
 import { boardSlice } from './board/boardSlice'
 import { ProfileSlice } from './profile/ProfileSlice'
+import { commentsSlice } from './crud-comments/commentsSlice'
 import { favouriteSlice } from './getFavourites/favouritesSlice'
+import { memberSlice } from './inviteMember/memberSlice'
 import { labelsSlice } from './getLabels/labelsSlice'
 import { allIssuesSlice } from './get-all-issues/get.all.issuesSlice'
 
@@ -15,7 +16,9 @@ export const store = configureStore({
       [workspacesSlice.name]: workspacesSlice.reducer,
       [boardSlice.name]: boardSlice.reducer,
       [ProfileSlice.name]: ProfileSlice.reducer,
+      [commentsSlice.name]: commentsSlice.reducer,
       [favouriteSlice.name]: favouriteSlice.reducer,
+      [memberSlice.name]: memberSlice.reducer,
       [labelsSlice.name]: labelsSlice.reducer,
       [allIssuesSlice.name]: allIssuesSlice.reducer,
    },
