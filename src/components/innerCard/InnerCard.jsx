@@ -24,16 +24,15 @@ import { Attachment } from '../attachment/Attachment'
 import { labelActions } from '../../store/getLabels/labelsSlice'
 
 export const InnerCard = ({
-   // open,
+   open,
    handleClose,
-   // setSaveTitle,
-   // setSaveDescription,
+   setSaveTitle,
+   setSaveDescription,
    displayText,
-   // setDisplayText,
+   setDisplayText,
    displayTitle,
-   // setDisplayTitle,
+   setDisplayTitle,
 }) => {
-   const open = true
    const [showMore, setShowMore] = React.useState(false)
    const inputRef = React.useRef(null)
    const titleRef = React.useRef(null)
@@ -58,15 +57,15 @@ export const InnerCard = ({
 
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
-         // setDisplayText(inputText)
-         // setSaveDescription(inputText)
+         setDisplayText(inputText)
+         setSaveDescription(inputText)
          setIsEditing(false)
       }
    }
    const documentClick = (event) => {
       if (titleRef.current && !titleRef.current.contains(event.target)) {
-         // setDisplayTitle(titleText)
-         // setSaveTitle(titleText)
+         setDisplayTitle(titleText)
+         setSaveTitle(titleText)
          setIsEditTitle(true)
       }
    }
