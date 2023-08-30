@@ -1,15 +1,17 @@
-import { styled } from '@mui/material'
-import React from 'react'
+import { styled, IconButton } from '@mui/material'
+import React, { useState, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
    AttachIcon,
    CheckIcon,
    ClockIcon,
-   CloseIcon,
+   // CloseIcon,
    DeleteIcon,
    DownIcon,
    EditIcon,
+   ExitIcon,
    LabelIcon,
    MemberIcon,
 } from '../../assets/icons'
@@ -19,24 +21,34 @@ import { Input } from '../UI/input/Input'
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
+import { Button } from '../UI/button/Button'
+import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
+// import { ModalUi } from '../UI/modal/Modal'
 
-export const InnerCard = ({
-   open,
-   handleClose,
-   setSaveTitle,
-   setSaveDescription,
-   displayText,
-   setDisplayText,
-   displayTitle,
-   setDisplayTitle,
-}) => {
-   const [showMore, setShowMore] = React.useState(false)
-   const inputRef = React.useRef(null)
-   const titleRef = React.useRef(null)
-   const [titleText, setTitleText] = React.useState('')
-   const [inputText, setInputText] = React.useState('')
-   const [isEditing, setIsEditing] = React.useState(true)
-   const [isEditTitle, setIsEditTitle] = React.useState(true)
+export const InnerCard = (
+   // eslint-disable-next-line no-empty-pattern
+   {
+      // open,
+      // handleClose,
+      // setSaveTitle,
+      // setSaveDescription,
+      // displayText,
+      // setDisplayText,
+      // displayTitle,
+      // setDisplayTitle,
+   }
+) => {
+   const [showMore, setShowMore] = useState(false)
+   const inputRef = useRef(null)
+   const titleRef = useRef(null)
+   const [titleText, setTitleText] = useState('')
+   const [inputText, setInputText] = useState('')
+   const [isEditing, setIsEditing] = useState(true)
+   const [isEditTitle, setIsEditTitle] = useState(true)
+   const [openCheckListModal, setOpenCheckListModal] = useState(false)
+   const [titleCheckList, setTitleCheckList] = useState('')
+
+   const dispatch = useDispatch()
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -47,15 +59,15 @@ export const InnerCard = ({
 
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
-         setDisplayText(inputText)
-         setSaveDescription(inputText)
+         // setDisplayText(inputText)
+         // setSaveDescription(inputText)
          setIsEditing(false)
       }
    }
    const documentClick = (event) => {
       if (titleRef.current && !titleRef.current.contains(event.target)) {
-         setDisplayTitle(titleText)
-         setSaveTitle(titleText)
+         // setDisplayTitle(titleText)
+         // setSaveTitle(titleText)
          setIsEditTitle(true)
       }
    }
@@ -79,127 +91,169 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', documentClick)
       }
    }, [titleText])
+
+   const openCheckListModalHandler = () => {
+      setOpenCheckListModal(true)
+   }
+
+   const closeCheckListModalHandler = () => {
+      setOpenCheckListModal(false)
+   }
+
+   const addCheckListHandler = () => {
+      const data = {
+         title: titleCheckList,
+         cardId: 1,
+      }
+      dispatch(createdCheckListRequest(data))
+   }
+
    return (
-      <ModalUi open={open} onClose={handleClose}>
-         <CardContainer ref={(inputRef, titleRef)}>
-            <Wrapper>
-               <TextContainer>
-                  <EditIcon onClick={handleEditTitleClick} />
-                  {isEditTitle ? (
-                     <CardText onClick={handleEditTitleClick}>
-                        {displayTitle}
-                     </CardText>
-                  ) : (
-                     <TitileInput
-                        type="text"
-                        value={titleText}
-                        onChange={handleTitleChange}
-                     />
-                  )}
-               </TextContainer>
-               <CloseIcon onClose={handleClose} />
-            </Wrapper>
-            <CardWrapper>
-               <CardContainerInner>
-                  <Labels />
-                  <DataContainer>
-                     <div>
-                        <Title>Start Date</Title>
-                        <DateStart>
-                           Sep 9, 2022 at 12:51 PM
-                           <DownIcon style={{ marginLeft: '0.5rem' }} />
-                        </DateStart>
-                     </div>
-                     <div>
-                        <Title>Due Date</Title>
-                        <DateStart>
-                           Sep 9, 2022 at 12:51 PM
-                           <DownIcon style={{ marginLeft: '0.5rem' }} />
-                        </DateStart>
-                     </div>
-                     <div>
-                        <Title>Members</Title>
-                        <DateStart />
-                     </div>
-                  </DataContainer>
-                  <Description>
-                     <DownIcon />
-                     <DescriptionTitle>Description</DescriptionTitle>
-                  </Description>
-                  {isEditing ? (
-                     <DescriptionInput
-                        type="text"
-                        placeholder="Add a description"
-                        value={inputText}
-                        onChange={handleInputChange}
-                     />
-                  ) : (
-                     <DescriptionText onClick={handleEditClick}>
-                        {displayText}
-                     </DescriptionText>
-                  )}
-                  <CheckList />
-               </CardContainerInner>
-               <CardRight>
-                  <CardRightContainer>
-                     <Title>Add</Title>
-                     <AddWrapper>
-                        <AddItem>
-                           <MemberIcon />
-                           {showMore === false ? (
-                              <AddText>Members</AddText>
-                           ) : null}
-                        </AddItem>
-                        <AddItem>
-                           <ClockIcon style={{ width: '16px' }} />
-                           {showMore === false ? (
-                              <AddText>Estimation</AddText>
-                           ) : null}
-                        </AddItem>
-                        <AddItem>
-                           <LabelIcon />
-                           {showMore === false ? (
-                              <AddText>Label</AddText>
-                           ) : null}
-                        </AddItem>
-                        <AddItem>
-                           <AttachIcon />
-                           {showMore === false ? (
-                              <AddText>Attachment</AddText>
-                           ) : null}
-                        </AddItem>
-                        <AddItem>
-                           <CheckIcon />
-                           {showMore === false ? (
-                              <AddText>Checklist</AddText>
-                           ) : null}
-                        </AddItem>
-                     </AddWrapper>
-                     <Title>Actions</Title>
-                     <ActionsItem>
-                        <AddItem>
-                           <DeleteIcon />
-                           {showMore === false ? (
-                              <AddText>Delete</AddText>
-                           ) : null}
-                        </AddItem>
-                        <AddItem>
-                           <ArchiveIcon />
-                           {showMore === false ? (
-                              <AddText>Archive</AddText>
-                           ) : null}
-                        </AddItem>
-                     </ActionsItem>
-                  </CardRightContainer>
-                  <CommentSection
-                     showMore={showMore}
-                     setShowMore={setShowMore}
-                     comments={comments}
+      // <ModalUi open={open} onClose={handleClose}>
+      <CardContainer ref={(inputRef, titleRef)}>
+         <Wrapper>
+            <TextContainer>
+               <EditIcon onClick={handleEditTitleClick} />
+               {isEditTitle ? (
+                  <CardText onClick={handleEditTitleClick}>
+                     {/* {displayTitle} */}
+                  </CardText>
+               ) : (
+                  <TitileInput
+                     type="text"
+                     value={titleText}
+                     onChange={handleTitleChange}
                   />
-               </CardRight>
-            </CardWrapper>
-         </CardContainer>
-      </ModalUi>
+               )}
+            </TextContainer>
+            {/* <CloseIcon onClose={handleClose} /> */}
+         </Wrapper>
+         <CardWrapper>
+            <CardContainerInner>
+               <Labels />
+               <DataContainer>
+                  <div>
+                     <Title>Start Date</Title>
+                     <DateStart>
+                        Sep 9, 2022 at 12:51 PM
+                        <DownIcon style={{ marginLeft: '0.5rem' }} />
+                     </DateStart>
+                  </div>
+                  <div>
+                     <Title>Due Date</Title>
+                     <DateStart>
+                        Sep 9, 2022 at 12:51 PM
+                        <DownIcon style={{ marginLeft: '0.5rem' }} />
+                     </DateStart>
+                  </div>
+                  <div>
+                     <Title>Members</Title>
+                     <DateStart />
+                  </div>
+               </DataContainer>
+               <Description>
+                  <DownIcon />
+                  <DescriptionTitle>Description</DescriptionTitle>
+               </Description>
+               {isEditing ? (
+                  <DescriptionInput
+                     type="text"
+                     placeholder="Add a description"
+                     value={inputText}
+                     onChange={handleInputChange}
+                  />
+               ) : (
+                  <DescriptionText onClick={handleEditClick}>
+                     {/* {displayText} */}
+                  </DescriptionText>
+               )}
+               <CheckList />
+            </CardContainerInner>
+            <CardRight>
+               <CardRightContainer>
+                  <Title>Add</Title>
+                  <AddWrapper>
+                     <AddItem>
+                        <MemberIcon />
+                        {showMore === false ? <AddText>Members</AddText> : null}
+                     </AddItem>
+                     <AddItem>
+                        <ClockIcon style={{ width: '16px' }} />
+                        {showMore === false ? (
+                           <AddText>Estimation</AddText>
+                        ) : null}
+                     </AddItem>
+                     <AddItem>
+                        <LabelIcon />
+                        {showMore === false ? <AddText>Label</AddText> : null}
+                     </AddItem>
+                     <AddItem>
+                        <AttachIcon />
+                        {showMore === false ? (
+                           <AddText>Attachment</AddText>
+                        ) : null}
+                     </AddItem>
+                     <AddItem onClick={openCheckListModalHandler}>
+                        <CheckIcon />
+                        {showMore === false ? (
+                           <AddText>Checklist</AddText>
+                        ) : null}
+                     </AddItem>
+                     {openCheckListModal ? (
+                        <ModalUi
+                           open={openCheckListModal}
+                           onClose={closeCheckListModalHandler}
+                        >
+                           <ModalContent>
+                              <ModalHeader>
+                                 <p>{}</p>
+                                 <p>Add checklist</p>
+                                 <IconButtonStyled
+                                    onClick={closeCheckListModalHandler}
+                                 >
+                                    <ExitIcon fill="black" />
+                                 </IconButtonStyled>
+                              </ModalHeader>
+                              <ModalInputBox>
+                                 <StyledInput
+                                    onChange={(e) =>
+                                       setTitleCheckList(e.target.value)
+                                    }
+                                    value={titleCheckList}
+                                    type="text"
+                                    placeholder="Title"
+                                 />
+                              </ModalInputBox>
+                              <ModalButtonBox>
+                                 <ButtonStyled onClick={addCheckListHandler}>
+                                    Add checklist
+                                 </ButtonStyled>
+                              </ModalButtonBox>
+                           </ModalContent>
+                        </ModalUi>
+                     ) : null}
+                  </AddWrapper>
+                  <Title>Actions</Title>
+                  <ActionsItem>
+                     <AddItem>
+                        <DeleteIcon />
+                        {showMore === false ? <AddText>Delete</AddText> : null}
+                     </AddItem>
+                     <AddItem>
+                        <ArchiveIcon />
+                        {showMore === false ? <AddText>Archive</AddText> : null}
+                     </AddItem>
+                  </ActionsItem>
+               </CardRightContainer>
+               <CommentSection
+                  showMore={showMore}
+                  setShowMore={setShowMore}
+                  comments={comments}
+               />
+            </CardRight>
+         </CardWrapper>
+      </CardContainer>
+      // </ModalUi>
    )
 }
 
@@ -299,6 +353,7 @@ const AddItem = styled('div')(() => ({
    borderRadius: '8px',
    display: 'flex',
    alignItems: 'center',
+   cursor: 'pointer',
 }))
 
 const AddText = styled('p')(() => ({
@@ -315,3 +370,52 @@ const TitileInput = styled(Input)(() => ({
       padding: '1rem 0',
    },
 }))
+
+const ModalContent = styled('div')({
+   backgroundColor: '#fff',
+   borderRadius: '5px',
+   width: '17.75rem',
+   height: '9.125rem',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'center',
+   alignItems: 'center',
+   gap: '1rem',
+})
+
+const ModalHeader = styled('div')({
+   display: 'flex',
+   justifyContent: 'space-between',
+   alignItems: 'center',
+   width: '17.75rem',
+})
+
+const ModalInputBox = styled('div')({})
+
+const ModalButtonBox = styled('div')({})
+
+const ButtonStyled = styled(Button)({
+   display: 'flex',
+   width: '15.25rem',
+   padding: '0.375rem 1rem',
+   justifyContent: 'center',
+   alignItems: 'center',
+   '&:hover': {
+      backgroundColor: '#5286ff',
+   },
+})
+
+const StyledInput = styled('input')({
+   display: 'flex',
+   width: '15.25rem',
+   padding: '0.375rem 1rem',
+   alignItems: 'center',
+   gap: '0.5rem',
+   borderRadius: '0.5rem',
+   border: '1px solid #D0D0D0',
+})
+
+const IconButtonStyled = styled(IconButton)({
+   cursor: 'pointer',
+   color: 'black',
+})

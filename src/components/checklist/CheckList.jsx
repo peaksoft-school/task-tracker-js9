@@ -14,7 +14,7 @@ export const CheckList = ({ title }) => {
    }
 
    useEffect(() => {
-      dispatch(checkListGetRequest(55))
+      dispatch(checkListGetRequest(1))
    }, [])
 
    return (
@@ -29,9 +29,4 @@ export const CheckList = ({ title }) => {
    )
 }
 
-const ChecklistContainer = styled('div')({
-   width: '100%',
-   borderRadius: '5px',
-   padding: '10px',
-   marginBottom: '10px',
-})
+const ChecklistContainer = styled('div')({})
