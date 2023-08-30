@@ -33,7 +33,6 @@ export default function TableMui({ column, rows }) {
                   ))}
                </TableRow>
             </TableHead>
-
             <TableBody>
                {rows?.map((row, rowIndex) => (
                   <StyledTableRow key={row.id || row.appointmentId}>
