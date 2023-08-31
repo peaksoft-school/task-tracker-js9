@@ -7,12 +7,13 @@ export const CheckListModal = ({ deleteHandler, showModal, closeModal }) => {
    return (
       <ModalUi open={showModal} onClose={closeModal}>
          <ModalContent>
+            <ModalDeleteText>Delete task</ModalDeleteText>
             <ModalText>Are you sure you want to delete?</ModalText>
             <ModalButtons>
                <ModalButtonCancel onClick={closeModal}>
                   Cancel
                </ModalButtonCancel>
-               <ModalButtonAdd onClick={deleteHandler}>Yes</ModalButtonAdd>
+               <ModalButtonAdd onClick={deleteHandler}>Delete</ModalButtonAdd>
             </ModalButtons>
          </ModalContent>
       </ModalUi>
@@ -23,43 +24,47 @@ const ModalContent = styled('div')({
    backgroundColor: '#fff',
    padding: '1rem',
    borderRadius: '5px',
-   width: '20rem',
-   height: '15vh',
    display: 'flex',
    flexDirection: 'column',
-   justifyContent: 'center',
-   alignItems: 'center',
+   width: '20.5rem',
+   height: '9.125rem',
+   gap: '1.4rem',
 })
 
 const ModalText = styled('p')({
+   color: '#919191',
+   fontFamily: 'CarePro',
    fontSize: '1rem',
-   fontWeight: 'bold',
-   marginBottom: '1rem',
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
+   fontWeight: '400',
 })
 
 const ModalButtons = styled('div')({
    display: 'flex',
-   justifyContent: 'center',
+   justifyContent: 'end',
    gap: '1rem',
 })
 
 const ModalButtonAdd = styled(Button)({
+   background: '#D91212',
    '&:hover': {
-      backgroundColor: '#015C91',
+      backgroundColor: '#e82b2b',
       '&:active': {
-         backgroundColor: '#0079BF',
+         backgroundColor: '#a70909',
       },
    },
 })
 
 const ModalButtonCancel = styled(Button)({
+   background: '#b9b9b9',
+
    '&:hover': {
-      backgroundColor: '#015C91',
+      backgroundColor: '#9d9d9d',
       '&:active': {
-         backgroundColor: '#0079BF',
+         backgroundColor: '#707070',
       },
    },
+})
+
+const ModalDeleteText = styled('p')({
+   textAlign: 'center',
 })

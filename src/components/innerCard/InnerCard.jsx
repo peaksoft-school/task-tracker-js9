@@ -20,7 +20,6 @@ import { Input } from '../UI/input/Input'
 
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
-import { ModalUi } from '../UI/modal/Modal'
 import { Button } from '../UI/button/Button'
 import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 // import { ModalUi } from '../UI/modal/Modal'
@@ -103,9 +102,11 @@ export const InnerCard = (
    const addCheckListHandler = () => {
       const data = {
          title: titleCheckList,
-         cardId: 1,
+         cardId: 19,
       }
       dispatch(createdCheckListRequest(data))
+      closeCheckListModalHandler()
+      setTitleCheckList('')
    }
 
    return (
@@ -200,10 +201,8 @@ export const InnerCard = (
                         ) : null}
                      </AddItem>
                      {openCheckListModal ? (
-                        <ModalUi
-                           open={openCheckListModal}
-                           onClose={closeCheckListModalHandler}
-                        >
+                        <>
+                           <BackDrop onClick={closeCheckListModalHandler} />
                            <ModalContent>
                               <ModalHeader>
                                  <p>{}</p>
@@ -230,7 +229,7 @@ export const InnerCard = (
                                  </ButtonStyled>
                               </ModalButtonBox>
                            </ModalContent>
-                        </ModalUi>
+                        </>
                      ) : null}
                   </AddWrapper>
                   <Title>Actions</Title>
@@ -381,6 +380,8 @@ const ModalContent = styled('div')({
    justifyContent: 'center',
    alignItems: 'center',
    gap: '1rem',
+   position: 'absolute',
+   top: '10rem',
 })
 
 const ModalHeader = styled('div')({
@@ -418,4 +419,10 @@ const StyledInput = styled('input')({
 const IconButtonStyled = styled(IconButton)({
    cursor: 'pointer',
    color: 'black',
+})
+
+const BackDrop = styled('div')({
+   position: 'absolute',
+   width: '100%',
+   height: '100vh',
 })

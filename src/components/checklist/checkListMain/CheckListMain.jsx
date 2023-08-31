@@ -53,6 +53,7 @@ export const CheckListMain = ({ isAddDisabled, itemResponseList, id }) => {
                      type="text"
                      value={newItemValue}
                      onChange={handleNewItemChange}
+                     placeholder="Add a description"
                   />
                </ItemContainer>
                <ActionButtonsContainer>

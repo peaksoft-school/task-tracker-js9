@@ -14,7 +14,7 @@ export const CheckList = ({ title }) => {
    }
 
    useEffect(() => {
-      dispatch(checkListGetRequest(1))
+      dispatch(checkListGetRequest(19))
    }, [])
 
    return (

@@ -21,7 +21,7 @@ export const checkListPutRequest = createAsyncThunk(
             data
          )
 
-         dispatch(checkListGetRequest(1))
+         dispatch(checkListGetRequest(19))
 
          return response.data
       } catch (error) {
@@ -47,7 +47,7 @@ export const postItemToItems = createAsyncThunk(
       try {
          const response = await axiosInstance.post(`api/items`, data)
 
-         dispatch(checkListGetRequest(1))
+         dispatch(checkListGetRequest(19))
 
          return response
       } catch (error) {
@@ -62,7 +62,7 @@ export const putItemToItems = createAsyncThunk(
       try {
          const response = await axiosInstance.put(`api/items/${id}`)
 
-         dispatch(checkListGetRequest(1))
+         dispatch(checkListGetRequest(19))
          return response
       } catch (error) {
          return error
@@ -76,7 +76,7 @@ export const deleteListInLists = createAsyncThunk(
       try {
          const response = await axiosInstance.delete(`api/checkList/${id}`)
 
-         dispatch(checkListGetRequest(1))
+         dispatch(checkListGetRequest(19))
 
          return response
       } catch (error) {
@@ -89,9 +89,8 @@ export const deleteItemInItems = createAsyncThunk(
    'checkList/deleteItemInItems',
    async (id, { dispatch }) => {
       try {
-         console.log('id: ', id)
          const response = await axiosInstance.delete(`api/items/${id}`)
-         dispatch(checkListGetRequest(1))
+         dispatch(checkListGetRequest(19))
 
          return response
       } catch (error) {
@@ -102,14 +101,13 @@ export const deleteItemInItems = createAsyncThunk(
 
 export const createdCheckListRequest = createAsyncThunk(
    'checkList/createCheckListRequest',
-   async (data) => {
+   async (data, { dispatch }) => {
       try {
          const response = await axiosInstance.post(
             `/api/checkList/${data.cardId}`,
             data
          )
-         // eslint-disable-next-line no-restricted-globals
-         location.reload()
+         dispatch(checkListGetRequest(19))
          return response
       } catch (error) {
          return error.message

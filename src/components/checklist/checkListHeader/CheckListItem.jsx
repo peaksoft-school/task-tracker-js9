@@ -232,4 +232,5 @@ const ProgressBarFill = styled('div')(({ progress }) => ({
    width: `${progress}%`,
    backgroundColor: '#007bff',
    borderRadius: '5px',
+   transition: '0.7s',
 }))
