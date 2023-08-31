@@ -20,15 +20,18 @@ import { Input } from '../UI/input/Input'
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
+import { Attachment } from '../attachment/Attachment'
 import { labelActions } from '../../store/getLabels/labelsSlice'
 
 export const InnerCard = ({
    open,
    handleClose,
+   setSaveTitle,
    setSaveDescription,
    displayText,
    setDisplayText,
    displayTitle,
+   setDisplayTitle,
 }) => {
    const [showMore, setShowMore] = React.useState(false)
    const inputRef = React.useRef(null)
@@ -37,6 +40,7 @@ export const InnerCard = ({
    const [inputText, setInputText] = React.useState('')
    const [isEditing, setIsEditing] = React.useState(true)
    const [isEditTitle, setIsEditTitle] = React.useState(true)
+   const [openAttachment, setOpenAttachment] = React.useState(false)
 
    const dispatch = useDispatch()
 
@@ -60,8 +64,8 @@ export const InnerCard = ({
    }
    const documentClick = (event) => {
       if (titleRef.current && !titleRef.current.contains(event.target)) {
-         // setDisplayTitle(titleText)
-         // setSaveTitle(titleText)
+         setDisplayTitle(titleText)
+         setSaveTitle(titleText)
          setIsEditTitle(true)
       }
    }
@@ -85,6 +89,9 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', documentClick)
       }
    }, [titleText])
+   const onOpenAttachment = () => {
+      setOpenAttachment((prev) => !prev)
+   }
    return (
       <ModalUi open={open} onClose={handleClose}>
          <CardContainer ref={(inputRef, titleRef)}>
@@ -145,6 +152,7 @@ export const InnerCard = ({
                      </DescriptionText>
                   )}
                   <CheckList />
+                  {openAttachment && <Attachment />}
                </CardContainerInner>
                <CardRight>
                   <CardRightContainer>
@@ -170,12 +178,14 @@ export const InnerCard = ({
                               </AddText>
                            ) : null}
                         </AddItem>
-                        <AddItem>
+
+                        <AddItem onClick={onOpenAttachment}>
                            <AttachIcon />
                            {showMore === false ? (
                               <AddText>Attachment</AddText>
                            ) : null}
                         </AddItem>
+
                         <AddItem>
                            <CheckIcon />
                            {showMore === false ? (
@@ -307,6 +317,7 @@ const AddItem = styled('div')(() => ({
    borderRadius: '8px',
    display: 'flex',
    alignItems: 'center',
+   cursor: 'pointer',
 }))
 
 const AddText = styled('p')(() => ({

@@ -6,6 +6,7 @@ import { boardSlice } from './board/boardSlice'
 import { ProfileSlice } from './profile/ProfileSlice'
 import { commentsSlice } from './crud-comments/commentsSlice'
 import { favouriteSlice } from './getFavourites/favouritesSlice'
+import { cardSlice } from './card/cardSlice'
 import { memberSlice } from './inviteMember/memberSlice'
 import { labelsSlice } from './getLabels/labelsSlice'
 
@@ -17,6 +18,7 @@ export const store = configureStore({
       [ProfileSlice.name]: ProfileSlice.reducer,
       [commentsSlice.name]: commentsSlice.reducer,
       [favouriteSlice.name]: favouriteSlice.reducer,
+      [cardSlice.name]: cardSlice.reducer,
       [memberSlice.name]: memberSlice.reducer,
       [labelsSlice.name]: labelsSlice.reducer,
    },
