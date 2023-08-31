@@ -1,23 +1,59 @@
 import { Tooltip, styled } from '@mui/material'
-import { ExitIcon } from '../../assets/icons'
-import { labels } from '../../utils/constants/labels'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { ExitIcon, PLUSICON } from '../../assets/icons'
+import { deleteLabel, getLabels } from '../../store/getLabels/labelsThunk'
+import { labelActions } from '../../store/getLabels/labelsSlice'
+import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
+import { ModalUi } from '../UI/modal/Modal'
 
 export const Labels = () => {
+   const dispatch = useDispatch()
+   const { label, labelDrop } = useSelector((state) => state.labels)
+
+   useEffect(() => {
+      dispatch(getLabels())
+   }, [dispatch])
+
+   const onRemoveLabel = (id) => {
+      dispatch(deleteLabel(id))
+      console.log(id)
+   }
+   const addLabelOpenModal = () => {
+      dispatch(labelActions.openModal())
+   }
+
+   const addLabelCloseModal = () => {
+      dispatch(labelActions.closeModal())
+   }
    return (
       <div>
          <HeadingLabel>Labels</HeadingLabel>
+
          <AllContainer>
-            {labels.map((item) => (
+            {label?.map((item) => (
                <ContainerLabels
-                  style={{ backgroundColor: item.backgroundColor }}
-                  key={item.id}
+                  style={{ backgroundColor: item.color }}
+                  key={item.labelId}
                >
-                  <TextLabels title={item.title} arrow>
-                     {item.title}
+                  <TextLabels title={item.description} arrow>
+                     {item.description}
                   </TextLabels>
-                  <ExitIcon />
+                  <ExitIcon
+                     style={{ cursor: 'pointer' }}
+                     onClick={() => onRemoveLabel(item.labelId)}
+                  />
                </ContainerLabels>
             ))}
+            <PLUSICON
+               onClick={addLabelOpenModal}
+               style={{ cursor: 'pointer', marginTop: '2px' }}
+            />
+            {labelDrop && (
+               <ModalUi open={labelDrop}>
+                  <AddedLabelToCard addLabelCloseModal={addLabelCloseModal} />
+               </ModalUi>
+            )}
          </AllContainer>
       </div>
    )

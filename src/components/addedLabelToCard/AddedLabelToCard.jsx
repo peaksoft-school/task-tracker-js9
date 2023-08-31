@@ -1,49 +1,66 @@
 import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import { IconButton } from '@mui/material'
+import { useDispatch } from 'react-redux'
 import { CloseIcon, EditIcon } from '../../assets/icons'
+import { postLabel } from '../../store/getLabels/labelsThunk'
 
 const Labels = [
    {
-      id: 1,
       backgroundColor: '#61BD4F',
       text: 'Done',
    },
    {
-      id: 2,
       backgroundColor: 'rgba(235, 90, 70, 1)',
       text: 'In progress',
    },
    {
-      id: 3,
       backgroundColor: 'rgba(242, 214, 0, 1)',
       text: 'Done',
    },
    {
-      id: 4,
       backgroundColor: 'rgba(0, 121, 191, 1)',
       text: 'Done',
    },
 ]
 
-export const AddedLabelToCard = () => {
+export const AddedLabelToCard = ({ addLabelCloseModal }) => {
    const [editState, setEditState] = useState(Labels.map(() => false))
    const [taskText, setTaskText] = useState(Labels.map((color) => color.text))
 
+   const dispatch = useDispatch()
+
    const onEditHandler = (idx) => {
       setEditState((prev) => {
-         return prev.map((state, i) => i === idx)
+         return prev.map((state, i) => (i === idx ? !state : state))
       })
    }
 
+   const onTaskClick = async (idx) => {
+      await dispatch(
+         postLabel({
+            description: taskText[idx],
+            color: Labels[idx].backgroundColor,
+         })
+      )
+      addLabelCloseModal()
+   }
+
    const onEditTask = (event, idx) => {
+      console.log(idx)
       const updatedTaskText = [...taskText]
       updatedTaskText[idx] = event.target.value
       setTaskText(updatedTaskText)
    }
 
-   const onClickKey = (event, idx) => {
+   const onClickKey = async (event, idx) => {
       if (event.key === 'Enter') {
+         dispatch(
+            postLabel({
+               description: taskText[idx],
+               color: Labels[idx].backgroundColor,
+            })
+         )
          setEditState((prev) => {
             const updatedState = [...prev]
             updatedState[idx] = false
@@ -57,6 +74,7 @@ export const AddedLabelToCard = () => {
                return updatedTaskText
             })
          }
+         addLabelCloseModal()
       }
    }
 
@@ -66,7 +84,7 @@ export const AddedLabelToCard = () => {
             <WrapperTitle>
                <Title>Label</Title>
                <IconButton>
-                  <CloseIcon />
+                  <CloseIcon onClick={addLabelCloseModal} />
                </IconButton>
             </WrapperTitle>
             {Labels.map((color, idx) => (
@@ -81,7 +99,11 @@ export const AddedLabelToCard = () => {
                         placeholder="empty"
                      />
                   ) : (
-                     <Task key={color.id} style={color}>
+                     <Task
+                        onClick={() => onTaskClick(idx)}
+                        key={color.id}
+                        style={color}
+                     >
                         {taskText[idx]}
                      </Task>
                   )}

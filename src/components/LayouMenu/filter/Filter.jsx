@@ -85,18 +85,16 @@ export const Filter = ({
       </div>
    )
 }
-
-const slideInAnimation = keyframes` 
-   from { 
-      transform: translateX(100%); 
-      opacity: 0; 
-   } 
-   to { 
-      transform: translateX(0); 
-      opacity: 1; 
-   } 
+const slideInAnimation = keyframes`
+   from {
+      transform: translateX(100%);
+      opacity: 0;
+   }
+   to {
+      transform: translateX(0);
+      opacity: 1;
+   }
 `
-
 const FilterCont = styled('div')({
    width: '7.1875rem',
    height: '2.125rem',
@@ -108,15 +106,12 @@ const FilterCont = styled('div')({
    paddingTop: '0.4rem',
    cursor: 'pointer',
 })
-
 const FilterText = styled('p')({
    color: '#438AB4',
 })
-
 const CountNumer = styled('p')({
    color: '#438AB4',
 })
-
 const ModalFilter = styled('div')(({ animation }) => {
    let animationStyles = {}
    switch (animation) {
@@ -128,7 +123,6 @@ const ModalFilter = styled('div')(({ animation }) => {
       default:
          break
    }
-
    return {
       width: '22.9375rem',
       height: '40rem',
@@ -145,43 +139,35 @@ const ModalFilter = styled('div')(({ animation }) => {
       ...animationStyles,
    }
 })
-
 const ModalFilterHeader = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
 })
-
 const ModalDateBox = styled('div')({
    display: 'flex',
    flexDirection: 'column',
 })
-
 const ModalLabelsBox = styled('div')({
    display: 'flex',
    flexDirection: 'column',
 })
-
 const CheckbexAndName = styled('div')({
    display: 'flex',
    alignItems: 'center',
 })
-
 const LabelsBox = styled('div')({
    display: 'flex',
    alignItems: 'center',
 })
-
 const Due = styled('div')({
    marginLeft: '0.4rem',
    color: '#919191',
 })
-
 const LabelsText = styled('div')({
    marginLeft: '0.4rem',
    color: '#919191',
 })
-
 const DoneText = styled('p')({
    width: '18.3125rem',
    backgroundColor: '#61BD4F',
@@ -189,7 +175,6 @@ const DoneText = styled('p')({
    borderRadius: '0.375rem',
    // flex: 10,
 })
-
 const AttentionFirst = styled('p')({
    background: '#EB8900',
    width: '18.3125rem',
@@ -197,7 +182,6 @@ const AttentionFirst = styled('p')({
    borderRadius: '0.375rem',
    // flex: 10,
 })
-
 const AttentionSecond = styled('p')({
    background: '#0079BF',
    width: '18.3125rem',
@@ -205,7 +189,6 @@ const AttentionSecond = styled('p')({
    borderRadius: '0.375rem',
    // flex: 10,
 })
-
 const AttentionThird = styled('p')({
    background: '#EB5A46',
    width: '18.3125rem',

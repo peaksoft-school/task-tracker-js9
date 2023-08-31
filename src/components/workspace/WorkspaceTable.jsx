@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import React, { useEffect } from 'react'
 import { OneStarIcon, StarFilledIcon } from '../../assets/icons'
 import TableMui from '../UI/table/TableMui'
+
 import {
    addWorkspaceToFavorites,
    fetchAllWorkspaces,

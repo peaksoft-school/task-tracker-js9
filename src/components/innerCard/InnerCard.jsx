@@ -1,5 +1,6 @@
 import { styled } from '@mui/material'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
@@ -19,6 +20,8 @@ import { Input } from '../UI/input/Input'
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { ModalUi } from '../UI/modal/Modal'
+import { Attachment } from '../attachment/Attachment'
+import { labelActions } from '../../store/getLabels/labelsSlice'
 
 export const InnerCard = ({
    open,
@@ -37,6 +40,13 @@ export const InnerCard = ({
    const [inputText, setInputText] = React.useState('')
    const [isEditing, setIsEditing] = React.useState(true)
    const [isEditTitle, setIsEditTitle] = React.useState(true)
+   const [openAttachment, setOpenAttachment] = React.useState(false)
+
+   const dispatch = useDispatch()
+
+   const addLabelOpenModalInInnerCard = () => {
+      dispatch(labelActions.openModal())
+   }
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -79,6 +89,9 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', documentClick)
       }
    }, [titleText])
+   const onOpenAttachment = () => {
+      setOpenAttachment((prev) => !prev)
+   }
    return (
       <ModalUi open={open} onClose={handleClose}>
          <CardContainer ref={(inputRef, titleRef)}>
@@ -139,6 +152,7 @@ export const InnerCard = ({
                      </DescriptionText>
                   )}
                   <CheckList />
+                  {openAttachment && <Attachment />}
                </CardContainerInner>
                <CardRight>
                   <CardRightContainer>
@@ -159,15 +173,19 @@ export const InnerCard = ({
                         <AddItem>
                            <LabelIcon />
                            {showMore === false ? (
-                              <AddText>Label</AddText>
+                              <AddText onClick={addLabelOpenModalInInnerCard}>
+                                 Label
+                              </AddText>
                            ) : null}
                         </AddItem>
-                        <AddItem>
+
+                        <AddItem onClick={onOpenAttachment}>
                            <AttachIcon />
                            {showMore === false ? (
                               <AddText>Attachment</AddText>
                            ) : null}
                         </AddItem>
+
                         <AddItem>
                            <CheckIcon />
                            {showMore === false ? (
@@ -299,6 +317,7 @@ const AddItem = styled('div')(() => ({
    borderRadius: '8px',
    display: 'flex',
    alignItems: 'center',
+   cursor: 'pointer',
 }))
 
 const AddText = styled('p')(() => ({

@@ -178,8 +178,8 @@ export const LayoutMenu = () => {
 const LayoutMenuContainer = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
-   marginTop: '6rem',
-   width: '100%',
+   width: 'auto',
+   marginTop: '5rem',
 })
 
 const ModalButton = styled(Button)(() => ({

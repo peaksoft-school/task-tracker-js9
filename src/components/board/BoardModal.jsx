@@ -7,16 +7,16 @@ import { Colors } from '../photoColor/Color'
 import { DoneIcon } from '../../assets/icons'
 
 export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
+   const { id } = useParams()
    const [backGround, setPostColor] = React.useState()
    const [title, setPostTitle] = React.useState()
    const [openPhoto, setOpenPhoto] = React.useState(false)
    const [openColor, setOpenColor] = React.useState(false)
    const [selectedColor, setSelectedColor] = React.useState(null)
    const [selectedPhoto, setSelectedPhoto] = React.useState(null)
-   const { id } = useParams()
 
    const postAddBack = () => {
-      postFunc({ backGround, title, workSpaceId: id })
+      postFunc({ backGround, title, workSpaceId: +id })
       toggleModal()
    }
 

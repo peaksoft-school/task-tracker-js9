@@ -1,16 +1,28 @@
+/* eslint-disable eqeqeq */
 import { styled, IconButton, TextField } from '@mui/material'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
 import { ExitIcon, LeftIcon } from '../../../assets/icons'
 import { Button } from '../../UI/button/Button'
+import { createInviteMember } from '../../../store/inviteMember/inviteThunk'
 
 export const InviteNewParticipant = ({ openInviteNewModal }) => {
-   const [email, setEmail] = useState('')
    const [selectedRole, setSelectedRole] = useState('')
-   const handleCreate = () => {
-      console.log('Selected Role:', selectedRole)
-      console.log('Email:', email)
-   }
+   const [email, setEmail] = useState('')
+   const dispatch = useDispatch()
+   const { boardId } = useParams()
 
+   const createNewMember = () => {
+      const newdata = {
+         boardId,
+         email,
+         role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
+         link: 'http://localhost:3000/signup',
+      }
+
+      dispatch(createInviteMember({ newdata, boardId }))
+   }
    return (
       <Container>
          <InviteParticipantModal>
@@ -32,31 +44,26 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
                size="small"
             />
             <MembersCont>
-               <form>
-                  <MemberBox>
-                     <input
-                        type="radio"
-                        id="contactChoice1"
-                        checked={selectedRole === 'MEMBER'}
-                        onChange={() => setSelectedRole('MEMBER')}
-                     />
-                     <label htmlFor="contactChoice1">Member</label>
-
-                     <input
-                        type="radio"
-                        id="contactChoice2"
-                        checked={selectedRole === 'ADMIN'}
-                        onChange={() => setSelectedRole('ADMIN')}
-                     />
-                     <label htmlFor="contactChoice2">Admin</label>
-                  </MemberBox>
-               </form>
+               <MemberBox>
+                  <input
+                     type="radio"
+                     id="contactChoice1"
+                     checked={selectedRole == 'MEMBER'}
+                     onChange={() => setSelectedRole('MEMBER')}
+                  />
+                  <label htmlFor="contactChoice1">Member</label>
+                  <input
+                     type="radio"
+                     id="contactChoice2"
+                     checked={selectedRole == 'ADMIN'}
+                     onChange={() => setSelectedRole('ADMIN')}
+                  />
+                  <label htmlFor="contactChoice2">Admin</label>
+               </MemberBox>
             </MembersCont>
             <ButtonsCont>
-               <ButtonDelete disabled={!email} onClick={() => setEmail('')}>
-                  Delete
-               </ButtonDelete>
-               <ButtonCreate onClick={handleCreate}>Create</ButtonCreate>
+               <ButtonDelete disabled={!email}>Delete</ButtonDelete>
+               <ButtonCreate onClick={createNewMember}>Create</ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
       </Container>
