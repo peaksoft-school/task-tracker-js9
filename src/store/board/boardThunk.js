@@ -87,6 +87,10 @@ export const addFavorite = createAsyncThunk(
 export const updateBord = createAsyncThunk(
    'board/updateBord',
    async ({ data, boardId }, { rejectWithValue, dispatch }) => {
+      console.log('data: ', data)
+      // if (!data.backGround) {
+      //    delete data.backGround
+      // }
       try {
          await axiosInstance.put(`/api/boards`, data)
          dispatch(getBoardById(boardId))

@@ -22,6 +22,7 @@ export const LayoutMenu = () => {
    const [openNewInvite, setOpenNewInvite] = useState(false)
    const { boardId } = useParams()
    const { boardById } = useSelector((state) => state.board)
+
    const dispatch = useDispatch()
 
    React.useEffect(() => {
@@ -40,13 +41,6 @@ export const LayoutMenu = () => {
    // Создание схемы валидации
    const validationSchema = Yup.object().shape({
       title: Yup.string().required('Title is required'),
-      img: Yup.string()
-         .required('IMG is required')
-         .test('is-url', 'Invalid image URL', (value) => {
-            if (!value) return true // Allow empty value (not required)
-            const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
-            return urlPattern.test(value)
-         }),
    })
 
    // Использование Formik
@@ -60,7 +54,7 @@ export const LayoutMenu = () => {
          const data = {
             title: values.title,
             boardI: boardId,
-            backGround: values.img,
+            backGround: values.img ? values.img : boardById?.backGround || '',
          }
          dispatch(updateBord({ data, boardId }))
          setShowBoard(false)

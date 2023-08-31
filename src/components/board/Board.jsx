@@ -15,6 +15,7 @@ export const Board = () => {
    const { id } = useParams()
    const [openModal, setOpenModal] = React.useState(false)
    const boards = useSelector((state) => state.board.board)
+   console.log('boards: ', boards)
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
