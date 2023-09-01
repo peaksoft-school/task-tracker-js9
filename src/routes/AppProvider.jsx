@@ -5,11 +5,10 @@ import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
-// import { Workspaces } from '../components/workspace/Workspace'
+import { Workspaces } from '../components/workspace/Workspace'
 import { Profile } from '../components/profile/Profile'
 import { BoardPage } from '../pages/BoardPage'
 import { InnerPage } from '../pages/InnerPage'
-import { InnerCard } from '../components/innerCard/InnerCard'
 
 export const routes = createBrowserRouter([
    {
@@ -50,8 +49,7 @@ export const routes = createBrowserRouter([
             component={
                <>
                   <Headers />
-                  {/* <Workspaces /> */}
-                  <InnerCard />
+                  <Workspaces />
                </>
             }
             roles={[USER_ROLE.ADMIN, USER_ROLE.USER]}

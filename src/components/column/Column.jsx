@@ -14,6 +14,5 @@ export const Column = () => {
 const ColumnsStyle = styled('div')(() => ({
    display: 'flex',
    gap: '1.5rem',
-   marginTop: '100px',
-   backgroundColor: 'white',
+   marginTop: '2rem',
 }))
