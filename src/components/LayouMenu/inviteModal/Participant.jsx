@@ -16,8 +16,8 @@ import {
 } from '../../../store/inviteMember/inviteThunk'
 
 export const Participant = ({
-   openNewInvite,
    openModalHandler,
+   openNewInvite,
    setOpenNewInvite,
 }) => {
    const kindaSelect = [
@@ -112,7 +112,7 @@ const Container = styled('div')(() => ({
 }))
 const ParticipantContainer = styled('div')({
    width: '26.5625rem',
-   height: '18.3125rem',
+   height: '17.3125rem',
    padding: '1rem',
    borderRadius: '0.5rem',
    backgroundColor: 'white',

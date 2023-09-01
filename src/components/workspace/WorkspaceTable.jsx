@@ -2,7 +2,7 @@ import { Avatar, IconButton, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import React, { useEffect } from 'react'
-import { OneStarIcon } from '../../assets/icons'
+import { OneStarIcon, StarFilledIcon } from '../../assets/icons'
 import TableMui from '../UI/table/TableMui'
 
 import {
@@ -66,7 +66,7 @@ export const WorkspaceTable = () => {
          render: (data) => (
             <IconButton>
                {data?.isFavorite ? (
-                  <OneStarIcon
+                  <StarFilledIcon
                      fill="#0079BF"
                      onClick={() => addtoFavouriteHandler(data.workSpaceId)}
                   />
