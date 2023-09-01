@@ -4,7 +4,6 @@ import { axiosInstance } from '../../config/axiosInstance'
 export const getAllIssues = createAsyncThunk(
    'allIssues/getAllIssues',
    async (workspaceId, { rejectWithValue }) => {
-      console.log('workspaceId: ', workspaceId)
       try {
          const response = await axiosInstance.get(
             `/all-issues/filter?workSpaceId=${workspaceId}`

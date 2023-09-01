@@ -5,6 +5,7 @@ import TableMui from '../UI/table/TableMui'
 
 export const AllIssuesTable = () => {
    const { allIssues } = useSelector((state) => state.allIssues)
+   console.log('allIssues: ', allIssues)
    const column = [
       {
          heading: 'Created',
