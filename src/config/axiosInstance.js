@@ -21,6 +21,7 @@ axiosInstance.interceptors.request.use((config) => {
    }
    return updatedConfig
 })
+
 axiosInstance.interceptors.response.use(
    (response) => {
       return Promise.resolve(response)

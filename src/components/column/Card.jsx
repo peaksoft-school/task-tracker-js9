@@ -65,7 +65,7 @@ export const Card = () => {
    const isButtonDisabled = inputValue === ''
 
    return (
-      <>
+      <Container>
          <ParentTitle>
             <Title>Title</Title>
             <StyleMeadIcon>
@@ -207,9 +207,12 @@ export const Card = () => {
                <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
             )}
          </ParentColumnCard>
-      </>
+      </Container>
    )
 }
+const Container = styled('div')(() => ({
+   backgroundColor: 'white',
+}))
 
 const ParentTitle = styled('div')(() => ({
    display: 'flex',

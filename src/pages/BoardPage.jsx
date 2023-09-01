@@ -12,9 +12,7 @@ export const BoardPage = () => {
             workspacedata={workspacedata}
             dataLength={dataLength}
          />
-         <div>
-            <Board />
-         </div>
+         <Board />
       </div>
    )
 }
