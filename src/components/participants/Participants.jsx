@@ -1,30 +1,59 @@
 import React, { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { FormControl, styled } from '@mui/material'
+import {
+   fetchParticipans,
+   removeParticipants,
+} from '../../store/participants/partThunk'
 import { Button } from '../UI/button/Button'
 import { ParticipantsTable } from './ParticipantsTable'
+import { InviteNewParticipant } from './InviteModal'
 
-export const Participants = ({ onDelete }) => {
-   const [role, setRole] = useState()
+export const Participants = () => {
+   const { partId } = useParams()
+   const dispatch = useDispatch()
+   const [role, setRole] = useState('ALL')
+   const [openInviteNewModal, setOpenInviteNewModal] = useState(false)
 
    const handleChange = (event) => {
       setRole(event.target.value)
    }
 
+   const onClickCreate = () => {
+      setOpenInviteNewModal((prev) => !prev)
+   }
+
    const dataLength = 254
 
    const selectData = [
-      { label: 'All', value: 'All' },
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Member', value: 'Member' },
+      { label: 'All', value: 'ALL' },
+      { label: 'Admin', value: 'ADMIN' },
+      { label: 'Member', value: 'MEMBER' },
    ]
+   const onDelete = (userId) => {
+      dispatch(
+         removeParticipants({
+            userId,
+            workSpacesId: partId,
+            role,
+         })
+      )
+   }
+   React.useEffect(() => {
+      dispatch(fetchParticipans({ partId, role }))
+   }, [role])
+   if (!partId) {
+      return <div>Loading...</div> // Или другое поведение в случае, когда partId не определен
+   }
 
    return (
       <BodyContainer>
          <GlobalContainer>
             <HeaderContainer>
-               <MainCont>
+               <MainCont style={{ position: 'relative' }}>
                   <RoleSection>
                      <ViewAllIssues>View all issues</ViewAllIssues>
                      <FormControl>
@@ -39,8 +68,11 @@ export const Participants = ({ onDelete }) => {
                            ))}
                         </StyledSelect>
                      </FormControl>
+                     {openInviteNewModal ? (
+                        <InviteNewParticipant onClickCreate={onClickCreate} />
+                     ) : null}
                   </RoleSection>
-                  <MyBtnStyled>Create</MyBtnStyled>
+                  <MyBtnStyled onClick={onClickCreate}>Create</MyBtnStyled>
                </MainCont>
                <Total>
                   Total:<TotalAmount>{dataLength}</TotalAmount>
@@ -58,10 +90,10 @@ const BodyContainer = styled('div')(() => ({
 }))
 
 const GlobalContainer = styled('div')(() => ({
+   marginTop: '86px',
    padding: '1.4rem 0 0 0',
-   backgroundColor: '#ffffffaa',
+   backgroundColor: '#ffffff',
    width: '100%',
-   minHeight: ' 10vh',
    borderRadius: ' 0.5rem',
    fontFamily: 'CarePro',
 }))

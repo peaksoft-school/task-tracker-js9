@@ -9,6 +9,7 @@ import { USER_ROLE } from '../utils/constants/authorization'
 import { Profile } from '../components/profile/Profile'
 import { BoardPage } from '../pages/BoardPage'
 import { InnerPage } from '../pages/InnerPage'
+import { ParticipantsPage } from '../pages/ParticipantsPage'
 
 export const routes = createBrowserRouter([
    {
@@ -81,6 +82,15 @@ export const routes = createBrowserRouter([
          <>
             <Headers />
             <InnerPage />
+         </>
+      ),
+   },
+   {
+      path: 'mainPage/:partId/participants/',
+      element: (
+         <>
+            <Headers />
+            <ParticipantsPage />
          </>
       ),
    },

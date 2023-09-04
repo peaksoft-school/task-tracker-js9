@@ -23,9 +23,6 @@ export const Board = () => {
    React.useEffect(() => {
       dispatch(fetchBoards(id))
    }, [])
-   // const { board } = useSelector((state) => state.board)
-   // const boardId = board.map((booard) => booard.id)
-   // console.log('boardId:', boardId)
 
    // const deleteFunc = (boardId) => {
    //    dispatch(boardRemove(boardId))
