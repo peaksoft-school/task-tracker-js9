@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchBoards } from './boardThunk'
+import { fetchBoards, getBoardById } from './boardThunk'
 
 export const initialState = {
    board: [],
@@ -7,6 +7,7 @@ export const initialState = {
    title: 'Boardname',
    favorite: false,
    background: '#CBCBCB',
+   boardById: {},
 }
 
 export const boardSlice = createSlice({
@@ -14,9 +15,13 @@ export const boardSlice = createSlice({
    initialState,
    reducers: {},
    extraReducers: (builder) => {
-      builder.addCase(fetchBoards.fulfilled, (state, actions) => {
-         state.board = actions.payload
-      })
+      builder
+         .addCase(fetchBoards.fulfilled, (state, actions) => {
+            state.board = actions.payload
+         })
+         .addCase(getBoardById.fulfilled, (state, actions) => {
+            state.boardById = actions.payload
+         })
    },
 })
 

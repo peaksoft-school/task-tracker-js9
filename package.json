@@ -18,7 +18,7 @@
       "axios": "^1.4.0",
       "components": "^0.1.0",
       "dayjs": "^1.11.9",
-      "firebase": "^10.1.0",
+      "firebase": "^10.2.0",
       "formik": "^2.4.2",
       "framer-motion": "^10.15.1",
       "json-server": "^0.17.3",

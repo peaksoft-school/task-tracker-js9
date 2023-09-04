@@ -145,7 +145,7 @@ export const SideHead = ({
                      {activeItem === 'board' ? (
                         <DownIcon onClick={toggleButtonHadler} fill="white" />
                      ) : (
-                        <DownIcon onClick={toggleButtonHadler} fill="3C3C3C" />
+                        <DownIcon onClick={toggleButtonHadler} fill="#3C3C3C" />
                      )}
                   </ListItemButton>
                </ActiveListItem>

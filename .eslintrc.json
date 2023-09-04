@@ -15,6 +15,9 @@
    },
    "plugins": ["react", "react-hooks"],
    "rules": {
+      "react/no-array-index-key": "off",
+      "eqeqeq": "off",
+      "array-callback-return": "off",
       "consistent-return": "off",
       "no-param-reassign": "off",
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],

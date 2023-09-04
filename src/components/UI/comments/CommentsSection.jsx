@@ -91,7 +91,7 @@ export const CommentSection = () => {
    }
 
    return (
-      <div style={{ padding: '20rem' }}>
+      <div>
          <GLobalContainer>
             <CommentsPanel>
                <p>Comments</p>

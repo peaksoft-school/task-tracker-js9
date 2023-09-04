@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import { styled, IconButton } from '@mui/material'
+import { styled, IconButton, TextField } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
@@ -35,14 +35,14 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
                   <ExitIcon fill="gray" onClick={openInviteNewModal} />
                </IconButton>
             </InviteHeader>
-            <div>
-               <InputEmail
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="example@gmail.com"
-                  type="email"
-               />
-            </div>
+            <InputEmail
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
+               label="example@gmail.com"
+               variant="outlined"
+               type="email"
+               size="small"
+            />
             <MembersCont>
                <MemberBox>
                   <input
@@ -94,13 +94,27 @@ const InviteHeader = styled('div')({
    alignItems: 'center',
 })
 
-const InputEmail = styled('input')({
-   width: '24.0625rem',
-   height: '2rem',
-   borderRadius: '0.5rem',
-   border: '1px solid grey',
-   padding: '0.375rem 1rem',
-   boxSizing: 'border-box',
+const InputEmail = styled(TextField)({
+   '& .MuiOutlinedInput-input': {
+      borderRadius: '0.5rem',
+      width: '19.8rem',
+      padding: '0.575rem 1rem',
+      backgroundColor: '#fff',
+   },
+   '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+         border: '1px solid #D0D0D0',
+      },
+      '&:hover fieldset': {
+         border: '1px solid #D0D0D0',
+      },
+   },
+   '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: ' #D0D0D0',
+   },
+   '& .css-1qi90xi-MuiInputBase-root-MuiOutlinedInput-root': {
+      borderRadius: '0.5rem',
+   },
 })
 
 const MemberBox = styled('div')({
@@ -128,7 +142,7 @@ const ButtonDelete = styled(Button)({
    fontSize: '0.8rem',
    width: '4.8125rem',
    '&:hover': {
-      backgroundColor: '#171bea',
+      backgroundColor: '#005688',
    },
 })
 
@@ -139,6 +153,6 @@ const ButtonCreate = styled(Button)({
    alignItems: 'center',
    fontSize: '0.8rem',
    '&:hover': {
-      backgroundColor: '#171bea',
+      backgroundColor: '#005688',
    },
 })
