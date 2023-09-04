@@ -5,9 +5,7 @@ export const getAllComments = createAsyncThunk(
    'comments/getAllComments',
    async (_, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(
-            `/api/comments/comments/${22}`
-         )
+         const response = await axiosInstance.get(`/api/comments/comments/${4}`)
          return response.data
       } catch (error) {
          return rejectWithValue(
@@ -74,6 +72,7 @@ export const getCommentsbyId = createAsyncThunk(
    'comments/getCommentsbyId',
    async (payload, { rejectWithValue }) => {
       const { commentId, navigate } = payload
+      console.log(payload)
 
       try {
          const response = await axiosInstance.get(`/api/comments/${commentId}`)

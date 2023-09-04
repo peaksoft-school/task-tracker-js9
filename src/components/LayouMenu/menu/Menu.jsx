@@ -63,10 +63,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             backGround: item || board,
             title: boardById?.title || '',
          }
-         console.log('handleClick:', data)
 
          const response = await axiosInstance.put('/api/boards', data)
-         console.log('response: ', response)
          showSnackbar({
             message: 'Successfully updated board',
             severity: 'success',

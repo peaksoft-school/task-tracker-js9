@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Avatar, IconButton } from '@mui/material'
-import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom'
+import {
+   Outlet,
+   useNavigate,
+   NavLink,
+   useLocation,
+   useParams,
+} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    DownIcon,
@@ -19,7 +25,8 @@ import { ModalUi } from '../UI/modal/Modal'
 export const Headers = ({ data }) => {
    const [showModal, setShowModal] = useState(false)
    const [openProfile, setOpenProfile] = useState(false)
-
+   const { profileId } = useParams()
+   console.log('profileId: ', profileId)
    const { favoriteData } = useSelector((state) => state.favorite)
 
    const boardLength = favoriteData.data?.boardResponses?.length || 0
