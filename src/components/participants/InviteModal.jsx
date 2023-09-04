@@ -87,7 +87,7 @@ const InviteParticipantModal = styled('div')({
    borderRadius: '0.5rem',
    position: 'absolute',
    top: '50px',
-   right: '0',
+   right: '-250px',
    zIndex: '9999',
 })
 
