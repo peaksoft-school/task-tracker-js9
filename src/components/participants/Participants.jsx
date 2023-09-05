@@ -1,52 +1,49 @@
 import React, { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormControl, styled } from '@mui/material'
-import {
-   fetchParticipans,
-   removeParticipants,
-} from '../../store/participants/partThunk'
+import { fetchParticipans } from '../../store/participants/partThunk'
 import { Button } from '../UI/button/Button'
 import { ParticipantsTable } from './ParticipantsTable'
 import { InviteNewParticipant } from './InviteModal'
+import { DeleteModal } from './DeleteModal'
 
 export const Participants = () => {
    const { partId } = useParams()
    const dispatch = useDispatch()
+   const rows = useSelector((state) => state.participant.participants)
    const [role, setRole] = useState('ALL')
    const [openInviteNewModal, setOpenInviteNewModal] = useState(false)
-
+   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+   const [userId, setUserId] = useState()
    const handleChange = (event) => {
       setRole(event.target.value)
    }
-
-   const onClickCreate = () => {
+   console.log(openInviteNewModal)
+   const onCreateClick = () => {
       setOpenInviteNewModal((prev) => !prev)
    }
 
-   const dataLength = 254
+   const dataLength = rows.length
 
    const selectData = [
       { label: 'All', value: 'ALL' },
       { label: 'Admin', value: 'ADMIN' },
       { label: 'Member', value: 'MEMBER' },
    ]
-   const onDelete = (userId) => {
-      dispatch(
-         removeParticipants({
-            userId,
-            workSpacesId: partId,
-            role,
-         })
-      )
-   }
+
    React.useEffect(() => {
       dispatch(fetchParticipans({ partId, role }))
    }, [role])
    if (!partId) {
       return <div>Loading...</div> // Или другое поведение в случае, когда partId не определен
+   }
+
+   const onDelete = (userId) => {
+      setUserId(userId)
+      setOpenDeleteModal(!openDeleteModal)
    }
 
    return (
@@ -69,16 +66,28 @@ export const Participants = () => {
                         </StyledSelect>
                      </FormControl>
                      {openInviteNewModal ? (
-                        <InviteNewParticipant onClickCreate={onClickCreate} />
+                        <InviteNewParticipant
+                           rows={rows}
+                           onCreateClick={onCreateClick}
+                        />
+                     ) : null}
+                     {openDeleteModal ? (
+                        <DeleteModal
+                           onDelete={onDelete}
+                           role={role}
+                           userId={userId}
+                        />
                      ) : null}
                   </RoleSection>
-                  <MyBtnStyled onClick={onClickCreate}>Create</MyBtnStyled>
+                  <MyBtnStyled onClick={() => onCreateClick()}>
+                     Create
+                  </MyBtnStyled>
                </MainCont>
                <Total>
                   Total:<TotalAmount>{dataLength}</TotalAmount>
                </Total>
             </HeaderContainer>
-            <ParticipantsTable onDelete={onDelete} />
+            <ParticipantsTable rows={rows} onDelete={onDelete} />
          </GlobalContainer>
       </BodyContainer>
    )

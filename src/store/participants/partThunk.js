@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
+import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 
 export const fetchParticipans = createAsyncThunk(
    'participant/participantsGet',
    async ({ partId, role }, { rejectWithValue }) => {
-      console.log(role, 'role')
       try {
          const response = await axiosInstance.get(
             `/api/participants/${partId}?role=${role}`
@@ -19,6 +19,7 @@ export const fetchParticipans = createAsyncThunk(
 export const postParticipans = createAsyncThunk(
    'participant/participantsPost',
    async (partId, { rejectWithValue, dispatch }) => {
+      console.log(partId)
       try {
          await axiosInstance.post(`/api/participants`, partId)
          dispatch(
@@ -27,20 +28,34 @@ export const postParticipans = createAsyncThunk(
                role: 'ALL',
             })
          )
+         showSnackbar({
+            message: 'Successfully',
+            severity: 'success',
+         })
       } catch (err) {
+         showSnackbar({
+            message: err.response.data.message,
+            severity: 'error',
+         })
          return rejectWithValue(err)
       }
    }
 )
 export const putParticipans = createAsyncThunk(
    'participant/Putparticipants',
-   async ({ memberId, workSpacesId, role }, { rejectWithValue }) => {
+   async ({ memberId, workSpacesId, role }, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.put(`/api/participants`, {
             memberId,
             workSpacesId,
             role,
          })
+         dispatch(
+            fetchParticipans({
+               partId: workSpacesId,
+               role: 'ALL',
+            })
+         )
          return response.data
       } catch (err) {
          return rejectWithValue(err)
@@ -55,8 +70,16 @@ export const removeParticipants = createAsyncThunk(
             `/api/participants/${workSpacesId}/${userId}`
          )
          dispatch(fetchParticipans({ partId: workSpacesId, role }))
+         showSnackbar({
+            message: 'Successfully deleted',
+            severity: 'success',
+         })
          return response.data
       } catch (err) {
+         showSnackbar({
+            message: 'error deleting',
+            severity: 'error',
+         })
          return rejectWithValue(err)
       }
    }

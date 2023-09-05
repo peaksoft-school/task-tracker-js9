@@ -6,34 +6,42 @@ import { useParams } from 'react-router'
 import { ExitIcon, LeftIcon } from '../../assets/icons'
 import { Button } from '../UI/button/Button'
 import { postParticipans } from '../../store/participants/partThunk'
+import { ModalUi } from '../UI/modal/Modal'
+import { showSnackbar } from '../UI/snackbar/Snackbar'
 
-export const InviteNewParticipant = ({ onClickCreate }) => {
+export const InviteNewParticipant = ({ onCreateClick, rows }) => {
    const [selectedRole, setSelectedRole] = useState('')
    const [email, setEmail] = useState('')
    const dispatch = useDispatch()
    const { partId } = useParams()
-
    const createNewMember = () => {
-      const newdata = {
-         workSpacesId: Number(partId),
-         email,
-         role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
-         link: 'http://localhost:3000/signup',
+      if (!rows.find((item) => item.email === email)) {
+         const newdata = {
+            workSpacesId: Number(partId),
+            email,
+            role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
+            link: 'http://localhost:3000/signup',
+         }
+         dispatch(postParticipans(newdata))
+         onCreateClick()
+      } else {
+         showSnackbar({
+            message: 'user already added',
+            severity: 'info',
+         })
       }
-
-      dispatch(postParticipans(newdata))
-      onClickCreate()
    }
+
    return (
-      <Container>
+      <ModalUi open={onCreateClick} onClose={onCreateClick}>
          <InviteParticipantModal>
             <InviteHeader>
                <IconButton>
-                  <LeftIcon fill="gray" onClick={onClickCreate} />
+                  <LeftIcon fill="gray" onClick={onCreateClick} />
                </IconButton>
                <p>Invite a new participant</p>
                <IconButton>
-                  <ExitIcon fill="gray" onClick={onClickCreate} />
+                  <ExitIcon fill="gray" onClick={onCreateClick} />
                </IconButton>
             </InviteHeader>
             <div>
@@ -63,18 +71,15 @@ export const InviteNewParticipant = ({ onClickCreate }) => {
                </MemberBox>
             </MembersCont>
             <ButtonsCont>
-               <ButtonDelete disabled={!email}>Delete</ButtonDelete>
+               <ButtonDelete disabled={!email} onClick={() => setEmail('')}>
+                  Delete
+               </ButtonDelete>
                <ButtonCreate onClick={createNewMember}>Create</ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
-      </Container>
+      </ModalUi>
    )
 }
-const Container = styled('div')(() => ({
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-}))
 
 const InviteParticipantModal = styled('div')({
    width: '26.5625rem',
@@ -85,10 +90,6 @@ const InviteParticipantModal = styled('div')({
    boxSizing: 'border-box',
    backgroundColor: 'white',
    borderRadius: '0.5rem',
-   position: 'absolute',
-   top: '50px',
-   right: '-250px',
-   zIndex: '9999',
 })
 
 const InviteHeader = styled('div')({

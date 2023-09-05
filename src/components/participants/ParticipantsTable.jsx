@@ -6,29 +6,11 @@ import {
    Select,
    styled,
 } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { putParticipans } from '../../store/participants/partThunk'
 import TableMui from '../UI/table/TableMui'
 import { DeleteIcon } from '../../assets/icons'
-
-// const rows = [
-//    {
-//       name: 'Aiturgan Isaeva',
-//       email: 'isaevasai7@example.com',
-//       id: '4',
-//    },
-//    {
-//       name: 'Zhakshylyk Nasipbekov',
-//       email: 'nasipbekov04zhakshylyk@example.com',
-//       id: '5',
-//    },
-//    {
-//       name: 'Beku Kursanov',
-//       email: 'kursanovbeku@example.com',
-//       id: '6',
-//    },
-// ]
 
 const kindaSelect = [
    { label: 'All', value: 'ALL' },
@@ -36,10 +18,10 @@ const kindaSelect = [
    { label: 'Member', value: 'MEMBER' },
 ]
 
-export const ParticipantsTable = ({ onDelete }) => {
+export const ParticipantsTable = ({ onDelete, rows }) => {
    const dispatch = useDispatch()
    const { partId } = useParams()
-   const rows = useSelector((state) => state.participant.participants)
+
    const defaultRole = 'Member'
 
    const initialRoles = {}
