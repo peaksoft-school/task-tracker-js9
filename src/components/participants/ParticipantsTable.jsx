@@ -13,7 +13,6 @@ import TableMui from '../UI/table/TableMui'
 import { DeleteIcon } from '../../assets/icons'
 
 const kindaSelect = [
-   { label: 'All', value: 'ALL' },
    { label: 'Admin', value: 'ADMIN' },
    { label: 'Member', value: 'MEMBER' },
 ]

@@ -19,7 +19,6 @@ export const fetchParticipans = createAsyncThunk(
 export const postParticipans = createAsyncThunk(
    'participant/participantsPost',
    async (partId, { rejectWithValue, dispatch }) => {
-      console.log(partId)
       try {
          await axiosInstance.post(`/api/participants`, partId)
          dispatch(
