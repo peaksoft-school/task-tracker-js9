@@ -82,11 +82,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
    return (
       <div style={{ display: 'flex' }}>
          <StyledBox sx={{ zIndex: '0', marginTop: '200px' }}>
-            <Drawer
-               variant="permanent"
-               open={openDrawer}
-               // style={{ top: '20px' }}
-            >
+            <Drawer variant="permanent" open={openDrawer}>
                <SideHead
                   handleItemClick={handleItemClick}
                   handleDrawerToggle={handleDrawerToggle}
@@ -94,7 +90,6 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   data={data}
                   activeItem={activeItem}
                   menuItems={menuItems}
-                  // toggle={toggle}
                />
                <DividerStyle open={openDrawer} />
                <SideMain
@@ -120,7 +115,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   onClick={handleDrawerToggle}
                   edge="start"
                   style={{
-                     backgroundColor: '#ffffff5f',
+                     backgroundColor: '#ffffffb6',
                      borderRadius: '0rem 0.5rem 0.5rem 0rem',
                      position: 'fixed',
                      top: '6rem',
@@ -128,9 +123,9 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   }}
                >
                   {toggle ? (
-                     <FirstMenu style={{ zIndex: '999999' }} />
+                     <FirstMenu style={{ zIndex: '99' }} fill="black" />
                   ) : (
-                     <SecondMenu />
+                     <SecondMenu fill="black" />
                   )}
                </IconButton>
             </ListItemIcon>
@@ -169,10 +164,13 @@ const Drawer = styled(MuiDrawer, {
    whiteSpace: 'nowrap',
    boxSizing: 'border-box',
    backgroundColor: '#f8f8f8a4',
-   // '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper'
+   '& .MuiPaper-root': {
+      textShadow: '0  0 10px #fff',
+   },
+
    '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
       marginTop: '80px',
-      backgroundColor: '#ffffff5f',
+      backgroundColor: '#ffffffb6',
    },
    ...(open && {
       ...openedMixin(theme),

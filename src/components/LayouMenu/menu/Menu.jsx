@@ -69,6 +69,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             message: 'Successfully updated board',
             severity: 'success',
          })
+         dispatch(getBoardById(boardId))
          closeHandler()
          return response.data
       } catch (error) {
@@ -163,7 +164,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                   </StyledHeader>
                   <PhotoBlocks>
                      {photoBoards.map((board) => (
-                        <div key={board.id}>
+                        <div key={board.id} style={{ cursor: 'pointer' }}>
                            <Photos
                               src={board.background}
                               alt={`Board ${board.id}`}
@@ -189,7 +190,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                   </StyledHeaderColor>
                   <PhotoBlocksColor>
                      {colorBoards.map((board) => (
-                        <div key={board.id}>
+                        <div key={board.id} style={{ cursor: 'pointer' }}>
                            <ColorBlock
                               style={{
                                  backgroundColor: board.background,
