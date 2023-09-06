@@ -1,7 +1,23 @@
 import { styled } from '@mui/system'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import React from 'react'
+import {
+   addColumnsToArchive,
+   deleteColumnById,
+} from '../../store/column/columnsThunk'
 
-export const MeadTables = () => {
+export const MeadTables = ({ columnId }) => {
+   const dispatch = useDispatch()
+   const { boardId } = useParams()
+
+   const deleteColumnHandler = () => {
+      dispatch(deleteColumnById({ columnId, boardId }))
+   }
+   const addtoArchiveteHandler = (columnId) => {
+      dispatch(addColumnsToArchive(columnId))
+   }
+
    return (
       <div>
          <TextActions>Actions</TextActions>
@@ -10,7 +26,7 @@ export const MeadTables = () => {
          </CardText>
          <Line />
          <CardText>
-            <p>Delete a column</p>
+            <p onClick={deleteColumnHandler}>Delete a column</p>
          </CardText>
          <Line />
          <CardText>
@@ -21,7 +37,7 @@ export const MeadTables = () => {
          </CardText>
          <Line />
          <CardText>
-            <p>Archive this column</p>
+            <p onClick={addtoArchiveteHandler}>Archive this column</p>
          </CardText>
       </div>
    )

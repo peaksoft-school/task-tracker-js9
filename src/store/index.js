@@ -8,6 +8,7 @@ import { commentsSlice } from './crud-comments/commentsSlice'
 import { favouriteSlice } from './getFavourites/favouritesSlice'
 import { memberSlice } from './inviteMember/memberSlice'
 import { labelsSlice } from './getLabels/labelsSlice'
+import { columnsSlice } from './column/columnsSlise'
 
 export const store = configureStore({
    reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
       [favouriteSlice.name]: favouriteSlice.reducer,
       [memberSlice.name]: memberSlice.reducer,
       [labelsSlice.name]: labelsSlice.reducer,
+      [columnsSlice.name]: columnsSlice.reducer,
    },
 })

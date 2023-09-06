@@ -411,6 +411,7 @@ const PopoverContColor = styled('div')(() => ({
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    borderRadius: '0.7rem',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
+   zIndex: 2,
 }))
 
 const StyledIconButtonColor = styled(IconButton)(() => ({

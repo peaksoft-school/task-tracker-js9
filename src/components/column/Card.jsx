@@ -1,45 +1,62 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material'
-
-import { MeadTables } from './MeadTables'
+import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { Button } from '../UI/button/Button'
-import { MenuItem } from '../UI/menu/MenuItem'
-import {
-   CheckKeyboardIcon,
-   CommunicationIcon,
-   ControlsIcon,
-   EditIcon,
-   ExitIcon,
-   PeopleIcon,
-   RealWorldIcon,
-   TypographyIcon,
-} from '../../assets/icons'
-import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
-import { Label } from './Label'
+import { CloseIcon, ControlsIcon, EditIcon, ExitIcon } from '../../assets/icons'
 import { ColumnCard } from './ColumnCard'
+import { MeadTables } from './MeadTables'
+import { MenuItem } from '../UI/menu/MenuItem'
+// import { axiosInstance } from '../../config/axiosInstance'
+import { updateColumnTitle } from '../../store/column/columnsThunk'
+import { Input } from '../UI/input/Input'
 
-export const Card = () => {
+export const Card = ({ column }) => {
+   const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
+   const [editTitle, setEditTitle] = useState(false)
+   const [inputValue, setInputValue] = useState('')
+   const [card, setCards] = useState([])
    const [openModal, setOpneModal] = useState(false)
-   const [openLabelText, setOpenLabelText] = useState(false)
-   const [clickedLabels, setClickedLabels] = useState([])
+   const [editInput, setEditInput] = useState('')
+   const dispatch = useDispatch()
+   const { boardId } = useParams()
+
+   // const getColumns = async () => {
+   //    try {
+   //       const { data } = await axiosInstance.get(`/api/column/${boardId}`)
+   //       console.log(data.data, 'data')
+   //       setEditInput(data.data)
+   //    } catch (error) {
+   //       return error
+   //    }
+   // }
+
+   // useEffect(() => {
+   //    getColumns(boardId)
+   // }, [])
+   console.log(editInput, 'save')
+
+   const handleUpdateColumn = () => {
+      setEditTitle(!editTitle)
+      setEditInput(column.title)
+   }
+
+   const changeTitleHandler = (id) => {
+      if (column.columnId === id) {
+         const updatedColumn = { ...column, title: editInput }
+         const data = {
+            boardId,
+            title: updatedColumn.title,
+            columnId: updatedColumn.columnId,
+         }
+         dispatch(updateColumnTitle(data))
+         handleUpdateColumn()
+      }
+   }
 
    const handleOpenModal = () => {
       setOpneModal((state) => !state)
    }
-
-   const handleButtonClick = () => {
-      setClickedLabels(ButtonTextcolors)
-      setOpenLabelText(true)
-   }
-
-   const deleteLabelText = () => {
-      setOpenLabelText(false)
-   }
-
-   const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
-
-   const [inputValue, setInputValue] = useState('')
-   const [cards, setCards] = useState([])
 
    const handleOpenModalAddCard = () => {
       setOpneModalInputAddCard(true)
@@ -64,104 +81,58 @@ export const Card = () => {
 
    const isButtonDisabled = inputValue === ''
 
+   const closeHandlerEdit = () => {
+      setEditTitle(false)
+      if (editTitle) {
+         changeTitleHandler(column.columnId)
+      }
+   }
    return (
-      <>
-         <ParentTitle>
-            <Title>Title</Title>
-            <StyleMeadIcon>
-               <ControlsIcon
-                  onClick={(e) => {
-                     e.preventDefault()
-                     handleOpenModal()
-                  }}
+      <div key={column.id}>
+         {editTitle ? (
+            <CreateColumn>
+               <BackDrop onClick={closeHandlerEdit} />
+               <TitleOfCreateColumn>
+                  <NameOfColumn>Name of column</NameOfColumn>
+                  <CloseIcon onClick={handleUpdateColumn} />
+               </TitleOfCreateColumn>
+               <InputColumn
+                  type="text"
+                  placeholder="Name"
+                  value={editInput}
+                  onChange={(e) => setEditInput(e.target.value)}
                />
-            </StyleMeadIcon>
-            <div>
-               {openModal && (
-                  <MenuItemStyle
-                     width="16.6875rem"
-                     open={openModal}
-                     onClose={handleOpenModal}
-                  >
-                     <MeadTables />
-                  </MenuItemStyle>
-               )}
-            </div>
-         </ParentTitle>
-
-         <ParentColumnCard>
-            <ColumnCard>
-               {openLabelText ? (
-                  <ParentColorGroupButton>
-                     {clickedLabels.map((el) => (
-                        <ColorfulButton
-                           onClick={() => deleteLabelText()}
-                           key={el.id}
-                           style={{
-                              backgroundColor: el.color,
-                           }}
-                        >
-                           {el.text}
-                        </ColorfulButton>
-                     ))}
-                  </ParentColorGroupButton>
-               ) : (
-                  <Labels>
-                     {ButtonTextcolors.map((el) => (
-                        <Label
-                           key={el.id}
-                           onClick={() => handleButtonClick()}
-                           color={el.color}
-                        />
-                     ))}
-                  </Labels>
-               )}
-               <ParagraphText>
-                  Какая то задача, которую нужно выполнить
-               </ParagraphText>
-
-               <WraperDedline>
-                  <Deadline>
-                     <RealWorldIcon />
-                     <ParagraphDeadlineMonth>2 month</ParagraphDeadlineMonth>
-                  </Deadline>
-                  <WraperIcons>
-                     <TypographyIcon />
-                     <CommunicationIcon />
-                     <CheckMarNumberkIcon>
-                        <CheckKeyboardIcon />
-                        <NumberIcon>1/3</NumberIcon>
-                     </CheckMarNumberkIcon>
-                     <ParentPeopleIcon>
-                        <PeopleIcon />
-                        <PeopleNumber>5</PeopleNumber>
-                     </ParentPeopleIcon>
-                  </WraperIcons>
-               </WraperDedline>
-            </ColumnCard>
-            <ColumnCard>
-               <ParagraphText>
-                  Какая то задача, которую нужно выполнить
-               </ParagraphText>
-               <CheckListButton
-                  backgroundColor="#111"
-                  borderRadius="2rem"
-                  padding="0.25rem 0.75rem"
+               <ButtonCreateColumn
+                  onClick={() => changeTitleHandler(column.columnId)}
                >
-                  Cheklist
-               </CheckListButton>
-               <FlexIcon>
-                  <CheckMarNumberkIcon>
-                     <CheckKeyboardIcon />
-                     <NumberIcon>1/3</NumberIcon>
-                  </CheckMarNumberkIcon>
-                  <div style={{ display: 'flex', gap: '4px' }}>
-                     <PeopleIcon />
-                     <PeopleNumber>5</PeopleNumber>
-                  </div>
-               </FlexIcon>
-            </ColumnCard>
-            {cards.map((el) => (
+                  Save
+               </ButtonCreateColumn>
+            </CreateColumn>
+         ) : (
+            <ParentTitle key={column.id}>
+               <Title onClick={handleUpdateColumn}>{column.title} </Title>
+               <StyleMeadIcon>
+                  <ControlsIcon
+                     onClick={(e) => {
+                        e.preventDefault()
+                        handleOpenModal()
+                     }}
+                  />
+               </StyleMeadIcon>
+            </ParentTitle>
+         )}
+
+         {openModal && (
+            <MenuItemStyle
+               width="16.6875rem"
+               open={openModal}
+               onClose={handleOpenModal}
+            >
+               <MeadTables columnId={column.columnId} />
+            </MenuItemStyle>
+         )}
+         <ParentColumnCard>
+            {card.map((el) => (
                <ColumnCard key={el.id}>
                   <IconText>
                      <ParagraphText>{el.text}</ParagraphText>
@@ -207,12 +178,14 @@ export const Card = () => {
                <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
             )}
          </ParentColumnCard>
-      </>
+      </div>
    )
 }
 
 const ParentTitle = styled('div')(() => ({
    display: 'flex',
+   justifyContent: 'space-between',
+   padding: '0 0.5rem 0 0.5rem',
    marginBottom: '0.89rem',
 }))
 
@@ -224,17 +197,9 @@ const Title = styled('p')(() => ({
    fontWeight: 500,
    lineHeight: 'normal',
 }))
-
-const ParentColumnCard = styled('div')(() => ({
-   display: 'flex',
-   flexDirection: 'column',
-}))
-
 const StyleMeadIcon = styled('div')(() => ({
    cursor: 'pointer',
    backgroundColor: '#f0f0f0',
-   position: 'absolute',
-   marginLeft: '14.62rem',
    transition: 'transform 0.4s ease-out',
    '&:active': {
       transform: 'scale(1,2)',
@@ -245,8 +210,13 @@ const MenuItemStyle = styled(MenuItem)(() => ({
    borderRadius: ' 0.625rem',
    backgroundColor: '#FFF',
    boxShadow: '  -12px 1px 36px 0px rgba(34, 60, 80, 0.2)',
-   marginLeft: '11.62rem',
-   marginTop: '2rem',
+   marginLeft: '13.62rem',
+}))
+
+const ParentColumnCard = styled('div')(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   marginLeft: '0.5rem',
 }))
 
 const ParagraphText = styled('p')(() => ({
@@ -254,98 +224,9 @@ const ParagraphText = styled('p')(() => ({
    boxSizing: 'border-box',
    wordWrap: 'break-word',
 }))
-
-const Labels = styled('div')(() => ({
-   display: 'flex',
-   flexWrap: 'wrap',
-   gap: '6px',
-}))
-
-const WraperDedline = styled('div')(() => ({
-   display: 'flex',
-   marginTop: '1rem',
-   justifyContent: 'space-between',
-}))
-
-const Deadline = styled('div')(() => ({
-   display: 'flex',
-   backgroundColor: '#F9DCB4',
-   borderRadius: '0.5rem',
-   padding: ' 0.125rem 0.5rem 0rem 0.5rem',
-   marginRight: '0.75rem',
-}))
-
-const WraperIcons = styled('div')(() => ({
-   display: 'flex',
-   gap: '0.81rem',
-}))
-const ParagraphDeadlineMonth = styled('p')(() => ({
-   fontSize: '0.875rem',
-   fontFamily: ' normal',
-   fontWeight: 500,
-   color: ' #C7852C',
-}))
-
-const NumberIcon = styled('p')(() => ({
-   color: '#919191',
-   fontFamily: 'Cera Pro',
-   fontSize: '0.875rem',
-   fontStyle: 'normal',
-   fontWeight: '500',
-}))
-
-const PeopleNumber = styled('p')(() => ({
-   color: '#919191',
-   fontFamily: 'Cera Pro',
-   fontSize: '0.875rem',
-   fontStyle: 'normal',
-   fontWeight: '500',
-}))
-
-const ParentColorGroupButton = styled('div')(() => ({
-   display: 'flex-wrap',
-   gap: '0.5rem',
-}))
-
-const ColorfulButton = styled(Button)(() => ({
-   padding: '0 0.3rem',
-   fontSize: '0.65rem',
-   borderRadius: '0.5rem',
-   marginBottom: '0.5rem',
-   marginRight: '0.5rem',
-   '&:active': {
-      transform: 'scale(0.9, 0.9)',
-   },
-}))
 const IconText = styled('div')(() => ({
    display: 'flex',
 }))
-
-const CheckListButton = styled(Button)(() => ({
-   color: '#F8F8F8',
-   fontSize: ' 0.75rem',
-   fontStyle: ' normal',
-   fontWeight: '500',
-   position: 'absolute',
-   marginLeft: '9.5rem',
-}))
-
-const FlexIcon = styled('div')(() => ({
-   display: 'flex',
-   marginTop: '2.44rem',
-   justifyContent: 'flex-end',
-   gap: '0.5rem',
-}))
-
-const CheckMarNumberkIcon = styled('div')(() => ({
-   display: 'flex',
-   gap: '4px',
-}))
-const ParentPeopleIcon = styled('div')(() => ({
-   display: 'flex',
-   gap: '4px',
-}))
-
 const AddPlus = styled('p')(() => ({
    cursor: 'pointer',
    marginLeft: '0.5rem',
@@ -391,3 +272,57 @@ const ButtonAddCardStyle = styled(Button)(() => ({
       color: '#FFFFFF',
    },
 }))
+const CreateColumn = styled('div')(() => ({
+   width: '280px',
+   height: '118px',
+   display: 'flex',
+   flexDirection: 'column',
+   gap: '0.3rem',
+   borderRadius: '0.5rem',
+   padding: '0 0.7rem 0 0.7rem',
+}))
+const TitleOfCreateColumn = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'space-between',
+}))
+const NameOfColumn = styled('p')(() => ({
+   fontSize: '16px',
+   color: '#919191',
+}))
+const ButtonCreateColumn = styled(Button)(() => ({
+   width: '4.8rem',
+   height: '1.875rem',
+   textTransform: 'inherit',
+   marginLeft: '11.2rem',
+   padding: '3px 16px 0 16px',
+   '&:hover': {
+      backgroundColor: '#005688',
+      color: '#fffff',
+   },
+   '&:active': {
+      backgroundColor: '#57AEE0',
+      color: '#fffff',
+   },
+}))
+const InputColumn = styled(Input)(() => ({
+   '& .MuiOutlinedInput-root': {
+      borderRadius: '0.5rem',
+      width: '16rem',
+      zIndex: 1,
+   },
+   input: {
+      width: '19.4625rem',
+      height: '1.35rem',
+      padding: ' 0.375rem 1rem',
+      alignItems: ' center',
+      borderRadius: '0.5rem',
+   },
+}))
+
+const BackDrop = styled('div')({
+   position: 'absolute',
+   width: '100%',
+   height: '90vh',
+   top: '0',
+   left: '0',
+})

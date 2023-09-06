@@ -1,11 +1,11 @@
 import { styled } from '@mui/material'
-import React from 'react'
+
 import { Card } from './Card'
 
-export const Columns = () => {
+export const Columns = ({ column }) => {
    return (
       <ColumnStyle>
-         <Card />
+         <Card column={column} />
       </ColumnStyle>
    )
 }
@@ -17,5 +17,5 @@ const ColumnStyle = styled('div')(() => ({
    paddingBottom: '1rem',
    paddingTop: '0.69rem',
    paddingRight: '0.5rem',
-   paddingLeft: '0.5rem',
+   // paddingLeft: '0.5rem',
 }))
