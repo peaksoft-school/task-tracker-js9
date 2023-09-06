@@ -6,47 +6,41 @@ import {
    Select,
    styled,
 } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { putParticipans } from '../../store/participants/partThunk'
 import TableMui from '../UI/table/TableMui'
 import { DeleteIcon } from '../../assets/icons'
 
-const rows = [
-   {
-      name: 'Aiturgan Isaeva',
-      email: 'isaevasai7@example.com',
-      id: '4',
-   },
-   {
-      name: 'Zhakshylyk Nasipbekov',
-      email: 'nasipbekov04zhakshylyk@example.com',
-      id: '5',
-   },
-   {
-      name: 'Beku Kursanov',
-      email: 'kursanovbeku@example.com',
-      id: '6',
-   },
-]
-
 const kindaSelect = [
-   { label: 'All', value: 'All' },
-   { label: 'Admin', value: 'Admin' },
-   { label: 'Member', value: 'Member' },
+   { label: 'Admin', value: 'ADMIN' },
+   { label: 'Member', value: 'MEMBER' },
 ]
 
-export const ParticipantsTable = ({ onDelete }) => {
+export const ParticipantsTable = ({ onDelete, rows }) => {
+   const dispatch = useDispatch()
+   const { partId } = useParams()
+
    const defaultRole = 'Member'
 
    const initialRoles = {}
    rows.forEach((row) => {
-      initialRoles[row.id] = defaultRole
+      initialRoles[row.userId] = defaultRole
    })
 
    const [roles, setRoles] = useState(initialRoles)
 
-   const handleRolesChange = (event, id) => {
+   const handleRolesChange = (event, memberId) => {
       const newRoles = { ...roles }
-      newRoles[id] = event.target.value
+      newRoles[memberId] = event.target.value
       setRoles(newRoles)
+      dispatch(
+         putParticipans({
+            memberId,
+            workSpacesId: partId,
+            role: event.target.value,
+         })
+      )
    }
 
    const column = [
@@ -57,7 +51,7 @@ export const ParticipantsTable = ({ onDelete }) => {
          minWidth: '33rem',
          padding: '0 0 0 1.6rem',
          render: (data) => (
-            <p style={{ padding: '0 0 0 0.6rem' }}>{data.name}</p>
+            <p style={{ padding: '0 0 0 0.6rem' }}>{data.fullName}</p>
          ),
       },
 
@@ -70,17 +64,21 @@ export const ParticipantsTable = ({ onDelete }) => {
             <MainContainer>
                <FormControlStyle>
                   <StyledSelect
-                     value={roles[data.id]}
-                     onChange={(e) => handleRolesChange(e, data.id)}
+                     value={data.role}
+                     onChange={(e) => handleRolesChange(e, data.userId)}
                   >
                      {kindaSelect.map((item) => (
-                        <MenuItemStyle key={item.value} value={item.value}>
+                        <MenuItemStyle
+                           key={item.value}
+                           defaultValue={data.role}
+                           value={item.value}
+                        >
                            {item.label}
                         </MenuItemStyle>
                      ))}
                   </StyledSelect>
                </FormControlStyle>
-               <IconButton onClick={() => onDelete(data.id)}>
+               <IconButton onClick={() => onDelete(data.userId)}>
                   <DeleteIcon />
                </IconButton>
             </MainContainer>

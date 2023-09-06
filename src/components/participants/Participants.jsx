@@ -1,30 +1,55 @@
 import React, { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { FormControl, styled } from '@mui/material'
+import { fetchParticipans } from '../../store/participants/partThunk'
 import { Button } from '../UI/button/Button'
 import { ParticipantsTable } from './ParticipantsTable'
+import { InviteNewParticipant } from './InviteModal'
+import { DeleteModal } from './DeleteModal'
 
-export const Participants = ({ onDelete }) => {
-   const [role, setRole] = useState()
-
+export const Participants = () => {
+   const { partId } = useParams()
+   const dispatch = useDispatch()
+   const rows = useSelector((state) => state.participant.participants)
+   const [role, setRole] = useState('ALL')
+   const [openInviteNewModal, setOpenInviteNewModal] = useState(false)
+   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+   const [userId, setUserId] = useState()
    const handleChange = (event) => {
       setRole(event.target.value)
    }
+   const onCreateClick = () => {
+      setOpenInviteNewModal((prev) => !prev)
+   }
 
-   const dataLength = 254
+   const dataLength = rows.length
 
    const selectData = [
-      { label: 'All', value: 'All' },
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Member', value: 'Member' },
+      { label: 'All', value: 'ALL' },
+      { label: 'Admin', value: 'ADMIN' },
+      { label: 'Member', value: 'MEMBER' },
    ]
+
+   React.useEffect(() => {
+      dispatch(fetchParticipans({ partId, role }))
+   }, [role])
+   if (!partId) {
+      return <div>Loading...</div> // Или другое поведение в случае, когда partId не определен
+   }
+
+   const onDelete = (userId) => {
+      setUserId(userId)
+      setOpenDeleteModal(!openDeleteModal)
+   }
 
    return (
       <BodyContainer>
          <GlobalContainer>
             <HeaderContainer>
-               <MainCont>
+               <MainCont style={{ position: 'relative' }}>
                   <RoleSection>
                      <ViewAllIssues>View all issues</ViewAllIssues>
                      <FormControl>
@@ -39,14 +64,29 @@ export const Participants = ({ onDelete }) => {
                            ))}
                         </StyledSelect>
                      </FormControl>
+                     {openInviteNewModal ? (
+                        <InviteNewParticipant
+                           rows={rows}
+                           onCreateClick={onCreateClick}
+                        />
+                     ) : null}
+                     {openDeleteModal ? (
+                        <DeleteModal
+                           onDelete={onDelete}
+                           role={role}
+                           userId={userId}
+                        />
+                     ) : null}
                   </RoleSection>
-                  <MyBtnStyled>Create</MyBtnStyled>
+                  <MyBtnStyled onClick={() => onCreateClick()}>
+                     Create
+                  </MyBtnStyled>
                </MainCont>
                <Total>
                   Total:<TotalAmount>{dataLength}</TotalAmount>
                </Total>
             </HeaderContainer>
-            <ParticipantsTable onDelete={onDelete} />
+            <ParticipantsTable rows={rows} onDelete={onDelete} />
          </GlobalContainer>
       </BodyContainer>
    )
@@ -58,10 +98,10 @@ const BodyContainer = styled('div')(() => ({
 }))
 
 const GlobalContainer = styled('div')(() => ({
+   marginTop: '86px',
    padding: '1.4rem 0 0 0',
-   backgroundColor: '#ffffffaa',
+   backgroundColor: '#ffffff',
    width: '100%',
-   minHeight: ' 10vh',
    borderRadius: ' 0.5rem',
    fontFamily: 'CarePro',
 }))
