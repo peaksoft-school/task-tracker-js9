@@ -130,7 +130,7 @@ export const LayoutMenu = () => {
                   </ModalUi>
                ) : (
                   <TitleBox onClick={clickEditHandler}>
-                     <EditIcon />
+                     <EditIcon fill="white" />
 
                      <TitleText>{boardById?.title}</TitleText>
                   </TitleBox>
@@ -179,8 +179,8 @@ export const LayoutMenu = () => {
 const LayoutMenuContainer = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
-   width: '100%',
-   marginTop: '5rem',
+   width: 'auto',
+   marginTop: '6rem',
 })
 
 const ModalButton = styled(Button)(() => ({
@@ -264,6 +264,8 @@ const TitleBox = styled('div')({
 
 const TitleText = styled('p')({
    fontWeight: 'bold',
+   color: '#f5f5f5',
+   textShadow: '0 0 10px #303030',
 })
 
 const InviteBox = styled('div')({

@@ -18,13 +18,10 @@ import { ProfileForm } from './ProfileForm'
 export const Profile = () => {
    const [avatarUrl, setAvatarUrl] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
-   const { item, avatarLink, getItemById } = useSelector(
-      (state) => state.profile
-   )
+   const { item, avatarLink } = useSelector((state) => state.profile)
    const { state } = useLocation()
-   const { id } = useParams()
-
-   // console.log(state)
+   console.log('state: ', state)
+   const { profileId } = useParams()
 
    const dispatch = useDispatch()
 
@@ -35,8 +32,8 @@ export const Profile = () => {
    }, [avatarUrl])
 
    useEffect(() => {
-      if (state?.edit !== null) {
-         dispatch(profileGetByIdRequest(id))
+      if (state !== null && state?.edit !== null) {
+         dispatch(profileGetByIdRequest(profileId))
       } else {
          dispatch(profileGetRequest())
       }
@@ -99,14 +96,14 @@ export const Profile = () => {
 
                <ProfileNames>
                   <ProfileNamesSpan>
-                     {state?.edit === null
+                     {/* {state?.edit === null
                         ? item?.firstName
-                        : getItemById?.firstName}
+                        : getItemById?.firstName} */}
                   </ProfileNamesSpan>
                   <ProfileNamesSpan>
-                     {state.edit === null
+                     {/* {state.edit === null
                         ? item?.lastName
-                        : getItemById?.lastName}
+                        : getItemById?.lastName} */}
                   </ProfileNamesSpan>
                </ProfileNames>
             </div>

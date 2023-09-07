@@ -77,6 +77,15 @@ export const routes = createBrowserRouter([
       ),
    },
    {
+      path: '/profile/:profileId',
+      element: (
+         <>
+            <Headers />
+            <Profile />
+         </>
+      ),
+   },
+   {
       path: 'mainPage/:id/boards/:boardId/board',
       element: (
          <>

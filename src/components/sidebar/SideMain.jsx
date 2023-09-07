@@ -39,7 +39,7 @@ export const SideMain = ({
    }, [dispatch])
 
    return (
-      <div>
+      <div style={{ textShadow: '0  0 10px #fff' }}>
          <List>
             <ActiveListItem
                open={open}
@@ -240,7 +240,7 @@ const StyledAvatar = styled(Avatar)(() => ({
    width: '1.625rem',
    height: '1.5625rem',
    color: '#F0F0F0',
-   padding: '0.7rem 0.6rem 0.6rem 0.6rem',
+   padding: '0.6rem 0.6rem 0.6rem 0.6rem',
    bgcolor: '#2CB107',
    marginLeft: '  -1rem',
 }))
