@@ -20,8 +20,6 @@ export const Card = ({ column }) => {
    const dispatch = useDispatch()
    const { boardId } = useParams()
 
-   console.log(editInput, 'save')
-
    const handleUpdateColumn = () => {
       setEditTitle(!editTitle)
       setEditInput(column.title)

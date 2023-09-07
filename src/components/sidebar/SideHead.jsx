@@ -79,7 +79,6 @@ export const SideHead = ({
 
    const openCloseModalHandler = (text, icon) => {
       if (text === 'Settings' || icon === <ToolsIcon />) {
-         console.log(icon)
          setShowModal(!showModal)
          setEditInput(editInput)
       } else if (text === 'Participants') {

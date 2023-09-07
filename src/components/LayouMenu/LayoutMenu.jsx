@@ -24,7 +24,6 @@ export const LayoutMenu = () => {
    const { boardById } = useSelector((state) => state.board)
    const { columnsData } = useSelector((state) => state.columns)
 
-   console.log(columnsData)
    const dispatch = useDispatch()
 
    React.useEffect(() => {
