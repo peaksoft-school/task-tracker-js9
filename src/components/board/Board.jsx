@@ -15,7 +15,6 @@ export const Board = () => {
    const { id } = useParams()
    const [openModal, setOpenModal] = React.useState(false)
    const boards = useSelector((state) => state.board.board)
-   console.log('boards: ', boards)
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
@@ -137,6 +136,7 @@ const BoardTitle = styled('p')(() => ({
    fontSize: '1rem',
    fontWeight: '500',
    cursor: 'pointer',
+   width: '100%',
 }))
 
 const StarContainer = styled('div')(() => ({
@@ -153,6 +153,7 @@ const Button = styled('button')(() => ({
    backgroundColor: '#0079BF',
    color: '#fff',
    fontSize: '0.9rem',
+   cursor: 'pointer',
 }))
 
 const BoardButton = styled('div')(() => ({
