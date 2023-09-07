@@ -37,7 +37,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             activeItem === 'All issues' ? (
                <FilesAndFoldersIcon fill="#FFFFFF" />
             ) : (
-               <FilesAndFoldersIcon fill="#3C3C3C" />
+               <FilesAndFoldersIcon fill="#919191" />
             ),
          count: dataLength,
       },
@@ -47,7 +47,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             activeItem === 'Participants' ? (
                <PeopleIcon fill="#FFFFFF" />
             ) : (
-               <PeopleIcon fill="3C3C3C" />
+               <PeopleIcon fill="#919191" />
             ),
          count: data.partisipants,
       },
@@ -57,7 +57,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             activeItem === 'Settings' ? (
                <ToolsIcon fill="#FFFFFF" />
             ) : (
-               <ToolsIcon fill="3C3C3C" />
+               <ToolsIcon fill="#919191" />
             ),
       },
    ]
@@ -120,7 +120,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   onClick={handleDrawerToggle}
                   edge="start"
                   style={{
-                     backgroundColor: '#fff',
+                     backgroundColor: '#ffffff5f',
                      borderRadius: '0rem 0.5rem 0.5rem 0rem',
                      position: 'fixed',
                      top: '6rem',
@@ -169,8 +169,10 @@ const Drawer = styled(MuiDrawer, {
    whiteSpace: 'nowrap',
    boxSizing: 'border-box',
    backgroundColor: '#f8f8f8a4',
+   // '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper'
    '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
       marginTop: '80px',
+      backgroundColor: '#ffffff5f',
    },
    ...(open && {
       ...openedMixin(theme),
@@ -185,8 +187,8 @@ const Drawer = styled(MuiDrawer, {
 const DividerStyle = styled(Divider)(({ open }) => ({
    width: open ? '75%' : '35%',
    marginLeft: '1.8rem',
-   borderBottom: '2px solid #E0E0E0',
+   borderBottom: '2px solid #e0e0e0',
 }))
 const StyledBox = styled(Box)(() => ({
-   backgroundColor: 'red',
+   // backgroundColor: 'red',
 }))

@@ -52,7 +52,7 @@ export const SideMain = ({
                      {activeItem === 'Workspaces' ? (
                         <GraphicIcon fill="#FFFFFF" />
                      ) : (
-                        <GraphicIcon fill="3C3C3C" />
+                        <GraphicIcon fill="#3C3C3C" />
                      )}
                   </StyleListItemIcon>
                   <ListItemText primary="Workspaces" />
@@ -60,7 +60,7 @@ export const SideMain = ({
                      {activeItem === 'Workspaces' ? (
                         <PlusIcon fill="#FFFFFF" />
                      ) : (
-                        <PlusIcon fill="3C3C3C" />
+                        <PlusIcon fill="#3C3C3C" />
                      )}
                   </StyleListItemIconPlus>
                </ListItemButton>

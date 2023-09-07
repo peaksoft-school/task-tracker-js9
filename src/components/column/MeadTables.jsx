@@ -1,25 +1,33 @@
 import { styled } from '@mui/system'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+// import { Backdrop } from '@mui/material'
 import React from 'react'
 import {
    addColumnsToArchive,
    deleteColumnById,
 } from '../../store/column/columnsThunk'
 
-export const MeadTables = ({ columnId }) => {
+export const MeadTables = ({ columnId, setOpneModal }) => {
    const dispatch = useDispatch()
    const { boardId } = useParams()
 
    const deleteColumnHandler = () => {
       dispatch(deleteColumnById({ columnId, boardId }))
+      setOpneModal(false)
    }
-   const addtoArchiveteHandler = (columnId) => {
-      dispatch(addColumnsToArchive(columnId))
+   const addtoArchiveteHandler = () => {
+      const data = {
+         columnId,
+         boardId,
+      }
+      dispatch(addColumnsToArchive(data))
+      setOpneModal(false)
    }
 
    return (
-      <div>
+      <Container>
+         {/* <Backdrop onClick={setOpneModal(false)} /> */}
          <TextActions>Actions</TextActions>
          <CardText>
             <TextAddCard>Add Card</TextAddCard>
@@ -39,14 +47,23 @@ export const MeadTables = ({ columnId }) => {
          <CardText>
             <p onClick={addtoArchiveteHandler}>Archive this column</p>
          </CardText>
-      </div>
+      </Container>
    )
 }
+
+const Container = styled('div')(() => ({
+   padding: '1rem 0rem 0.25rem',
+   borderRadius: ' 0.625rem',
+   position: 'absolute',
+   zIndex: 2,
+   backgroundColor: '#FFF',
+}))
 
 const TextActions = styled('p')(() => ({
    fontSize: '1rem',
    fontStyle: 'normal',
    fontWeight: 400,
+
    textAlign: 'center',
 }))
 

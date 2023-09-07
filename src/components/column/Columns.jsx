@@ -17,5 +17,5 @@ const ColumnStyle = styled('div')(() => ({
    paddingBottom: '1rem',
    paddingTop: '0.69rem',
    paddingRight: '0.5rem',
-   // paddingLeft: '0.5rem',
+   background: 'rgba(145, 145, 145, 0.11)',
 }))

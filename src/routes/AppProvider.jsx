@@ -2,13 +2,14 @@ import { createBrowserRouter } from 'react-router-dom'
 import { SignUpPage } from '../pages/SingUpage'
 import { SignInPage } from '../pages/SignInPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
-import { Workspaces } from '../components/workspace/Workspace'
 import { Headers } from '../components/header/Header'
 import { PrivateRoute } from './PrivateRoute'
 import { USER_ROLE } from '../utils/constants/authorization'
+import { Workspaces } from '../components/workspace/Workspace'
 import { Profile } from '../components/profile/Profile'
 import { BoardPage } from '../pages/BoardPage'
 import { InnerPage } from '../pages/InnerPage'
+import { ParticipantsPage } from '../pages/ParticipantsPage'
 
 export const routes = createBrowserRouter([
    {
@@ -81,6 +82,15 @@ export const routes = createBrowserRouter([
          <>
             <Headers />
             <InnerPage />
+         </>
+      ),
+   },
+   {
+      path: 'mainPage/:partId/participants/',
+      element: (
+         <>
+            <Headers />
+            <ParticipantsPage />
          </>
       ),
    },

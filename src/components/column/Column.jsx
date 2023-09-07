@@ -37,31 +37,33 @@ export const Column = () => {
 
    return (
       <ColumnsStyle>
-         {isCreatingColumn ? (
-            <NewColumn
-               handleCreateColumnClick={handleCreateColumnClick}
-               handleInputChange={handleInputChange}
-               handleAddColumnClick={handleAddColumnClick}
-               newColumnName={newColumnName}
-            />
-         ) : (
-            <CreteColumn onClick={handleAddColumnClick}>
-               + Add a column
-            </CreteColumn>
-         )}
-         {columnsData.map((column) => {
-            return (
-               <div>
-                  <Columns column={column} />
-               </div>
-            )
-         })}
+         <Cont>
+            {columnsData.map((column) => {
+               return (
+                  <ChildContainer>
+                     <Columns column={column} />
+                  </ChildContainer>
+               )
+            })}
+            {isCreatingColumn ? (
+               <NewColumn
+                  handleCreateColumnClick={handleCreateColumnClick}
+                  handleInputChange={handleInputChange}
+                  handleAddColumnClick={handleAddColumnClick}
+                  newColumnName={newColumnName}
+               />
+            ) : (
+               <CreteColumn onClick={handleAddColumnClick}>
+                  + Add a column
+               </CreteColumn>
+            )}
+         </Cont>
       </ColumnsStyle>
    )
 }
 
 const CreteColumn = styled('div')(() => ({
-   width: '280px',
+   minWidth: '280px',
    height: '2.75rem',
    display: 'flex',
    alignItems: 'center',
@@ -72,10 +74,34 @@ const CreteColumn = styled('div')(() => ({
 
 const ColumnsStyle = styled('div')(() => ({
    display: 'flex',
-   gap: '1.5rem',
    marginTop: '50px',
-   width: '100%',
+   maxWidth: '100%',
    backgroundColor: 'white',
-   cursor: 'pointer',
-   flexDirection: 'row-reverse',
+   flexDirection: 'reverse',
 }))
+
+const Cont = styled('div')({
+   overflowX: 'auto',
+   maxWidth: '100%',
+   display: 'flex',
+   gap: '1.5rem',
+   height: '75vh',
+   margin: '0 20px', // Установка отступа
+   padding: '0.7rem ',
+   scrollbarWidth: 'thin',
+   scrollbarColor: ' #D9D9D9 transparent',
+   ' &::-webkit-scrollbar ': {
+      width: '0.5rem',
+   },
+   '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+   },
+   ' &::-webkit-scrollbar-thumb ': {
+      backgroundColor: ' #D9D9D9',
+      borderRadius: '0.25rem',
+   },
+})
+
+const ChildContainer = styled('div')({
+   width: '280px',
+})

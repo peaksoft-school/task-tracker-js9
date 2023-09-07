@@ -1,48 +1,57 @@
 /* eslint-disable eqeqeq */
-import { styled, IconButton, TextField } from '@mui/material'
+import { styled, IconButton } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
-import { ExitIcon, LeftIcon } from '../../../assets/icons'
-import { Button } from '../../UI/button/Button'
-import { createInviteMember } from '../../../store/inviteMember/inviteThunk'
+import { ExitIcon, LeftIcon } from '../../assets/icons'
+import { Button } from '../UI/button/Button'
+import { postParticipans } from '../../store/participants/partThunk'
+import { ModalUi } from '../UI/modal/Modal'
+import { showSnackbar } from '../UI/snackbar/Snackbar'
 
-export const InviteNewParticipant = ({ openInviteNewModal }) => {
+export const InviteNewParticipant = ({ onCreateClick, rows }) => {
    const [selectedRole, setSelectedRole] = useState('')
    const [email, setEmail] = useState('')
    const dispatch = useDispatch()
-   const { boardId } = useParams()
-
+   const { partId } = useParams()
    const createNewMember = () => {
-      const newdata = {
-         boardId,
-         email,
-         role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
-         link: 'http://localhost:3000/signup',
+      if (!rows.find((item) => item.email === email)) {
+         const newdata = {
+            workSpacesId: Number(partId),
+            email,
+            role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
+            link: 'http://localhost:3000/signup',
+         }
+         dispatch(postParticipans(newdata))
+         onCreateClick()
+      } else {
+         showSnackbar({
+            message: 'user already added',
+            severity: 'info',
+         })
       }
-
-      dispatch(createInviteMember({ newdata, boardId }))
    }
+
    return (
-      <Container>
+      <ModalUi open={onCreateClick} onClose={onCreateClick}>
          <InviteParticipantModal>
             <InviteHeader>
                <IconButton>
-                  <LeftIcon fill="gray" onClick={openInviteNewModal} />
+                  <LeftIcon fill="gray" onClick={onCreateClick} />
                </IconButton>
                <p>Invite a new participant</p>
                <IconButton>
-                  <ExitIcon fill="gray" onClick={openInviteNewModal} />
+                  <ExitIcon fill="gray" onClick={onCreateClick} />
                </IconButton>
             </InviteHeader>
-            <InputEmail
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-               label="example@gmail.com"
-               variant="outlined"
-               type="email"
-               size="small"
-            />
+            <div>
+               <InputEmail
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@gmail.com"
+                  type="email"
+               />
+            </div>
             <MembersCont>
                <MemberBox>
                   <input
@@ -62,18 +71,15 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
                </MemberBox>
             </MembersCont>
             <ButtonsCont>
-               <ButtonDelete disabled={!email}>Delete</ButtonDelete>
+               <ButtonDelete disabled={!email} onClick={() => setEmail('')}>
+                  Delete
+               </ButtonDelete>
                <ButtonCreate onClick={createNewMember}>Create</ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
-      </Container>
+      </ModalUi>
    )
 }
-const Container = styled('div')(() => ({
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-}))
 
 const InviteParticipantModal = styled('div')({
    width: '26.5625rem',
@@ -84,8 +90,6 @@ const InviteParticipantModal = styled('div')({
    boxSizing: 'border-box',
    backgroundColor: 'white',
    borderRadius: '0.5rem',
-   position: 'fixed',
-   zIndex: '9999',
 })
 
 const InviteHeader = styled('div')({
@@ -94,27 +98,13 @@ const InviteHeader = styled('div')({
    alignItems: 'center',
 })
 
-const InputEmail = styled(TextField)({
-   '& .MuiOutlinedInput-input': {
-      borderRadius: '0.5rem',
-      width: '19.8rem',
-      padding: '0.575rem 1rem',
-      backgroundColor: '#fff',
-   },
-   '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-         border: '1px solid #D0D0D0',
-      },
-      '&:hover fieldset': {
-         border: '1px solid #D0D0D0',
-      },
-   },
-   '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: ' #D0D0D0',
-   },
-   '& .css-1qi90xi-MuiInputBase-root-MuiOutlinedInput-root': {
-      borderRadius: '0.5rem',
-   },
+const InputEmail = styled('input')({
+   width: '24.0625rem',
+   height: '2rem',
+   borderRadius: '0.5rem',
+   border: '1px solid grey',
+   padding: '0.375rem 1rem',
+   boxSizing: 'border-box',
 })
 
 const MemberBox = styled('div')({
@@ -142,7 +132,7 @@ const ButtonDelete = styled(Button)({
    fontSize: '0.8rem',
    width: '4.8125rem',
    '&:hover': {
-      backgroundColor: '#005688',
+      backgroundColor: '#171bea',
    },
 })
 
@@ -153,6 +143,6 @@ const ButtonCreate = styled(Button)({
    alignItems: 'center',
    fontSize: '0.8rem',
    '&:hover': {
-      backgroundColor: '#005688',
+      backgroundColor: '#171bea',
    },
 })

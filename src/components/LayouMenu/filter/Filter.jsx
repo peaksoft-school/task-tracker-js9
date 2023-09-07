@@ -127,6 +127,7 @@ const ModalFilter = styled('div')(({ animation }) => {
       width: '22.9375rem',
       height: '40rem',
       display: 'flex',
+
       flexDirection: 'column',
       padding: '1rem',
       gap: '1rem',

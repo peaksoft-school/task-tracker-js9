@@ -59,13 +59,13 @@ export const updateColumnTitle = createAsyncThunk(
 )
 export const addColumnsToArchive = createAsyncThunk(
    'columns/addtoArhive',
-   async ({ columnId, isArchive }, { rejectWithValue, dispatch }) => {
-      console.log(columnId, 'adding')
+   async (data, { rejectWithValue, dispatch }) => {
       try {
-         await axiosInstance.put(`api/column/archive/${columnId}`, {
-            isArchive,
-         })
-         dispatch(getColumns())
+         const response = await axiosInstance.put(
+            `api/column/archive/${data.columnId}`
+         )
+         dispatch(getColumns(data.boardId))
+         return response.data
       } catch (error) {
          return rejectWithValue(error.data.message)
       }

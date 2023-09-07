@@ -6,7 +6,7 @@ export const getLabels = createAsyncThunk(
    async (_, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.get('/api/labels')
-         console.log('response: ', response)
+         // console.log('response: ', response)
          return response.data
       } catch (error) {
          rejectWithValue(error.response.data)

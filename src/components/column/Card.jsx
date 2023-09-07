@@ -3,11 +3,10 @@ import { styled } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Button } from '../UI/button/Button'
-import { CloseIcon, ControlsIcon, EditIcon, ExitIcon } from '../../assets/icons'
+import { ControlsIcon, EditIcon, ExitIcon } from '../../assets/icons'
 import { ColumnCard } from './ColumnCard'
 import { MeadTables } from './MeadTables'
 import { MenuItem } from '../UI/menu/MenuItem'
-// import { axiosInstance } from '../../config/axiosInstance'
 import { updateColumnTitle } from '../../store/column/columnsThunk'
 import { Input } from '../UI/input/Input'
 
@@ -21,19 +20,6 @@ export const Card = ({ column }) => {
    const dispatch = useDispatch()
    const { boardId } = useParams()
 
-   // const getColumns = async () => {
-   //    try {
-   //       const { data } = await axiosInstance.get(`/api/column/${boardId}`)
-   //       console.log(data.data, 'data')
-   //       setEditInput(data.data)
-   //    } catch (error) {
-   //       return error
-   //    }
-   // }
-
-   // useEffect(() => {
-   //    getColumns(boardId)
-   // }, [])
    console.log(editInput, 'save')
 
    const handleUpdateColumn = () => {
@@ -88,25 +74,16 @@ export const Card = ({ column }) => {
       }
    }
    return (
-      <div key={column.id}>
+      <c key={column.id}>
          {editTitle ? (
             <CreateColumn>
                <BackDrop onClick={closeHandlerEdit} />
-               <TitleOfCreateColumn>
-                  <NameOfColumn>Name of column</NameOfColumn>
-                  <CloseIcon onClick={handleUpdateColumn} />
-               </TitleOfCreateColumn>
                <InputColumn
                   type="text"
                   placeholder="Name"
                   value={editInput}
                   onChange={(e) => setEditInput(e.target.value)}
                />
-               <ButtonCreateColumn
-                  onClick={() => changeTitleHandler(column.columnId)}
-               >
-                  Save
-               </ButtonCreateColumn>
             </CreateColumn>
          ) : (
             <ParentTitle key={column.id}>
@@ -123,13 +100,15 @@ export const Card = ({ column }) => {
          )}
 
          {openModal && (
-            <MenuItemStyle
-               width="16.6875rem"
-               open={openModal}
-               onClose={handleOpenModal}
-            >
-               <MeadTables columnId={column.columnId} />
-            </MenuItemStyle>
+            <>
+               <BackDropForColumn onClick={handleOpenModal} />
+               <MenuItemStyle open={openModal} onClose={handleOpenModal}>
+                  <MeadTables
+                     setOpneModal={setOpneModal}
+                     columnId={column.columnId}
+                  />
+               </MenuItemStyle>
+            </>
          )}
          <ParentColumnCard>
             {card.map((el) => (
@@ -178,7 +157,7 @@ export const Card = ({ column }) => {
                <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
             )}
          </ParentColumnCard>
-      </div>
+      </c>
    )
 }
 
@@ -206,11 +185,12 @@ const StyleMeadIcon = styled('div')(() => ({
    },
 }))
 const MenuItemStyle = styled(MenuItem)(() => ({
-   padding: '1rem 0rem 0.25rem',
+   // padding: '1rem 0rem 0.25rem',
    borderRadius: ' 0.625rem',
    backgroundColor: '#FFF',
    boxShadow: '  -12px 1px 36px 0px rgba(34, 60, 80, 0.2)',
    marginLeft: '13.62rem',
+   position: 'relative',
 }))
 
 const ParentColumnCard = styled('div')(() => ({
@@ -226,6 +206,7 @@ const ParagraphText = styled('p')(() => ({
 }))
 const IconText = styled('div')(() => ({
    display: 'flex',
+   position: 'relative',
 }))
 const AddPlus = styled('p')(() => ({
    cursor: 'pointer',
@@ -274,36 +255,13 @@ const ButtonAddCardStyle = styled(Button)(() => ({
 }))
 const CreateColumn = styled('div')(() => ({
    width: '280px',
-   height: '118px',
    display: 'flex',
    flexDirection: 'column',
    gap: '0.3rem',
    borderRadius: '0.5rem',
    padding: '0 0.7rem 0 0.7rem',
 }))
-const TitleOfCreateColumn = styled('div')(() => ({
-   display: 'flex',
-   justifyContent: 'space-between',
-}))
-const NameOfColumn = styled('p')(() => ({
-   fontSize: '16px',
-   color: '#919191',
-}))
-const ButtonCreateColumn = styled(Button)(() => ({
-   width: '4.8rem',
-   height: '1.875rem',
-   textTransform: 'inherit',
-   marginLeft: '11.2rem',
-   padding: '3px 16px 0 16px',
-   '&:hover': {
-      backgroundColor: '#005688',
-      color: '#fffff',
-   },
-   '&:active': {
-      backgroundColor: '#57AEE0',
-      color: '#fffff',
-   },
-}))
+
 const InputColumn = styled(Input)(() => ({
    '& .MuiOutlinedInput-root': {
       borderRadius: '0.5rem',
@@ -323,6 +281,13 @@ const BackDrop = styled('div')({
    position: 'absolute',
    width: '100%',
    height: '90vh',
+   top: '0',
+   left: '0',
+})
+const BackDropForColumn = styled('div')({
+   position: 'absolute',
+   width: '100%',
+   height: '95vh',
    top: '0',
    left: '0',
 })
