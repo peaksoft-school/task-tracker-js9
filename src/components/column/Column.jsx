@@ -69,14 +69,14 @@ const CreteColumn = styled('div')(() => ({
    alignItems: 'center',
    justifyContent: 'center',
    borderRadius: '0.5rem',
-   background: 'rgba(145, 145, 145, 0.11)',
+   background: '#FFF',
+   // background: 'rgba(145, 145, 145, 0.11)',
 }))
 
 const ColumnsStyle = styled('div')(() => ({
    display: 'flex',
    marginTop: '50px',
    maxWidth: '100%',
-   backgroundColor: 'white',
    flexDirection: 'reverse',
 }))
 
@@ -89,17 +89,6 @@ const Cont = styled('div')({
    margin: '0 20px', // Установка отступа
    padding: '0.7rem ',
    scrollbarWidth: 'thin',
-   scrollbarColor: ' #D9D9D9 transparent',
-   ' &::-webkit-scrollbar ': {
-      width: '0.5rem',
-   },
-   '&::-webkit-scrollbar-track': {
-      backgroundColor: 'transparent',
-   },
-   ' &::-webkit-scrollbar-thumb ': {
-      backgroundColor: ' #D9D9D9',
-      borderRadius: '0.25rem',
-   },
 })
 
 const ChildContainer = styled('div')({

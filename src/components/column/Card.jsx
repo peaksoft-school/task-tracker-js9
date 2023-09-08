@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material'
 import { useParams } from 'react-router-dom'
+import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { useDispatch } from 'react-redux'
 import { Button } from '../UI/button/Button'
 import { ControlsIcon, EditIcon, ExitIcon } from '../../assets/icons'
@@ -8,7 +9,7 @@ import { ColumnCard } from './ColumnCard'
 import { MeadTables } from './MeadTables'
 import { MenuItem } from '../UI/menu/MenuItem'
 import { updateColumnTitle } from '../../store/column/columnsThunk'
-import { Input } from '../UI/input/Input'
+// import { Input } from '../UI/input/Input'
 
 export const Card = ({ column }) => {
    const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
@@ -72,15 +73,20 @@ export const Card = ({ column }) => {
       }
    }
    return (
-      <c key={column.id}>
+      <div key={column.id}>
          {editTitle ? (
             <CreateColumn>
                <BackDrop onClick={closeHandlerEdit} />
                <InputColumn
-                  type="text"
-                  placeholder="Name"
-                  value={editInput}
+                  aria-label="empty textarea"
                   onChange={(e) => setEditInput(e.target.value)}
+                  value={editInput}
+               />
+               <ControlsIconStyled
+                  onClick={(e) => {
+                     e.preventDefault()
+                     handleOpenModal()
+                  }}
                />
             </CreateColumn>
          ) : (
@@ -155,9 +161,16 @@ export const Card = ({ column }) => {
                <AddPlus onClick={handleOpenModalAddCard}>+ Add a card</AddPlus>
             )}
          </ParentColumnCard>
-      </c>
+      </div>
    )
 }
+
+const ControlsIconStyled = styled(ControlsIcon)(() => ({
+   position: 'absolute',
+   zIndex: 100,
+   top: '0.7rem',
+   right: '1rem',
+}))
 
 const ParentTitle = styled('div')(() => ({
    display: 'flex',
@@ -168,19 +181,20 @@ const ParentTitle = styled('div')(() => ({
 
 const Title = styled('p')(() => ({
    color: '#000',
-   fontFamily: ' Gilroy',
-   fontSize: '1rem',
+   width: '90%',
+   fontFamily: 'Gilroy',
+   // fontSize: '1rem',
    fontStyle: 'normal',
    fontWeight: 500,
    lineHeight: 'normal',
+   wordWrap: 'break-word',
 }))
 const StyleMeadIcon = styled('div')(() => ({
    cursor: 'pointer',
-   backgroundColor: '#f0f0f0',
-   transition: 'transform 0.4s ease-out',
-   '&:active': {
-      transform: 'scale(1,2)',
-   },
+   // transition: 'transform 0.4s ease-out',
+   // '&:active': {
+   //    transform: 'scale(1,2)',
+   // },
 }))
 const MenuItemStyle = styled(MenuItem)(() => ({
    // padding: '1rem 0rem 0.25rem',
@@ -254,38 +268,35 @@ const ButtonAddCardStyle = styled(Button)(() => ({
 const CreateColumn = styled('div')(() => ({
    width: '280px',
    display: 'flex',
-   flexDirection: 'column',
+   justifyContent: 'space-between',
+   alignItems: 'center',
    gap: '0.3rem',
    borderRadius: '0.5rem',
-   padding: '0 0.7rem 0 0.7rem',
+   padding: '0 0.7rem 1.15rem 0.5rem',
 }))
 
-const InputColumn = styled(Input)(() => ({
-   '& .MuiOutlinedInput-root': {
-      borderRadius: '0.5rem',
-      width: '16rem',
-      zIndex: 1,
-   },
-   input: {
-      width: '19.4625rem',
-      height: '1.35rem',
-      padding: ' 0.375rem 1rem',
-      alignItems: ' center',
-      borderRadius: '0.5rem',
-   },
+const InputColumn = styled(TextareaAutosize)(() => ({
+   width: '14rem',
+   resize: 'none',
+   overflow: 'hidden',
+   zIndex: '44',
+   height: '10vh',
+   padding: '0.2rem',
+   margin: '0 0 0.4rem 0',
+   // position: 'relative',
 }))
 
 const BackDrop = styled('div')({
    position: 'absolute',
    width: '100%',
-   height: '90vh',
+   height: '50vh',
    top: '0',
    left: '0',
 })
 const BackDropForColumn = styled('div')({
    position: 'absolute',
    width: '100%',
-   height: '95vh',
+   height: '50vh',
    top: '0',
    left: '0',
 })
