@@ -32,7 +32,6 @@ import { getWorkspacesById } from '../../api/workspaceServise'
 
 export const SideHead = ({
    open,
-   // toggle,
    activeItem,
    handleItemClick,
    menuItems,

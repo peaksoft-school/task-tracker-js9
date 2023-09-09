@@ -22,6 +22,7 @@ export const LayoutMenu = () => {
    const [openNewInvite, setOpenNewInvite] = useState(false)
    const { boardId } = useParams()
    const { boardById } = useSelector((state) => state.board)
+   const { columnsData } = useSelector((state) => state.columns)
 
    const dispatch = useDispatch()
 
@@ -136,8 +137,8 @@ export const LayoutMenu = () => {
                )}
 
                <div>
-                  <TextColumns>Columns:</TextColumns>
-                  <CountSpan>24</CountSpan>
+                  <span>Columns:</span>
+                  <CountSpan>{columnsData.length}</CountSpan>
                </div>
             </div>
             <FilterCont>
@@ -263,11 +264,6 @@ const TitleBox = styled('div')({
 
 const TitleText = styled('p')({
    fontWeight: 'bold',
-   color: '#f5f5f5',
-   textShadow: '0 0 10px #303030',
-})
-
-const TextColumns = styled('span')({
    color: '#f5f5f5',
    textShadow: '0 0 10px #303030',
 })

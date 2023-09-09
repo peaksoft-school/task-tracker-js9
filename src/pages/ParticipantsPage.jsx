@@ -12,7 +12,7 @@ export const ParticipantsPage = () => {
             workspacedata={workspacedata}
             dataLength={dataLength}
          />
-         <div style={{ width: '100%' }}>
+         <div style={{ width: '90%' }}>
             <Participants />
          </div>
       </div>

@@ -33,7 +33,6 @@ export const ModalSideBar = ({
    }
    return (
       <div>
-         {' '}
          {showModal ? (
             <StyleModalUi open={showModal} onClose={() => setShowModal(false)}>
                <SettingStyle>Setting</SettingStyle>
