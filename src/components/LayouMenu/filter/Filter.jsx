@@ -19,7 +19,7 @@ export const Filter = ({
                   <p>{}</p>
                   <p>Filter</p>
                   <IconButton>
-                     <ExitIcon onClick={closeFilterModalHandler} />
+                     <ExitIcon fill="gray" onClick={closeFilterModalHandler} />
                   </IconButton>
                </ModalFilterHeader>
                <ModalDateBox>
@@ -85,7 +85,6 @@ export const Filter = ({
       </div>
    )
 }
-
 const slideInAnimation = keyframes`
    from {
       transform: translateX(100%);
@@ -96,7 +95,6 @@ const slideInAnimation = keyframes`
       opacity: 1;
    }
 `
-
 const FilterCont = styled('div')({
    width: '7.1875rem',
    height: '2.125rem',
@@ -107,17 +105,13 @@ const FilterCont = styled('div')({
    backgroundColor: '#E9E9E9',
    paddingTop: '0.4rem',
    cursor: 'pointer',
-   flex: 10,
 })
-
 const FilterText = styled('p')({
    color: '#438AB4',
 })
-
 const CountNumer = styled('p')({
    color: '#438AB4',
 })
-
 const ModalFilter = styled('div')(({ animation }) => {
    let animationStyles = {}
    switch (animation) {
@@ -129,13 +123,11 @@ const ModalFilter = styled('div')(({ animation }) => {
       default:
          break
    }
-
    return {
       width: '22.9375rem',
-      top: '0',
-      flex: 10,
-      height: '110vh',
+      height: '40rem',
       display: 'flex',
+
       flexDirection: 'column',
       padding: '1rem',
       gap: '1rem',
@@ -147,73 +139,60 @@ const ModalFilter = styled('div')(({ animation }) => {
       ...animationStyles,
    }
 })
-
 const ModalFilterHeader = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
-   flex: 10,
 })
-
 const ModalDateBox = styled('div')({
    display: 'flex',
    flexDirection: 'column',
-   flex: 10,
 })
-
 const ModalLabelsBox = styled('div')({
    display: 'flex',
    flexDirection: 'column',
 })
-
 const CheckbexAndName = styled('div')({
    display: 'flex',
    alignItems: 'center',
 })
-
 const LabelsBox = styled('div')({
    display: 'flex',
    alignItems: 'center',
 })
-
 const Due = styled('div')({
    marginLeft: '0.4rem',
    color: '#919191',
 })
-
 const LabelsText = styled('div')({
    marginLeft: '0.4rem',
    color: '#919191',
 })
-
 const DoneText = styled('p')({
    width: '18.3125rem',
    backgroundColor: '#61BD4F',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
-   flex: 10,
+   // flex: 10,
 })
-
 const AttentionFirst = styled('p')({
    background: '#EB8900',
    width: '18.3125rem',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
-   flex: 10,
+   // flex: 10,
 })
-
 const AttentionSecond = styled('p')({
    background: '#0079BF',
    width: '18.3125rem',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
-   flex: 10,
+   // flex: 10,
 })
-
 const AttentionThird = styled('p')({
    background: '#EB5A46',
    width: '18.3125rem',
    padding: '0.375rem 15.8125rem 0.375rem 1rem',
    borderRadius: '0.375rem',
-   flex: 10,
+   // flex: 10,
 })

@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Avatar, IconButton } from '@mui/material'
-import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom'
+import {
+   Outlet,
+   useNavigate,
+   NavLink,
+   useLocation,
+   useParams,
+} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    DownIcon,
@@ -19,7 +25,8 @@ import { ModalUi } from '../UI/modal/Modal'
 export const Headers = ({ data }) => {
    const [showModal, setShowModal] = useState(false)
    const [openProfile, setOpenProfile] = useState(false)
-
+   const { profileId } = useParams()
+   console.log('profileId: ', profileId)
    const { favoriteData } = useSelector((state) => state.favorite)
 
    const boardLength = favoriteData.data?.boardResponses?.length || 0
@@ -27,16 +34,15 @@ export const Headers = ({ data }) => {
    const sumLength = boardLength + workSpaceLength
 
    const [favoriteSum, setFavoriteSum] = useState(0)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const location = useLocation()
 
    useEffect(() => {
       if (sumLength > 0) {
          setFavoriteSum(sumLength)
       }
    }, [sumLength])
-
-   const dispatch = useDispatch()
-   const navigate = useNavigate()
-   const location = useLocation()
 
    const openFavoriteModalHandler = () => {
       setShowModal(!showModal)
@@ -50,7 +56,6 @@ export const Headers = ({ data }) => {
       event.stopPropagation()
    }
    const logOutHandler = () => {
-      console.log('logout')
       dispatch(logOut(), navigate)
          .unwrap()
          .then(() => {
@@ -59,6 +64,7 @@ export const Headers = ({ data }) => {
                severity: 'success',
             })
             navigate('/')
+            location.reload()
          })
          .catch((error) => {
             console.log(error)
@@ -69,8 +75,14 @@ export const Headers = ({ data }) => {
       <div>
          <GLobalContainer>
             <LogoContainer>
-               <Logotype src={Logo} alt="task-tracker_logo" />
-               <LogoWords>Task Tracker</LogoWords>
+               <Logotype
+                  onClick={() => navigate('/mainPage')}
+                  src={Logo}
+                  alt="task-tracker_logo"
+               />
+               <LogoWords onClick={() => navigate('/mainPage')}>
+                  Task Tracker
+               </LogoWords>
                <Favorite>
                   <ParagraphFavorite>
                      Favourites ({favoriteSum})
@@ -146,6 +158,7 @@ const LogoWords = muiStyled('h1')(() => ({
    fontFamily: 'Open Sans',
    fontSize: '1.25rem',
    fontWeight: '600',
+   cursor: 'pointer',
 }))
 const Favorite = muiStyled('div')(() => ({
    display: 'flex',
@@ -163,6 +176,7 @@ const ParagraphFavorite = muiStyled('p')(() => ({
 const Logotype = muiStyled(Logo)(() => ({
    width: '3.5vw',
    height: '6.2vh',
+   cursor: 'pointer',
 }))
 
 const AboutPanel = muiStyled('div')(() => ({
@@ -217,10 +231,6 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
 const StyledAvatar = muiStyled(Avatar)(() => ({
    cursor: 'pointer',
 }))
-
-// const ModalUii = muiStyled(ModalUi)(() => ({
-//    marginTop: '0px',
-// }))
 
 const ProfileTexts = muiStyled('div')(() => ({
    width: '10rem',

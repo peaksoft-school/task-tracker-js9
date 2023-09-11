@@ -43,4 +43,7 @@ const ButtonStyle = styled(ReusableButton)(({ ...props }) => ({
       backgroundColor: '#B2B2B2',
       color: '#FFFFFF',
    },
+   '&.MuiButtonBase-root': {
+      textTransform: 'none',
+   },
 }))

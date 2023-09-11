@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
 import {
    MenuItem,
    styled,
@@ -6,32 +7,50 @@ import {
    Select,
    IconButton,
 } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
 import { ExitIcon, PlusIcon, SearchIcon } from '../../../assets/icons'
 import { InviteNewParticipant } from './InviteModal'
+import {
+   allinviteMember,
+   updateRoles,
+} from '../../../store/inviteMember/inviteThunk'
 
 export const Participant = ({
+   openModalHandler,
    openNewInvite,
-   openInviteNewModal,
-   openParticipantHandler,
+   setOpenNewInvite,
 }) => {
    const kindaSelect = [
-      { label: 'Admin', value: 'Admin' },
-      { label: 'Member', value: 'Member' },
+      { label: 'Admin', value: 'ADMIN' },
+      { label: 'Member', value: 'MEMBER' },
    ]
+   const [, setUserRoles] = useState({})
+   const { inviteMember } = useSelector((state) => state.inviteMember)
 
-   const initialUsers = [
-      { name: 'Aidana', role: 'Member' },
-      { name: 'Nazira ', role: 'Member' },
-      { name: 'Nazira ', role: 'Member' },
-   ]
+   const dispatch = useDispatch()
+   const { boardId } = useParams()
 
-   const [users, setUsers] = useState(initialUsers)
-
-   const handleRolesChange = (event, index) => {
-      const updatedUsers = [...users]
-      updatedUsers[index].role = event.target.value
-      setUsers(updatedUsers)
+   const openInviteNewModal = () => {
+      setOpenNewInvite((prev) => !prev)
    }
+   const onRoleChange = (memberId, newRole) => {
+      setUserRoles((prevRoles) => ({
+         ...prevRoles,
+         [memberId]: newRole,
+      }))
+
+      dispatch(
+         updateRoles({
+            memberId,
+            role: newRole,
+            boardId,
+         })
+      )
+   }
+
+   useEffect(() => {
+      dispatch(allinviteMember(boardId))
+   }, [dispatch])
 
    return openNewInvite ? (
       <InviteNewParticipant openInviteNewModal={openInviteNewModal} />
@@ -42,7 +61,7 @@ export const Participant = ({
                <p>{}</p>
                <p>Participant</p>
                <IconButton>
-                  <ExitIconStyled onClick={openParticipantHandler} />
+                  <ExitIcon fill="gray" onClick={openModalHandler} />
                </IconButton>
             </ParticipantHeader>
             <InputBox>
@@ -54,13 +73,18 @@ export const Participant = ({
                   <p>Ali (you)</p>
                   <AdminP>Admin</AdminP>
                </AdminBox>
-               {users.map((user, index) => (
-                  <UsersSelectBox key={user.id}>
-                     <p>{user.name}</p>
+
+               {inviteMember.map((user) => (
+                  <UsersSelectBox key={user.userId}>
+                     <p>{user.firstName}</p>
+
                      <FormControlMui>
                         <SelectStyledMui
-                           value={user.role}
-                           onChange={(e) => handleRolesChange(e, index)}
+                           onChange={(event) =>
+                              onRoleChange(user.userId, event.target.value)
+                           }
+                           label={user.role}
+                           defaultValue={user.role}
                         >
                            {kindaSelect.map((item) => (
                               <MenuItem key={item.value} value={item.value}>
@@ -88,7 +112,7 @@ const Container = styled('div')(() => ({
 }))
 const ParticipantContainer = styled('div')({
    width: '26.5625rem',
-   height: '18.3125rem',
+   height: '17.3125rem',
    padding: '1rem',
    borderRadius: '0.5rem',
    backgroundColor: 'white',
@@ -118,10 +142,25 @@ const InputEmail = styled('input')({
    margin: '0rem 1rem 1rem 0rem',
 })
 
-const UsersBox = styled('div')({
-   maxHeight: '8rem',
-   overflowY: 'auto',
-})
+const UsersBox = styled('div')(() => ({
+   width: '100%',
+   maxHeight: '7.8rem',
+   padding: '0.7rem ',
+   overflowY: 'auto ',
+   scrollbarWidth: 'thin',
+   scrollbarColor: ' #D9D9D9 transparent',
+   cursor: 'pointer',
+   ' &::-webkit-scrollbar ': {
+      width: '0.5rem',
+   },
+   '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+   },
+   ' &::-webkit-scrollbar-thumb ': {
+      backgroundColor: ' #D9D9D9',
+      borderRadius: '0.25rem',
+   },
+}))
 
 const SearchIconStyled = styled(SearchIcon)({
    position: 'relative',
@@ -141,11 +180,8 @@ const InviteNewBox = styled('div')({
    alignItems: 'center',
    cursor: 'pointer',
    color: '#727272',
+   padding: '0.2rem 0rem',
    fontWeight: 500,
-})
-
-const ExitIconStyled = styled(ExitIcon)({
-   cursor: 'pointer',
 })
 
 const SelectStyledMui = styled(Select)({

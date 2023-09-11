@@ -2,6 +2,17 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
 import { axiosFileInstance } from '../../config/axiosFileInstance'
 
+export const profileGetByIdRequest = createAsyncThunk(
+   'profile/profileGetByIdRequest',
+   async (userId, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.get(`/api/profile/${userId}`)
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.message)
+      }
+   }
+)
 export const profileGetRequest = createAsyncThunk(
    'profile/profileGetRequest',
    async (_, { rejectWithValue }) => {

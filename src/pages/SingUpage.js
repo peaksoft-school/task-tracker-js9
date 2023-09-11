@@ -101,7 +101,7 @@ export const SignUpPage = () => {
          {isLoading && <IsLoading />}
          <LayoutFormPage>
             <Container>
-               <div className="block-head">
+               <div className="block-head" style={{ cursor: 'pointer' }}>
                   <h2>Sign up</h2>
                   <AuthWithGoogle onClick={signInWithGoogleHandler}>
                      <AuthWithText>Auth with google</AuthWithText>

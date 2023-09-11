@@ -1,75 +1,149 @@
-import React from 'react'
-import { Button, IconButton } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { IconButton } from '@mui/material'
+
 import { styled } from '@mui/material/styles'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Input } from '../input/Input'
 import { UpIcon, DownIcon } from '../../../assets/icons'
+import {
+   deleteComment,
+   editComment,
+   getAllComments,
+   getCommentsbyId,
+   postComments,
+} from '../../../store/crud-comments/commentsThunk'
+import { MapCommets } from './comments-part/MapCommets'
+import CommentDelete from './comments-part/CommentDelete'
+import { CommentsUpdate } from './comments-part/CommentsUpdate'
 
-export const CommentSection = ({ comments, showMore, setShowMore }) => {
+export const CommentSection = () => {
+   const [showMore, setShowMore] = useState(false)
+   const [commentText, setCommentText] = useState('')
+   const [editingCommentId, setEditingCommentId] = useState(null)
+   const [editedCommentText, setEditedCommentText] = useState('')
+   const [showDeleteModal, setShowDeleteModal] = useState(false)
+   const [deleteCommentId, setDeleteCommentId] = useState(null)
+   const [showEditModal, setShowEditModal] = useState(false)
+   const [clickedCommentData, setClickedCommentData] = useState(null)
+
+   const { comments } = useSelector((state) => state.comments)
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+
    const toggleComments = () => {
       setShowMore((prevShowComments) => !prevShowComments)
    }
 
-   return (
-      <GLobalContainer>
-         <CommentsPanel>
-            <p>Comments</p>
-            <IconButton
-               style={{ marginTop: '-0.3rem' }}
-               onClick={toggleComments}
-            >
-               {showMore ? <DownIcon /> : <UpIcon />}
-            </IconButton>
-         </CommentsPanel>
-         {showMore && (
-            <div>
-               {comments.length > 0 ? (
-                  <ScrollableContainer>
-                     {comments.map((comments, index) => {
-                        const isLastItem = index === comments.length - 1
-                        return (
-                           <MainContainer
-                              key={comments.id}
-                              isLastItem={isLastItem}
-                           >
-                              <PersonIcon src={comments.img} alt="Member" />
-                              <AboutComments>
-                                 <PostName>{comments.name}</PostName>
-                                 <PostComments>{comments.comment}</PostComments>
-                                 <NecessaryContainer>
-                                    <PostDate>{comments.date}</PostDate>
-                                    <MyStyledBtnCont>
-                                       <MyStyledBtn>edit</MyStyledBtn>
-                                       <MyStyledBtn>delete</MyStyledBtn>
-                                    </MyStyledBtnCont>
-                                 </NecessaryContainer>
-                              </AboutComments>
-                           </MainContainer>
-                        )
-                     })}
-                  </ScrollableContainer>
-               ) : (
-                  <NoCommentsComtainer>
-                     <NoCommentsDescription>No comments</NoCommentsDescription>
-                  </NoCommentsComtainer>
-               )}
-            </div>
-         )}
+   const handleDeleteClick = (commentId) => {
+      setDeleteCommentId(commentId)
+      setShowDeleteModal(true)
+   }
+   useEffect(() => {
+      dispatch(getAllComments())
+   }, [dispatch])
 
-         <FormContainer>
-            <StyledInput
-               id="outlined-basic"
-               variant="outlined"
-               placeholder="Write a comment"
+   const handleCommentSubmit = (e) => {
+      e.preventDefault()
+
+      dispatch(
+         postComments({
+            comment: commentText,
+            cardId: 4,
+         })
+      )
+
+      setCommentText('')
+   }
+
+   const getCommentsID = (commentId) => {
+      dispatch(getCommentsbyId({ commentId, navigate }))
+   }
+
+   const handleEditClick = (commentId, commentText) => {
+      const clickedComment = comments.find(
+         (comment) => comment.commentId === commentId
+      )
+      if (clickedComment) {
+         setClickedCommentData(clickedComment)
+         setEditingCommentId(commentId)
+         setEditedCommentText(commentText)
+         setShowEditModal(true)
+      }
+   }
+
+   const handleSaveClick = () => {
+      dispatch(
+         editComment({
+            commentId: editingCommentId,
+            comment: editedCommentText,
+         })
+      )
+      setShowEditModal(false)
+
+      setEditingCommentId(null)
+      setEditedCommentText('')
+   }
+
+   const handleCloseDeleteModal = () => {
+      setShowDeleteModal(false)
+      setDeleteCommentId(null)
+   }
+
+   return (
+      <div>
+         <GLobalContainer>
+            <CommentsPanel>
+               <p>Comments</p>
+               <IconButton
+                  style={{ marginTop: '-0.3rem' }}
+                  onClick={toggleComments}
+               >
+                  {showMore ? <DownIcon /> : <UpIcon />}
+               </IconButton>
+            </CommentsPanel>
+
+            {showMore ? (
+               <div>
+                  <MapCommets
+                     getCommentsID={getCommentsID}
+                     handleEditClick={handleEditClick}
+                     handleDeleteClick={handleDeleteClick}
+                  />
+               </div>
+            ) : null}
+            <FormContainer onSubmit={handleCommentSubmit}>
+               <StyledInput
+                  id="outlined-basic"
+                  variant="outlined"
+                  placeholder="Write a comment"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+               />
+            </FormContainer>
+            <CommentDelete
+               showDeleteModal={showDeleteModal}
+               handleCloseDeleteModal={handleCloseDeleteModal}
+               deleteCommentId={deleteCommentId}
+               deleteComment={deleteComment}
+               dispatch={dispatch}
             />
-         </FormContainer>
-      </GLobalContainer>
+            <CommentsUpdate
+               showEditModal={showEditModal}
+               clickedCommentData={clickedCommentData}
+               setShowEditModal={setShowEditModal}
+               editedCommentText={editedCommentText}
+               handleSaveClick={handleSaveClick}
+               setEditedCommentText={setEditedCommentText}
+            />
+         </GLobalContainer>
+      </div>
    )
 }
-
 const GLobalContainer = styled('div')(() => ({
    backgroundColor: '#F4F5F7',
    width: ' 24.9rem',
-
+   margin: '0 5rem',
    padding: ' 0.9rem 0.75rem ',
    borderRadius: '0.5rem',
 }))
@@ -77,36 +151,6 @@ const GLobalContainer = styled('div')(() => ({
 const CommentsPanel = styled('div')(() => ({
    display: 'flex',
    gap: '16rem',
-}))
-const ScrollableContainer = styled('div')(() => ({
-   height: ' 25rem ',
-   overflowY: 'auto ',
-   scrollbarWidth: 'thin',
-   scrollbarColor: ' #d9d9d9 transparent',
-
-   ' &::-webkit-scrollbar ': {
-      width: '0.5rem',
-   },
-
-   '&::-webkit-scrollbar-track': {
-      backgroundColor: 'transparent',
-   },
-
-   ' &::-webkit-scrollbar-thumb ': {
-      backgroundColor: ' #d9d9d9',
-      borderRadius: '0.25rem',
-   },
-}))
-const MainContainer = styled('div')(({ isLastItem }) => ({
-   display: 'flex',
-   justifyContent: 'space-between',
-   padding: '0.7rem',
-   borderBottom: '2px solid #E4E4E4',
-   width: ' 22.8rem',
-
-   ...(isLastItem && {
-      borderBottom: 'none',
-   }),
 }))
 
 const FormContainer = styled('form')(() => ({
@@ -118,6 +162,7 @@ const StyledInput = styled(Input)(() => ({
    input: {
       display: 'flex',
       width: '20rem',
+      fontFamily: 'CarePro',
       height: '1.7rem',
       borderRadius: '0.5rem',
       background: '#F4F5F7',
@@ -134,82 +179,4 @@ const StyledInput = styled(Input)(() => ({
    '& .MuiOutlinedInput-notchedOutline': {
       borderColor: '#D0D0D0',
    },
-}))
-const PersonIcon = styled('img')(() => ({
-   width: '3.125rem',
-   height: '3.125rem',
-   borderRadius: '50%',
-}))
-
-const PostDate = styled('p')(() => ({
-   color: '#919191',
-   fontFamily: 'CarePro',
-   fontSize: '0.75rem',
-   fontStyle: 'normal',
-   fontWeight: '400',
-   width: '150px',
-}))
-
-const PostName = styled('p')(() => ({
-   color: '#111',
-   fontFamily: 'CarePro',
-   fontSize: '0.975rem',
-   fontStyle: 'normal',
-   fontWeight: '400',
-}))
-
-const PostComments = styled('p')(() => ({
-   color: '#616161',
-   fontFamily: 'CarePro',
-   fontSize: '0.875rem',
-   fontStyle: 'normal',
-   fontWeight: '400',
-}))
-
-const AboutComments = styled('div')(() => ({
-   display: 'flex',
-   flexDirection: 'column',
-   gap: '0.6rem',
-}))
-
-const NecessaryContainer = styled('div')(() => ({
-   display: 'flex',
-   alignItems: 'center',
-   gap: '0.5rem',
-}))
-
-const MyStyledBtn = styled(Button)(() => ({
-   color: '#919191',
-   fontFamily: 'CarePro',
-   fontSize: '0.8rem',
-   fontWeight: ' 500',
-   textDecoration: 'underline',
-   borderRadius: '100%',
-   padding: '0',
-   '&:hover': {
-      background: '#F4F5F7',
-      color: '#434343',
-   },
-   '&:active': {
-      background: '#F4F5F7',
-      color: '#919191',
-      textDecoration: 'underline',
-   },
-}))
-
-const MyStyledBtnCont = styled('div')(() => ({
-   display: 'flex',
-}))
-
-const NoCommentsComtainer = styled('div')(() => ({
-   padding: '1rem ',
-   display: 'flex ',
-   justifyContent: 'center',
-}))
-
-const NoCommentsDescription = styled('p')(() => ({
-   fontFamily: 'CarePro',
-   fontSize: '1.2rem',
-   fontWeight: '600',
-   color: '#5f5f5f',
 }))

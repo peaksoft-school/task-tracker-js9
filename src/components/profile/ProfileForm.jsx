@@ -15,7 +15,9 @@ export const ProfileForm = () => {
    const [passwordDirty, setPasswordDirty] = useState(false)
    const [confirmPasswordDirty, setConfirmPasswordDirty] = useState(false)
 
-   const { item, avatarLink } = useSelector((state) => state.profile)
+   const { item, avatarLink, getItemById } = useSelector(
+      (state) => state.profile
+   )
    const dispatch = useDispatch()
 
    const { role } = useSelector((state) => state.auth)
@@ -51,9 +53,9 @@ export const ProfileForm = () => {
 
    const handleSubmitPut = () => {
       const putData = {
-         firstName: item.firstName,
-         lastName: item.lastName,
-         email: item.email,
+         firstName: getItemById.firstName || item.firstName,
+         lastName: getItemById.lastName || item.lastName,
+         email: getItemById.email || item.email,
          password,
          avatar: avatarLink,
       }
@@ -66,21 +68,21 @@ export const ProfileForm = () => {
             <div>
                <StyledTextField
                   id={item?.userId}
-                  value={item?.firstName || ''}
+                  value={getItemById.firstName || item?.firstName || ''}
                   onChange={(e) =>
                      dispatch(ProfileActions.getFirstNameValue(e.target.value))
                   }
                />
                <StyledTextField
                   id={item?.userId}
-                  value={item?.lastName || ''}
+                  value={getItemById.lastName || item?.lastName || ''}
                   onChange={(e) =>
                      dispatch(ProfileActions.getLastNameValue(e.target.value))
                   }
                />
                <StyledTextField
                   id={item?.userId}
-                  value={item?.email || ''}
+                  value={getItemById.email || item?.email || ''}
                   onChange={(e) =>
                      dispatch(ProfileActions.getEmailValue(e.target.value))
                   }

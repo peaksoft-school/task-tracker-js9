@@ -19,4 +19,7 @@ li {
 body {
    font-family: 'CarePro';
    background-color: #fff;
+
+   width: 100%;
+   height: 100vh;
 }

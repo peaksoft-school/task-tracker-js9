@@ -18,7 +18,7 @@ import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 import { Label } from './Label'
 import { ColumnCard } from './ColumnCard'
 
-export const Card = ({ title, cardId }) => {
+export const Card = () => {
    const [openModal, setOpneModal] = useState(false)
    const [openLabelText, setOpenLabelText] = useState(false)
    const [clickedLabels, setClickedLabels] = useState([])
@@ -48,7 +48,7 @@ export const Card = ({ title, cardId }) => {
    const handleButtonClickAddCard = (event) => {
       event.preventDefault()
       const newCard = {
-         id: cardId,
+         id: Date.now().toString(),
          text: inputValue,
       }
       setCards((prevTasks) => [...prevTasks, newCard])
@@ -116,7 +116,9 @@ export const Card = ({ title, cardId }) => {
                      ))}
                   </Labels>
                )}
-               <ParagraphText>{title}</ParagraphText>
+               <ParagraphText>
+                  Какая то задача, которую нужно выполнить
+               </ParagraphText>
 
                <WraperDedline>
                   <Deadline>
@@ -138,7 +140,9 @@ export const Card = ({ title, cardId }) => {
                </WraperDedline>
             </ColumnCard>
             <ColumnCard>
-               <ParagraphText>{title}</ParagraphText>
+               <ParagraphText>
+                  Какая то задача, которую нужно выполнить
+               </ParagraphText>
                <CheckListButton
                   backgroundColor="#111"
                   borderRadius="2rem"

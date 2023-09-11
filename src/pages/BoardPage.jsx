@@ -6,15 +6,13 @@ import { Board } from '../components/board/Board'
 
 export const BoardPage = () => {
    return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', width: '100%' }}>
          <Sidenav
             data={data}
             workspacedata={workspacedata}
             dataLength={dataLength}
          />
-         <div>
-            <Board />
-         </div>
+         <Board />
       </div>
    )
 }
