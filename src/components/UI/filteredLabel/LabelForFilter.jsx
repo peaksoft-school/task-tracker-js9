@@ -21,7 +21,7 @@ const SelectContainer = styled(Select)(() => ({
    },
 }))
 
-export const LabelForFilter = () => {
+export const LabelForFilter = ({ handleLabelChange }) => {
    const [selectWidth, setSelectWidth] = useState(13)
    const [animating, setAnimating] = useState(false)
 
@@ -31,6 +31,7 @@ export const LabelForFilter = () => {
    }
 
    const handleOptionChange = (selectedOptions) => {
+      handleLabelChange(selectedOptions)
       setAnimating(true)
       if (selectedOptions.length === 0) {
          setSelectWidth(13)

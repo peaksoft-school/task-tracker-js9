@@ -3,30 +3,19 @@ import { axiosInstance } from '../../config/axiosInstance'
 
 export const getAllIssues = createAsyncThunk(
    'allIssues/getAllIssues',
-   async (workspaceId, { rejectWithValue }) => {
+   async ({ id, filterParams }, { rejectWithValue }) => {
+      console.log('filterParams: ', filterParams)
       try {
          const response = await axiosInstance.get(
-            `/all-issues/filter?workSpaceId=${workspaceId}`
+            `/all-issues/filter?workSpaceId=${id}`,
+            {
+               params: filterParams,
+            }
          )
+         console.log('response: ', response)
          return response.data
       } catch (error) {
-         return rejectWithValue(rejectWithValue(error.response.data))
+         return rejectWithValue(error.response.data)
       }
    }
 )
-
-// export const getAllIssues = createAsyncThunk(
-//    'allIssues/getAllIssues',
-//    async (workspaceId, { rejectWithValue }) => {
-//       try {
-//          const response = await axiosFileInstance.get(
-//             `/all-issues/filter/${workspaceId}`
-//          )
-//          return response.data
-//       } catch (error) {
-//          return rejectWithValue(
-//             error?.response?.data  'Something went wrong!'
-//          )
-//       }
-//    }
-// )

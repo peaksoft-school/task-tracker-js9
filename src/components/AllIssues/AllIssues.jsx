@@ -9,32 +9,56 @@ import { AllIssuesTable } from './AllIssuesTable'
 import { AssigneeSection } from '../UI/assignee/AssigneeSection'
 import { LabelForFilter } from '../UI/filteredLabel/LabelForFilter'
 import { getAllIssues } from '../../store/get-all-issues/get.all.issuesThunk'
+import { useModal } from '../../hooks/useModal'
 
 export const AllIssues = () => {
    const [startDate, setStartDate] = useState(null)
    const [dueDate, setDueDate] = useState(null)
-   const [assignee, setAssignee] = useState('Assignee')
+   const [assignee, setAssignee] = useState('')
+   const [checked, setChecked] = useState(false)
+   const [labels, setLabels] = useState('')
+   const [isActive, setActive] = useModal()
    const dispatch = useDispatch()
    const { id } = useParams()
 
-   const AssigneeHandleChange = (event) => {
-      setAssignee(event.target.value)
-   }
    const dataLength = 24
 
    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
-   const handleStartDateChange = (newValue) => {
-      setStartDate(newValue)
+   const handleStartDateChange = (date) => {
+      setStartDate(date)
+      setActive(true)
    }
 
-   const handleDueDateChange = (newValue) => {
-      setDueDate(newValue)
+   const handleDueDateChange = (date) => {
+      setDueDate(date)
+      setActive(true)
+   }
+
+   const AssigneeHandleChange = (event) => {
+      setAssignee(event.target.value)
+   }
+
+   const handleCheckboxChange = (event) => {
+      setChecked(event.target.checked)
+   }
+
+   const handleLabelChange = (label) => {
+      setLabels(label)
    }
 
    useEffect(() => {
-      dispatch(getAllIssues(id))
-   })
+      console.log('labels: ', labels)
+      const filterParams = {
+         from: startDate?.toISOString(),
+         to: dueDate?.toISOString(),
+         assignees: assignee,
+         label: labels,
+         check: checked,
+      }
+
+      dispatch(getAllIssues({ id, filterParams }))
+   }, [startDate, dueDate, labels, assignee, checked, dispatch, id])
 
    return (
       <BodyContainer>
@@ -50,6 +74,7 @@ export const AllIssues = () => {
                            onChange={handleStartDateChange}
                            format="DD.MM.YYYY"
                            disableFuture={Boolean(dueDate)}
+                           isActive={isActive}
                         />
 
                         <DatePickerStyle
@@ -57,12 +82,15 @@ export const AllIssues = () => {
                            onChange={handleDueDateChange}
                            format="DD.MM.YYYY"
                            disablePast={Boolean(startDate)}
+                           isActive={isActive}
                         />
                      </LocalizationProvider>
 
                      <MainFormControlContainer>
                         <FormControl>
-                           <LabelForFilter />
+                           <LabelForFilter
+                              handleLabelChange={handleLabelChange}
+                           />
                         </FormControl>
                         <FormControl>
                            <AssigneeSelect
@@ -76,12 +104,14 @@ export const AllIssues = () => {
                               >
                                  Assignee
                               </MenuItem>
-                              <AssigneeSection />
+                              <AssigneeSection workspaceId={id} />
                            </AssigneeSelect>
                         </FormControl>
                      </MainFormControlContainer>
                      <CheckConatainer>
                         <Checkbox
+                           checked={checked}
+                           onChange={handleCheckboxChange}
                            sx={{
                               '& .MuiSvgIcon-root': { fontSize: 25 },
                               '&.Mui-checked': {

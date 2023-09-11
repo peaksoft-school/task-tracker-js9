@@ -13,15 +13,17 @@ export const AllIssuesTable = () => {
          render: (created) => <Created>{created.created}</Created>,
       },
       {
-         heading: 'Period',
-         key: 'Period',
-         render: (period) => <p>{period.period}</p>,
+         heading: 'DurationDay',
+         key: 'DurationDay',
+         render: (durationDay) => <p>{durationDay.durationDay}</p>,
       },
       {
          heading: 'Creator',
          key: 'Creator',
 
-         render: (creator) => <Creator>{creator.creator}</Creator>,
+         render: (creatorFullName) => (
+            <Creator>{creatorFullName.creatorFullName}</Creator>
+         ),
       },
       {
          heading: 'Column',
@@ -36,7 +38,10 @@ export const AllIssuesTable = () => {
             <Assignee>
                {assignee.length <= 2 ? (
                   assignee.map((item) => (
-                     <Avatar key={item.id}>{item.image}</Avatar>
+                     <div key={item.userId}>
+                        <Avatar key={item.id}>{item.image}</Avatar>
+                        <p>{item.fullName}</p>
+                     </div>
                   ))
                ) : (
                   <>
@@ -56,11 +61,12 @@ export const AllIssuesTable = () => {
          render: (label) => (
             <Labels>
                {label.labelResponses.map((item) => (
-                  <p style={{ backgroundColor: item.labelResponses }} />
+                  <p key={item.id} style={{ backgroundColor: item.color }} />
                ))}
             </Labels>
          ),
       },
+
       {
          heading: 'Checklist',
          key: 'Checklist',

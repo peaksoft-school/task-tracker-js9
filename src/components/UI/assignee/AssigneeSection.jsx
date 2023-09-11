@@ -1,14 +1,19 @@
 import { Avatar, Checkbox, InputBase, styled } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Person } from '@mui/icons-material'
+import { useDispatch, useSelector } from 'react-redux'
 import { SearchIcon } from '../../../assets/icons'
-import { assignee } from '../../../utils/constants/assignee'
+import { getAllIssues } from '../../../store/get-all-issues/get.all.issuesThunk'
+// import { assignee } from '../../../utils/constants/assignee'
 
-export const AssigneeSection = () => {
+export const AssigneeSection = ({ workspaceId }) => {
+   const dispatch = useDispatch()
    const [anchorEl, setAnchorEl] = useState(null)
    const [, setToogle] = useState(false)
-
    const [, setSelectedUserId] = useState(null)
+
+   const { allIssues } = useSelector((state) => state.allIssues)
+   console.log('assignee =>: ', allIssues)
 
    const handleCheckboxClick = (id) => {
       setSelectedUserId(id)
@@ -18,6 +23,10 @@ export const AssigneeSection = () => {
       setAnchorEl(event.currentTarget)
       setToogle(true)
    }
+
+   useEffect(() => {
+      dispatch(getAllIssues({ id: workspaceId }))
+   }, [])
 
    const open = Boolean(anchorEl)
    const id = open ? 'simple-popover' : undefined
@@ -51,23 +60,27 @@ export const AssigneeSection = () => {
                      <p>Unassigned</p>
                   </UnassignedChildContainer>
                </UnassignedContainer>
-               {assignee.map((el) => (
-                  <AssigneeMapContainer key={el.id}>
-                     <Checkbox
-                        sx={{
-                           '&.Mui-checked': {
-                              color: '#5faed0',
-                           },
-                        }}
-                        onClick={() => handleCheckboxClick(el.id)}
-                     />
-                     <Avatar src={el.img} />
-                     <div>
-                        <p>{el.name}</p>
-                        <PeoplesEmail>{el.email}</PeoplesEmail>
-                     </div>
-                  </AssigneeMapContainer>
-               ))}
+               {allIssues.map((el) => {
+                  return el.assignee?.map((item) => {
+                     return (
+                        <AssigneeMapContainer key={item.userId}>
+                           <Checkbox
+                              sx={{
+                                 '&.Mui-checked': {
+                                    color: '#5faed0',
+                                 },
+                              }}
+                              onClick={() => handleCheckboxClick(item.userId)}
+                           />
+                           <Avatar src={item.image} />
+                           <div>
+                              <p>{item.fullName}</p>
+                              <PeoplesEmail>{item.email}</PeoplesEmail>
+                           </div>
+                        </AssigneeMapContainer>
+                     )
+                  })
+               })}
             </ScrollableContainer>
          </div>
       </MainContainerOfAssignee>
