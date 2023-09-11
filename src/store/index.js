@@ -11,6 +11,7 @@ import { cardSlice } from './card/cardSlice'
 import { memberSlice } from './inviteMember/memberSlice'
 import { labelsSlice } from './getLabels/labelsSlice'
 import { partSlice } from './participants/partSlice'
+import { columnsSlice } from './column/columnsSlise'
 
 export const store = configureStore({
    reducer: {
@@ -25,5 +26,6 @@ export const store = configureStore({
       [memberSlice.name]: memberSlice.reducer,
       [labelsSlice.name]: labelsSlice.reducer,
       [partSlice.name]: partSlice.reducer,
+      [columnsSlice.name]: columnsSlice.reducer,
    },
 })
