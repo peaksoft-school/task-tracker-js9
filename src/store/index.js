@@ -10,7 +10,7 @@ import { favouriteSlice } from './getFavourites/favouritesSlice'
 import { cardSlice } from './card/cardSlice'
 import { memberSlice } from './inviteMember/memberSlice'
 import { labelsSlice } from './getLabels/labelsSlice'
-import { archiveSlice } from './getArchive/arichiveSlice'
+import { partSlice } from './participants/partSlice'
 
 export const store = configureStore({
    reducer: {
@@ -24,6 +24,6 @@ export const store = configureStore({
       [cardSlice.name]: cardSlice.reducer,
       [memberSlice.name]: memberSlice.reducer,
       [labelsSlice.name]: labelsSlice.reducer,
-      [archiveSlice.name]: archiveSlice.reducer,
+      [partSlice.name]: partSlice.reducer,
    },
 })

@@ -1,12 +1,13 @@
 import { styled } from '@mui/material'
 import React from 'react'
-import { Card } from '../column/Card'
+import { DetailCard } from '../column/DetailCard'
+// import { Card } from '../column/Card'
 
-export default function Archivecard({ boolen, el }) {
+export default function Archivecard() {
    return (
       <ArchivCard>
          <P>Archived</P>
-         <Card boolen={boolen} el={el} />
+         <DetailCard />
       </ArchivCard>
    )
 }

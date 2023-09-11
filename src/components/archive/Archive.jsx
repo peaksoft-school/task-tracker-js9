@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getArchive } from '../../store/getArchive/archiveThunk'
+import Archivecard from './Archivecard'
 
 export const Archive = () => {
-   const { cardResponses } = useSelector((state) => state.archiveData.archive)
+   const cardResponses = useSelector((state) => state?.archiveData)
    console.log('cardResponses : ', cardResponses)
 
    const dispatch = useDispatch()
@@ -11,5 +12,9 @@ export const Archive = () => {
       dispatch(getArchive(5))
    }, [dispatch])
 
-   return <div>CaerdResponse</div>
+   return (
+      <div>
+         <Archivecard />
+      </div>
+   )
 }
