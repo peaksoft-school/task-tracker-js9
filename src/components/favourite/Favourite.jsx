@@ -69,7 +69,7 @@ export const Favourite = () => {
                <TextContainer onClick={handleStarClickWorkSpace}>
                   <div>
                      <StyledTitle>{item.name}</StyledTitle>
-                     <StyledText>Workcpase</StyledText>
+                     <StyledText>Workspace</StyledText>
                   </div>
                </TextContainer>
                <IconButton

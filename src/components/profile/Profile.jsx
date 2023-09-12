@@ -18,9 +18,10 @@ import { ProfileForm } from './ProfileForm'
 export const Profile = () => {
    const [avatarUrl, setAvatarUrl] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
-   const { item, avatarLink } = useSelector((state) => state.profile)
+   const { item, avatarLink, getItemById } = useSelector(
+      (state) => state.profile
+   )
    const { state } = useLocation()
-   console.log('state: ', state)
    const { profileId } = useParams()
 
    const dispatch = useDispatch()
@@ -76,7 +77,7 @@ export const Profile = () => {
             <div>
                {item.avatar === 'Default image' || item.avatar === null ? (
                   <EmptyAvatarLink>
-                     <StyledAccountCircleIcon />
+                     <StyledAccountCircleIcon fill="red" />
                   </EmptyAvatarLink>
                ) : (
                   <ProfileImageBox src={avatarLink} alt="avatar" />
@@ -96,14 +97,10 @@ export const Profile = () => {
 
                <ProfileNames>
                   <ProfileNamesSpan>
-                     {/* {state?.edit === null
-                        ? item?.firstName
-                        : getItemById?.firstName} */}
+                     {state === null ? item?.firstName : getItemById?.firstName}
                   </ProfileNamesSpan>
                   <ProfileNamesSpan>
-                     {/* {state.edit === null
-                        ? item?.lastName
-                        : getItemById?.lastName} */}
+                     {state === null ? item?.lastName : getItemById?.lastName}
                   </ProfileNamesSpan>
                </ProfileNames>
             </div>

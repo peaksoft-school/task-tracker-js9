@@ -37,6 +37,7 @@
       "redux": "^4.2.1",
       "styled": "^1.0.0",
       "uninstall": "^0.0.0",
+      "use-debounce": "^9.0.4",
       "web-vitals": "^2.1.4",
       "yup": "^1.2.0"
    },
