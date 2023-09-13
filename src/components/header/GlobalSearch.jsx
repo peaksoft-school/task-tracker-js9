@@ -13,8 +13,8 @@ export const GlobalSearch = ({ globalSearch }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
-   const boardHandler = (boardId) => {
-      navigate(`/mainPage/:id/boards/${boardId}/board`)
+   const boardHandler = (workspaceId, boardId) => {
+      navigate(`/mainPage/${workspaceId}/boards/${boardId}/board`)
    }
 
    const workspaceHandler = (workspaceId) => {
@@ -38,7 +38,7 @@ export const GlobalSearch = ({ globalSearch }) => {
                <WrapperBoard
                   key={board.boardId}
                   onClick={() => {
-                     boardHandler(board.boardId)
+                     boardHandler(board.work_space_id, board.boardId)
                      handleSearchResultClick(board)
                   }}
                >
