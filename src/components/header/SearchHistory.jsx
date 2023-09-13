@@ -13,11 +13,11 @@ export const SearchHistory = () => {
    )
    const navigate = useNavigate()
 
-   const boardHandler = (boardId) => {
+   const navigateToBoardDetail = (boardId) => {
       navigate(`/mainPage/:id/boards/${boardId}/board`)
    }
 
-   const workspaceHandler = (workspaceId) => {
+   const navigateToWorkspaceDetail = (workspaceId) => {
       navigate(`/mainPage/${workspaceId}/boards/`)
    }
 
@@ -26,7 +26,7 @@ export const SearchHistory = () => {
          {searchHistory?.map((item) => (
             <WrapperBoard
                key={item.boardId}
-               onClick={() => boardHandler(item.boardId)}
+               onClick={() => navigateToBoardDetail(item.boardId)}
                style={{ display: 'flex', alignItems: 'center' }}
             >
                {item.backGround?.startsWith('#') ? (
@@ -41,7 +41,7 @@ export const SearchHistory = () => {
          {searchHistoryWorkspace?.map((item) => (
             <WorkspaceWrapper
                key={item?.workSpaceId}
-               onClick={() => workspaceHandler(item?.workSpaceId)}
+               onClick={() => navigateToWorkspaceDetail(item?.workSpaceId)}
             >
                <StyledTitle>{item.workSpaceName}</StyledTitle>
                <StyledText>Workspace</StyledText>
@@ -66,6 +66,8 @@ export const SearchHistory = () => {
 }
 
 const Container = styled('div')(() => ({
+   boxShadow: ' 18px 33px 26px -12px rgba(34, 60, 80, 0.2)',
+
    width: '31rem',
    backgroundColor: '#fff',
    position: 'absolute',

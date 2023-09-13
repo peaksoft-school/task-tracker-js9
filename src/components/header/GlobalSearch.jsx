@@ -1,8 +1,8 @@
 /* eslint-disable import/named */
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { styled } from '@mui/material'
+import { CircularProgress, styled } from '@mui/material'
 import {
    addToSearchHistory,
    addToSearchHistoryWorkspace,
@@ -12,12 +12,13 @@ import {
 export const GlobalSearch = ({ globalSearch }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { loading } = useSelector((state) => state.search)
 
-   const boardHandler = (workspaceId, boardId) => {
+   const navigateToBoardDetail = (workspaceId, boardId) => {
       navigate(`/mainPage/${workspaceId}/boards/${boardId}/board`)
    }
 
-   const workspaceHandler = (workspaceId) => {
+   const navigateToWorkspaceDetail = (workspaceId) => {
       navigate(`/mainPage/${workspaceId}/boards/`)
    }
 
@@ -38,7 +39,7 @@ export const GlobalSearch = ({ globalSearch }) => {
                <WrapperBoard
                   key={board.boardId}
                   onClick={() => {
-                     boardHandler(board.work_space_id, board.boardId)
+                     navigateToBoardDetail(board.work_space_id, board.boardId)
                      handleSearchResultClick(board)
                   }}
                >
@@ -54,8 +55,8 @@ export const GlobalSearch = ({ globalSearch }) => {
                <WorkspaceWrapper
                   key={workspaces.workSpaceId}
                   onClick={() => {
-                     workspaceHandler(workspaces.workSpaceId)
-                     handleSearchResultWorkspaceClick(workspaces) // Добавить запрос в историю
+                     navigateToWorkspaceDetail(workspaces.workSpaceId)
+                     handleSearchResultWorkspaceClick(workspaces)
                   }}
                >
                   <StyledTitle>{workspaces.workSpaceName}</StyledTitle>
@@ -77,12 +78,34 @@ export const GlobalSearch = ({ globalSearch }) => {
                   <p>{users.lastName}</p>
                </WrapperUsers>
             ))}
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+               {loading ? (
+                  <CircularProgress color="inherit" />
+               ) : (
+                  <div>
+                     {!globalSearch.boardResponses?.length &&
+                        !globalSearch.workSpaceResponses?.length &&
+                        !globalSearch.userResponses?.length && (
+                           <p
+                              style={{
+                                 display: 'flex',
+                                 justifyContent: 'center',
+                              }}
+                           >
+                              No results found :(
+                           </p>
+                        )}
+                  </div>
+               )}
+            </div>
          </Container>
       </div>
    )
 }
 
 const Container = styled('div')(() => ({
+   boxShadow: ' 18px 33px 26px -12px rgba(34, 60, 80, 0.2)',
    zIndex: 2,
    width: '31rem',
    backgroundColor: '#fff',

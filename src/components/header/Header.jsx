@@ -30,7 +30,7 @@ export const Headers = ({ data }) => {
    const [showModal, setShowModal] = useState(false)
    const [search, setSearch] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
-   const [searchValue] = useDebounce(search, 1000)
+   const [searchValue] = useDebounce(search, 100)
    const [showAdditionalComponent, setShowAdditionalComponent] = useState(false)
 
    const { favoriteData } = useSelector((state) => state.favorite)
@@ -54,6 +54,7 @@ export const Headers = ({ data }) => {
    useEffect(() => {
       if (searchValue.trim().length > 0) {
          dispatch(searchRequest(search))
+         setShowAdditionalComponent(false)
       }
    }, [searchValue])
    const openFavoriteModalHandler = () => {
@@ -133,6 +134,7 @@ export const Headers = ({ data }) => {
                      <SearchIconWrapper>
                         <SearchIcon src={SearchIcon} alt="Search_Icon" />
                      </SearchIconWrapper>
+
                      <StyledInputBase
                         placeholder="Search"
                         type="text"
@@ -141,19 +143,16 @@ export const Headers = ({ data }) => {
                         onFocus={() => setShowAdditionalComponent(true)}
                      />
                   </Search>
-                  {showAdditionalComponent && (
+                  {showAdditionalComponent ? (
                      <>
                         <BackDrop
                            onClick={() => setShowAdditionalComponent(false)}
                         />
                         <SearchHistory />
                      </>
-                  )}
+                  ) : null}
                   {search.length > 0 && (
-                     <>
-                        <BackDrop onClick={() => setSearch('')} />
-                        <GlobalSearch globalSearch={globalSearch} />
-                     </>
+                     <GlobalSearch globalSearch={globalSearch} />
                   )}
                </div>
                <IconButton>
