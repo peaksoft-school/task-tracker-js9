@@ -7,8 +7,9 @@ import {
    useNavigate,
    NavLink,
    useLocation,
-   useParams,
+   // useParams,
 } from 'react-router-dom'
+import { useDebounce } from 'use-debounce'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    DownIcon,
@@ -21,13 +22,19 @@ import { logOut } from '../../store/auth/authThunk'
 import { showSnackbar } from '../UI/snackbar/Snackbar'
 import { Favourite } from '../favourite/Favourite'
 import { ModalUi } from '../UI/modal/Modal'
+import { searchRequest } from '../../store/globalSearch/searchThunk'
+import { GlobalSearch } from './GlobalSearch'
+import { SearchHistory } from './SearchHistory'
 
 export const Headers = ({ data }) => {
    const [showModal, setShowModal] = useState(false)
+   const [search, setSearch] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
-   const { profileId } = useParams()
-   console.log('profileId: ', profileId)
+   const [searchValue] = useDebounce(search, 100)
+   const [showAdditionalComponent, setShowAdditionalComponent] = useState(false)
+
    const { favoriteData } = useSelector((state) => state.favorite)
+   const { globalSearch } = useSelector((state) => state.search)
 
    const boardLength = favoriteData.data?.boardResponses?.length || 0
    const workSpaceLength = favoriteData.data?.workSpaceResponses?.length || 0
@@ -44,6 +51,12 @@ export const Headers = ({ data }) => {
       }
    }, [sumLength])
 
+   useEffect(() => {
+      if (searchValue.trim().length > 0) {
+         dispatch(searchRequest(search))
+         setShowAdditionalComponent(false)
+      }
+   }, [searchValue])
    const openFavoriteModalHandler = () => {
       setShowModal(!showModal)
    }
@@ -69,6 +82,16 @@ export const Headers = ({ data }) => {
          .catch((error) => {
             console.log(error)
          })
+   }
+
+   // Search integration
+
+   const searchHandler = (e) => {
+      setSearch(e.target.value)
+   }
+   const handleSubmit = (e) => {
+      e.preventDefault()
+      dispatch(searchRequest(search))
    }
 
    return (
@@ -106,12 +129,32 @@ export const Headers = ({ data }) => {
                </Favorite>
             </LogoContainer>
             <AboutPanel>
-               <Search>
-                  <SearchIconWrapper>
-                     <SearchIcon src={SearchIcon} alt="Search_Icon" />
-                  </SearchIconWrapper>
-                  <StyledInputBase placeholder="Search" type="search" />
-               </Search>
+               <div style={{ positon: 'relative' }}>
+                  <Search onSubmit={handleSubmit}>
+                     <SearchIconWrapper>
+                        <SearchIcon src={SearchIcon} alt="Search_Icon" />
+                     </SearchIconWrapper>
+
+                     <StyledInputBase
+                        placeholder="Search"
+                        type="text"
+                        value={search}
+                        onChange={searchHandler}
+                        onFocus={() => setShowAdditionalComponent(true)}
+                     />
+                  </Search>
+                  {showAdditionalComponent ? (
+                     <>
+                        <BackDrop
+                           onClick={() => setShowAdditionalComponent(false)}
+                        />
+                        <SearchHistory />
+                     </>
+                  ) : null}
+                  {search.length > 0 && (
+                     <GlobalSearch globalSearch={globalSearch} />
+                  )}
+               </div>
                <IconButton>
                   <NotificationIcon src={NotificationIcon} alt="notification" />
                </IconButton>
@@ -185,7 +228,7 @@ const AboutPanel = muiStyled('div')(() => ({
    gap: '1.8rem',
 }))
 
-const Search = muiStyled('div')(({ theme }) => ({
+const Search = muiStyled('form')(({ theme }) => ({
    position: 'relative',
    display: 'flex',
    alignItems: 'center',
@@ -269,4 +312,12 @@ const WrapperTexts = muiStyled('div')(() => ({
    position: 'relative',
    zIndex: '100',
    borderRadius: '0.625rem',
+}))
+
+const BackDrop = muiStyled('div')(() => ({
+   width: '100%',
+   height: '98vh',
+   position: 'absolute',
+   top: '0',
+   left: '0',
 }))
