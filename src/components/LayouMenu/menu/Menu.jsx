@@ -44,8 +44,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
 
    const photoBoards = boards.filter(
       (board) =>
-         board.background.startsWith('http') ||
-         board.background.startsWith('https')
+         board.background.startsWith('https') ||
+         board.background.startsWith('http')
    )
 
    const colorBoards = boards.filter((board) =>
@@ -123,7 +123,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                </ChangeDivContainer>
             </MenuItemContainer>
          )}
-
          {open === 'background' && (
             <ChangeBackgroundContainer animation="slideIn">
                <ChangeBackgroundHeader>
@@ -158,8 +157,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                         <StyledLeftIcon onClick={openBackgroundHandler} />
                      </StyledIconButton>
                      <p>Photos</p>
-                     <StyledIconButton>
-                        <ExitIcon fill="gray" onClick={closeHandler} />
+                     <StyledIconButton onClick={closeHandler}>
+                        <ExitIcon fill="gray" />
                      </StyledIconButton>
                   </StyledHeader>
                   <PhotoBlocks>
@@ -180,8 +179,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             <PopoverContColor open={openColorsHandler}>
                <AllBoardColor>
                   <StyledHeaderColor>
-                     <StyledIconButtonColor>
-                        <StyledLeftIconColor onClick={openBackgroundHandler} />
+                     <StyledIconButtonColor onClick={openBackgroundHandler}>
+                        <StyledLeftIconColor />
                      </StyledIconButtonColor>
                      <p>Colors</p>
                      <StyledIconButtonColor>
@@ -207,7 +206,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       </div>
    )
 }
-
 const StlyedContainerMenu = styled('div')({
    width: '6rem',
    height: '2.125rem',
@@ -291,7 +289,6 @@ const MenuItemContainer = styled(MenuItem)({
    padding: '0.5rem 0',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    transition: 'height 0.3s',
-   overflow: 'hidden',
    backgroundColor: 'white',
 })
 const ImageStyled = styled('img')({
@@ -326,15 +323,16 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
    }
    return {
       width: '22.9375rem',
-      height: '33vh',
+      height: '24vh',
       position: 'absolute',
       right: '2rem',
       // top: '0',
-      backgroundColor: '#ffff',
+      backgroundColor: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
       padding: '1rem',
       zIndex: '999',
+      borderRadius: '1rem',
       ...animationStyles,
 
       '@keyframes slideInAnimation': {
@@ -384,15 +382,15 @@ const slideInAnimation = keyframes`
 const PopoverCont = styled('div')(() => ({
    position: 'absolute',
    right: '0',
-   // top: '0',
+   top: '0',
    minWidth: '23.8rem',
    minHeight: '37rem',
+   marginTop: '6rem',
    backgroundColor: '#FFFFFF',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    borderRadius: '0.7rem',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
 }))
-
 const rotateIcon = keyframes` 
       from { 
       transform: rotate(0); 
