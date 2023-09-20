@@ -134,6 +134,7 @@ const ModalFilter = styled('div')(({ animation }) => {
       boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
       borderRadius: '0.5rem',
       position: 'absolute',
+      zIndex: '222',
       right: '3rem',
       backgroundColor: 'white',
       ...animationStyles,

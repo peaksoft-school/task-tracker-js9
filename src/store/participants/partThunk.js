@@ -4,10 +4,10 @@ import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 
 export const fetchParticipans = createAsyncThunk(
    'participant/participantsGet',
-   async ({ partId, role }, { rejectWithValue }) => {
+   async ({ id, role }, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.get(
-            `/api/participants/${partId}?role=${role}`
+            `/api/participants/${id}?role=${role}`
          )
          return response.data
       } catch (err) {
@@ -18,12 +18,12 @@ export const fetchParticipans = createAsyncThunk(
 
 export const postParticipans = createAsyncThunk(
    'participant/participantsPost',
-   async (partId, { rejectWithValue, dispatch }) => {
+   async (id, { rejectWithValue, dispatch }) => {
       try {
-         await axiosInstance.post(`/api/participants`, partId)
+         await axiosInstance.post(`/api/participants`, id)
          dispatch(
             fetchParticipans({
-               partId: partId.workSpacesId,
+               id: id.workSpacesId,
                role: 'ALL',
             })
          )
@@ -51,7 +51,7 @@ export const putParticipans = createAsyncThunk(
          })
          dispatch(
             fetchParticipans({
-               partId: workSpacesId,
+               id: workSpacesId,
                role: 'ALL',
             })
          )
@@ -68,7 +68,7 @@ export const removeParticipants = createAsyncThunk(
          const response = await axiosInstance.delete(
             `/api/participants/${workSpacesId}/${userId}`
          )
-         dispatch(fetchParticipans({ partId: workSpacesId, role }))
+         dispatch(fetchParticipans({ id: workSpacesId, role }))
          showSnackbar({
             message: 'Successfully deleted',
             severity: 'success',

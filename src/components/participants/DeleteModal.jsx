@@ -8,12 +8,12 @@ import { Button } from '../UI/button/Button'
 
 export const DeleteModal = ({ onDelete, role, userId }) => {
    const dispatch = useDispatch()
-   const { partId } = useParams()
+   const { id } = useParams()
    const onClickDelete = () => {
       dispatch(
          removeParticipants({
             userId,
-            workSpacesId: partId,
+            workSpacesId: id,
             role,
          })
       )

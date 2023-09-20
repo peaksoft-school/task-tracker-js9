@@ -13,11 +13,11 @@ export const InviteNewParticipant = ({ onCreateClick, rows }) => {
    const [selectedRole, setSelectedRole] = useState('')
    const [email, setEmail] = useState('')
    const dispatch = useDispatch()
-   const { partId } = useParams()
+   const { id } = useParams()
    const createNewMember = () => {
       if (!rows.find((item) => item.email === email)) {
          const newdata = {
-            workSpacesId: Number(partId),
+            workSpacesId: Number(id),
             email,
             role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
             link: 'http://localhost:3000/signup',

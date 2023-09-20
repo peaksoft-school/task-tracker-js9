@@ -20,11 +20,11 @@ export const Photos = ({ editPhoto, togglePhoto, selectedPhoto }) => {
                }}
             >
                <StyledIconButton>
-                  <StyledLeftIcon />
+                  <StyledLeftIcon onClick={togglePhoto} />
                </StyledIconButton>
                <p>Photos</p>
                <StyledIconButton onClick={togglePhoto}>
-                  <ExitIcon />
+                  <ExitIcon fill="gray" />
                </StyledIconButton>
             </StyledHeader>
             <PhotoBlocks>
@@ -80,7 +80,7 @@ export const Photos = ({ editPhoto, togglePhoto, selectedPhoto }) => {
 
 const PopoverCont = styled(Popover)(() => ({
    position: 'relative',
-   top: -790,
+   top: -650,
    left: '62%',
 
    '& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {

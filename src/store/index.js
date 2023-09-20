@@ -13,6 +13,7 @@ import { labelsSlice } from './getLabels/labelsSlice'
 import { columnsSlice } from './column/columnsSlise'
 import { partSlice } from './participants/partSlice'
 import { searchSlice } from './globalSearch/searchSlice'
+import { notificationSlice } from './notification/notificationSlice'
 
 export const store = configureStore({
    reducer: {
@@ -29,5 +30,6 @@ export const store = configureStore({
       [columnsSlice.name]: columnsSlice.reducer,
       [partSlice.name]: partSlice.reducer,
       [searchSlice.name]: searchSlice.reducer,
+      [notificationSlice.name]: notificationSlice.reducer,
    },
 })

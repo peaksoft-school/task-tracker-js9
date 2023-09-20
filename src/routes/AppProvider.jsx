@@ -95,7 +95,7 @@ export const routes = createBrowserRouter([
       ),
    },
    {
-      path: 'mainPage/:partId/participants/',
+      path: 'mainPage/:id/participants/',
       element: (
          <>
             <Headers />

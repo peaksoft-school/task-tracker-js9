@@ -263,6 +263,7 @@ const Container = styled('div')(({ theme }) => ({
       flexDirection: 'column',
       alignItems: 'center',
       gap: '0.60rem',
+
       h2: {
          marginBottom: '1.25rem',
       },
@@ -276,13 +277,12 @@ const AuthWithGoogle = styled('div')(({ theme }) => ({
    cursor: 'pointer',
    display: 'flex',
    gap: '1rem',
-   width: '20.0625rem',
+   width: '100%',
    height: '3.625rem',
    justifyContent: 'center',
    alignItems: 'center',
    backgroundColor: theme.palette.secondary.lightGray,
    borderRadius: '0.5rem',
-   marginRight: '1.5rem',
 }))
 
 const ContainerInputs = styled('div')(() => ({
