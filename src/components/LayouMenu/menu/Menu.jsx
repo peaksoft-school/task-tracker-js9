@@ -380,7 +380,7 @@ const slideInAnimation = keyframes`
 `
 
 const PopoverCont = styled('div')(() => ({
-   position: 'absolute',
+   position: 'fixed',
    right: '0',
    top: '0',
    minWidth: '23.8rem',
@@ -452,7 +452,7 @@ const PopoverContColor = styled('div')(() => ({
    minHeight: '30rem',
    backgroundColor: '#FFFFFF',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-   borderRadius: '0.7rem',
+   borderRadius: '0.7rem   ',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
    zIndex: 2,
 }))
