@@ -102,8 +102,9 @@ const BoardWrapper = styled('div')(({ noBoards }) => ({
 const AllBoards = styled('div')(() => ({
    background: '#F0F0F0;',
    width: '100%',
-   height: '89vh',
+   height: '89.6vh',
    padding: '0 1rem',
+   paddingLeft: '2rem',
 }))
 
 const Boards = styled('div')(() => ({

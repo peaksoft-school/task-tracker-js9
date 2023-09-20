@@ -43,6 +43,7 @@ export const boardRemove = createAsyncThunk(
          })
          navigate(`/mainPage/${id}/boards`)
       } catch (error) {
+         console.log('error: ', error)
          showSnackbar({
             message: 'error deleting',
             severity: 'error',

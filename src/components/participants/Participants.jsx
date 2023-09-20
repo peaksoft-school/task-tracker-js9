@@ -11,7 +11,8 @@ import { InviteNewParticipant } from './InviteModal'
 import { DeleteModal } from './DeleteModal'
 
 export const Participants = () => {
-   const { partId } = useParams()
+   const { id } = useParams()
+
    const dispatch = useDispatch()
    const rows = useSelector((state) => state.participant.participants)
    const [role, setRole] = useState('ALL')
@@ -34,9 +35,9 @@ export const Participants = () => {
    ]
 
    React.useEffect(() => {
-      dispatch(fetchParticipans({ partId, role }))
+      dispatch(fetchParticipans({ id, role }))
    }, [role])
-   if (!partId) {
+   if (!id) {
       return <div>Loading...</div> // Или другое поведение в случае, когда partId не определен
    }
 

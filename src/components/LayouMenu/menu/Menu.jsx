@@ -1,9 +1,9 @@
-import React from 'react'
 import { styled, IconButton, keyframes } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 import { ExitIcon, LeftIcon, MenuIcon } from '../../../assets/icons'
-import { MenuItem } from '../../UI/menu/MenuItem'
+// import { MenuItem } from '../../UI/menu/MenuItem'
 import { boards } from '../../../utils/constants/general'
 import { backgroundImage, backgroundPhoto } from '../../../assets/images'
 import { Button } from '../../UI/button/Button'
@@ -17,7 +17,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const { boardId, id } = useParams()
    const { boardById } = useSelector((state) => state.board)
 
-   React.useEffect(() => {
+   useEffect(() => {
       dispatch(getBoardById(boardId))
    }, [])
 
@@ -56,7 +56,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    }
 
    const handleclick = async (item, board) => {
-      console.log('item: ', item)
       try {
          const data = {
             boardI: boardId,
@@ -96,8 +95,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                <MenuHeader>
                   <p>{}</p>
                   <p>Menu</p>
-                  <IconButton>
-                     <ExitIcon fill="gray" onClick={closeHandler} />
+                  <IconButton onClick={closeHandler}>
+                     <ExitIcon fill="gray" />
                   </IconButton>
                </MenuHeader>
                <ChangeDivContainer>
@@ -282,18 +281,48 @@ const ChangeDiv = styled('div')({
    },
 })
 
-const MenuItemContainer = styled(MenuItem)({
-   width: '22.9375rem',
-   height: '11.6rem',
-   borderRadius: '0.625rem',
-   position: 'absolute',
-   right: '2rem',
-   padding: '0.5rem 0',
-   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-   transition: 'height 0.3s',
-   overflow: 'hidden',
-   backgroundColor: 'white',
+//------
+const MenuItemContainer = styled('div')(({ animation }) => {
+   let animationStyles = {}
+   switch (animation) {
+      case 'slideIn':
+         animationStyles = {
+            animation: 'slideInAnimation 0.3s ease-in-out',
+         }
+
+         break
+      default:
+         break
+   }
+   return {
+      width: '22.9375rem',
+      height: '11.6rem',
+      borderRadius: '0.625rem',
+      position: 'absolute',
+      zIndex: '222',
+      right: '2rem',
+      padding: '0.5rem 0',
+      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+      transition: 'height 0.3s',
+      overflow: 'hidden',
+      backgroundColor: 'white',
+
+      ...animationStyles,
+
+      '@keyframes slideInAnimation': {
+         '0%': {
+            transform: 'translateX(100%)',
+            opacity: 0,
+         },
+         '100%': {
+            transform: 'translateX(0)',
+            opacity: 1,
+         },
+      },
+   }
 })
+
+//-------
 const ImageStyled = styled('img')({
    width: '3.6875rem',
    height: '1.625rem',
@@ -315,11 +344,6 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
             animation: 'slideInAnimation 0.3s ease-in-out',
          }
 
-         break
-      case 'fadeIn':
-         animationStyles = {
-            animation: 'fadeInAnimation 0.3s ease-in-out',
-         }
          break
       default:
          break
@@ -344,15 +368,6 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
          },
          '100%': {
             transform: 'translateX(0)',
-            opacity: 1,
-         },
-      },
-
-      '@keyframes fadeInAnimation': {
-         '0%': {
-            opacity: 0,
-         },
-         '100%': {
             opacity: 1,
          },
       },

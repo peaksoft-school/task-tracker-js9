@@ -7,13 +7,13 @@ import { IconButton, ListItemIcon } from '@mui/material'
 import { SideHead } from './SideHead'
 import { SideMain } from './SideMain'
 import {
-   FilesAndFoldersIcon,
    PeopleIcon,
    PlusIcon,
    TemplateIcon,
    ToolsIcon,
    SecondMenu,
    FirstMenu,
+   AllIssuesIcon,
 } from '../../assets/icons'
 
 export function Sidenav({ data, dataLength, workspacedata }) {
@@ -35,9 +35,9 @@ export function Sidenav({ data, dataLength, workspacedata }) {
          text: 'All issues',
          icon:
             activeItem === 'All issues' ? (
-               <FilesAndFoldersIcon fill="#FFFFFF" />
+               <AllIssuesIcon fill="#FFFFFF" />
             ) : (
-               <FilesAndFoldersIcon fill="#919191" />
+               <AllIssuesIcon fill="#919191" />
             ),
          count: dataLength,
       },
@@ -101,7 +101,13 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                />
             </Drawer>
          </StyledBox>
-         <div style={{ margin: '1rem 0 0 -1.9rem' }}>
+         <div
+            style={{
+               position: 'relative',
+               left: '-2rem',
+               marginRight: '-3.5rem',
+            }}
+         >
             <ListItemIcon
                style={{
                   display: 'flex',
@@ -119,6 +125,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                      borderRadius: '0rem 0.5rem 0.5rem 0rem',
                      position: 'fixed',
                      top: '6rem',
+                     // left: '6rem',
                      zIndex: '10',
                   }}
                >
@@ -169,7 +176,7 @@ const Drawer = styled(MuiDrawer, {
    },
 
    '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
-      marginTop: '80px',
+      marginTop: '75px',
       backgroundColor: '#ffffffb6',
    },
    ...(open && {
