@@ -10,6 +10,7 @@ import { Profile } from '../components/profile/Profile'
 import { BoardPage } from '../pages/BoardPage'
 import { InnerPage } from '../pages/InnerPage'
 import { ParticipantsPage } from '../pages/ParticipantsPage'
+// import { InnerCard } from '../components/innerCard/InnerCard'
 
 export const routes = createBrowserRouter([
    {
@@ -87,6 +88,15 @@ export const routes = createBrowserRouter([
    },
    {
       path: 'mainPage/:id/boards/:boardId/board',
+      element: (
+         <>
+            <Headers />
+            <InnerPage />
+         </>
+      ),
+   },
+   {
+      path: 'mainPage/:id/boards/:boardId/board/:carId/innerCard',
       element: (
          <>
             <Headers />
