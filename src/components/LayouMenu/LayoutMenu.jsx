@@ -16,7 +16,7 @@ import { Participant } from './inviteModal/Participant'
 
 export const LayoutMenu = () => {
    const [openFilterModal, setOpenFilterModal] = useState(false)
-   const [open, setOpen] = useState(null)
+   const [open, setOpen] = useState(false)
    const [showBoard, setShowBoard] = useState(false)
    const [openModal, setOpenModal] = useState(false)
    const [openNewInvite, setOpenNewInvite] = useState(false)

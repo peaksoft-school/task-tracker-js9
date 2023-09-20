@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled, IconButton, keyframes } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,16 +10,27 @@ import { Button } from '../../UI/button/Button'
 import { boardRemove, getBoardById } from '../../../store/board/boardThunk'
 import { showSnackbar } from '../../UI/snackbar/Snackbar'
 import { axiosInstance } from '../../../config/axiosInstance'
+import { Archive } from '../../archive/Archive'
+import { ModalUi } from '../../UI/modal/Modal'
+import { getArchive } from '../../../store/getArchive/archiveThunk'
 
 export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { boardId, id } = useParams()
    const { boardById } = useSelector((state) => state.board)
+   const [archive, setArchive] = useState(false)
 
    React.useEffect(() => {
       dispatch(getBoardById(boardId))
    }, [])
+
+   const openArchiveModal = () => {
+      setArchive((prev) => !prev)
+      dispatch(getArchive(boardId))
+      // setOpen(false)
+      console.log('boardId: ', boardId)
+   }
 
    const openMenuHandler = () => {
       setOpen('menu')
@@ -111,9 +122,20 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                      />
                   </ChangeDiv>
 
-                  <Archive>
-                     <ArchiveButton>In archive</ArchiveButton>
-                  </Archive>
+                  <ArchiveCard>
+                     <ArchiveButton onClick={openArchiveModal}>
+                        In archive
+                     </ArchiveButton>
+                  </ArchiveCard>
+                  {archive && (
+                     <ModalUi
+                        open={archive}
+                        onClose={openArchiveModal}
+                        handleModalContentClick={openArchiveModal}
+                     >
+                        <Archive />
+                     </ModalUi>
+                  )}
 
                   <DeleteBox>
                      <DeleteButton onClick={deleteBoardHandler}>
@@ -233,7 +255,7 @@ const MenuHeader = styled('div')({
    justifyContent: 'space-between',
    marginRight: '0.5rem',
 })
-const Archive = styled('div')({
+const ArchiveCard = styled('div')({
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'space-between',

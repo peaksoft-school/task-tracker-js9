@@ -1,20 +1,19 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getArchive } from '../../store/getArchive/archiveThunk'
+import { useSelector } from 'react-redux'
+
 import Archivecard from './Archivecard'
 
 export const Archive = () => {
-   const cardResponses = useSelector((state) => state?.archiveData)
+   const { cardResponses, columnResponses } = useSelector(
+      (state) => state.archiveData.archive
+   )
+   console.log('columnResponses: ', columnResponses)
    console.log('cardResponses : ', cardResponses)
-
-   const dispatch = useDispatch()
-   useEffect(() => {
-      dispatch(getArchive(5))
-   }, [dispatch])
 
    return (
       <div>
-         <Archivecard />
+         {cardResponses?.map((el) => (
+            <Archivecard el={el} />
+         ))}
       </div>
    )
 }

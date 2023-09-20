@@ -1,5 +1,7 @@
-import { styled } from '@mui/material'
 import React, { useState } from 'react'
+import { styled } from '@mui/material'
+import { Label } from './Label'
+import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 import { Button } from '../UI/button/Button'
 import {
    CheckKeyboardIcon,
@@ -9,10 +11,8 @@ import {
    TypographyIcon,
 } from '../../assets/icons'
 import { ColumnCard } from './ColumnCard'
-import { Label } from './Label'
-import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 
-export const DetailCard = ({ el }) => {
+export const CardLabels = ({ el }) => {
    const [openLabelText, setOpenLabelText] = useState(false)
    const [clickedLabels, setClickedLabels] = useState([])
 
@@ -26,32 +26,32 @@ export const DetailCard = ({ el }) => {
    }
    return (
       <div>
+         {openLabelText ? (
+            <ParentColorGroupButton>
+               {clickedLabels.map((el) => (
+                  <ColorfulButton
+                     onClick={() => deleteLabelText()}
+                     key={el.id}
+                     style={{
+                        backgroundColor: el.color,
+                     }}
+                  >
+                     {el.text}
+                  </ColorfulButton>
+               ))}
+            </ParentColorGroupButton>
+         ) : (
+            <Labels>
+               {ButtonTextcolors.map((el) => (
+                  <Label
+                     key={el.id}
+                     onClick={() => handleButtonClick()}
+                     color={el.color}
+                  />
+               ))}
+            </Labels>
+         )}
          <ColumnCard>
-            {openLabelText ? (
-               <ParentColorGroupButton>
-                  {clickedLabels.map((el) => (
-                     <ColorfulButton
-                        onClick={() => deleteLabelText()}
-                        key={el.id}
-                        style={{
-                           backgroundColor: el.color,
-                        }}
-                     >
-                        {el.text}
-                     </ColorfulButton>
-                  ))}
-               </ParentColorGroupButton>
-            ) : (
-               <Labels>
-                  {ButtonTextcolors.map((el) => (
-                     <Label
-                        key={el.id}
-                        onClick={() => handleButtonClick()}
-                        color={el.color}
-                     />
-                  ))}
-               </Labels>
-            )}
             <ParagraphText>{el.title}</ParagraphText>
 
             <WraperDedline>
@@ -75,33 +75,35 @@ export const DetailCard = ({ el }) => {
                </WraperIcons>
             </WraperDedline>
          </ColumnCard>
-         <ColumnCard>
-            <ParagraphText>{el.title}</ParagraphText>
-            <CheckListButton
-               backgroundColor="#111"
-               borderRadius="2rem"
-               padding="0.25rem 0.75rem"
-            >
-               Cheklist
-            </CheckListButton>
-            <FlexIcon>
-               <CheckMarNumberkIcon>
-                  <CheckKeyboardIcon />
-                  <NumberIcon>1/3</NumberIcon>
-               </CheckMarNumberkIcon>
-               <div style={{ display: 'flex', gap: '4px' }}>
-                  <PeopleIcon />
-                  <PeopleNumber>{el.numberOfUsers}</PeopleNumber>
-               </div>
-            </FlexIcon>
-         </ColumnCard>
       </div>
    )
 }
+
 const Labels = styled('div')(() => ({
    display: 'flex',
    flexWrap: 'wrap',
    gap: '6px',
+}))
+
+const ParentColorGroupButton = styled('div')(() => ({
+   display: 'flex-wrap',
+   gap: '0.5rem',
+}))
+
+const ColorfulButton = styled(Button)(() => ({
+   padding: '0 0.3rem',
+   fontSize: '0.65rem',
+   borderRadius: '0.5rem',
+   marginBottom: '0.5rem',
+   marginRight: '0.5rem',
+   '&:active': {
+      transform: 'scale(0.9, 0.9)',
+   },
+}))
+const ParagraphText = styled('p')(() => ({
+   width: '100%',
+   boxSizing: 'border-box',
+   wordWrap: 'break-word',
 }))
 
 const WraperDedline = styled('div')(() => ({
@@ -116,11 +118,6 @@ const Deadline = styled('div')(() => ({
    borderRadius: '0.5rem',
    padding: ' 0.125rem 0.5rem 0rem 0.5rem',
    marginRight: '0.75rem',
-}))
-const ParagraphText = styled('p')(() => ({
-   width: '100%',
-   boxSizing: 'border-box',
-   wordWrap: 'break-word',
 }))
 
 const WraperIcons = styled('div')(() => ({
@@ -141,7 +138,6 @@ const NumberIcon = styled('p')(() => ({
    fontStyle: 'normal',
    fontWeight: '500',
 }))
-
 const PeopleNumber = styled('p')(() => ({
    color: '#919191',
    fontFamily: 'Cera Pro',
@@ -149,39 +145,6 @@ const PeopleNumber = styled('p')(() => ({
    fontStyle: 'normal',
    fontWeight: '500',
 }))
-
-const ParentColorGroupButton = styled('div')(() => ({
-   display: 'flex-wrap',
-   gap: '0.5rem',
-}))
-
-const ColorfulButton = styled(Button)(() => ({
-   padding: '0 0.3rem',
-   fontSize: '0.65rem',
-   borderRadius: '0.5rem',
-   marginBottom: '0.5rem',
-   marginRight: '0.5rem',
-   '&:active': {
-      transform: 'scale(0.9, 0.9)',
-   },
-}))
-
-const CheckListButton = styled(Button)(() => ({
-   color: '#F8F8F8',
-   fontSize: ' 0.75rem',
-   fontStyle: ' normal',
-   fontWeight: '500',
-   position: 'absolute',
-   marginLeft: '9.5rem',
-}))
-
-const FlexIcon = styled('div')(() => ({
-   display: 'flex',
-   marginTop: '2.44rem',
-   justifyContent: 'flex-end',
-   gap: '0.5rem',
-}))
-
 const CheckMarNumberkIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',
