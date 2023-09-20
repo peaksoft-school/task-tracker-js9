@@ -16,7 +16,7 @@ export const attachmentGet = createAsyncThunk(
    'card/attachmentGet',
    async (cardId, { rejectWithValue }) => {
       try {
-         const { data } = await axiosInstance.get(`/api/attachments/${33}`)
+         const { data } = await axiosInstance.get(`/api/attachments/${cardId}`)
          return data
       } catch (error) {
          rejectWithValue(error)

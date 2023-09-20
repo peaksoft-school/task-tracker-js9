@@ -124,7 +124,7 @@ export const DetailCard = ({ cardResponses }) => {
                      </Deadline>
                   )}
                   <WraperIcons>
-                     {card.commentResponses.map(
+                     {card.commentResponses?.map(
                         (el) =>
                            el.comment === '' && (
                               <WraperIcons>
@@ -155,6 +155,7 @@ export const DetailCard = ({ cardResponses }) => {
                </WraperDedline>
                {openModal && (
                   <InnerCard
+                     setOpenModal={setOpenModal}
                      cardId={cardId}
                      cardData={card}
                      handleClose={handleClose}

@@ -1,6 +1,6 @@
 import { styled, IconButton } from '@mui/material'
-// import { useNavigate, useParams } from 'react-router-dom'
 import React, { useState, useRef } from 'react'
+import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
@@ -24,9 +24,12 @@ import { CommentSection } from '../UI/comments/CommentsSection'
 import { Button } from '../UI/button/Button'
 import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 import { ModalUi } from '../UI/modal/Modal'
+import { deleteCardbyCardId } from '../../store/cards/cardsThunk'
 
 export const InnerCard = ({
    isInnerCardOpen,
+   setOpenModal,
+
    // setSaveTitle,
    setSaveDescription,
    displayText,
@@ -46,6 +49,7 @@ export const InnerCard = ({
    const [isEditTitle, setIsEditTitle] = useState(true)
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
+   const { columnId } = useParams()
 
    const dispatch = useDispatch()
    // const navigate = useNavigate()
@@ -63,6 +67,7 @@ export const InnerCard = ({
    const handleTitleChange = (e) => {
       setTitleText(e.target.value)
    }
+   console.log(columnId, 'clickkkkkkk')
 
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -115,6 +120,11 @@ export const InnerCard = ({
       dispatch(createdCheckListRequest(data))
       closeCheckListModalHandler()
       setTitleCheckList('')
+   }
+
+   const deleteCardByIdHandler = () => {
+      dispatch(deleteCardbyCardId({ cardId, columnId }))
+      setOpenModal(false)
    }
 
    return (
@@ -258,7 +268,9 @@ export const InnerCard = ({
                            <AddItem>
                               <DeleteIcon />
                               {showMore === false ? (
-                                 <AddText>Delete</AddText>
+                                 <AddText onClick={deleteCardByIdHandler}>
+                                    Delete
+                                 </AddText>
                               ) : null}
                            </AddItem>
                            <AddItem>
