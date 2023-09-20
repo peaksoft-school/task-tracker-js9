@@ -25,10 +25,14 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       dispatch(getBoardById(boardId))
    }, [])
 
+   const handleModalContentClick = (event) => {
+      event.stopPropagation()
+   }
+
    const openArchiveModal = () => {
-      setArchive((prev) => !prev)
+      setArchive(true)
+      setOpen(false)
       dispatch(getArchive(boardId))
-      // setOpen(false)
       console.log('boardId: ', boardId)
    }
 
@@ -97,6 +101,15 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             <MenuIcon />
             <MenuPargraph>Menu</MenuPargraph>
          </StlyedContainerMenu>
+         {archive && (
+            <ModalUi
+               open={archive}
+               onClose={() => setArchive(false)}
+               handleModalContentClick={handleModalContentClick}
+            >
+               <Archive />
+            </ModalUi>
+         )}
 
          {open === 'menu' && (
             <MenuItemContainer
@@ -127,15 +140,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                         In archive
                      </ArchiveButton>
                   </ArchiveCard>
-                  {archive && (
-                     <ModalUi
-                        open={archive}
-                        onClose={openArchiveModal}
-                        handleModalContentClick={openArchiveModal}
-                     >
-                        <Archive />
-                     </ModalUi>
-                  )}
 
                   <DeleteBox>
                      <DeleteButton onClick={deleteBoardHandler}>
