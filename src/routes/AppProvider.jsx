@@ -96,6 +96,15 @@ export const routes = createBrowserRouter([
       ),
    },
    {
+      path: 'mainPage/:id/boards/:boardId/board/:carId/innerCard',
+      element: (
+         <>
+            <Headers />
+            <InnerPage />
+         </>
+      ),
+   },
+   {
       path: 'mainPage/:id/participants/',
       element: (
          <>
