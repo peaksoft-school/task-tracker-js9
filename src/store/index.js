@@ -13,6 +13,7 @@ import { labelsSlice } from './getLabels/labelsSlice'
 import { columnsSlice } from './column/columnsSlise'
 import { partSlice } from './participants/partSlice'
 import { cardsSlice } from './cards/cardsSlice'
+import { searchSlice } from './globalSearch/searchSlice'
 
 export const store = configureStore({
    reducer: {
@@ -29,5 +30,6 @@ export const store = configureStore({
       [columnsSlice.name]: columnsSlice.reducer,
       [partSlice.name]: partSlice.reducer,
       [cardsSlice.name]: cardsSlice.reducer,
+      [searchSlice.name]: searchSlice.reducer,
    },
 })
