@@ -40,6 +40,7 @@ export const Labels = () => {
                      {item.description}
                   </TextLabels>
                   <ExitIcon
+                     fill="gray"
                      style={{ cursor: 'pointer' }}
                      onClick={() => onRemoveLabel(item.labelId)}
                   />

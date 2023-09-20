@@ -11,12 +11,12 @@ export const Columns = ({ column }) => {
 }
 
 const ColumnStyle = styled('div')(() => ({
-   width: '17.5rem',
+   width: '18.5rem',
    borderRadius: '0.5rem',
    paddingBottom: '1rem',
    paddingTop: '0.69rem',
    paddingRight: '0.5rem',
-   backgroundColor: '#ffffff',
+   maxHeight: '100%',
    position: 'relative',
-   // background: 'rgba(145, 145, 145, 0.67)',
+   background: '#E6E6E6',
 }))

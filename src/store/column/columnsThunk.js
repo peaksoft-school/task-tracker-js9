@@ -16,11 +16,10 @@ export const getColumns = createAsyncThunk(
 export const createNewColumn = createAsyncThunk(
    'columns/newColumn',
    async ({ newdata, boardId }, { rejectWithValue, dispatch }) => {
-      console.log('newData', newdata)
       try {
          const response = await axiosInstance.post(`api/column`, newdata)
          dispatch(getColumns(+boardId))
-         console.log('response: ', response)
+
          return response
       } catch (error) {
          return rejectWithValue(error.data.message)

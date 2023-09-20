@@ -6,13 +6,14 @@ export const getLabels = createAsyncThunk(
    async (_, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.get('/api/labels')
-         // console.log('response: ', response)
+         console.log('response: label ', response.data)
          return response.data
       } catch (error) {
          rejectWithValue(error.response.data)
       }
    }
 )
+
 export const postLabel = createAsyncThunk(
    'labels/post',
    async ({ description, color }, { rejectWithValue, dispatch }) => {
