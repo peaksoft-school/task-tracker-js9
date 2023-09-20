@@ -107,7 +107,7 @@ export const createdCheckListRequest = createAsyncThunk(
             `/api/checkList/${data.cardId}`,
             data
          )
-         dispatch(checkListGetRequest(19))
+         dispatch(checkListGetRequest(data.cardId))
          return response
       } catch (error) {
          return error.message
