@@ -1,6 +1,7 @@
 import { styled, IconButton } from '@mui/material'
 // import { useNavigate, useParams } from 'react-router-dom'
 import React, { useState, useRef } from 'react'
+import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
@@ -18,13 +19,30 @@ import {
 } from '../../assets/icons'
 import { Labels } from '../labels/Labels'
 import { Input } from '../UI/input/Input'
-
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { Button } from '../UI/button/Button'
 import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 import { ModalUi } from '../UI/modal/Modal'
+import { DataPickers } from '../UI/data-picker/DataPicker'
 
+const getMonthName = (monthNumber) => {
+   const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+   ]
+   return months[monthNumber] || ''
+}
 export const InnerCard = ({
    isInnerCardOpen,
    // setSaveTitle,
@@ -45,7 +63,21 @@ export const InnerCard = ({
    const [isEditing, setIsEditing] = useState(true)
    const [isEditTitle, setIsEditTitle] = useState(true)
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
+   const [openEstimation, setOpenEstimation] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
+
+   const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
+   console.log('selectedDate: ', selectedDate)
+   const formattedMonth = `${getMonthName(selectedDate.$M)}
+    ${selectedDate.$D},${selectedDate.$y}`
+   // const startDate = `${selectedDate.$D},${selectedDate.$y}`
+
+   const [clock, setСlock] = useState(dayjs('2022-04-17T15:30'))
+   const formattedTime = clock.format('HH:mm')
+   const amPm = clock.format('A')
+   // const [start, setStart] = useState(dayjs('2023-07-10'))
+   // const [due, setDue] = useState(dayjs('2023-07-15'))
+   // const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
 
    const dispatch = useDispatch()
    // const navigate = useNavigate()
@@ -116,6 +148,12 @@ export const InnerCard = ({
       closeCheckListModalHandler()
       setTitleCheckList('')
    }
+   const openEstimationHandler = () => {
+      setOpenEstimation((prev) => !prev)
+   }
+   const closeEstimationHandler = () => {
+      setOpenEstimation(false)
+   }
 
    return (
       <div>
@@ -149,8 +187,8 @@ export const InnerCard = ({
                         <div>
                            <Title>Start Date</Title>
                            <DateStart>
-                              Sep 9, 2022 at 12:51 PM
-                              <DownIcon style={{ marginLeft: '0.5rem' }} />
+                              {/* Sep 9, 2022 at 12:51 PM */}
+                              {formattedMonth} at {formattedTime} {amPm}
                            </DateStart>
                         </div>
                         <div>
@@ -196,7 +234,9 @@ export const InnerCard = ({
                            <AddItem>
                               <ClockIcon style={{ width: '16px' }} />
                               {showMore === false ? (
-                                 <AddText>Estimation</AddText>
+                                 <AddText onClick={openEstimationHandler}>
+                                    Estimation
+                                 </AddText>
                               ) : null}
                            </AddItem>
                            <AddItem>
@@ -217,6 +257,18 @@ export const InnerCard = ({
                                  <AddText>Checklist</AddText>
                               ) : null}
                            </AddItem>
+                           {openEstimation && (
+                              <>
+                                 <BackDrop onClick={closeEstimationHandler} />
+                                 <DataPickers
+                                    setSelectedDate={setSelectedDate}
+                                    selectedDate={selectedDate}
+                                    setСlock={setСlock}
+                                    clock={clock}
+                                 />
+                              </>
+                           )}
+
                            {openCheckListModal ? (
                               <>
                                  <BackDrop

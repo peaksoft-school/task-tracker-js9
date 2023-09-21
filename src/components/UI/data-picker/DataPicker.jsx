@@ -10,11 +10,16 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DateField } from '@mui/x-date-pickers/DateField'
 import { Button } from '../button/Button'
 
-export const DataPickers = () => {
-   const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
-   const [start, setStart] = useState(dayjs('2023-07-10'))
+export const DataPickers = ({
+   setSelectedDate,
+   selectedDate,
+   setСlock,
+   clock,
+}) => {
+   // const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
+   // const [start, setStart] = useState(dayjs('2023-07-10'))
    const [due, setDue] = useState(dayjs('2023-07-15'))
-   const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
+   // const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
 
    return (
       <MainDateContainer>
@@ -27,8 +32,8 @@ export const DataPickers = () => {
                <DateLabel htmlFor="startDate">Start Date</DateLabel>
                <StartDatePanel
                   name="startDate"
-                  value={start}
-                  onChange={(newValue) => setStart(newValue)}
+                  value={selectedDate}
+                  // onChange={(newValue) => setStart(newValue)}
                   format="DD/MM/YYYY"
                />
                <DateLabel htmlFor="dueDate">Due Date</DateLabel>
@@ -40,9 +45,9 @@ export const DataPickers = () => {
                      format="DD/MM/YYYY"
                   />
                   <TimePicker
-                     value={value}
-                     onChange={(newValue) => setValue(newValue)}
-                     format="HH:mm "
+                     value={clock}
+                     onChange={(newValue) => setСlock(newValue)}
+                     // format="HH:mm "
                   />
                </DateAndTimeContainer>
                <SelectContainer>
@@ -77,8 +82,13 @@ export const DataPickers = () => {
 }
 
 const MainDateContainer = MUIStyled('div')(() => ({
-   padding: '0 1rem 0  0',
+   padding: '0 1rem 1rem 0',
    width: '19.75rem',
+   position: 'absolute',
+   height: '41rem',
+   zIndex: '999',
+   top: '0',
+   backgroundColor: '#FFFF',
    borderRadius: '0.625rem',
    '.MuiInputBase-input.MuiOutlinedInput-input': {
       padding: ' 0.5rem 0.875rem 0.5rem 1rem',
