@@ -33,9 +33,7 @@ export const getCardbyId = createAsyncThunk(
    'card/getById',
    async ({ cardId }, { rejectWithValue }) => {
       try {
-         console.log(cardId, 'cardId in thunk ')
          const { data } = await axiosInstance.get(`/api/cards/${cardId}`)
-         console.log(data, 'data in thunk cardID')
          return data
       } catch (error) {
          return rejectWithValue(error.data.message)

@@ -140,8 +140,7 @@ export const LayoutMenu = () => {
                   style={{
                      display: 'flex',
                      gap: '0.5rem',
-                     marginLeft: '30px',
-                     // marginTop: '10px',
+                     marginLeft: '40px',
                   }}
                >
                   <span
@@ -192,7 +191,7 @@ const LayoutMenuContainer = styled('div')({
    justifyContent: 'space-between',
    width: 'auto',
    marginTop: '7rem',
-   // marginLeft: '2rem',
+   marginLeft: '2rem',
 })
 
 const ModalButton = styled(Button)(() => ({
@@ -270,7 +269,7 @@ const TitleBox = styled('div')({
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
-   gap: '1rem',
+   gap: '0.5rem',
    cursor: 'pointer',
 })
 
@@ -291,6 +290,8 @@ const InviteBox = styled('div')({
 
 const InviteText = styled('p')({
    color: '#2f1fe6',
+   fontWeight: 800,
+   fontSize: '1rem',
 })
 
 const CountSpan = styled('span')({

@@ -2,22 +2,32 @@ import { Tooltip, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { ExitIcon, PLUSICON } from '../../assets/icons'
-import { deleteLabel, getLabels } from '../../store/getLabels/labelsThunk'
+import {
+   deleteLabel,
+   getAllLabelByCardId,
+   getLabels,
+} from '../../store/getLabels/labelsThunk'
 import { labelActions } from '../../store/getLabels/labelsSlice'
 import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
 import { ModalUi } from '../UI/modal/Modal'
 
-export const Labels = () => {
+export const Labels = ({ cardId, labels }) => {
+   console.log('labels: ', labels)
    const dispatch = useDispatch()
-   const { label, labelDrop } = useSelector((state) => state.labels)
+   const { label, labelByCardId, labelDrop } = useSelector(
+      (state) => state.labels
+   )
+   console.log('label: ', label)
 
+   useEffect(() => {
+      dispatch(getAllLabelByCardId(cardId))
+   }, [dispatch])
    useEffect(() => {
       dispatch(getLabels())
    }, [dispatch])
 
    const onRemoveLabel = (id) => {
       dispatch(deleteLabel(id))
-      console.log(id)
    }
    const addLabelOpenModal = () => {
       dispatch(labelActions.openModal())
@@ -31,7 +41,7 @@ export const Labels = () => {
          <HeadingLabel>Labels</HeadingLabel>
 
          <AllContainer>
-            {label?.map((item) => (
+            {labelByCardId?.map((item) => (
                <ContainerLabels
                   style={{ backgroundColor: item.color }}
                   key={item.labelId}
@@ -52,7 +62,10 @@ export const Labels = () => {
             />
             {labelDrop && (
                <ModalUi open={labelDrop}>
-                  <AddedLabelToCard addLabelCloseModal={addLabelCloseModal} />
+                  <AddedLabelToCard
+                     addLabelCloseModal={addLabelCloseModal}
+                     cardId={cardId}
+                  />
                </ModalUi>
             )}
          </AllContainer>

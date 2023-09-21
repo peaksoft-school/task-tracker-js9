@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getLabels, postLabel } from './labelsThunk'
+import { getAllLabelByCardId, getLabels, postLabel } from './labelsThunk'
 
 const initialState = {
    label: [],
    labelDrop: false,
+   labelByCardId: [],
 }
 
 export const labelsSlice = createSlice({
@@ -25,6 +26,9 @@ export const labelsSlice = createSlice({
          .addCase(postLabel.fulfilled, (state, action) => {
             const { description, color } = action.payload
             state.label.push({ description, color })
+         })
+         .addCase(getAllLabelByCardId.fulfilled, (state, action) => {
+            state.labelByCardId = action.payload
          })
    },
 })

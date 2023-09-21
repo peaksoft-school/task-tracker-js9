@@ -14,6 +14,20 @@ export const getLabels = createAsyncThunk(
    }
 )
 
+export const getAllLabelByCardId = createAsyncThunk(
+   'labels/getLabelByCardId',
+   async (cardId, { rejectWithValue }) => {
+      try {
+         const { data } = await axiosInstance.get(
+            `api/labels/card-labels/${cardId}`
+         )
+         return data
+      } catch (error) {
+         return rejectWithValue(error.response.data)
+      }
+   }
+)
+
 export const postLabel = createAsyncThunk(
    'labels/post',
    async ({ description, color }, { rejectWithValue, dispatch }) => {
@@ -37,6 +51,20 @@ export const deleteLabel = createAsyncThunk(
          const response = await axiosInstance.delete(`/api/labels/${labelId}`)
          dispatch(getLabels())
          return response.data
+      } catch (error) {
+         return rejectWithValue(error.response.data)
+      }
+   }
+)
+
+export const putLabels = createAsyncThunk(
+   'labels/put',
+   async (payload, { rejectWithValue, dispatch }) => {
+      try {
+         await axiosInstance.put(
+            `/api/labels/add-label-to-card/${payload.cardId}/54`
+         )
+         dispatch(getAllLabelByCardId(payload.cardId))
       } catch (error) {
          return rejectWithValue(error.response.data)
       }

@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import { IconButton } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { CloseIcon, EditIcon } from '../../assets/icons'
-import { postLabel } from '../../store/getLabels/labelsThunk'
+import { postLabel, putLabels } from '../../store/getLabels/labelsThunk'
 
 const Labels = [
    {
@@ -12,19 +13,19 @@ const Labels = [
    },
    {
       backgroundColor: 'rgba(235, 90, 70, 1)',
-      text: 'In progress',
+      text: 'Kick back',
    },
    {
       backgroundColor: 'rgba(242, 214, 0, 1)',
-      text: 'Done',
+      text: 'In progress',
    },
    {
       backgroundColor: 'rgba(0, 121, 191, 1)',
-      text: 'Done',
+      text: 'Final rewiev',
    },
 ]
 
-export const AddedLabelToCard = ({ addLabelCloseModal }) => {
+export const AddedLabelToCard = ({ addLabelCloseModal, cardId }) => {
    const [editState, setEditState] = useState(Labels.map(() => false))
    const [taskText, setTaskText] = useState(Labels.map((color) => color.text))
 
@@ -36,13 +37,15 @@ export const AddedLabelToCard = ({ addLabelCloseModal }) => {
       })
    }
 
-   const onTaskClick = async (idx) => {
-      await dispatch(
-         postLabel({
-            description: taskText[idx],
-            color: Labels[idx].backgroundColor,
-         })
-      )
+   const onTaskClick = async (labelId) => {
+      dispatch(putLabels({ cardId, labelId }))
+
+      // dispatch(
+      //    postLabel({
+      //       description: taskText[idx],
+      //       color: Labels[idx].backgroundColor,
+      //    })
+      // )
       addLabelCloseModal()
    }
 
@@ -100,7 +103,7 @@ export const AddedLabelToCard = ({ addLabelCloseModal }) => {
                      />
                   ) : (
                      <Task
-                        onClick={() => onTaskClick(idx)}
+                        onClick={() => onTaskClick(color.labelId)}
                         key={color.id}
                         style={color}
                      >

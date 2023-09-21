@@ -144,7 +144,7 @@ export const InnerCard = ({
                </Wrapper>
                <CardWrapper>
                   <CardContainerInner>
-                     <Labels labels={cardData.labelResponses} />
+                     <Labels labels={cardData.labelResponses} cardId={cardId} />
                      <DataContainer>
                         <div>
                            <Title>Start Date</Title>
