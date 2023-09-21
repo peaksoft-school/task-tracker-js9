@@ -13,6 +13,9 @@ import { labelsSlice } from './getLabels/labelsSlice'
 import { partSlice } from './participants/partSlice'
 import { columnsSlice } from './column/columnsSlise'
 import { archiveSlice } from './getArchive/arichiveSlice'
+import { cardsSlice } from './cards/cardsSlice'
+import { searchSlice } from './globalSearch/searchSlice'
+import { notificationSlice } from './notification/notificationSlice'
 
 export const store = configureStore({
    reducer: {
@@ -29,5 +32,8 @@ export const store = configureStore({
       [partSlice.name]: partSlice.reducer,
       [archiveSlice.name]: archiveSlice.reducer,
       [columnsSlice.name]: columnsSlice.reducer,
+      [cardsSlice.name]: cardsSlice.reducer,
+      [searchSlice.name]: searchSlice.reducer,
+      [notificationSlice.name]: notificationSlice.reducer,
    },
 })

@@ -25,8 +25,8 @@ export const Favourite = () => {
 
    const deleteHandlerBoard = async (id) => {
       try {
-         await dispatch(toggleFavoriteaBoard(id))
-         await dispatch(getFavourites())
+         dispatch(toggleFavoriteaBoard(id))
+         dispatch(getFavourites())
 
          navigate('/mainPage')
       } catch (error) {
@@ -69,7 +69,7 @@ export const Favourite = () => {
                <TextContainer onClick={handleStarClickWorkSpace}>
                   <div>
                      <StyledTitle>{item.name}</StyledTitle>
-                     <StyledText>Workcpase</StyledText>
+                     <StyledText>Workspace</StyledText>
                   </div>
                </TextContainer>
                <IconButton

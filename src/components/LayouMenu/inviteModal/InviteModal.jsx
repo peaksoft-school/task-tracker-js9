@@ -7,21 +7,24 @@ import { ExitIcon, LeftIcon } from '../../../assets/icons'
 import { Button } from '../../UI/button/Button'
 import { createInviteMember } from '../../../store/inviteMember/inviteThunk'
 
-export const InviteNewParticipant = ({ openInviteNewModal }) => {
+export const InviteNewParticipant = ({
+   openInviteNewModal,
+   openModalHandler,
+}) => {
    const [selectedRole, setSelectedRole] = useState('')
    const [email, setEmail] = useState('')
    const dispatch = useDispatch()
-   const { boardId } = useParams()
+   const { boardId, id } = useParams()
 
    const createNewMember = () => {
       const newdata = {
          boardId,
          email,
          role: selectedRole === 'ADMIN' ? 'ADMIN' : 'MEMBER',
-         link: 'http://localhost:3000/signup',
+         link: `http://localhost:3000/mainPage/${id}/boards/${boardId}/board`,
       }
 
-      dispatch(createInviteMember({ newdata, boardId }))
+      dispatch(createInviteMember({ newdata, boardId, openInviteNewModal }))
    }
    return (
       <Container>
@@ -31,8 +34,8 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
                   <LeftIcon fill="gray" onClick={openInviteNewModal} />
                </IconButton>
                <p>Invite a new participant</p>
-               <IconButton>
-                  <ExitIcon fill="gray" onClick={openInviteNewModal} />
+               <IconButton onClick={openModalHandler}>
+                  <ExitIcon fill="gray" />
                </IconButton>
             </InviteHeader>
             <InputEmail
@@ -62,7 +65,7 @@ export const InviteNewParticipant = ({ openInviteNewModal }) => {
                </MemberBox>
             </MembersCont>
             <ButtonsCont>
-               <ButtonDelete disabled={!email}>Delete</ButtonDelete>
+               <ButtonDelete onClick={openInviteNewModal}>Cancel</ButtonDelete>
                <ButtonCreate onClick={createNewMember}>Create</ButtonCreate>
             </ButtonsCont>
          </InviteParticipantModal>
@@ -141,8 +144,9 @@ const ButtonDelete = styled(Button)({
    alignItems: 'center',
    fontSize: '0.8rem',
    width: '4.8125rem',
+   backgroundColor: '#948f8f',
    '&:hover': {
-      backgroundColor: '#005688',
+      backgroundColor: '#737373',
    },
 })
 

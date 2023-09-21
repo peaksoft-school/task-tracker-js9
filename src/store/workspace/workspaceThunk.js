@@ -24,7 +24,6 @@ export const getWorkspacebyId = createAsyncThunk(
    'workspaces/getById',
    async (payload, { rejectWithValue }) => {
       const { workspaceData, navigate, path } = payload
-
       try {
          const { data } = await getWorkspacesById(workspaceData.workSpaceId)
          if (navigate) {

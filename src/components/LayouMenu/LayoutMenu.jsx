@@ -136,8 +136,19 @@ export const LayoutMenu = () => {
                   </TitleBox>
                )}
 
-               <div>
-                  <span>Columns:</span>
+               <div
+                  style={{
+                     display: 'flex',
+                     gap: '0.5rem',
+                     marginLeft: '30px',
+                     // marginTop: '10px',
+                  }}
+               >
+                  <span
+                     style={{ color: 'white', textShadow: '0  0 10px #fff' }}
+                  >
+                     Columns:
+                  </span>
                   <CountSpan>{columnsData.length}</CountSpan>
                </div>
             </div>
@@ -180,7 +191,8 @@ const LayoutMenuContainer = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
    width: 'auto',
-   marginTop: '6rem',
+   marginTop: '7rem',
+   // marginLeft: '2rem',
 })
 
 const ModalButton = styled(Button)(() => ({

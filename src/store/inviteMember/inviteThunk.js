@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
+import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 
 export const allinviteMember = createAsyncThunk(
    'inviteMember/inviteGet',
@@ -17,15 +18,29 @@ export const allinviteMember = createAsyncThunk(
 
 export const createInviteMember = createAsyncThunk(
    'inviteMember/invitePost',
-   async ({ newdata, boardId }, { rejectWithValue, dispatch }) => {
+   async (
+      { newdata, boardId, openInviteNewModal },
+      { rejectWithValue, dispatch }
+   ) => {
       try {
          const { data } = await axiosInstance.post(
             `/api/members/board-invite`,
             newdata
          )
          dispatch(allinviteMember(boardId))
+         dispatch(openInviteNewModal())
+         showSnackbar({
+            message: 'Invited member',
+            severity: 'success',
+         })
+
          return data
       } catch (error) {
+         console.log('error: ', error.response.data.message)
+         showSnackbar({
+            message: error.response.data.message,
+            severity: 'error',
+         })
          return rejectWithValue(error)
       }
    }

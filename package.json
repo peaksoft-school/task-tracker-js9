@@ -17,6 +17,7 @@
       "@testing-library/user-event": "^13.5.0",
       "axios": "^1.4.0",
       "components": "^0.1.0",
+      "date-fns": "^2.30.0",
       "dayjs": "^1.11.9",
       "firebase": "^10.2.0",
       "formik": "^2.4.2",
@@ -37,6 +38,7 @@
       "redux": "^4.2.1",
       "styled": "^1.0.0",
       "uninstall": "^0.0.0",
+      "use-debounce": "^9.0.4",
       "web-vitals": "^2.1.4",
       "yup": "^1.2.0"
    },
