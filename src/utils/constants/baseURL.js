@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://tasktracker.peaksoftprojects.com'
+export const BASE_URL = 'https://jsonplaceholder.typicode.com'

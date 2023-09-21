@@ -64,6 +64,8 @@ export const addColumnsToArchive = createAsyncThunk(
             `api/column/archive/${data.columnId}`
          )
          dispatch(getColumns(data.boardId))
+         console.log('data: ', response)
+
          return response.data
       } catch (error) {
          return rejectWithValue(error.data.message)
