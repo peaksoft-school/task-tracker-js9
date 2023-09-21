@@ -15,3 +15,21 @@ export const getArchive = createAsyncThunk(
       }
    }
 )
+
+export const getCardArchve = createAsyncThunk(
+   'archiveData/put',
+   async (cardId, { rejectWithValue }) => {
+      console.log('cardId: ', cardId)
+
+      try {
+         const response = await axiosInstance.put(
+            `/api/cards/archive/${cardId}`
+         )
+         console.log('TRUE ', response.data)
+         return response.data
+      } catch (error) {
+         console.log('ERROOR: ', error)
+         return rejectWithValue(error)
+      }
+   }
+)

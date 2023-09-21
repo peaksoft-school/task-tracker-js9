@@ -24,6 +24,7 @@ import { CommentSection } from '../UI/comments/CommentsSection'
 import { Button } from '../UI/button/Button'
 import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 import { ModalUi } from '../UI/modal/Modal'
+import { getCardArchve } from '../../store/getArchive/archiveThunk'
 
 export const InnerCard = ({
    isInnerCardOpen,
@@ -56,6 +57,10 @@ export const InnerCard = ({
    //    navigate(`/mainPage/${id}/boards/${boardId}/board`)
    // }
    // console.log(cardData, 'cardData in inner card')
+
+   const archiveCard = () => {
+      dispatch(getCardArchve(cardId))
+   }
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -264,7 +269,9 @@ export const InnerCard = ({
                            <AddItem>
                               <ArchiveIcon />
                               {showMore === false ? (
-                                 <AddText>Archive</AddText>
+                                 <AddText onClick={archiveCard}>
+                                    Archive
+                                 </AddText>
                               ) : null}
                            </AddItem>
                         </ActionsItem>

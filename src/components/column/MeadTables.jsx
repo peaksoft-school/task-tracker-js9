@@ -44,7 +44,9 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
             <p>Delete all cards in this list</p>
          </CardText>
          <CardText>
-            <p>Archive all cards in this list</p>
+            <p onClick={addtoArchiveteHandler}>
+               Archive all cards in this list
+            </p>
          </CardText>
          <Line />
          <CardText>
