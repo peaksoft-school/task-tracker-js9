@@ -51,15 +51,13 @@ export const boards = [
       id: 9,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://images.unsplash.com/photo-1688383213635-9bc2fc25103d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      background: 'https://cdn.wallpapersafari.com/55/39/s7yeYk.jpg',
    },
    {
       id: 10,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://images.unsplash.com/photo-1686740172488-6a680069affb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      background: 'https://wallpaperaccess.com/full/360439.jpg',
    },
    {
       id: 11,
@@ -80,21 +78,20 @@ export const boards = [
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://images.unsplash.com/photo-1688367785293-6d75934ba847?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1075&q=80',
+         'https://wallpapers.com/images/featured/nature-2ygv7ssy2k0lxlzu.jpg',
    },
    {
       id: 14,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://images.unsplash.com/photo-1688291091364-9658c26c1749?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1032&q=80',
+         'https://images.hdqwalls.com/download/beautiful-landscape-nature-scenery-1d-1360x768.jpg',
    },
    {
       id: 15,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://images.unsplash.com/photo-1689442529342-3f1c7513d9ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      background: 'https://wallpaperaccess.com/full/1688605.jpg',
    },
    {
       id: 16,
@@ -115,21 +112,19 @@ export const boards = [
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://images.unsplash.com/photo-1687991496856-0485cd320b37?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+         'https://wallpaperboat.com/wp-content/uploads/2019/09/a-photo-of-the-moon-with-a-beautiful-sky.jpg',
    },
    {
       id: 19,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://images.unsplash.com/photo-1689443111384-1cf214df988a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      background: 'https://wallpapercave.com/wp/wp2737825.jpg',
    },
    {
       id: 20,
       title: 'Boardname',
       isFavourite: false,
-      background:
-         'https://images.unsplash.com/photo-1688494930045-328d0f95efe9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+      background: 'https://wallpaperaccess.com/full/1131217.jpg',
    },
 ]
 

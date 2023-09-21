@@ -46,6 +46,10 @@ export const SideHead = ({
    const { id } = useParams()
    const navigate = useNavigate()
 
+   const goBack = () => {
+      window.history.back()
+   }
+
    const dispatch = useDispatch()
 
    const getWorkspace = async () => {
@@ -102,6 +106,7 @@ export const SideHead = ({
                         <AvatarStyledHeader
                            sx={{ bgcolor: '#0079BF' }}
                            alt="photo"
+                           onClick={() => goBack()}
                         >
                            <p>
                               <p style={{ fontSize: '1.3rem' }}>
@@ -228,6 +233,12 @@ const ActiveListItem = styled(ListItem)(({ open }) => ({
    '&.MuiListItem-root.Mui-selected': {
       backgroundColor: 'rgba(58, 104, 131, 0.60)',
       color: 'white',
+   },
+   '& .css-9q64xt-MuiButtonBase-root-MuiListItemButton-root': {
+      '&:hover': {
+         borderRadius: '0rem 1.5rem 1.5rem 0rem',
+         height: '100%',
+      },
    },
 }))
 const MenuItemStyles = styled('div')(() => ({

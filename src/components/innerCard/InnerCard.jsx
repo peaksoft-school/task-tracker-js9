@@ -67,14 +67,23 @@ export const InnerCard = ({
    const [titleCheckList, setTitleCheckList] = useState('')
 
    const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
+   const [due, setDue] = useState(dayjs('2023-07-15'))
+
    console.log('selectedDate: ', selectedDate)
    const formattedMonth = `${getMonthName(selectedDate.$M)}
     ${selectedDate.$D},${selectedDate.$y}`
+
+   const formattedMonthDue = `${getMonthName(due.$M)}
+    ${due.$D},${due.$y}`
    // const startDate = `${selectedDate.$D},${selectedDate.$y}`
 
    const [clock, setСlock] = useState(dayjs('2022-04-17T15:30'))
    const formattedTime = clock.format('HH:mm')
    const amPm = clock.format('A')
+
+   const currentHour = new Date().getHours()
+   const currentMinute = new Date().getMinutes()
+
    // const [start, setStart] = useState(dayjs('2023-07-10'))
    // const [due, setDue] = useState(dayjs('2023-07-15'))
    // const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
@@ -187,15 +196,14 @@ export const InnerCard = ({
                         <div>
                            <Title>Start Date</Title>
                            <DateStart>
-                              {/* Sep 9, 2022 at 12:51 PM */}
-                              {formattedMonth} at {formattedTime} {amPm}
+                              {formattedMonth} at {currentHour}:{currentMinute}
+                              {amPm}
                            </DateStart>
                         </div>
                         <div>
                            <Title>Due Date</Title>
                            <DateStart>
-                              Sep 9, 2022 at 12:51 PM
-                              <DownIcon style={{ marginLeft: '0.5rem' }} />
+                              {formattedMonthDue} at {formattedTime} {amPm}
                            </DateStart>
                         </div>
                         <div>
@@ -265,6 +273,8 @@ export const InnerCard = ({
                                     selectedDate={selectedDate}
                                     setСlock={setСlock}
                                     clock={clock}
+                                    setDue={setDue}
+                                    due={due}
                                  />
                               </>
                            )}

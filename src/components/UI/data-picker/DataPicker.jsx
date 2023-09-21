@@ -1,7 +1,5 @@
-import dayjs from 'dayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useState } from 'react'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
@@ -15,10 +13,12 @@ export const DataPickers = ({
    selectedDate,
    setСlock,
    clock,
+   due,
+   setDue,
 }) => {
    // const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
    // const [start, setStart] = useState(dayjs('2023-07-10'))
-   const [due, setDue] = useState(dayjs('2023-07-15'))
+   // const [due, setDue] = useState(dayjs('2023-07-15'))
    // const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
 
    return (

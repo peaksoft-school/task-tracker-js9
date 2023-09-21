@@ -14,6 +14,7 @@ import { columnsSlice } from './column/columnsSlise'
 import { partSlice } from './participants/partSlice'
 import { cardsSlice } from './cards/cardsSlice'
 import { searchSlice } from './globalSearch/searchSlice'
+import { notificationSlice } from './notification/notificationSlice'
 
 export const store = configureStore({
    reducer: {
@@ -31,5 +32,6 @@ export const store = configureStore({
       [partSlice.name]: partSlice.reducer,
       [cardsSlice.name]: cardsSlice.reducer,
       [searchSlice.name]: searchSlice.reducer,
+      [notificationSlice.name]: notificationSlice.reducer,
    },
 })

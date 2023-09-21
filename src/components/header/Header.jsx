@@ -25,6 +25,7 @@ import { ModalUi } from '../UI/modal/Modal'
 import { searchRequest } from '../../store/globalSearch/searchThunk'
 import { GlobalSearch } from './GlobalSearch'
 import { SearchHistory } from './SearchHistory'
+import { Notification } from './Notification'
 
 export const Headers = ({ data }) => {
    const [showModal, setShowModal] = useState(false)
@@ -32,6 +33,7 @@ export const Headers = ({ data }) => {
    const [openProfile, setOpenProfile] = useState(false)
    const [searchValue] = useDebounce(search, 100)
    const [showAdditionalComponent, setShowAdditionalComponent] = useState(false)
+   const [showNotifications, setShowNotifications] = useState(false)
 
    const { favoriteData } = useSelector((state) => state.favorite)
    const { globalSearch } = useSelector((state) => state.search)
@@ -84,14 +86,16 @@ export const Headers = ({ data }) => {
          })
    }
 
-   // Search integration
-
    const searchHandler = (e) => {
       setSearch(e.target.value)
    }
    const handleSubmit = (e) => {
       e.preventDefault()
       dispatch(searchRequest(search))
+   }
+
+   const notificationHandler = () => {
+      setShowNotifications((prev) => !prev)
    }
 
    return (
@@ -155,9 +159,12 @@ export const Headers = ({ data }) => {
                      <GlobalSearch globalSearch={globalSearch} />
                   )}
                </div>
-               <IconButton>
+               <IconButton onClick={notificationHandler}>
                   <NotificationIcon src={NotificationIcon} alt="notification" />
                </IconButton>
+               {showNotifications && (
+                  <Notification notificationHandler={notificationHandler} />
+               )}
                <WrapperTexts>
                   <StyledAvatar onClick={openProfileHandler}>
                      {data}
