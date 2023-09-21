@@ -3,10 +3,14 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
-import { styled as MUIStyled } from '@mui/material/styles'
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DateField } from '@mui/x-date-pickers/DateField'
+import { styled as MUIStyled } from '@mui/material/styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { Button } from '../button/Button'
+import { estimationPostRequest } from '../../../store/dataPicjers/estimationThunk'
+import { toggleUpdateMode } from '../../../store/dataPicjers/estimationSlice'
+// import { selectButtonText } from '../../../store/dataPicjers/estimationSlice'
 
 export const DataPickers = ({
    setSelectedDate,
@@ -15,11 +19,35 @@ export const DataPickers = ({
    clock,
    due,
    setDue,
+   cardId,
+   currentHour,
+   currentMinute,
 }) => {
    // const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
    // const [start, setStart] = useState(dayjs('2023-07-10'))
    // const [due, setDue] = useState(dayjs('2023-07-15'))
    // const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
+
+   const dispatch = useDispatch()
+
+   const { isUpdate } = useSelector((state) => state.estimation)
+
+   const AddedDataHandler = () => {
+      const data = {
+         cardId,
+         reminder: 'string',
+         startDate: selectedDate.toISOString(),
+         dateOfFinish: due.toISOString(),
+         startTime: currentHour,
+         currentMinute,
+         finishTime: clock.toISOString(),
+      }
+
+      dispatch(estimationPostRequest(data)).then(() => {
+         dispatch(toggleUpdateMode())
+      })
+      console.log('data: ', data)
+   }
 
    return (
       <MainDateContainer>
@@ -74,7 +102,10 @@ export const DataPickers = ({
                      <MenuItem value="60min">1 hour before</MenuItem>
                   </Select>
                </SelectContainer>
-               <StyledButton>Create a new template</StyledButton>
+
+               <StyledButton onClick={AddedDataHandler}>
+                  {isUpdate ? 'Update' : 'Create'} a new template
+               </StyledButton>
             </DateContainer>
          </LocalizationProvider>
       </MainDateContainer>

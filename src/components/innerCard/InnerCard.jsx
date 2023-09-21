@@ -275,6 +275,9 @@ export const InnerCard = ({
                                     clock={clock}
                                     setDue={setDue}
                                     due={due}
+                                    currentHour={currentHour}
+                                    currentMinute={currentMinute}
+                                    cardId={cardId}
                                  />
                               </>
                            )}

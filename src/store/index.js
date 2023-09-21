@@ -15,6 +15,7 @@ import { partSlice } from './participants/partSlice'
 import { cardsSlice } from './cards/cardsSlice'
 import { searchSlice } from './globalSearch/searchSlice'
 import { notificationSlice } from './notification/notificationSlice'
+import { estimationSlice } from './dataPicjers/estimationSlice'
 
 export const store = configureStore({
    reducer: {
@@ -33,5 +34,6 @@ export const store = configureStore({
       [cardsSlice.name]: cardsSlice.reducer,
       [searchSlice.name]: searchSlice.reducer,
       [notificationSlice.name]: notificationSlice.reducer,
+      [estimationSlice.name]: estimationSlice.reducer,
    },
 })
