@@ -62,7 +62,7 @@ export const putLabels = createAsyncThunk(
    async (payload, { rejectWithValue, dispatch }) => {
       try {
          await axiosInstance.put(
-            `/api/labels/add-label-to-card/${payload.cardId}/54`
+            `/api/labels/add-label-to-card/${payload.cardId}/58`
          )
          dispatch(getAllLabelByCardId(payload.cardId))
       } catch (error) {

@@ -9,8 +9,6 @@ export const CheckList = ({ title }) => {
    const [showModal, setShowModal] = useState(false)
    const { carId } = useParams()
 
-   console.log(carId)
-
    const dispatch = useDispatch()
 
    const openModal = () => {

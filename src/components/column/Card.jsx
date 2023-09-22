@@ -184,6 +184,7 @@ const ParentTitle = styled('div')(() => ({
    justifyContent: 'space-between',
    padding: '0 0.5rem 0 0.5rem',
    marginBottom: '0.89rem',
+   cursor: 'pointer',
 }))
 
 const Title = styled('p')(() => ({
@@ -287,15 +288,17 @@ const InputColumn = styled(TextareaAutosize)(() => ({
    overflow: 'hidden',
    zIndex: '44',
    height: '10vh',
-   padding: '0.2rem',
-   margin: '0 0 0.4rem 0',
-   // position: 'relative',
+   // padding: '0.09rem 0 0 0 ',
+   // margin: '0 0 0.4rem 0',
+   fontFamily: 'CarePro',
+   fontWeight: 500,
+   fontSize: '1rem',
 }))
 
 const BackDrop = styled('div')({
-   position: 'absolute',
+   position: 'fixed',
    width: '100%',
-   height: '50vh',
+   height: '100%',
    top: '0',
    left: '0',
 })

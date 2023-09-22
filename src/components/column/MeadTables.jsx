@@ -27,6 +27,7 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
 
    return (
       <Container>
+         <Backdrop onClick={() => setOpneModal(false)} />
          <TextActions>Actions</TextActions>
          <CardText>
             <TextAddCard>Add Card</TextAddCard>
@@ -49,7 +50,14 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
       </Container>
    )
 }
-
+const Backdrop = styled('div')(() => ({
+   position: 'fixed',
+   width: '100%',
+   height: '100%',
+   left: '0',
+   top: '0',
+   zIndex: -2,
+}))
 const Container = styled('div')(() => ({
    padding: '1rem 0rem 0.25rem',
    borderRadius: ' 0.625rem',
