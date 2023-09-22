@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { styled, Checkbox, IconButton } from '@mui/material'
 import {
    deleteItemInItems,
@@ -10,15 +11,24 @@ import { CheckListModal } from '../checkListModal/ChecklistModal'
 
 const CheckListMainItem = ({ item }) => {
    const dispatch = useDispatch()
+   const { carId } = useParams()
 
    const [showModal, setShowModal] = useState(false)
 
    const checkboxHandler = (id) => {
-      dispatch(putItemToItems(id))
+      const data = {
+         id,
+         carId,
+      }
+      dispatch(putItemToItems(data))
    }
 
    const handleDeleteItem = () => {
-      dispatch(deleteItemInItems(item.itemId))
+      const data = {
+         itemId: item.itemId,
+         carId,
+      }
+      dispatch(deleteItemInItems(data))
    }
 
    const openModal = () => {
