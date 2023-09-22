@@ -1,11 +1,14 @@
-import { styled } from '@mui/system'
+import { styled, keyframes } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+// import WarningIcon from '@mui/icons-material/Warning'
 import { useNavigate, useParams } from 'react-router-dom'
+// import { keyframes } from '@mui/system'
 import { ModalUi } from '../UI/modal/Modal'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
 import { deleteWorkspaceById } from '../../store/workspace/workspaceThunk'
+import { WarningIcon } from '../../assets/icons'
 
 export const ModalSideBar = ({
    showModal,
@@ -54,10 +57,12 @@ export const ModalSideBar = ({
          ) : null}
          {showSecondModal ? (
             <StyleModalUi open={showSecondModal} onClose={openDeleteModal}>
-               <SettingStyle>Delete workspace</SettingStyle>
                <ClarifyStyled>
                   Are you sure to delete this workspace?
                </ClarifyStyled>
+               <WrapperWorningIcon>
+                  <WarningIconStyle show={showSecondModal} />
+               </WrapperWorningIcon>
                <ButtonContainerSecond>
                   <CanselButton onClick={openDeleteModal}>Cancel</CanselButton>
                   <DeleteButton onClick={deleteWorkspacesHandler}>
@@ -69,13 +74,37 @@ export const ModalSideBar = ({
       </div>
    )
 }
+const fadeInOut = keyframes`
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`
+
+const WarningIconStyle = styled(WarningIcon)(({ show }) => ({
+   width: '4rem',
+   height: '4rem',
+   marginTop: '0.5rem',
+   animation: show ? `${fadeInOut} 2s infinite` : 'none',
+}))
+const WrapperWorningIcon = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+   width: '100%',
+   height: '100%',
+}))
 
 const SettingStyle = styled('span')(() => ({
-   fontSize: '1rem',
    color: '#000',
    display: 'flex',
    justifyContent: 'center',
-   marginBottom: '1rem',
+   fontSize: '1.3rem',
+   marginBottom: '0.5rem',
 }))
 const ButtonContainer = styled('div')(() => ({
    display: 'flex',
@@ -85,8 +114,8 @@ const ButtonContainer = styled('div')(() => ({
 const ButtonContainerSecond = styled('div')(() => ({
    display: 'flex',
    justifyContent: 'end',
-   marginTop: '2.5rem',
    gap: '1rem',
+   marginTop: '1rem',
 }))
 const ClarifyStyle = styled('span')(() => ({
    fontSize: '1rem',
@@ -98,7 +127,7 @@ const ClarifyStyle = styled('span')(() => ({
 }))
 const ClarifyStyled = styled('span')(() => ({
    fontSize: '1rem',
-   color: '#919191',
+   color: '#111',
    display: 'flex',
    justifyContent: 'center',
    marginTop: '1rem',
@@ -111,20 +140,30 @@ const StyleModalUi = styled(ModalUi)(() => ({
    background: '#FFF',
 }))
 const CanselButton = styled(Button)(() => ({
-   height: '2.125',
+   height: '2.125rem',
    width: '4.885rem',
    bordeRadius: '1.5rem',
    fontFamily: 'CarePro',
    backgroundColor: '#F0F0F0',
    textTransform: 'capitalize',
    color: '#919191',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   '&:hover': {
+      backgroundColor: '#b6b6b6',
+      color: 'white',
+   },
 }))
 const SaveButton = styled(Button)(() => ({
-   height: '2.125',
+   height: '2.125rem',
    width: '4rem',
    bordeRadius: '1.5rem',
    fontFamily: 'CarePro',
    textTransform: 'capitalize',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
    '&:hover': {
       backgroundColor: '#005688',
       color: '#ffff',
@@ -134,10 +173,13 @@ const SaveButton = styled(Button)(() => ({
    },
 }))
 const DeleteButton = styled(Button)(() => ({
-   height: '2.125',
+   height: '2.125rem',
    width: '4.75rem',
    bordeRadius: '1.5rem',
    fontFamily: 'CarePro',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
    textTransform: 'capitalize',
    backgroundColor: '#D91212',
    '&:hover': {

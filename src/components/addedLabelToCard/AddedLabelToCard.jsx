@@ -4,6 +4,7 @@ import { styled as muiStyled } from '@mui/material/styles'
 import { IconButton } from '@mui/material'
 import { CloseIcon } from '../../assets/icons'
 import { axiosInstance } from '../../config/axiosInstance'
+import { showSnackbar } from '../UI/snackbar/Snackbar'
 
 export const AddedLabelToCard = ({
    addLabelCloseModal,
@@ -31,7 +32,15 @@ export const AddedLabelToCard = ({
          )
          addLabelCloseModal()
          reloadedLabels()
+         showSnackbar({
+            message: 'Successfully added labels',
+            severity: 'success',
+         })
       } catch (error) {
+         showSnackbar({
+            message: 'Already have this color :(',
+            severity: 'error',
+         })
          console.log(error)
       }
    }

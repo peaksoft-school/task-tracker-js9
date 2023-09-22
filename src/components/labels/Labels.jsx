@@ -7,6 +7,7 @@ import { labelActions } from '../../store/getLabels/labelsSlice'
 import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
 import { ModalUi } from '../UI/modal/Modal'
 import { axiosInstance } from '../../config/axiosInstance'
+import { showSnackbar } from '../UI/snackbar/Snackbar'
 
 export const Labels = ({ cardId }) => {
    const dispatch = useDispatch()
@@ -26,13 +27,21 @@ export const Labels = ({ cardId }) => {
 
    const deleteLabelInCard = async (id) => {
       try {
+         // eslint-disable-next-line no-unused-vars
          const response = await axiosInstance.delete(
             `/api/labels/${id}/${cardId}`
          )
          addLabelCloseModal()
          dispatch(getAllLabelByCardId(cardId))
-         console.log(response)
+         showSnackbar({
+            message: 'Successfully deleted label ',
+            severity: 'success',
+         })
       } catch (error) {
+         showSnackbar({
+            message: 'ERROR',
+            severity: 'error',
+         })
          console.log(error)
       }
    }

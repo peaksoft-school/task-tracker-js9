@@ -79,6 +79,7 @@ export const addFavorite = createAsyncThunk(
       try {
          await axiosInstance.post(`/api/favorites/board/${boardId}`)
          dispatch(fetchBoards(workSpaceId))
+         dispatch(getBoardById(boardId))
       } catch (error) {
          return rejectWithValue(error)
       }
@@ -89,9 +90,7 @@ export const updateBord = createAsyncThunk(
    'board/updateBord',
    async ({ data, boardId }, { rejectWithValue, dispatch }) => {
       console.log('data: ', data)
-      // if (!data.backGround) {
-      //    delete data.backGround
-      // }
+
       try {
          await axiosInstance.put(`/api/boards`, data)
          dispatch(getBoardById(boardId))

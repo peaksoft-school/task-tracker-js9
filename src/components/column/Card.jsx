@@ -74,6 +74,7 @@ export const Card = ({ column }) => {
          changeTitleHandler(column.columnId)
       }
    }
+
    return (
       <div key={column.id}>
          {editTitle ? (
@@ -119,7 +120,10 @@ export const Card = ({ column }) => {
 
          <ParentColumnCard>
             <ScrollableContainer>
-               <DetailCard cardResponses={column.cardResponses} />
+               <DetailCard
+                  columnId={column.columnId}
+                  cardResponses={column.cardResponses}
+               />
             </ScrollableContainer>
 
             {openModalInputAddCard ? (
@@ -191,8 +195,9 @@ const Title = styled('p')(() => ({
    color: '#000',
    width: '90%',
    fontStyle: 'normal',
-   fontWeight: 500,
+   fontWeight: 600,
    lineHeight: 'normal',
+   marginLeft: '0.2rem',
    wordWrap: 'break-word',
 }))
 const StyleMeadIcon = styled('div')(() => ({
@@ -288,10 +293,9 @@ const InputColumn = styled(TextareaAutosize)(() => ({
    overflow: 'hidden',
    zIndex: '44',
    height: '10vh',
-   // padding: '0.09rem 0 0 0 ',
-   // margin: '0 0 0.4rem 0',
+   margin: '0 0 0.4rem 0.2rem',
    fontFamily: 'CarePro',
-   fontWeight: 500,
+   fontWeight: 600,
    fontSize: '1rem',
 }))
 

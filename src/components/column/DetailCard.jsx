@@ -36,12 +36,10 @@ export const DetailCard = ({ cardResponses }) => {
       dispatch(
          getCardbyId({
             cardId: card.cardId,
-            navigate,
-            id,
-            boardId,
          })
       )
    }
+
    const handleClose = () => {
       setOpenModal(!openModal)
    }
@@ -54,7 +52,7 @@ export const DetailCard = ({ cardResponses }) => {
    const deleteLabelText = () => {
       setOpenLabelText(false)
    }
-   console.log(cardResponses)
+   console.log('cardResponses', cardResponses)
 
    return (
       <Cont>

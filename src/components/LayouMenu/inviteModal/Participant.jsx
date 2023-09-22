@@ -63,8 +63,8 @@ export const Participant = ({
             <ParticipantHeader>
                <p>{}</p>
                <p>Participant</p>
-               <IconButton>
-                  <ExitIcon fill="gray" onClick={openModalHandler} />
+               <IconButton onClick={openModalHandler}>
+                  <ExitIcon fill="gray" />
                </IconButton>
             </ParticipantHeader>
             <InputBox>
