@@ -26,8 +26,9 @@ import { searchRequest } from '../../store/globalSearch/searchThunk'
 import { GlobalSearch } from './GlobalSearch'
 import { SearchHistory } from './SearchHistory'
 import { Notification } from './Notification'
+import { profileGetRequest } from '../../store/profile/ProfileThunk'
 
-export const Headers = ({ data }) => {
+export const Headers = () => {
    const [showModal, setShowModal] = useState(false)
    const [search, setSearch] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
@@ -37,6 +38,8 @@ export const Headers = ({ data }) => {
 
    const { favoriteData } = useSelector((state) => state.favorite)
    const { globalSearch } = useSelector((state) => state.search)
+   const { item } = useSelector((state) => state.profile)
+   console.log('avatarLink: ', item)
 
    const boardLength = favoriteData.data?.boardResponses?.length || 0
    const workSpaceLength = favoriteData.data?.workSpaceResponses?.length || 0
@@ -46,6 +49,10 @@ export const Headers = ({ data }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const location = useLocation()
+
+   useEffect(() => {
+      dispatch(profileGetRequest())
+   }, [])
 
    useEffect(() => {
       if (sumLength > 0) {
@@ -71,7 +78,7 @@ export const Headers = ({ data }) => {
       event.stopPropagation()
    }
    const logOutHandler = () => {
-      dispatch(logOut(), navigate)
+      dispatch(logOut())
          .unwrap()
          .then(() => {
             showSnackbar({
@@ -166,9 +173,17 @@ export const Headers = ({ data }) => {
                   <Notification notificationHandler={notificationHandler} />
                )}
                <WrapperTexts>
-                  <StyledAvatar onClick={openProfileHandler}>
-                     {data}
-                  </StyledAvatar>
+                  {item?.avatar === 'Default image' ? (
+                     <Avatar />
+                  ) : (
+                     <StyledAvatar onClick={openProfileHandler}>
+                        <img
+                           style={{ width: '100%', height: '100%' }}
+                           src={item?.avatar}
+                           alt=""
+                        />
+                     </StyledAvatar>
+                  )}
                   {openProfile ? (
                      <ProfileTexts>
                         {location.pathname !== '/profile' && (
