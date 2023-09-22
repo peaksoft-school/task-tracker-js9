@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getAllCards } from './cardsThunk'
+import { getAllCards, getCardbyId } from './cardsThunk'
 
 const initialState = {
    cardsData: [],
+   cardById: {},
 }
 
 export const cardsSlice = createSlice({
@@ -10,9 +11,14 @@ export const cardsSlice = createSlice({
    initialState,
    reducer: {},
    extraReducers: (builder) => {
-      builder.addCase(getAllCards.fulfilled, (state, actions) => {
-         state.cardsData = actions.payload
-      })
+      builder
+         .addCase(getAllCards.fulfilled, (state, actions) => {
+            state.cardsData = actions.payload
+         })
+
+         .addCase(getCardbyId.fulfilled, (state, action) => {
+            state.cardById = action.payload
+         })
    },
 })
 

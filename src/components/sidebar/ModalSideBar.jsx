@@ -135,7 +135,7 @@ const ClarifyStyled = styled('span')(() => ({
 const StyleModalUi = styled(ModalUi)(() => ({
    display: 'flex',
    flexDirection: 'column',
-   height: '11.625rem',
+   height: '12.625rem',
    bordeRadius: '0.625rem',
    background: '#FFF',
 }))

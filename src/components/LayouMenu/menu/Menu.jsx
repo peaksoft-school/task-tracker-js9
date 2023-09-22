@@ -1,7 +1,7 @@
 import { styled, IconButton, keyframes } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ExitIcon, LeftIcon, MenuIcon } from '../../../assets/icons'
 // import { MenuItem } from '../../UI/menu/MenuItem'
 import { boards } from '../../../utils/constants/general'
@@ -10,16 +10,31 @@ import { Button } from '../../UI/button/Button'
 import { boardRemove, getBoardById } from '../../../store/board/boardThunk'
 import { showSnackbar } from '../../UI/snackbar/Snackbar'
 import { axiosInstance } from '../../../config/axiosInstance'
+import { Archive } from '../../archive/Archive'
+import { ModalUi } from '../../UI/modal/Modal'
+import { getArchive } from '../../../store/getArchive/archiveThunk'
 
 export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { boardId, id } = useParams()
    const { boardById } = useSelector((state) => state.board)
+   const [archive, setArchive] = useState(false)
 
    useEffect(() => {
       dispatch(getBoardById(boardId))
    }, [])
+
+   const handleModalContentClick = (event) => {
+      event.stopPropagation()
+   }
+
+   const openArchiveModal = () => {
+      setArchive(true)
+      setOpen(false)
+      dispatch(getArchive(boardId))
+      console.log('boardId: ', boardId)
+   }
 
    const openMenuHandler = () => {
       setOpen('menu')
@@ -44,8 +59,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
 
    const photoBoards = boards.filter(
       (board) =>
-         board.background.startsWith('http') ||
-         board.background.startsWith('https')
+         board.background.startsWith('https') ||
+         board.background.startsWith('http')
    )
 
    const colorBoards = boards.filter((board) =>
@@ -85,6 +100,15 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             <MenuIcon />
             <MenuPargraph>Menu</MenuPargraph>
          </StlyedContainerMenu>
+         {archive && (
+            <ModalUi
+               open={archive}
+               onClose={() => setArchive(false)}
+               handleModalContentClick={handleModalContentClick}
+            >
+               <Archive />
+            </ModalUi>
+         )}
 
          {open === 'menu' && (
             <MenuItemContainer
@@ -110,9 +134,11 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                      />
                   </ChangeDiv>
 
-                  <Archive>
-                     <ArchiveButton>In archive</ArchiveButton>
-                  </Archive>
+                  <ArchiveCard>
+                     <ArchiveButton onClick={openArchiveModal}>
+                        In archive
+                     </ArchiveButton>
+                  </ArchiveCard>
 
                   <DeleteBox>
                      <DeleteButton onClick={deleteBoardHandler}>
@@ -122,7 +148,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                </ChangeDivContainer>
             </MenuItemContainer>
          )}
-
          {open === 'background' && (
             <ChangeBackgroundContainer animation="slideIn">
                <ChangeBackgroundHeader>
@@ -157,8 +182,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                         <StyledLeftIcon onClick={openBackgroundHandler} />
                      </StyledIconButton>
                      <p>Photos</p>
-                     <StyledIconButton>
-                        <ExitIcon fill="gray" onClick={closeHandler} />
+                     <StyledIconButton onClick={closeHandler}>
+                        <ExitIcon fill="gray" />
                      </StyledIconButton>
                   </StyledHeader>
                   <PhotoBlocks>
@@ -179,8 +204,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             <PopoverContColor open={openColorsHandler}>
                <AllBoardColor>
                   <StyledHeaderColor>
-                     <StyledIconButtonColor>
-                        <StyledLeftIconColor onClick={openBackgroundHandler} />
+                     <StyledIconButtonColor onClick={openBackgroundHandler}>
+                        <StyledLeftIconColor />
                      </StyledIconButtonColor>
                      <p>Colors</p>
                      <StyledIconButtonColor>
@@ -206,7 +231,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       </div>
    )
 }
-
 const StlyedContainerMenu = styled('div')({
    width: '6rem',
    height: '2.125rem',
@@ -232,7 +256,7 @@ const MenuHeader = styled('div')({
    justifyContent: 'space-between',
    marginRight: '0.5rem',
 })
-const Archive = styled('div')({
+const ArchiveCard = styled('div')({
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'space-between',
@@ -350,15 +374,16 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
    }
    return {
       width: '22.9375rem',
-      height: '33vh',
+      height: '24vh',
       position: 'absolute',
       right: '2rem',
       // top: '0',
-      backgroundColor: '#ffff',
+      backgroundColor: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
       padding: '1rem',
       zIndex: '999',
+      borderRadius: '1rem',
       ...animationStyles,
 
       '@keyframes slideInAnimation': {
@@ -397,17 +422,17 @@ const slideInAnimation = keyframes`
 `
 
 const PopoverCont = styled('div')(() => ({
-   position: 'absolute',
+   position: 'fixed',
    right: '0',
-   // top: '0',
+   top: '0',
    minWidth: '23.8rem',
    minHeight: '37rem',
+   marginTop: '6rem',
    backgroundColor: '#FFFFFF',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    borderRadius: '0.7rem',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
 }))
-
 const rotateIcon = keyframes` 
       from { 
       transform: rotate(0); 
@@ -469,7 +494,7 @@ const PopoverContColor = styled('div')(() => ({
    minHeight: '30rem',
    backgroundColor: '#FFFFFF',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-   borderRadius: '0.7rem',
+   borderRadius: '0.7rem   ',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
    zIndex: 2,
 }))

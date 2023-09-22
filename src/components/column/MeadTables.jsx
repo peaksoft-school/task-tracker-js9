@@ -1,7 +1,6 @@
 import { styled } from '@mui/system'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-// import { Backdrop } from '@mui/material'
 import React from 'react'
 import {
    addColumnsToArchive,
@@ -9,6 +8,7 @@ import {
 } from '../../store/column/columnsThunk'
 
 export const MeadTables = ({ columnId, setOpneModal }) => {
+   console.log('columnId: ', columnId)
    const dispatch = useDispatch()
    const { boardId } = useParams()
 
@@ -24,6 +24,10 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
       dispatch(addColumnsToArchive(data))
       setOpneModal(false)
    }
+
+   // const archiveAllCard = () => {
+   //    navigate("")
+   // }
 
    return (
       <Container>
@@ -41,7 +45,9 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
             <p>Delete all cards in this list</p>
          </CardText>
          <CardText>
-            <p>Archive all cards in this list</p>
+            <p onClick={addtoArchiveteHandler}>
+               Archive all cards in this list
+            </p>
          </CardText>
          <Line />
          <CardText>

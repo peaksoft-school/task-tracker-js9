@@ -108,6 +108,7 @@ const Task = muiStyled('div')(() => ({
    margin: '0.2rem 0.6rem 0.2rem 0',
    fontWeight: '500',
    color: '#fff',
+   cursor: 'pointer',
 }))
 
 const StyledInputBase = muiStyled('input')(() => ({

@@ -52,7 +52,6 @@ export const DetailCard = ({ cardResponses }) => {
    const deleteLabelText = () => {
       setOpenLabelText(false)
    }
-   console.log('cardResponses', cardResponses)
 
    return (
       <Cont>
