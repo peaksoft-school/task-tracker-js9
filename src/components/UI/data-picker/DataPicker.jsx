@@ -25,41 +25,54 @@ export const DataPickers = ({
    currentHour,
    currentMinute,
    setOpenEstimation,
+   currentSecond,
 }) => {
    const dispatch = useDispatch()
    const [reminder, setReminder] = useState('')
 
    const { cardById } = useSelector((state) => state.cards)
 
-   const mode = cardById.estimationResponse.estimationId
+   const mode = cardById?.estimationResponse?.estimationId
 
+   // const startDate = selectedDate.toISOString()
+   // const parts = startDate.split('T')
+   // const postStartDate = parts[0]
+   // console.log('selectedDate: ', startDate)
+
+   console.log('selectedDate.toISOString(): ', selectedDate.toISOString())
+
+   const dateMonth = selectedDate.toISOString().slice(0, 11)
+   const dateHour = selectedDate.toISOString().slice(20, 24)
+   const combinations = `${dateMonth}${currentHour}0:${currentMinute}:${currentSecond}.${dateHour}`
+
+   console.log('combinations: ', combinations)
    const handleCreate = () => {
       const data = {
          cardId,
-         reminder: '',
+         reminder,
          startDate: selectedDate.toISOString(),
          dateOfFinish: due.toISOString(),
-         startTime: currentHour,
-         currentMinute,
-         finishTime: clock.toISOString(),
+         startTime: combinations,
+         finishTime: '2024-04-17T00:45:00.000Z',
       }
       dispatch(estimationPostRequest(data))
-      console.log('data: ', data)
       setOpenEstimation(false)
    }
 
    const handleUpdate = () => {
       const data = {
-         estimationId: cardById.estimationResponse.estimationId,
-         reminder: '',
-         startDate: selectedDate.toISOString(),
-         dateOfFinish: due.toISOString(),
-         startTime: currentHour,
-         currentMinute,
-         finishTime: clock.toISOString(),
+         cardId,
+         values: {
+            estimationId: cardById.estimationResponse.estimationId,
+            reminder,
+            startDate: selectedDate.toISOString(),
+            dateOfFinish: due.toISOString(),
+            startTime: currentHour,
+            currentMinute,
+            finishTime: clock.toISOString(),
+         },
       }
       dispatch(estimationPutRequest(data))
-      console.log('data: ', data)
       setOpenEstimation(false)
    }
 

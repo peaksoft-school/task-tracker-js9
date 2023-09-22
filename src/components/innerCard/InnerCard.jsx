@@ -1,7 +1,8 @@
-import { styled, IconButton } from '@mui/material'
 // import { useNavigate, useParams } from 'react-router-dom'
 import React, { useState, useRef } from 'react'
 import dayjs from 'dayjs'
+import { IconButton } from '@mui/material'
+import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
@@ -26,23 +27,23 @@ import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 import { ModalUi } from '../UI/modal/Modal'
 import { DataPickers } from '../UI/data-picker/DataPicker'
 
-const getMonthName = (monthNumber) => {
-   const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-   ]
-   return months[monthNumber] || ''
-}
+// const getMonthName = (monthNumber) => {
+//    const months = [
+//       'January',
+//       'February',
+//       'March',
+//       'April',
+//       'May',
+//       'June',
+//       'July',
+//       'August',
+//       'September',
+//       'October',
+//       'November',
+//       'December',
+//    ]
+//    return months[monthNumber] || ''
+// }
 export const InnerCard = ({
    isInnerCardOpen,
    // setSaveTitle,
@@ -67,41 +68,45 @@ export const InnerCard = ({
    const [titleCheckList, setTitleCheckList] = useState('')
 
    const { cardById } = useSelector((state) => state.cards)
-
-   console.log('cardById: ', cardById.estimationResponse)
+   console.log('cardById: ', cardById)
 
    const [selectedDate, setSelectedDate] = useState(
       dayjs(cardById?.estimationResponse?.startDate)
    )
 
+   const SliceOfStartDate = cardById?.estimationResponse?.startDate?.slice(
+      0,
+      11
+   )
+   console.log('SliceOfStartDate: ', SliceOfStartDate)
+   const SliceOfDuetDate = cardById?.estimationResponse?.duetDate?.slice(0, 12)
+   // const splitStartDateArray = SplitOfStartDate[0]
+
    const [due, setDue] = useState(dayjs(cardById?.estimationResponse?.duetDate))
 
-   const formattedMonth = `${getMonthName(selectedDate.$M)}
-    ${selectedDate.$D}, ${selectedDate.$y} `
+   // const formattedMonth = `${getMonthName(selectedDate.$M)}
+   //  ${selectedDate.$D}, ${selectedDate.$y} `
 
-   const formattedMonthDue = `${getMonthName(due.$M)}
-    ${due.$D}, ${due.$y} `
+   // const formattedMonthDue = `${getMonthName(due.$M)}
+   //  ${due.$D}, ${due.$y} `
    // const startDate = `${selectedDate.$D},${selectedDate.$y}`
 
    const [clock, setСlock] = useState(dayjs('2022-04-17T15:30'))
    const formattedTime = clock.format('HH:mm')
    const amPm = clock.format('A')
-
    const currentHour = new Date().getHours()
    const currentMinute = new Date().getMinutes()
-
+   const currentSecond = new Date().getSeconds()
    // const [start, setStart] = useState(dayjs('2023-07-10'))
    // const [due, setDue] = useState(dayjs('2023-07-15'))
    // const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
-
    const dispatch = useDispatch()
    // const navigate = useNavigate()
-
    // const { id, boardId } = useParams()
-
    // const closeInnerPage = () => {
    //    navigate(`/mainPage/${id}/boards/${boardId}/board`)
    // }
+   // console.log(cardData, 'cardData in inner card')
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -109,7 +114,6 @@ export const InnerCard = ({
    const handleTitleChange = (e) => {
       setTitleText(e.target.value)
    }
-
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
          setDisplayText(inputText)
@@ -124,14 +128,12 @@ export const InnerCard = ({
          setIsEditTitle(true)
       }
    }
-
    const handleEditClick = () => {
       setIsEditing(true)
    }
    const handleEditTitleClick = () => {
       setIsEditTitle(false)
    }
-
    React.useEffect(() => {
       document.addEventListener('mousedown', handleDocumentClick)
       return () => {
@@ -144,15 +146,12 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', documentClick)
       }
    }, [titleText])
-
    const openCheckListModalHandler = () => {
       setOpenCheckListModal(true)
    }
-
    const closeCheckListModalHandler = () => {
       setOpenCheckListModal(false)
    }
-
    const addCheckListHandler = () => {
       const data = {
          title: titleCheckList,
@@ -168,8 +167,6 @@ export const InnerCard = ({
    const closeEstimationHandler = () => {
       setOpenEstimation(false)
    }
-
-   console.log(formattedMonth)
 
    return (
       <div>
@@ -203,8 +200,9 @@ export const InnerCard = ({
                         <div>
                            <Title>Start Date</Title>
                            <DateStart>
+                              {/* {formattedMonth} at {currentHour}:{currentMinute} */}
                               {cardById?.estimationResponse?.startDate
-                                 ? formattedMonth
+                                 ? SliceOfStartDate
                                  : 'DD/MM/YYYY '}
                               at{' '}
                               {cardById?.estimationResponse?.startDate
@@ -220,8 +218,9 @@ export const InnerCard = ({
                         <div>
                            <Title>Due Date</Title>
                            <DateStart>
+                              {/* {formattedMonthDue} at {formattedTime} {amPm} */}
                               {cardById?.estimationResponse?.duetDate
-                                 ? formattedMonthDue
+                                 ? SliceOfDuetDate
                                  : 'DD/MM/YYYY '}
                               at{' '}
                               {cardById?.estimationResponse?.duetDate
@@ -320,11 +319,11 @@ export const InnerCard = ({
                                     currentHour={currentHour}
                                     currentMinute={currentMinute}
                                     cardId={cardId}
+                                    currentSecond={currentSecond}
                                     setOpenEstimation={setOpenEstimation}
                                  />
                               </>
                            )}
-
                            {openCheckListModal ? (
                               <>
                                  <BackDrop
@@ -389,7 +388,6 @@ export const InnerCard = ({
       </div>
    )
 }
-
 const CardContainer = styled('div')(() => ({
    width: '1150px',
    borderRadius: '8px',

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
 import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
+import { getCardbyId } from '../cards/cardsThunk'
 
 export const fetchBoards = createAsyncThunk(
    'board/fetchBoards',
@@ -18,9 +19,11 @@ export const fetchBoards = createAsyncThunk(
 
 export const getBoardById = createAsyncThunk(
    'board/getBoardById',
-   async (boardId, { rejectWithValue }) => {
+   async (boardId, { dispatch, rejectWithValue }) => {
       try {
          const response = await axiosInstance.get(`/api/boards/${boardId}`)
+         dispatch(getCardbyId())
+         console.log('getCardbyId: ', getCardbyId)
          return response.data
       } catch (error) {
          return rejectWithValue(error)
