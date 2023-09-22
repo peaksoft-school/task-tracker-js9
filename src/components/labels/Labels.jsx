@@ -17,7 +17,6 @@ export const Labels = () => {
 
    const onRemoveLabel = (id) => {
       dispatch(deleteLabel(id))
-      console.log(id)
    }
    const addLabelOpenModal = () => {
       dispatch(labelActions.openModal())

@@ -11,8 +11,6 @@ export const CheckListHeader = ({
 }) => {
    const { checkListData } = useSelector((state) => state.checkList)
 
-   console.log(checkListData)
-
    return (
       <CheckListHeaderContainer>
          {checkListData !== undefined && checkListData.length > 0

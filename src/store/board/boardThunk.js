@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
 import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
+import { getCardbyId } from '../cards/cardsThunk'
 
 export const fetchBoards = createAsyncThunk(
    'board/fetchBoards',
@@ -18,9 +19,11 @@ export const fetchBoards = createAsyncThunk(
 
 export const getBoardById = createAsyncThunk(
    'board/getBoardById',
-   async (boardId, { rejectWithValue }) => {
+   async (boardId, { dispatch, rejectWithValue }) => {
       try {
          const response = await axiosInstance.get(`/api/boards/${boardId}`)
+         dispatch(getCardbyId())
+         console.log('getCardbyId: ', getCardbyId)
          return response.data
       } catch (error) {
          return rejectWithValue(error)
@@ -43,7 +46,6 @@ export const boardRemove = createAsyncThunk(
          })
          navigate(`/mainPage/${id}/boards`)
       } catch (error) {
-         console.log('error: ', error)
          showSnackbar({
             message: 'error deleting',
             severity: 'error',
@@ -88,7 +90,6 @@ export const addFavorite = createAsyncThunk(
 export const updateBord = createAsyncThunk(
    'board/updateBord',
    async ({ data, boardId }, { rejectWithValue, dispatch }) => {
-      console.log('data: ', data)
       // if (!data.backGround) {
       //    delete data.backGround
       // }

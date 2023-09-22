@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { styled } from '@mui/material'
+import { useParams } from 'react-router-dom'
 import { PlusIcon } from '../../../assets/icons'
 import { Input } from '../../UI/input/Input'
 import { Button } from '../../UI/button/Button'
@@ -11,6 +12,7 @@ export const CheckListMain = ({ isAddDisabled, itemResponseList, id }) => {
    const [idCounter, setIdCounter] = useState(0)
    const [newItemValue, setNewItemValue] = useState('')
    const [open, setOpen] = useState(false)
+   const { carId } = useParams()
 
    const dispatch = useDispatch()
 
@@ -26,6 +28,7 @@ export const CheckListMain = ({ isAddDisabled, itemResponseList, id }) => {
       const newItem = {
          checkListId: id,
          title: newItemValue,
+         carId,
       }
 
       dispatch(postItemToItems(newItem))

@@ -1,13 +1,12 @@
-import { format } from 'date-fns'
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect } from 'react'
+import { format } from 'date-fns'
 import { getNotifications } from '../../store/notification/notificationThunk'
 import { NotificationSms, TimeIcon } from '../../assets/icons'
 
 export const Notification = ({ notificationHandler }) => {
    const { notifications } = useSelector((state) => state.notifications)
-   console.log('notifications: ', notifications)
    const dispatch = useDispatch()
    useEffect(() => {
       dispatch(getNotifications())
