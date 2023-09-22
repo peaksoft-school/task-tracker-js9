@@ -44,19 +44,6 @@ export const postLabel = createAsyncThunk(
    }
 )
 
-export const deleteLabel = createAsyncThunk(
-   'labels/delete',
-   async (labelId, { rejectWithValue, dispatch }) => {
-      try {
-         const response = await axiosInstance.delete(`/api/labels/${labelId}`)
-         dispatch(getLabels())
-         return response.data
-      } catch (error) {
-         return rejectWithValue(error.response.data)
-      }
-   }
-)
-
 export const putLabels = createAsyncThunk(
    'labels/put',
    async (payload, { rejectWithValue, dispatch }) => {
