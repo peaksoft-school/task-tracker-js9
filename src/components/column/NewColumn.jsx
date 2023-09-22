@@ -17,7 +17,10 @@ export const NewColumn = ({
          <CreateColumn>
             <TitleOfCreateColumn>
                <NameOfColumn>Name of column</NameOfColumn>
-               <CloseIcon onClick={handleAddColumnClick} />
+               <CloseIcon
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleAddColumnClick}
+               />
             </TitleOfCreateColumn>
             <InputColumn
                type="text"
