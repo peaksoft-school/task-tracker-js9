@@ -64,7 +64,6 @@ export const profileAvatarSThreePost = createAsyncThunk(
    async (avatar, { rejectWithValue, dispatch }) => {
       try {
          const { data } = await axiosFileInstance.post('/api/file', avatar)
-         console.log(avatar)
 
          dispatch(profileAvatarPutRequest(data.Link))
          return data.Link

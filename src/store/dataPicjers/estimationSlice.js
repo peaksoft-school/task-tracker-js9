@@ -2,26 +2,24 @@ import { createSlice } from '@reduxjs/toolkit'
 import { estimationPostRequest } from './estimationThunk'
 
 const initialState = {
-   estimationData: [],
-   isUpdate: false, // Добавляем булевое состояние
+   id: null,
+   mode: false,
+   formatData: '',
 }
 
 export const estimationSlice = createSlice({
-   name: 'estimation',
+   name: 'estimations',
    initialState,
    reducers: {
-      toggleUpdateMode: (state) => {
-         // Инвертируем булевое состояние isUpdate
-         state.isUpdate = !state.isUpdate
+      setFormatData: (state) => {
+         state.formatData = 'false'
       },
    },
    extraReducers: (builder) => {
       builder.addCase(estimationPostRequest.fulfilled, (state, action) => {
-         state.estimationData = action.payload
+         state.id = action.payload
       })
    },
 })
 
-export const { toggleUpdateMode } = estimationSlice.actions
-
-export default estimationSlice.reducer
+export const { setMode, setFormatData } = estimationSlice.actions

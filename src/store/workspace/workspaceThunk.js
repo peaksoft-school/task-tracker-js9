@@ -115,7 +115,6 @@ export const updateWorkspace = createAsyncThunk(
 export const addWorkspaceToFavorites = createAsyncThunk(
    'favorite/addFavorite',
    async (workspaceId, { rejectWithValue, dispatch }) => {
-      console.log(workspaceId, 'adding')
       try {
          await axiosInstance.post(`api/favorites/work_space/${workspaceId}`)
          dispatch(fetchAllWorkspaces())

@@ -2,7 +2,7 @@ import { styled, IconButton } from '@mui/material'
 // import { useNavigate, useParams } from 'react-router-dom'
 import React, { useState, useRef } from 'react'
 import dayjs from 'dayjs'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
@@ -66,15 +66,21 @@ export const InnerCard = ({
    const [openEstimation, setOpenEstimation] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
 
-   const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
-   const [due, setDue] = useState(dayjs('2023-07-15'))
+   const { cardById } = useSelector((state) => state.cards)
 
-   console.log('selectedDate: ', selectedDate)
+   console.log('cardById: ', cardById.estimationResponse)
+
+   const [selectedDate, setSelectedDate] = useState(
+      dayjs(cardById?.estimationResponse?.startDate)
+   )
+
+   const [due, setDue] = useState(dayjs(cardById?.estimationResponse?.duetDate))
+
    const formattedMonth = `${getMonthName(selectedDate.$M)}
-    ${selectedDate.$D},${selectedDate.$y}`
+    ${selectedDate.$D}, ${selectedDate.$y} `
 
    const formattedMonthDue = `${getMonthName(due.$M)}
-    ${due.$D},${due.$y}`
+    ${due.$D}, ${due.$y} `
    // const startDate = `${selectedDate.$D},${selectedDate.$y}`
 
    const [clock, setСlock] = useState(dayjs('2022-04-17T15:30'))
@@ -96,7 +102,6 @@ export const InnerCard = ({
    // const closeInnerPage = () => {
    //    navigate(`/mainPage/${id}/boards/${boardId}/board`)
    // }
-   // console.log(cardData, 'cardData in inner card')
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -164,6 +169,8 @@ export const InnerCard = ({
       setOpenEstimation(false)
    }
 
+   console.log(formattedMonth)
+
    return (
       <div>
          <ModalUi open={isInnerCardOpen} onClose={handleClose}>
@@ -196,14 +203,31 @@ export const InnerCard = ({
                         <div>
                            <Title>Start Date</Title>
                            <DateStart>
-                              {formattedMonth} at {currentHour}:{currentMinute}
+                              {cardById?.estimationResponse?.startDate
+                                 ? formattedMonth
+                                 : 'DD/MM/YYYY '}
+                              at{' '}
+                              {cardById?.estimationResponse?.startDate
+                                 ? currentHour
+                                 : ' 00'}
+                              :
+                              {cardById?.estimationResponse?.startDate
+                                 ? currentMinute
+                                 : '00'}{' '}
                               {amPm}
                            </DateStart>
                         </div>
                         <div>
                            <Title>Due Date</Title>
                            <DateStart>
-                              {formattedMonthDue} at {formattedTime} {amPm}
+                              {cardById?.estimationResponse?.duetDate
+                                 ? formattedMonthDue
+                                 : 'DD/MM/YYYY '}
+                              at{' '}
+                              {cardById?.estimationResponse?.duetDate
+                                 ? formattedTime
+                                 : ' 00:00'}{' '}
+                              {amPm}
                            </DateStart>
                         </div>
                         <div>
@@ -211,6 +235,24 @@ export const InnerCard = ({
                            <DateStart />
                         </div>
                      </DataContainer>
+                     {/* <DataContainer>
+                        <div>
+                           <Title>Start Date</Title>
+                           <DateStart>
+                              DD/MM/YYYY at 00:00
+                              {amPm}
+                           </DateStart>
+                        </div>
+                        <div>
+                           <Title>Due Date</Title>
+                           <DateStart>DD/MM/YYYY at 00:00 {amPm}</DateStart>
+                        </div>
+                        <div>
+                           <Title>Members</Title>
+                           <DateStart />
+                        </div> */}
+                     {/* </DataContainer> */}
+
                      <Description>
                         <DownIcon />
                         <DescriptionTitle>Description</DescriptionTitle>
@@ -278,6 +320,7 @@ export const InnerCard = ({
                                     currentHour={currentHour}
                                     currentMinute={currentMinute}
                                     cardId={cardId}
+                                    setOpenEstimation={setOpenEstimation}
                                  />
                               </>
                            )}

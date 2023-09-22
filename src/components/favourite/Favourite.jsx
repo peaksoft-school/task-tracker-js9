@@ -30,7 +30,7 @@ export const Favourite = () => {
 
          navigate('/mainPage')
       } catch (error) {
-         console.log(error)
+         return error.message
       }
    }
 

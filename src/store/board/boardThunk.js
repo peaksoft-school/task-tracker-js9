@@ -43,7 +43,6 @@ export const boardRemove = createAsyncThunk(
          })
          navigate(`/mainPage/${id}/boards`)
       } catch (error) {
-         console.log('error: ', error)
          showSnackbar({
             message: 'error deleting',
             severity: 'error',
@@ -88,7 +87,6 @@ export const addFavorite = createAsyncThunk(
 export const updateBord = createAsyncThunk(
    'board/updateBord',
    async ({ data, boardId }, { rejectWithValue, dispatch }) => {
-      console.log('data: ', data)
       // if (!data.backGround) {
       //    delete data.backGround
       // }

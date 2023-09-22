@@ -36,7 +36,6 @@ export const createInviteMember = createAsyncThunk(
 
          return data
       } catch (error) {
-         console.log('error: ', error.response.data.message)
          showSnackbar({
             message: error.response.data.message,
             severity: 'error',

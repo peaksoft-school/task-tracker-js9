@@ -72,7 +72,6 @@ export const getCommentsbyId = createAsyncThunk(
    'comments/getCommentsbyId',
    async (payload, { rejectWithValue }) => {
       const { commentId, navigate } = payload
-      console.log(payload)
 
       try {
          const response = await axiosInstance.get(`/api/comments/${commentId}`)

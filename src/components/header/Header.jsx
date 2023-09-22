@@ -82,7 +82,7 @@ export const Headers = ({ data }) => {
             location.reload()
          })
          .catch((error) => {
-            console.log(error)
+            return error.message
          })
    }
 

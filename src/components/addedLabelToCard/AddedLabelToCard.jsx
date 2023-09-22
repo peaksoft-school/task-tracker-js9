@@ -47,7 +47,6 @@ export const AddedLabelToCard = ({ addLabelCloseModal }) => {
    }
 
    const onEditTask = (event, idx) => {
-      console.log(idx)
       const updatedTaskText = [...taskText]
       updatedTaskText[idx] = event.target.value
       setTaskText(updatedTaskText)
