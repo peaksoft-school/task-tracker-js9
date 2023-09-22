@@ -156,6 +156,7 @@ export const DetailCard = ({ cardResponses }) => {
                {openModal && (
                   <InnerCard
                      setOpenModal={setOpenModal}
+                     displayTitle={card.title}
                      cardId={cardId}
                      cardData={card}
                      handleClose={handleClose}

@@ -13,11 +13,11 @@ export const Colors = ({ editColor, toggleColor, selectedColor }) => {
          <AllBoard>
             <StyledHeader>
                <StyledIconButton>
-                  <StyledLeftIcon />
+                  <StyledLeftIcon onClick={toggleColor} />
                </StyledIconButton>
                <p>Colors</p>
-               <StyledIconButton>
-                  <ExitIcon onClick={toggleColor} />
+               <StyledIconButton onClick={toggleColor}>
+                  <ExitIcon fill="gray" />
                </StyledIconButton>
             </StyledHeader>
             <ColorBlocks>

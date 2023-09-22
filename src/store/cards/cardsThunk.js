@@ -44,12 +44,12 @@ export const getCardbyId = createAsyncThunk(
 )
 export const deleteCardbyColumnId = createAsyncThunk(
    'card/deleteCardsByColumnId',
-   async ({ columnId }, { rejectWithValue, dispatch }) => {
+   async ({ columnId, boardId }, { rejectWithValue, dispatch }) => {
       try {
          const { data } = await axiosInstance.delete(
             `/api/cards/all/${columnId}`
          )
-         dispatch(getColumns(columnId))
+         dispatch(getColumns(boardId))
          return data
       } catch (error) {
          return rejectWithValue(error.data.message)
@@ -58,10 +58,10 @@ export const deleteCardbyColumnId = createAsyncThunk(
 )
 export const deleteCardbyCardId = createAsyncThunk(
    'card/deleteCardsByCardId',
-   async ({ cardId, columnId }, { rejectWithValue, dispatch }) => {
+   async ({ cardId, boardId }, { rejectWithValue, dispatch }) => {
       try {
          const { data } = await axiosInstance.delete(`/api/cards/${cardId}`)
-         dispatch(getColumns(columnId))
+         dispatch(getColumns(boardId))
          return data
       } catch (error) {
          return rejectWithValue(error.data.message)

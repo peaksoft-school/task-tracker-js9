@@ -49,7 +49,7 @@ export const InnerCard = ({
    const [isEditTitle, setIsEditTitle] = useState(true)
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
-   const { columnId } = useParams()
+   const { columnId, boardId } = useParams()
 
    const dispatch = useDispatch()
    // const navigate = useNavigate()
@@ -123,7 +123,7 @@ export const InnerCard = ({
    }
 
    const deleteCardByIdHandler = () => {
-      dispatch(deleteCardbyCardId({ cardId, columnId }))
+      dispatch(deleteCardbyCardId({ cardId, boardId }))
       setOpenModal(false)
    }
 
@@ -133,16 +133,16 @@ export const InnerCard = ({
             <CardContainer ref={(inputRef, titleRef)}>
                <Wrapper>
                   <TextContainer>
-                     <EditIcon onClick={handleEditTitleClick} />
+                     <EditIcon fill="gray" onClick={handleEditTitleClick} />
                      {isEditTitle ? (
                         <CardText onClick={handleEditTitleClick}>
                            {displayTitle}
                         </CardText>
                      ) : (
                         <TitileInput
-                           type="text"
-                           value={titleText}
+                           aria-label="empty textarea"
                            onChange={handleTitleChange}
+                           value={inputText}
                         />
                      )}
                   </TextContainer>

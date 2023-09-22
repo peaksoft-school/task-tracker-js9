@@ -74,6 +74,7 @@ export const Card = ({ column }) => {
          changeTitleHandler(column.columnId)
       }
    }
+
    return (
       <div key={column.id}>
          {editTitle ? (

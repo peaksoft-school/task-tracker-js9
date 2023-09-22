@@ -19,7 +19,7 @@ const kindaSelect = [
 
 export const ParticipantsTable = ({ onDelete, rows }) => {
    const dispatch = useDispatch()
-   const { partId } = useParams()
+   const { id } = useParams()
 
    const defaultRole = 'Member'
 
@@ -37,7 +37,7 @@ export const ParticipantsTable = ({ onDelete, rows }) => {
       dispatch(
          putParticipans({
             memberId,
-            workSpacesId: partId,
+            workSpacesId: id,
             role: event.target.value,
          })
       )

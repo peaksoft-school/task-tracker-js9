@@ -53,7 +53,10 @@ export const Participant = ({
    }, [dispatch])
 
    return openNewInvite ? (
-      <InviteNewParticipant openInviteNewModal={openInviteNewModal} />
+      <InviteNewParticipant
+         openInviteNewModal={openInviteNewModal}
+         openModalHandler={openModalHandler}
+      />
    ) : (
       <Container>
          <ParticipantContainer>

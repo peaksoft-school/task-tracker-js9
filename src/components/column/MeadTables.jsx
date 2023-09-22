@@ -25,7 +25,9 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
       setOpneModal(false)
    }
    const deleteCardsBycolumnIdHandler = () => {
-      dispatch(deleteCardbyColumnId({ columnId }))
+      dispatch(deleteCardbyColumnId({ columnId, boardId }))
+
+      setOpneModal(false)
    }
 
    return (
