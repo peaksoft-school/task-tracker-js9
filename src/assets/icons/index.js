@@ -56,6 +56,7 @@ import { ReactComponent as PLUSICON } from './PLUSiCON.svg'
 import { ReactComponent as NotificationSms } from './notificationSms.svg'
 import { ReactComponent as TimeIcon } from './timeIcon.svg'
 import { ReactComponent as AllIssuesIcon } from './issue.svg'
+import { ReactComponent as WarningIcon } from './warningIcon.svg'
 
 export {
    PLUSICON,
@@ -116,4 +117,5 @@ export {
    NotificationSms,
    TimeIcon,
    AllIssuesIcon,
+   WarningIcon,
 }

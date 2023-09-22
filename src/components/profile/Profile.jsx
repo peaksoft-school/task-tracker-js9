@@ -70,7 +70,7 @@ export const Profile = () => {
    return (
       <div style={{ paddingTop: '6rem' }}>
          <StyledWorkspace>
-            <WorkSpaceSpan to="/mainPage">Workspace</WorkSpaceSpan>
+            <WorkSpaceSpan to="/mainPage">Workspaces</WorkSpaceSpan>
             <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
@@ -83,9 +83,10 @@ export const Profile = () => {
                   <ProfileImageBox src={avatarLink} alt="avatar" />
                )}
 
-               <EditProfileIcon onClick={openEditProfile} />
+               <EditProfileIcon fill="#7d7a7a" onClick={openEditProfile} />
                {openProfile ? (
                   <EditProfileBox>
+                     <Backdrop onClick={openEditProfile} />
                      <EditProfileBoxP {...getRootProps()}>
                         Change profile photo
                      </EditProfileBoxP>
@@ -110,6 +111,14 @@ export const Profile = () => {
       </div>
    )
 }
+const Backdrop = styled('div')(() => ({
+   width: '100%',
+   height: '100%',
+   position: 'fixed',
+   top: '0',
+   left: '0',
+   zIndex: -1,
+}))
 const WorkSpaceSpan = styled(NavLink)({
    color: 'white',
    cursor: 'pointer',
@@ -145,7 +154,7 @@ const EditProfileIcon = styled(EditIcon)({
    position: 'absolute',
    top: '5.5rem',
    left: '6.5rem',
-   backgroundColor: '#d1c9c9',
+   backgroundColor: '#dfdddd',
    zIndex: 1000,
    cursor: 'pointer',
 })

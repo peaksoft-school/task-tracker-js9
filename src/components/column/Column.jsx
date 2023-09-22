@@ -71,6 +71,7 @@ const CreteColumn = styled('div')(() => ({
    justifyContent: 'center',
    borderRadius: '0.5rem',
    background: '#E6E6E6',
+   cursor: 'pointer',
 }))
 
 const ColumnsStyle = styled('div')(() => ({

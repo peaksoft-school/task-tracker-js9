@@ -81,6 +81,7 @@ export const addFavorite = createAsyncThunk(
       try {
          await axiosInstance.post(`/api/favorites/board/${boardId}`)
          dispatch(fetchBoards(workSpaceId))
+         dispatch(getBoardById(boardId))
       } catch (error) {
          return rejectWithValue(error)
       }
