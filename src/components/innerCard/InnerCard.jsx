@@ -26,6 +26,7 @@ import { Button } from '../UI/button/Button'
 import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 import { ModalUi } from '../UI/modal/Modal'
 import { DataPickers } from '../UI/data-picker/DataPicker'
+import { getCardArchve } from '../../store/getArchive/archiveThunk'
 
 // const getMonthName = (monthNumber) => {
 //    const months = [
@@ -107,6 +108,10 @@ export const InnerCard = ({
    //    navigate(`/mainPage/${id}/boards/${boardId}/board`)
    // }
    // console.log(cardData, 'cardData in inner card')
+
+   const archiveCard = () => {
+      dispatch(getCardArchve(cardId))
+   }
 
    const handleInputChange = (e) => {
       setInputText(e.target.value)
@@ -371,7 +376,9 @@ export const InnerCard = ({
                            <AddItem>
                               <ArchiveIcon />
                               {showMore === false ? (
-                                 <AddText>Archive</AddText>
+                                 <AddText onClick={archiveCard}>
+                                    Archive
+                                 </AddText>
                               ) : null}
                            </AddItem>
                         </ActionsItem>

@@ -11,6 +11,8 @@ import { CheckListModal } from '../checkListModal/ChecklistModal'
 
 const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
    const { checkListData } = useSelector((state) => state.checkList)
+   const { carId } = useParams()
+   console.log('cardId: ', carId)
    const dispatch = useDispatch()
    const { carId } = useParams()
 
