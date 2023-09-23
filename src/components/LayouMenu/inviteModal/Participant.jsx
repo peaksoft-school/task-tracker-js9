@@ -150,6 +150,7 @@ const UsersBox = styled('div')(() => ({
    maxHeight: '7.8rem',
    padding: '0.7rem ',
    overflowY: 'auto ',
+
    scrollbarWidth: 'thin',
    scrollbarColor: ' #D9D9D9 transparent',
    cursor: 'pointer',

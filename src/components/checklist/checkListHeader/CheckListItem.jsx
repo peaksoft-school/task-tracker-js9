@@ -12,7 +12,6 @@ import { CheckListModal } from '../checkListModal/ChecklistModal'
 const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
    const { checkListData } = useSelector((state) => state.checkList)
    const { carId } = useParams()
-   console.log('cardId: ', carId)
    const dispatch = useDispatch()
 
    const [showModal, setShowModal] = useState(false)
@@ -76,7 +75,7 @@ const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
                ) : (
                   <>
                      <StyledIconButton onClick={() => editHandler(title)}>
-                        <EditIcon />
+                        <EditIcon fill="#9b9b9b" />
                      </StyledIconButton>
 
                      <Title>{title}</Title>

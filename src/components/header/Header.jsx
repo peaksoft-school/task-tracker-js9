@@ -27,6 +27,8 @@ import { GlobalSearch } from './GlobalSearch'
 import { SearchHistory } from './SearchHistory'
 import { Notification } from './Notification'
 import { profileGetRequest } from '../../store/profile/ProfileThunk'
+import { getFavourites } from '../../store/getFavourites/favouritesThunk'
+// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Headers = () => {
    const [showModal, setShowModal] = useState(false)
@@ -39,7 +41,6 @@ export const Headers = () => {
    const { favoriteData } = useSelector((state) => state.favorite)
    const { globalSearch } = useSelector((state) => state.search)
    const { item } = useSelector((state) => state.profile)
-   console.log('avatarLink: ', item)
 
    const boardLength = favoriteData.data?.boardResponses?.length || 0
    const workSpaceLength = favoriteData.data?.workSpaceResponses?.length || 0
@@ -69,6 +70,10 @@ export const Headers = () => {
    const openFavoriteModalHandler = () => {
       setShowModal(!showModal)
    }
+
+   useEffect(() => {
+      dispatch(getFavourites())
+   }, [])
 
    const openProfileHandler = () => {
       setOpenProfile((prev) => !prev)
@@ -104,6 +109,11 @@ export const Headers = () => {
    const notificationHandler = () => {
       setShowNotifications((prev) => !prev)
    }
+   const boardResponse = favoriteData?.data?.boardResponses?.length
+
+   const favoriteResponse = favoriteData?.data?.workSpaceResponses?.length
+
+   const favoriteAndBoardResponse = boardResponse || favoriteResponse
 
    return (
       <div>
@@ -119,7 +129,8 @@ export const Headers = () => {
                </LogoWords>
                <Favorite>
                   <ParagraphFavorite>
-                     Favourites ({favoriteSum})
+                     Favourites (
+                     {favoriteAndBoardResponse !== 0 ? favoriteSum : 0})
                   </ParagraphFavorite>
                   <IconButton onClick={openFavoriteModalHandler}>
                      {showModal ? (
@@ -172,13 +183,17 @@ export const Headers = () => {
                {showNotifications && (
                   <Notification notificationHandler={notificationHandler} />
                )}
-               <WrapperTexts>
+               <WrapperTexts onClick={openProfileHandler}>
                   {item?.avatar === 'Default image' ? (
                      <Avatar />
                   ) : (
-                     <StyledAvatar onClick={openProfileHandler}>
+                     <StyledAvatar>
                         <img
-                           style={{ width: '100%', height: '100%' }}
+                           style={{
+                              width: '100%',
+                              height: '100%',
+                              borderRadius: '50%',
+                           }}
                            src={item?.avatar}
                            alt=""
                         />
@@ -293,8 +308,11 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
    },
 }))
 
-const StyledAvatar = muiStyled(Avatar)(() => ({
+const StyledAvatar = muiStyled('div')(() => ({
    cursor: 'pointer',
+   width: '3rem',
+   height: '3rem',
+   borderRadius: '50%',
 }))
 
 const ProfileTexts = muiStyled('div')(() => ({

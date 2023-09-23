@@ -58,6 +58,7 @@ export const LayoutMenu = () => {
             backGround: values.img ? values.img : boardById?.backGround || '',
          }
          dispatch(updateBord({ data, boardId }))
+
          setShowBoard(false)
       },
    })

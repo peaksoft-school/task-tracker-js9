@@ -10,6 +10,7 @@ import {
 } from '../../store/board/boardThunk'
 import { BoardModal } from './BoardModal'
 import { boards as BoardColors } from '../../utils/constants/general'
+// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Board = () => {
    const { id } = useParams()
