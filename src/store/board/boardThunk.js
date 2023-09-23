@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
 import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 import { getCardbyId } from '../cards/cardsThunk'
+import { getFavourites } from '../getFavourites/favouritesThunk'
 
 export const fetchBoards = createAsyncThunk(
    'board/fetchBoards',
@@ -82,6 +83,7 @@ export const addFavorite = createAsyncThunk(
          await axiosInstance.post(`/api/favorites/board/${boardId}`)
          dispatch(fetchBoards(workSpaceId))
          dispatch(getBoardById(boardId))
+         dispatch(getFavourites())
       } catch (error) {
          return rejectWithValue(error)
       }

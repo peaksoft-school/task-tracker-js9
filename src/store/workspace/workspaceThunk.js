@@ -8,6 +8,7 @@ import {
 } from '../../api/workspaceServise'
 import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 import { axiosInstance } from '../../config/axiosInstance'
+import { getFavourites } from '../getFavourites/favouritesThunk'
 
 export const fetchAllWorkspaces = createAsyncThunk(
    'workspaces/work_spaces',
@@ -118,6 +119,7 @@ export const addWorkspaceToFavorites = createAsyncThunk(
       try {
          await axiosInstance.post(`api/favorites/work_space/${workspaceId}`)
          dispatch(fetchAllWorkspaces())
+         dispatch(getFavourites())
       } catch (error) {
          return rejectWithValue(error.data.message)
       }

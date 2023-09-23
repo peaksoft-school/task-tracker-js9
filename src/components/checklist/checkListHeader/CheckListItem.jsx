@@ -75,7 +75,7 @@ const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
                ) : (
                   <>
                      <StyledIconButton onClick={() => editHandler(title)}>
-                        <EditIcon />
+                        <EditIcon fill="#9b9b9b" />
                      </StyledIconButton>
 
                      <Title>{title}</Title>

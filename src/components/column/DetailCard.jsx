@@ -15,6 +15,7 @@ import { ColumnCard } from './ColumnCard'
 import { Label } from './Label'
 import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
+import { getColumns } from '../../store/column/columnsThunk'
 
 export const DetailCard = ({ cardResponses }) => {
    const [openLabelText, setOpenLabelText] = useState(false)
@@ -42,6 +43,7 @@ export const DetailCard = ({ cardResponses }) => {
 
    const handleClose = () => {
       setOpenModal(!openModal)
+      dispatch(getColumns(boardId))
    }
 
    const handleButtonClick = () => {
