@@ -83,10 +83,22 @@ export const WorkspaceTable = () => {
 
    return (
       <div>
-         <TableMui column={column} rows={workspaces} />
+         {workspaces && workspaces.length > 0 ? (
+            <TableMui column={column} rows={workspaces} />
+         ) : (
+            <NoWorkspaceMessage>No Workspaces</NoWorkspaceMessage>
+         )}
       </div>
    )
 }
+const NoWorkspaceMessage = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   height: '100px', // Adjust the height as needed
+   fontSize: '1.5rem',
+   color: '#777',
+}))
 
 const NameStyle = styled('h3')`
    color: #000;

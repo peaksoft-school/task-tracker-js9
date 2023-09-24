@@ -9,7 +9,6 @@ import { AllIssuesTable } from './AllIssuesTable'
 import { AssigneeSection } from '../UI/assignee/AssigneeSection'
 import { LabelForFilter } from '../UI/filteredLabel/LabelForFilter'
 import { getAllIssues } from '../../store/get-all-issues/get.all.issuesThunk'
-import { useModal } from '../../hooks/useModal'
 
 export const AllIssues = () => {
    const [startDate, setStartDate] = useState(null)
@@ -17,9 +16,12 @@ export const AllIssues = () => {
    const [assignee, setAssignee] = useState('')
    const [checked, setChecked] = useState(false)
    const [labels, setLabels] = useState('')
-   const [isActive, setActive] = useModal()
+
    const dispatch = useDispatch()
+   // const { allIssues } = useSelector((state) => state.allIssues)
+   // console.log('allIssues ', allIssues)
    const { id } = useParams()
+   const [selectedUserId, setSelectedUserId] = useState(null)
 
    const dataLength = 24
 
@@ -27,16 +29,14 @@ export const AllIssues = () => {
 
    const handleStartDateChange = (date) => {
       setStartDate(date)
-      setActive(true)
    }
 
    const handleDueDateChange = (date) => {
       setDueDate(date)
-      setActive(true)
    }
 
-   const AssigneeHandleChange = (event) => {
-      setAssignee(event.target.value)
+   const AssigneeHandleChange = (userId) => {
+      setAssignee(userId)
    }
 
    const handleCheckboxChange = (event) => {
@@ -47,18 +47,26 @@ export const AllIssues = () => {
       setLabels(label)
    }
 
+   const changeHandler = (userId) => {
+      setSelectedUserId(userId)
+   }
+
    useEffect(() => {
-      console.log('labels: ', labels)
-      const filterParams = {
-         from: startDate?.toISOString(),
-         to: dueDate?.toISOString(),
-         assignees: assignee,
-         label: labels,
-         check: checked,
+      const formatToServerDate = (date) => {
+         return date ? date.format('YYYY-MM-DD') : null
       }
 
-      dispatch(getAllIssues({ id, filterParams }))
-   }, [startDate, dueDate, labels, assignee, checked, dispatch, id])
+      const filterParams = {
+         from: formatToServerDate(startDate),
+         to: formatToServerDate(dueDate),
+         // assignees: assignee,
+         labels,
+         check: checked,
+         id,
+      }
+
+      dispatch(getAllIssues({ filterParams, assignee, id }))
+   }, [startDate, dueDate, labels, assignee, checked, id])
 
    return (
       <BodyContainer>
@@ -72,17 +80,13 @@ export const AllIssues = () => {
                         <DatePickerStyle
                            value={startDate}
                            onChange={handleStartDateChange}
-                           format="DD.MM.YYYY"
-                           disableFuture={Boolean(dueDate)}
-                           isActive={isActive}
+                           maxDate={startDate}
                         />
 
                         <DatePickerStyle
                            value={dueDate}
                            onChange={handleDueDateChange}
-                           format="DD.MM.YYYY"
-                           disablePast={Boolean(startDate)}
-                           isActive={isActive}
+                           minDate={startDate}
                         />
                      </LocalizationProvider>
 
@@ -94,8 +98,8 @@ export const AllIssues = () => {
                         </FormControl>
                         <FormControl>
                            <AssigneeSelect
-                              value={assignee}
-                              onChange={AssigneeHandleChange}
+                           // value={assignee}
+                           // onChange={AssigneeHandleChange}
                            >
                               <MenuItem
                                  style={{ fontFamily: 'CarePro' }}
@@ -104,7 +108,10 @@ export const AllIssues = () => {
                               >
                                  Assignee
                               </MenuItem>
-                              <AssigneeSection workspaceId={id} />
+                              <AssigneeSection
+                                 changeHandler={changeHandler}
+                                 AssigneeHandleChange={AssigneeHandleChange}
+                              />
                            </AssigneeSelect>
                         </FormControl>
                      </MainFormControlContainer>
@@ -128,7 +135,7 @@ export const AllIssues = () => {
                   Total:<TotalAmount>{dataLength}</TotalAmount>
                </Total>
             </HeaderContainer>
-            <AllIssuesTable />
+            <AllIssuesTable selectedUserId={selectedUserId} />
          </GlobalContainer>
       </BodyContainer>
    )
@@ -195,7 +202,7 @@ const TotalAmount = styled('span')(() => ({
 
 const DatePickerStyle = styled(DatePicker)(() => ({
    input: {
-      width: '5.31rem',
+      width: '6.8rem',
       padding: ' 0.4rem 0.7rem 0.4rem 0.8rem',
       borderRadius: '0.5rem',
       fontFamily: 'CarePro',

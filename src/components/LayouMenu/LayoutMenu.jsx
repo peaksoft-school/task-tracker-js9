@@ -22,6 +22,7 @@ export const LayoutMenu = () => {
    const [openNewInvite, setOpenNewInvite] = useState(false)
    const { boardId } = useParams()
    const { boardById } = useSelector((state) => state.board)
+   const { columnsData } = useSelector((state) => state.columns)
 
    const dispatch = useDispatch()
 
@@ -129,7 +130,7 @@ export const LayoutMenu = () => {
                   </ModalUi>
                ) : (
                   <TitleBox onClick={clickEditHandler}>
-                     <EditIcon />
+                     <EditIcon fill="white" />
 
                      <TitleText>{boardById?.title}</TitleText>
                   </TitleBox>
@@ -137,7 +138,7 @@ export const LayoutMenu = () => {
 
                <div>
                   <span>Columns:</span>
-                  <CountSpan>24</CountSpan>
+                  <CountSpan>{columnsData.length}</CountSpan>
                </div>
             </div>
             <FilterCont>
@@ -179,7 +180,7 @@ const LayoutMenuContainer = styled('div')({
    display: 'flex',
    justifyContent: 'space-between',
    width: 'auto',
-   marginTop: '5rem',
+   marginTop: '6rem',
 })
 
 const ModalButton = styled(Button)(() => ({
@@ -263,6 +264,8 @@ const TitleBox = styled('div')({
 
 const TitleText = styled('p')({
    fontWeight: 'bold',
+   color: '#f5f5f5',
+   textShadow: '0 0 10px #303030',
 })
 
 const InviteBox = styled('div')({

@@ -63,14 +63,13 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             backGround: item || board,
             title: boardById?.title || '',
          }
-         console.log('handleClick:', data)
 
          const response = await axiosInstance.put('/api/boards', data)
-         console.log('response: ', response)
          showSnackbar({
             message: 'Successfully updated board',
             severity: 'success',
          })
+         dispatch(getBoardById(boardId))
          closeHandler()
          return response.data
       } catch (error) {
@@ -165,7 +164,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                   </StyledHeader>
                   <PhotoBlocks>
                      {photoBoards.map((board) => (
-                        <div key={board.id}>
+                        <div key={board.id} style={{ cursor: 'pointer' }}>
                            <Photos
                               src={board.background}
                               alt={`Board ${board.id}`}
@@ -191,7 +190,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                   </StyledHeaderColor>
                   <PhotoBlocksColor>
                      {colorBoards.map((board) => (
-                        <div key={board.id}>
+                        <div key={board.id} style={{ cursor: 'pointer' }}>
                            <ColorBlock
                               style={{
                                  backgroundColor: board.background,
@@ -457,6 +456,7 @@ const PopoverContColor = styled('div')(() => ({
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    borderRadius: '0.7rem',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
+   zIndex: 2,
 }))
 
 const StyledIconButtonColor = styled(IconButton)(() => ({

@@ -10,6 +10,7 @@ import { Profile } from '../components/profile/Profile'
 import { BoardPage } from '../pages/BoardPage'
 import { InnerPage } from '../pages/InnerPage'
 import { AllIssuesPage } from '../pages/AllIssuesPage'
+import { ParticipantsPage } from '../pages/ParticipantsPage'
 
 export const routes = createBrowserRouter([
    {
@@ -86,11 +87,29 @@ export const routes = createBrowserRouter([
       ),
    },
    {
+      path: '/profile/:profileId',
+      element: (
+         <>
+            <Headers />
+            <Profile />
+         </>
+      ),
+   },
+   {
       path: 'mainPage/:id/boards/:boardId/board',
       element: (
          <>
             <Headers />
             <InnerPage />
+         </>
+      ),
+   },
+   {
+      path: 'mainPage/:partId/participants/',
+      element: (
+         <>
+            <Headers />
+            <ParticipantsPage />
          </>
       ),
    },

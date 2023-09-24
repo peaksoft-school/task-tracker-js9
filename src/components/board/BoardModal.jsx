@@ -1,6 +1,6 @@
+import React from 'react'
 import { styled } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import React from 'react'
 import { ModalUi } from '../UI/modal/Modal'
 import { Photos } from '../photoColor/Photo'
 import { Colors } from '../photoColor/Color'
@@ -9,11 +9,20 @@ import { DoneIcon } from '../../assets/icons'
 export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
    const { id } = useParams()
    const [backGround, setPostColor] = React.useState()
-   const [title, setPostTitle] = React.useState()
+   const [title, setPostTitle] = React.useState('')
    const [openPhoto, setOpenPhoto] = React.useState(false)
    const [openColor, setOpenColor] = React.useState(false)
    const [selectedColor, setSelectedColor] = React.useState(null)
    const [selectedPhoto, setSelectedPhoto] = React.useState(null)
+   const [isButtonDisabled, setIsButtonDisabled] = React.useState(true)
+
+   //  этот код для выбора первой фотографии по умолчанию
+   React.useEffect(() => {
+      if (BoardColors.length > 0 && selectedPhoto === null) {
+         setSelectedPhoto(BoardColors[8].id)
+         setPostColor(BoardColors[8].background)
+      }
+   }, [BoardColors, selectedPhoto])
 
    const postAddBack = () => {
       postFunc({ backGround, title, workSpaceId: +id })
@@ -21,7 +30,9 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
    }
 
    const titleChange = (event) => {
-      setPostTitle(event.target.value)
+      const inputValue = event.target.value
+      setPostTitle(inputValue)
+      setIsButtonDisabled(inputValue === '') // Включаем кнопку, если поле не пустое
    }
 
    const togglePhoto = () => {
@@ -38,6 +49,7 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
       setSelectedColor(boardColor.id === selectedColor ? null : boardColor.id)
       setPostColor(boardColor.background)
    }
+
    const editPhoto = (boardColor) => {
       setSelectedPhoto(boardColor.id === selectedPhoto ? null : boardColor.id)
       setPostColor(boardColor.background)
@@ -47,7 +59,11 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
       <ModalUi open={toggleModal} onClose={toggleModal}>
          <Container>
             <BoardTitle>Create new board</BoardTitle>
-            <BoardInput placeholder="Board title*" onChange={titleChange} />
+            <BoardInput
+               placeholder="Board title*"
+               onChange={titleChange}
+               value={title}
+            />
             <ColorTitle>Add background</ColorTitle>
             <ColorContainer>
                <TitleWrapper>
@@ -69,6 +85,9 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
                      .map((boardColor) => (
                         <div
                            key={boardColor.id}
+                           className={
+                              selectedPhoto === boardColor.id ? 'selected' : ''
+                           }
                            style={{
                               position: 'relative',
                               marginRight: '16px',
@@ -175,7 +194,9 @@ export const BoardModal = ({ BoardColors, toggleModal, postFunc }) => {
             </ColorContainer>
             <ButtonContainer>
                <ButtonCancel onClick={toggleModal}>Cancel</ButtonCancel>
-               <ButtonCreate onClick={postAddBack}>Create board</ButtonCreate>
+               <ButtonCreate onClick={postAddBack} disabled={isButtonDisabled}>
+                  Create board
+               </ButtonCreate>
             </ButtonContainer>
          </Container>
       </ModalUi>
@@ -271,6 +292,7 @@ const ButtonCancel = styled('button')(() => ({
    border: 'none',
    padding: '8px 16px',
    marginRight: '16px',
+   cursor: 'pointer',
 }))
 const ButtonCreate = styled('button')(() => ({
    color: '#fff',
@@ -278,6 +300,11 @@ const ButtonCreate = styled('button')(() => ({
    border: 'none',
    padding: '8px 16px',
    backgroundColor: '#0079BF',
+   cursor: 'pointer',
+   '&:disabled': {
+      backgroundColor: '#333',
+      cursor: 'not-allowed',
+   },
 }))
 
 const PhotosModal = styled(Photos)(() => ({}))

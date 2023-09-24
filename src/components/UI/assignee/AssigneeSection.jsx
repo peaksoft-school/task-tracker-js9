@@ -2,21 +2,20 @@ import { Avatar, Checkbox, InputBase, styled } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Person } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { SearchIcon } from '../../../assets/icons'
-import { getAllIssues } from '../../../store/get-all-issues/get.all.issuesThunk'
-// import { assignee } from '../../../utils/constants/assignee'
+import { fetchParticipans } from '../../../store/participants/partThunk'
 
-export const AssigneeSection = ({ workspaceId }) => {
+export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
    const dispatch = useDispatch()
-   const [anchorEl, setAnchorEl] = useState(null)
+   const [, setAnchorEl] = useState(null)
    const [, setToogle] = useState(false)
-   const [, setSelectedUserId] = useState(null)
+   const { id } = useParams()
+   const { participants } = useSelector((state) => state.participant)
 
-   const { allIssues } = useSelector((state) => state.allIssues)
-   console.log('assignee =>: ', allIssues)
-
-   const handleCheckboxClick = (id) => {
-      setSelectedUserId(id)
+   const handleCheckboxClick = (userId) => {
+      changeHandler(userId)
+      AssigneeHandleChange(userId)
    }
 
    const handleClick = (event) => {
@@ -25,11 +24,11 @@ export const AssigneeSection = ({ workspaceId }) => {
    }
 
    useEffect(() => {
-      dispatch(getAllIssues({ id: workspaceId }))
+      dispatch(fetchParticipans({ partId: id, role: 'ALL' }))
    }, [])
 
-   const open = Boolean(anchorEl)
-   const id = open ? 'simple-popover' : undefined
+   // const open = Boolean(anchorEl)
+   // const id = open ? 'simple-popover' : undefined
 
    return (
       <MainContainerOfAssignee>
@@ -60,26 +59,31 @@ export const AssigneeSection = ({ workspaceId }) => {
                      <p>Unassigned</p>
                   </UnassignedChildContainer>
                </UnassignedContainer>
-               {allIssues.map((el) => {
-                  return el.assignee?.map((item) => {
-                     return (
-                        <AssigneeMapContainer key={item.userId}>
-                           <Checkbox
-                              sx={{
-                                 '&.Mui-checked': {
-                                    color: '#5faed0',
-                                 },
+               {participants?.map((item) => {
+                  // return el.assignee?.map((item) => {
+                  return (
+                     <AssigneeMapContainer key={item.userId}>
+                        <Checkbox
+                           sx={{
+                              '&.Mui-checked': {
+                                 color: '#5faed0',
+                              },
+                           }}
+                           onClick={() => handleCheckboxClick(item.userId)}
+                        />
+                        <Avatar src={item.image} />
+                        <div>
+                           <p
+                              style={{
+                                 fontSize: '0.9rem',
                               }}
-                              onClick={() => handleCheckboxClick(item.userId)}
-                           />
-                           <Avatar src={item.image} />
-                           <div>
-                              <p>{item.fullName}</p>
-                              <PeoplesEmail>{item.email}</PeoplesEmail>
-                           </div>
-                        </AssigneeMapContainer>
-                     )
-                  })
+                           >
+                              {item.fullName}
+                           </p>
+                           <PeoplesEmail>{item.email}</PeoplesEmail>
+                        </div>
+                     </AssigneeMapContainer>
+                  )
                })}
             </ScrollableContainer>
          </div>
@@ -159,8 +163,8 @@ const ScrollableContainer = styled('div')(() => ({
 const AssigneeMapContainer = styled('div')(() => ({
    display: 'flex',
    height: '3.5rem',
-   width: '17.75rem',
-   gap: '0.63rem',
+   width: '18.75rem',
+   gap: '0.3rem',
    padding: '0.5rem 2rem 0 0 ',
    cursor: 'pointer',
    '&:hover': {
@@ -174,7 +178,7 @@ const PeoplesEmail = styled('p')(() => ({
 const UnassignedContainer = styled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
-   width: '17.75rem',
+   width: '18.75rem',
    height: '3.5rem',
    background: ' #F2F2F2',
    cursor: 'pointer',

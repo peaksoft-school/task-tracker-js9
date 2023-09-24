@@ -2,12 +2,14 @@ import styled from '@mui/material/styles/styled'
 import { Button as MuiButton } from '@mui/material'
 import { useSelector } from 'react-redux'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const MapCommets = ({
    getCommentsID,
    handleEditClick,
    handleDeleteClick,
 }) => {
+   const navigate = useNavigate()
    const { comments } = useSelector((state) => state.comments)
    return (
       <div>
@@ -19,7 +21,11 @@ export const MapCommets = ({
                      <MainContainer isLastItem={isLastItem}>
                         <PersonIcon
                            src={comment.creatorAvatar}
-                           onClick={() => getCommentsID(comment.creatorId)}
+                           onClick={() =>
+                              navigate(`/profile/${comment.creatorId}`, {
+                                 state: { edit: 'true' },
+                              })
+                           }
                            alt="Member"
                         />
                         <AboutComments>

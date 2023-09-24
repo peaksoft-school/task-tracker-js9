@@ -3,9 +3,11 @@ import { Avatar, styled } from '@mui/material'
 import { useSelector } from 'react-redux'
 import TableMui from '../UI/table/TableMui'
 
-export const AllIssuesTable = () => {
+export const AllIssuesTable = ({ selectedUserId }) => {
+   console.log('selectedUserId: ', selectedUserId)
    const { allIssues } = useSelector((state) => state.allIssues)
    console.log('allIssues: ', allIssues)
+
    const column = [
       {
          heading: 'Created',
@@ -37,12 +39,14 @@ export const AllIssuesTable = () => {
          render: (assignee) => (
             <Assignee>
                {assignee.length <= 2 ? (
-                  assignee.map((item) => (
-                     <div key={item.userId}>
-                        <Avatar key={item.id}>{item.image}</Avatar>
-                        <p>{item.fullName}</p>
-                     </div>
-                  ))
+                  assignee.map((item) => {
+                     return (
+                        <div key={item.userId}>
+                           <Avatar key={item.id}>{item.image}</Avatar>
+                           <p>{item.fullName}</p>
+                        </div>
+                     )
+                  })
                ) : (
                   <>
                      {assignee.assignee.slice(0, 2).map((item) => (

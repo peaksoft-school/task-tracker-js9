@@ -14,7 +14,7 @@ import {
    styled,
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
    DownIcon,
    LayoutWhite,
@@ -32,7 +32,6 @@ import { getWorkspacesById } from '../../api/workspaceServise'
 
 export const SideHead = ({
    open,
-   // toggle,
    activeItem,
    handleItemClick,
    menuItems,
@@ -45,6 +44,7 @@ export const SideHead = ({
    const [workspaceId, setWorkspaceId] = useState({})
    const [editInput, setEditInput] = useState('')
    const { id } = useParams()
+   const navigate = useNavigate()
 
    const dispatch = useDispatch()
 
@@ -81,6 +81,8 @@ export const SideHead = ({
       if (text === 'Settings' || icon === <ToolsIcon />) {
          setShowModal(!showModal)
          setEditInput(editInput)
+      } else if (text === 'Participants') {
+         navigate(`/mainPage/${workspaceId.workSpaceId}/participants`)
       }
    }
 

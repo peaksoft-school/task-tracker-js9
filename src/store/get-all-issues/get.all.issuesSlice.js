@@ -16,8 +16,10 @@ export const allIssuesSlice = createSlice({
          .addCase(getAllIssues.fulfilled, (state, action) => {
             state.isLoading = false
             state.allIssues = action.payload
+
             state.isError = ''
          })
+
          .addCase(getAllIssues.pending, (state) => {
             state.isLoading = true
             state.isError = ''

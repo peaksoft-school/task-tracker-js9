@@ -49,7 +49,7 @@ export const CommentSection = () => {
       dispatch(
          postComments({
             comment: commentText,
-            cardId: 22,
+            cardId: 4,
          })
       )
 

@@ -189,8 +189,8 @@ export const rows = [
 ]
 
 export const filteredLabels = [
-   { label: 'In review', value: '#ffd700' },
-   { label: 'Kick back', value: '#EB5A46' },
-   { label: 'Final review', value: '#0079BF' },
-   { label: 'Complate', value: '#61BD4F' },
+   { label: 'In review', value: '#ffd700', labelId: '4' },
+   { label: 'Kick back', value: '#EB5A46', labelId: '2' },
+   { label: 'Final review', value: '#0079BF', labelId: '3' },
+   { label: 'Complate', value: '#61BD4F', labelId: '1' },
 ]
