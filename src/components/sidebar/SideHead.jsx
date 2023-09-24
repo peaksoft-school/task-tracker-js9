@@ -29,6 +29,8 @@ import {
 import { ModalSideBar } from './ModalSideBar'
 import { updateWorkspace } from '../../store/workspace/workspaceThunk'
 import { getWorkspacesById } from '../../api/workspaceServise'
+import { fetchBoards, getBoardById } from '../../store/board/boardThunk'
+import { getColumns } from '../../store/column/columnsThunk'
 
 export const SideHead = ({
    open,
@@ -41,6 +43,7 @@ export const SideHead = ({
    const [showModal, setShowModal] = useState(false)
 
    const { board } = useSelector((state) => state.board)
+   console.log('board: ', board)
    const [workspaceId, setWorkspaceId] = useState({})
    const [editInput, setEditInput] = useState('')
    const { id } = useParams()
@@ -92,6 +95,13 @@ export const SideHead = ({
 
    const toggleButtonHadler = () => {
       setToggleButton(!toggleButton)
+   }
+
+   const navigateToBoards = (boardId) => {
+      navigate(`/mainPage/${id}/boards/${boardId}/board`)
+      dispatch(fetchBoards(id))
+      dispatch(getBoardById(boardId))
+      dispatch(getColumns(boardId))
    }
 
    return (
@@ -163,7 +173,11 @@ export const SideHead = ({
                      <ListItemStyleTitle disablePadding>
                         <MenuList>
                            {board.map((item) => (
-                              <MenuItem>{item.title}</MenuItem>
+                              <MenuItem
+                                 onClick={() => navigateToBoards(item.boardId)}
+                              >
+                                 {item.title}
+                              </MenuItem>
                            ))}
                         </MenuList>
                      </ListItemStyleTitle>

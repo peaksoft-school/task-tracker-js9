@@ -13,6 +13,7 @@ import {
 import { ColumnCard } from './ColumnCard'
 
 export const CardLabels = ({ el }) => {
+   console.log('el: ', el)
    const [openLabelText, setOpenLabelText] = useState(false)
    const [clickedLabels, setClickedLabels] = useState([])
 

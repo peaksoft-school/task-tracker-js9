@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { styled } from '@mui/material'
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -26,6 +26,7 @@ export const DetailCard = ({ cardResponses }) => {
    const { id, boardId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { participants } = useSelector((state) => state.participant)
 
    const getCardByIdHandler = (card) => {
       setCardId(card.cardId)
@@ -57,7 +58,7 @@ export const DetailCard = ({ cardResponses }) => {
 
    return (
       <Cont>
-         {cardResponses.map((card) => (
+         {cardResponses?.map((card) => (
             <ColumnCard key={card.cardId}>
                {openLabelText ? (
                   <ParentColorGroupButton>
@@ -114,7 +115,7 @@ export const DetailCard = ({ cardResponses }) => {
                ) : null}
 
                <WraperDedline>
-                  {card.duration && card.duration === '' && (
+                  {card?.duration && (
                      <Deadline>
                         <RealWorldIcon />
                         <ParagraphDeadlineMonth>
@@ -144,12 +145,12 @@ export const DetailCard = ({ cardResponses }) => {
                            </NumberIcon>
                         </CheckMarNumberkIcon>
                      ) : null}
-                     {card.numberOfUsers > 1 && (
+                     {participants?.length > 0 ? (
                         <ParentPeopleIcon>
                            <PeopleIcon fill="gray" />
-                           <PeopleNumber>{card.numberOfUsers}</PeopleNumber>
+                           <PeopleNumber>{participants?.length}</PeopleNumber>
                         </ParentPeopleIcon>
-                     )}
+                     ) : null}
                   </WraperIcons>
                </WraperDedline>
                {openModal && (
@@ -194,6 +195,7 @@ const Labels = styled('div')(() => ({
 const WraperDedline = styled('div')(() => ({
    display: 'flex',
    justifyContent: 'flex-end',
+   gap: '0.4rem',
 }))
 
 const Deadline = styled('div')(() => ({
@@ -201,7 +203,8 @@ const Deadline = styled('div')(() => ({
    backgroundColor: '#F9DCB4',
    borderRadius: '0.5rem',
    padding: ' 0.125rem 0.5rem 0rem 0.5rem',
-   marginLeft: '0.7rem',
+   // marginLeft: '0.7rem',
+   marginBottom: '0.5rem',
 }))
 
 const WraperIcons = styled('div')(() => ({
