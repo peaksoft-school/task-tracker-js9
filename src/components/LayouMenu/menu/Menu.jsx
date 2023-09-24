@@ -33,7 +33,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       setArchive(true)
       setOpen(false)
       dispatch(getArchive(boardId))
-      console.log('boardId: ', boardId)
    }
 
    const openMenuHandler = () => {
@@ -111,11 +110,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
          )}
 
          {open === 'menu' && (
-            <MenuItemContainer
-               animation="slideIn"
-               open={openMenuHandler}
-               onClose={openMenuHandler}
-            >
+            <MenuItemContainer animation="slideIn">
+               <Backdrop onClick={closeHandler} />
                <MenuHeader>
                   <p>{}</p>
                   <p>Menu</p>
@@ -150,6 +146,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
          )}
          {open === 'background' && (
             <ChangeBackgroundContainer animation="slideIn">
+               <Backdrop onClick={closeHandler} />
+
                <ChangeBackgroundHeader>
                   <IconButton onClick={openMenuHandler}>
                      <LeftIcon fill="grey" />
@@ -176,6 +174,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
 
          {open === 'photos' && (
             <PopoverCont open={openPhotosHandler}>
+               <Backdrop onClick={closeHandler} />
+
                <AllBoard>
                   <StyledHeader>
                      <StyledIconButton>
@@ -202,6 +202,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
          )}
          {open === 'colors' && (
             <PopoverContColor open={openColorsHandler}>
+               <Backdrop onClick={closeHandler} />
+
                <AllBoardColor>
                   <StyledHeaderColor>
                      <StyledIconButtonColor onClick={openBackgroundHandler}>
@@ -231,6 +233,14 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       </div>
    )
 }
+const Backdrop = styled('div')(() => ({
+   width: '100%',
+   height: '100%',
+   position: 'fixed',
+   top: '0',
+   left: '0',
+   zIndex: -2,
+}))
 const StlyedContainerMenu = styled('div')({
    width: '6rem',
    height: '2.125rem',
@@ -322,7 +332,7 @@ const MenuItemContainer = styled('div')(({ animation }) => {
       width: '22.9375rem',
       height: '11.6rem',
       borderRadius: '0.625rem',
-      position: 'absolute',
+      position: 'fixed',
       zIndex: '222',
       right: '2rem',
       padding: '0.5rem 0',
@@ -375,9 +385,8 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
    return {
       width: '22.9375rem',
       height: '24vh',
-      position: 'absolute',
+      position: 'fixed',
       right: '2rem',
-      // top: '0',
       backgroundColor: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
@@ -423,6 +432,7 @@ const slideInAnimation = keyframes`
 
 const PopoverCont = styled('div')(() => ({
    position: 'fixed',
+   zIndex: '22',
    right: '0',
    top: '0',
    minWidth: '23.8rem',
@@ -488,7 +498,7 @@ const Photos = styled('img')({
 })
 
 const PopoverContColor = styled('div')(() => ({
-   position: 'absolute',
+   position: 'fixed',
    right: '0',
    minWidth: '23.8rem',
    minHeight: '30rem',
