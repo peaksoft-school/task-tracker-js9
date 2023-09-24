@@ -24,7 +24,6 @@ export const getBoardById = createAsyncThunk(
       try {
          const response = await axiosInstance.get(`/api/boards/${boardId}`)
          dispatch(getCardbyId())
-         console.log('getCardbyId: ', getCardbyId)
          return response.data
       } catch (error) {
          return rejectWithValue(error)

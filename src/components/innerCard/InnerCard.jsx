@@ -71,43 +71,29 @@ export const InnerCard = ({
    const { cardById } = useSelector((state) => state.cards)
    console.log('cardById: ', cardById)
 
-   const [selectedDate, setSelectedDate] = useState(
-      dayjs(cardById?.estimationResponse?.startDate)
-   )
+   const startTimeSlice = cardById?.estimationResponse?.startTime?.slice(11, 20)
+
+   const startDateForState = dayjs(cardById?.estimationResponse?.startDate)
+
+   const [selectedDate, setSelectedDate] = useState(startDateForState)
 
    const SliceOfStartDate = cardById?.estimationResponse?.startDate?.slice(
       0,
       11
    )
-   console.log('SliceOfStartDate: ', SliceOfStartDate)
+
    const SliceOfDuetDate = cardById?.estimationResponse?.duetDate?.slice(0, 12)
-   // const splitStartDateArray = SplitOfStartDate[0]
+   const duetDateForState = dayjs(cardById?.estimationResponse?.duetDate)
 
-   const [due, setDue] = useState(dayjs(cardById?.estimationResponse?.duetDate))
+   const [due, setDue] = useState(duetDateForState)
 
-   // const formattedMonth = `${getMonthName(selectedDate.$M)}
-   //  ${selectedDate.$D}, ${selectedDate.$y} `
+   const invalidDate = dayjs('2022-04-17T15:30')
 
-   // const formattedMonthDue = `${getMonthName(due.$M)}
-   //  ${due.$D}, ${due.$y} `
-   // const startDate = `${selectedDate.$D},${selectedDate.$y}`
-
-   const [clock, setСlock] = useState(dayjs('2022-04-17T15:30'))
+   const [clock, setСlock] = useState(invalidDate)
    const formattedTime = clock.format('HH:mm')
    const amPm = clock.format('A')
-   const currentHour = new Date().getHours()
-   const currentMinute = new Date().getMinutes()
-   const currentSecond = new Date().getSeconds()
-   // const [start, setStart] = useState(dayjs('2023-07-10'))
-   // const [due, setDue] = useState(dayjs('2023-07-15'))
-   // const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
+
    const dispatch = useDispatch()
-   // const navigate = useNavigate()
-   // const { id, boardId } = useParams()
-   // const closeInnerPage = () => {
-   //    navigate(`/mainPage/${id}/boards/${boardId}/board`)
-   // }
-   // console.log(cardData, 'cardData in inner card')
 
    const archiveCard = () => {
       dispatch(getCardArchve(cardId))
@@ -173,6 +159,25 @@ export const InnerCard = ({
       setOpenEstimation(false)
    }
 
+   const currentHour = `${selectedDate.$H}`
+   const currentMinute = `${selectedDate.$m}`
+   const currentSecond = String(selectedDate.$s).padStart(2, '0')
+
+   const selectedMonth = selectedDate.$M
+
+   let month
+
+   if (selectedMonth < 10) {
+      month = String(selectedMonth + 1).padStart(2, '0')
+   } else {
+      month = String(selectedMonth)
+   }
+
+   const day = selectedDate.$D < 10 ? `0${selectedDate.$D}` : selectedDate.$D
+   const dateMonth = `${selectedDate.$y}-${month}-${day}T`
+
+   const combinations = `${dateMonth}${currentHour}:${currentMinute}:${currentSecond}.${selectedDate.$ms}Z`
+
    return (
       <div>
          <ModalUi open={isInnerCardOpen} onClose={handleClose}>
@@ -205,25 +210,18 @@ export const InnerCard = ({
                         <div>
                            <Title>Start Date</Title>
                            <DateStart>
-                              {/* {formattedMonth} at {currentHour}:{currentMinute} */}
                               {cardById?.estimationResponse?.startDate
                                  ? SliceOfStartDate
-                                 : 'DD/MM/YYYY '}
-                              at{' '}
+                                 : 'DD/MM/YYYY at'}{' '}
                               {cardById?.estimationResponse?.startDate
-                                 ? currentHour
-                                 : ' 00'}
-                              :
-                              {cardById?.estimationResponse?.startDate
-                                 ? currentMinute
-                                 : '00'}{' '}
+                                 ? startTimeSlice
+                                 : ' 00:00 '}
                               {amPm}
                            </DateStart>
                         </div>
                         <div>
                            <Title>Due Date</Title>
                            <DateStart>
-                              {/* {formattedMonthDue} at {formattedTime} {amPm} */}
                               {cardById?.estimationResponse?.duetDate
                                  ? SliceOfDuetDate
                                  : 'DD/MM/YYYY '}
@@ -239,24 +237,6 @@ export const InnerCard = ({
                            <DateStart />
                         </div>
                      </DataContainer>
-                     {/* <DataContainer>
-                        <div>
-                           <Title>Start Date</Title>
-                           <DateStart>
-                              DD/MM/YYYY at 00:00
-                              {amPm}
-                           </DateStart>
-                        </div>
-                        <div>
-                           <Title>Due Date</Title>
-                           <DateStart>DD/MM/YYYY at 00:00 {amPm}</DateStart>
-                        </div>
-                        <div>
-                           <Title>Members</Title>
-                           <DateStart />
-                        </div> */}
-                     {/* </DataContainer> */}
-
                      <Description>
                         <DownIcon />
                         <DescriptionTitle>Description</DescriptionTitle>
@@ -321,11 +301,9 @@ export const InnerCard = ({
                                     clock={clock}
                                     setDue={setDue}
                                     due={due}
-                                    currentHour={currentHour}
-                                    currentMinute={currentMinute}
                                     cardId={cardId}
-                                    currentSecond={currentSecond}
                                     setOpenEstimation={setOpenEstimation}
+                                    combinations={combinations}
                                  />
                               </>
                            )}

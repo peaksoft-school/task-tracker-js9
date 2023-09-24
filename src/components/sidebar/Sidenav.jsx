@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
 import MuiDrawer from '@mui/material/Drawer'
@@ -37,8 +37,6 @@ export function Sidenav({ data, dataLength, workspacedata }) {
 
    const navigate = useNavigate()
    const dispatch = useDispatch()
-   const { id } = useParams()
-   console.log('id: ', id)
 
    useEffect(() => {
       dispatch(fetchAllWorkspaces())
