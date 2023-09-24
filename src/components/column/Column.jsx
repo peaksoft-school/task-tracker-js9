@@ -12,7 +12,6 @@ export const Column = () => {
    const dispatch = useDispatch()
    const { boardId } = useParams()
    const { columnsData } = useSelector((state) => state.columns)
-   console.log('columnsData: ', columnsData)
 
    useEffect(() => {
       dispatch(getColumns(boardId))

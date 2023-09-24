@@ -22,10 +22,8 @@ export const DataPickers = ({
    due,
    setDue,
    cardId,
-   currentHour,
-   currentMinute,
    setOpenEstimation,
-   currentSecond,
+   combinations,
 }) => {
    const dispatch = useDispatch()
    const [reminder, setReminder] = useState('')
@@ -34,18 +32,6 @@ export const DataPickers = ({
 
    const mode = cardById?.estimationResponse?.estimationId
 
-   // const startDate = selectedDate.toISOString()
-   // const parts = startDate.split('T')
-   // const postStartDate = parts[0]
-   // console.log('selectedDate: ', startDate)
-
-   console.log('selectedDate.toISOString(): ', selectedDate.toISOString())
-
-   const dateMonth = selectedDate.toISOString().slice(0, 11)
-   const dateHour = selectedDate.toISOString().slice(20, 24)
-   const combinations = `${dateMonth}${currentHour}0:${currentMinute}:${currentSecond}.${dateHour}`
-
-   console.log('combinations: ', combinations)
    const handleCreate = () => {
       const data = {
          cardId,
@@ -53,9 +39,10 @@ export const DataPickers = ({
          startDate: selectedDate.toISOString(),
          dateOfFinish: due.toISOString(),
          startTime: combinations,
-         finishTime: '2024-04-17T00:45:00.000Z',
+         finishTime: due.toISOString(),
       }
       dispatch(estimationPostRequest(data))
+      console.log('data: ', data)
       setOpenEstimation(false)
    }
 
@@ -63,13 +50,12 @@ export const DataPickers = ({
       const data = {
          cardId,
          values: {
-            estimationId: cardById.estimationResponse.estimationId,
+            estimationId: cardById?.estimationResponse?.estimationId,
             reminder,
             startDate: selectedDate.toISOString(),
             dateOfFinish: due.toISOString(),
-            startTime: currentHour,
-            currentMinute,
-            finishTime: clock.toISOString(),
+            startTime: combinations,
+            finishTime: due.toISOString(),
          },
       }
       dispatch(estimationPutRequest(data))
@@ -101,7 +87,6 @@ export const DataPickers = ({
                   <TimePicker
                      value={clock}
                      onChange={(newValue) => setСlock(newValue)}
-                     // format="HH:mm "
                   />
                </DateAndTimeContainer>
                <SelectContainer>
@@ -132,11 +117,11 @@ export const DataPickers = ({
                </SelectContainer>
                {mode ? (
                   <StyledButton onClick={handleUpdate}>
-                     update a new template
+                     Update Existing Template
                   </StyledButton>
                ) : (
                   <StyledButton onClick={handleCreate}>
-                     create a new template
+                     Create New Template
                   </StyledButton>
                )}
             </DateContainer>
