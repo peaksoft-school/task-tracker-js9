@@ -5,17 +5,30 @@ import { useParams } from 'react-router-dom'
 import { createNewColumn, getColumns } from '../../store/column/columnsThunk'
 import { Columns } from './Columns'
 import { NewColumn } from './NewColumn'
+import { fetchParticipans } from '../../store/participants/partThunk'
+import { fetchBoards } from '../../store/board/boardThunk'
+// import { fetchParticipans } from '../../store/participants/partThunk'
 
 export const Column = () => {
    const [isCreatingColumn, setIsCreatingColumn] = useState(false)
    const [newColumnName, setNewColumnName] = useState('')
    const dispatch = useDispatch()
-   const { boardId } = useParams()
+   const { boardId, id } = useParams()
    const { columnsData } = useSelector((state) => state.columns)
 
    useEffect(() => {
       dispatch(getColumns(boardId))
    }, [dispatch])
+
+   useEffect(() => {
+      dispatch(fetchBoards(id))
+   }, [])
+
+   const role = 'ALL'
+
+   useEffect(() => {
+      dispatch(fetchParticipans({ id, role }))
+   }, [])
 
    const handleAddColumnClick = () => {
       setIsCreatingColumn(!isCreatingColumn)

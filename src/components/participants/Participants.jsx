@@ -22,6 +22,7 @@ export const Participants = () => {
    const handleChange = (event) => {
       setRole(event.target.value)
    }
+
    const onCreateClick = () => {
       setOpenInviteNewModal((prev) => !prev)
    }
