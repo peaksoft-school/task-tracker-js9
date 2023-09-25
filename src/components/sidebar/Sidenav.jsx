@@ -150,7 +150,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                      borderRadius: '0rem 0.5rem 0.5rem 0rem',
                      position: 'fixed',
                      top: '6rem',
-                     // left: '6rem',
+                     // left: '16.3rem',
                      zIndex: '10',
                   }}
                >

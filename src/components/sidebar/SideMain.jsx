@@ -8,6 +8,7 @@ import {
    ListItemIcon,
    ListItemText,
    styled,
+   Tooltip,
 } from '@mui/material'
 import { DownIcon, GraphicIcon, PlusIcon, UpIcon } from '../../assets/icons'
 import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
@@ -96,6 +97,7 @@ export const SideMain = ({
                                     </span>
                                  </StyledAvatar>
                                  <StyledAccountingText
+                                    title={item.workSpaceName}
                                     onClick={() =>
                                        navigateHandlerToWorkspace(
                                           item.workSpaceId
@@ -237,10 +239,12 @@ const StyledListItemText = styled(ListItemText)(() => ({
       fontWeight: '400',
    },
 }))
-const StyledAccountingText = styled(ListItemText)(() => ({
+
+const StyledAccountingText = styled(Tooltip)(() => ({
    color: '#3C3C3C',
-   minWidth: '6.8rem',
-   overflowX: 'auto',
+   minWidth: '6.6rem',
+   overflow: 'hidden',
+   whiteSpace: 'nowrap',
 
    '::-webkit-scrollbar': {
       width: '8px',
@@ -256,6 +260,7 @@ const StyledAccountingText = styled(ListItemText)(() => ({
       backgroundColor: '#f1f1f1',
    },
 }))
+
 const ListItemStyle = styled(ListItem)(() => ({
    '&.MuiListItem-root ,MuiListItem-root MuiListItem-gutters MuiListItem-padding css-bjvhst-MuiListItem-root':
       {
