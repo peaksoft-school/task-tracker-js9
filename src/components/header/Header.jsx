@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
+// import { createGlobalStyle } from '@mui/styled-engine-sc'
 import { Avatar, IconButton } from '@mui/material'
 import {
    Outlet,
@@ -28,12 +29,14 @@ import { SearchHistory } from './SearchHistory'
 import { Notification } from './Notification'
 import { profileGetRequest } from '../../store/profile/ProfileThunk'
 import { getFavourites } from '../../store/getFavourites/favouritesThunk'
+import { getNotifications } from '../../store/notification/notificationThunk'
 // import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Headers = () => {
    const [showModal, setShowModal] = useState(false)
    const [search, setSearch] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
+   const [animationClass, setAnimationClass] = useState('')
    const [searchValue] = useDebounce(search, 100)
    const [showAdditionalComponent, setShowAdditionalComponent] = useState(false)
    const [showNotifications, setShowNotifications] = useState(false)
@@ -73,6 +76,9 @@ export const Headers = () => {
 
    useEffect(() => {
       dispatch(getFavourites())
+   }, [])
+   useEffect(() => {
+      dispatch(getNotifications())
    }, [])
 
    const openProfileHandler = () => {
@@ -114,6 +120,21 @@ export const Headers = () => {
    const favoriteResponse = favoriteData?.data?.workSpaceResponses?.length
 
    const favoriteAndBoardResponse = boardResponse || favoriteResponse
+   const plusAnimation = () => {
+      setAnimationClass('bump')
+
+      const animationTimePlus = setTimeout(() => {
+         setAnimationClass('')
+      }, 300)
+
+      return () => {
+         clearTimeout(animationTimePlus)
+      }
+   }
+
+   useEffect(() => {
+      plusAnimation()
+   }, [favoriteData])
 
    return (
       <div>
@@ -128,7 +149,10 @@ export const Headers = () => {
                   Task Tracker
                </LogoWords>
                <Favorite>
-                  <ParagraphFavorite>
+                  <ParagraphFavorite
+                     className={animationClass}
+                     onClick={() => setShowModal(true)}
+                  >
                      Favourites (
                      {favoriteAndBoardResponse !== 0 ? favoriteSum : 0})
                   </ParagraphFavorite>
@@ -174,7 +198,10 @@ export const Headers = () => {
                      </>
                   ) : null}
                   {search.length > 0 && (
-                     <GlobalSearch globalSearch={globalSearch} />
+                     <GlobalSearch
+                        globalSearch={globalSearch}
+                        setSearch={setSearch}
+                     />
                   )}
                </div>
                <IconButton onClick={notificationHandler}>
@@ -250,7 +277,30 @@ const ParagraphFavorite = muiStyled('p')(() => ({
    fontFamily: 'CarePro',
    color: '#3e3e3e',
    fontSize: '1rem',
-   fontWeight: '500',
+   fontWeight: '600',
+   animation: 'inherit',
+   cursor: 'pointer',
+
+   '&.bump': {
+      animation: 'bump 300ms ease-out',
+   },
+   '@keyframes bump': {
+      '0%': {
+         transform: 'scale(1)',
+      },
+      '10%': {
+         transform: 'scale(0.9)',
+      },
+      '30%': {
+         transform: 'scale(1.1)',
+      },
+      '50%': {
+         transform: 'scale(1.15)',
+      },
+      '100%': {
+         transform: 'scale(1)',
+      },
+   },
 }))
 
 const Logotype = muiStyled(Logo)(() => ({

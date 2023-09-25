@@ -220,6 +220,7 @@ const ParentColumnCard = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
    marginLeft: '0.5rem',
+   position: 'relative',
 }))
 
 const ScrollableContainer = styled('div')(() => ({

@@ -13,6 +13,7 @@ import { axiosInstance } from '../../../config/axiosInstance'
 import { Archive } from '../../archive/Archive'
 import { ModalUi } from '../../UI/modal/Modal'
 import { getArchive } from '../../../store/getArchive/archiveThunk'
+import { DeleteBoardModal } from './DeleteBoardModal'
 
 export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const dispatch = useDispatch()
@@ -20,6 +21,7 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const { boardId, id } = useParams()
    const { boardById } = useSelector((state) => state.board)
    const [archive, setArchive] = useState(false)
+   const [showDeleteBoardModal, setShowDeleteBoardModal] = useState(false)
 
    useEffect(() => {
       dispatch(getBoardById(boardId))
@@ -67,6 +69,9 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    )
    const deleteBoardHandler = () => {
       dispatch(boardRemove({ boardId, showSnackbar, navigate, id }))
+   }
+   const openCloseModalDeleteBoard = () => {
+      setShowDeleteBoardModal(!showDeleteBoardModal)
    }
 
    const handleclick = async (item, board) => {
@@ -136,10 +141,15 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                      </ArchiveButton>
                   </ArchiveCard>
 
-                  <DeleteBox>
-                     <DeleteButton onClick={deleteBoardHandler}>
-                        Delete this board
-                     </DeleteButton>
+                  {showDeleteBoardModal && (
+                     <DeleteBoardModal
+                        showDeleteBoardModal={showDeleteBoardModal}
+                        openCloseModalDeleteBoard={openCloseModalDeleteBoard}
+                        deleteBoardHandler={deleteBoardHandler}
+                     />
+                  )}
+                  <DeleteBox onClick={openCloseModalDeleteBoard}>
+                     <DeleteButton>Delete this board</DeleteButton>
                   </DeleteBox>
                </ChangeDivContainer>
             </MenuItemContainer>

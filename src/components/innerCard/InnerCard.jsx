@@ -69,7 +69,6 @@ export const InnerCard = ({
    const [titleCheckList, setTitleCheckList] = useState('')
 
    const { cardById } = useSelector((state) => state.cards)
-   console.log('cardById: ', cardById)
 
    const startTimeSlice = cardById?.estimationResponse?.startTime?.slice(11, 20)
 

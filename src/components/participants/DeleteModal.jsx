@@ -20,14 +20,16 @@ export const DeleteModal = ({ onDelete, role, userId }) => {
       onDelete()
    }
    return (
-      <StyleModalUi open={onDelete} onClose={onDelete}>
-         <SettingStyle>Delete user</SettingStyle>
-         <ClarifyStyled>Are you sure to delete this user?</ClarifyStyled>
-         <ButtonContainerSecond>
-            <CanselButton onClick={onDelete}>Cancel</CanselButton>
-            <DeleteButton onClick={onClickDelete}>Delete</DeleteButton>
-         </ButtonContainerSecond>
-      </StyleModalUi>
+      <ModalUi open={onDelete} onClose={onDelete}>
+         <StyleModalUi>
+            <SettingStyle>Delete user</SettingStyle>
+            <ClarifyStyled>Are you sure to delete this user?</ClarifyStyled>
+            <ButtonContainerSecond>
+               <CanselButton onClick={onDelete}>Cancel</CanselButton>
+               <DeleteButton onClick={onClickDelete}>Delete</DeleteButton>
+            </ButtonContainerSecond>
+         </StyleModalUi>
+      </ModalUi>
    )
 }
 
@@ -38,9 +40,11 @@ const ClarifyStyled = styled('span')(() => ({
    justifyContent: 'center',
    marginTop: '1rem',
 }))
-const StyleModalUi = styled(ModalUi)(() => ({
+const StyleModalUi = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
+   // alignItems: 'center',
+   width: '20rem',
    height: '11.625rem',
    bordeRadius: '0.625rem',
    background: '#FFF',
