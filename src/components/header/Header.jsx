@@ -26,6 +26,7 @@ import { searchRequest } from '../../store/globalSearch/searchThunk'
 import { GlobalSearch } from './GlobalSearch'
 import { SearchHistory } from './SearchHistory'
 import { Notification } from './Notification'
+import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Headers = ({ data }) => {
    const [showModal, setShowModal] = useState(false)
@@ -52,6 +53,9 @@ export const Headers = ({ data }) => {
          setFavoriteSum(sumLength)
       }
    }, [sumLength])
+   useEffect(() => {
+      dispatch(getFavourites())
+   }, [dispatch])
 
    useEffect(() => {
       if (searchValue.trim().length > 0) {
