@@ -1,7 +1,6 @@
 import { styled } from '@mui/material'
 import React from 'react'
 import { CardLabels } from '../column/CardLabels'
-// import { Card } from '../column/Card'
 
 export default function Archivecard({ el }) {
    return (

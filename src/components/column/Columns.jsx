@@ -19,6 +19,6 @@ const ColumnStyle = styled('div')(() => ({
    paddingRight: '0.5rem',
    maxHeight: '100%',
    position: 'relative',
-   zIndex: 1,
+   // zIndex: 1,
    background: '#E6E6E6',
 }))
