@@ -6,6 +6,7 @@ import {
    addColumnsToArchive,
    deleteColumnById,
 } from '../../store/column/columnsThunk'
+import { getAllCard } from '../../store/getArchive/archiveThunk'
 
 export const MeadTables = ({ columnId, setOpneModal }) => {
    console.log('columnId: ', columnId)
@@ -25,12 +26,13 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
       setOpneModal(false)
    }
 
-   // const archiveAllCard = () => {
-   //    navigate("")
-   // }
+   const archiveAllCard = () => {
+      dispatch(getAllCard({ columnId, boardId }))
+   }
 
    return (
       <Container>
+         <Backdrop onClick={() => setOpneModal(false)} />
          <TextActions>Actions</TextActions>
          <CardText>
             <TextAddCard>Add Card</TextAddCard>
@@ -50,12 +52,19 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
          </CardText>
          <Line />
          <CardText>
-            <p onClick={addtoArchiveteHandler}>Archive this column</p>
+            <p onClick={archiveAllCard}>Archive this column</p>
          </CardText>
       </Container>
    )
 }
-
+const Backdrop = styled('div')(() => ({
+   position: 'fixed',
+   width: '100%',
+   height: '100%',
+   left: '0',
+   top: '0',
+   zIndex: -2,
+}))
 const Container = styled('div')(() => ({
    padding: '1rem 0rem 0.25rem',
    borderRadius: ' 0.625rem',

@@ -14,77 +14,88 @@ export const Filter = ({
             <CountNumer>(2)</CountNumer>
          </FilterCont>
          {openFilterModal && (
-            <ModalFilter animation="slideIn">
-               <ModalFilterHeader>
-                  <p>{}</p>
-                  <p>Filter</p>
-                  <IconButton>
-                     <ExitIcon fill="gray" onClick={closeFilterModalHandler} />
-                  </IconButton>
-               </ModalFilterHeader>
-               <ModalDateBox>
-                  <Due>
-                     <p>Due date</p>
-                  </Due>
-                  <CheckbexAndName>
-                     <Checkbox />
-                     <p>No Dates</p>
-                  </CheckbexAndName>
-                  <CheckbexAndName>
-                     <Checkbox />
-                     <p>Overdue</p>
-                  </CheckbexAndName>
-                  <CheckbexAndName>
-                     <Checkbox />
-                     <p>Due in the next day</p>
-                  </CheckbexAndName>
-                  <CheckbexAndName>
-                     <Checkbox />
-                     <p>Due in the next week</p>
-                  </CheckbexAndName>
-                  <CheckbexAndName>
-                     <Checkbox />
-                     <p>Due in the next month</p>
-                  </CheckbexAndName>
-                  <CheckbexAndName>
-                     <Checkbox />
-                     <p>Marked as complete</p>
-                  </CheckbexAndName>
-                  <CheckbexAndName>
-                     <Checkbox />
-                     <p>Not marked as complete</p>
-                  </CheckbexAndName>
-               </ModalDateBox>
-               <ModalLabelsBox>
-                  <LabelsText>
-                     <p>labels</p>
-                  </LabelsText>
-                  <LabelsBox>
-                     <Checkbox />
-                     <p>No labels</p>
-                  </LabelsBox>
-                  <LabelsBox>
-                     <Checkbox />
-                     <DoneText>Done</DoneText>
-                  </LabelsBox>
-                  <LabelsBox>
-                     <Checkbox />
-                     <AttentionFirst>Attention</AttentionFirst>
-                  </LabelsBox>
-                  <LabelsBox>
-                     <Checkbox />
-                     <AttentionSecond>Attention</AttentionSecond>
-                  </LabelsBox>
-                  <LabelsBox>
-                     <Checkbox />
-                     <AttentionThird>Attention</AttentionThird>
-                  </LabelsBox>
-               </ModalLabelsBox>
-            </ModalFilter>
+            <>
+               <Backdrop onClick={closeFilterModalHandler} />
+               <ModalFilter animation="slideIn">
+                  <ModalFilterHeader>
+                     <p>{}</p>
+                     <p>Filter</p>
+                     <IconButton onClick={closeFilterModalHandler}>
+                        <ExitIcon fill="gray" />
+                     </IconButton>
+                  </ModalFilterHeader>
+                  <ModalDateBox>
+                     <Due>
+                        <p>Due date</p>
+                     </Due>
+                     <CheckbexAndName>
+                        <Checkbox />
+                        <p>No Dates</p>
+                     </CheckbexAndName>
+                     <CheckbexAndName>
+                        <Checkbox />
+                        <p>Overdue</p>
+                     </CheckbexAndName>
+                     <CheckbexAndName>
+                        <Checkbox />
+                        <p>Due in the next day</p>
+                     </CheckbexAndName>
+                     <CheckbexAndName>
+                        <Checkbox />
+                        <p>Due in the next week</p>
+                     </CheckbexAndName>
+                     <CheckbexAndName>
+                        <Checkbox />
+                        <p>Due in the next month</p>
+                     </CheckbexAndName>
+                     <CheckbexAndName>
+                        <Checkbox />
+                        <p>Marked as complete</p>
+                     </CheckbexAndName>
+                     <CheckbexAndName>
+                        <Checkbox />
+                        <p>Not marked as complete</p>
+                     </CheckbexAndName>
+                  </ModalDateBox>
+                  <ModalLabelsBox>
+                     <LabelsText>
+                        <p>labels</p>
+                     </LabelsText>
+                     <LabelsBox>
+                        <Checkbox />
+                        <p>No labels</p>
+                     </LabelsBox>
+                     <LabelsBox>
+                        <Checkbox />
+                        <DoneText>Done</DoneText>
+                     </LabelsBox>
+                     <LabelsBox>
+                        <Checkbox />
+                        <AttentionFirst>Attention</AttentionFirst>
+                     </LabelsBox>
+                     <LabelsBox>
+                        <Checkbox />
+                        <AttentionSecond>Attention</AttentionSecond>
+                     </LabelsBox>
+                     <LabelsBox>
+                        <Checkbox />
+                        <AttentionThird>Attention</AttentionThird>
+                     </LabelsBox>
+                  </ModalLabelsBox>
+               </ModalFilter>
+            </>
          )}
       </div>
    )
 }
+const Backdrop = styled('div')(() => ({
+   width: '100%',
+   height: '100%',
+   position: 'absolute',
+   zIndex: 1,
+   top: '0',
+   left: '0',
+}))
 const slideInAnimation = keyframes`
    from {
       transform: translateX(100%);
@@ -127,15 +138,15 @@ const ModalFilter = styled('div')(({ animation }) => {
       width: '22.9375rem',
       height: '40rem',
       display: 'flex',
-
       flexDirection: 'column',
       padding: '1rem',
       gap: '1rem',
       boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
       borderRadius: '0.5rem',
-      position: 'absolute',
+      position: 'fixed',
       zIndex: '222',
       right: '3rem',
+      top: '5.5rem',
       backgroundColor: 'white',
       ...animationStyles,
    }

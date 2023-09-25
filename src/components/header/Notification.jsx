@@ -1,14 +1,15 @@
-import { format } from 'date-fns'
+/* eslint-disable react/jsx-no-useless-fragment */
 import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect } from 'react'
+import { format } from 'date-fns'
 import { getNotifications } from '../../store/notification/notificationThunk'
 import { NotificationSms, TimeIcon } from '../../assets/icons'
 
 export const Notification = ({ notificationHandler }) => {
    const { notifications } = useSelector((state) => state.notifications)
-   console.log('notifications: ', notifications)
    const dispatch = useDispatch()
+
    useEffect(() => {
       dispatch(getNotifications())
    }, [])
@@ -21,82 +22,107 @@ export const Notification = ({ notificationHandler }) => {
    }
 
    return (
-      <Containerr animation="slideIn">
-         <Backdrop onClick={notificationHandler} />
-         <HeaderBlock>
-            <p>{}</p>
-            <NotificationText>Notification</NotificationText>
-            <SecondText>Mark as read</SecondText>
-         </HeaderBlock>
-         <WrapperBlock>
-            {notifications.map((notification) => (
-               <ManyContainers key={notification.id}>
-                  {notification.isRead ? null : <NotificationSmsIcon />}
-                  <WrapperNotifications>
-                     <ContainerImages>
-                        <TitleBoard>{notification.titleBoard}</TitleBoard>
-                        <ColumnText>{notification.columnName}</ColumnText>
-                        {notification.backGround ? (
-                           <ColorBlock color={notification.backGround} />
-                        ) : (
-                           <ImageStyled
-                              src={notification.backGround}
-                              alt="Board photo"
-                              style={{
-                                 backgroundImage: `url(${notification.backGround})`,
-                                 backgroundSize: 'cover',
-                                 backgroundPosition: 'center',
-                                 backgroundRepeat: 'no-repeat',
-                              }}
-                           />
-                        )}
-                     </ContainerImages>
-                     <ContainerInfo>
-                        <WrapperUsers>
-                           {notification.notificationType === 'REMINDER' ? (
-                              <WrapperNotificationTypes>
-                                 <TImeIconContainer>
-                                    <TimeIcon />
-                                 </TImeIconContainer>
-                                 <ReminderText>
-                                    {notification.notificationType}
-                                 </ReminderText>
-                              </WrapperNotificationTypes>
-                           ) : (
-                              <>
-                                 <UserImage
-                                    src={notification.imageUser}
-                                    alt=""
+      <>
+         {notifications?.length > 0 ? (
+            <Containerr animation="slideIn">
+               <Backdrop onClick={notificationHandler} />
+               <HeaderBlock>
+                  <p>{}</p>
+                  <NotificationText>Notification</NotificationText>
+                  <SecondText>Mark as read</SecondText>
+               </HeaderBlock>
+               <WrapperBlock>
+                  {notifications?.map((notification) => (
+                     <ManyContainers key={notification.id}>
+                        {notification.isRead ? null : <NotificationSmsIcon />}
+                        <WrapperNotifications>
+                           <ContainerImages>
+                              <TitleBoard>{notification.titleBoard}</TitleBoard>
+                              <ColumnText>{notification.columnName}</ColumnText>
+                              {notification.backGround ? (
+                                 <ColorBlock color={notification.backGround} />
+                              ) : (
+                                 <ImageStyled
+                                    src={notification.backGround}
+                                    alt="Board photo"
+                                    style={{
+                                       backgroundImage: `url(${notification.backGround})`,
+                                       backgroundSize: 'cover',
+                                       backgroundPosition: 'center',
+                                       backgroundRepeat: 'no-repeat',
+                                    }}
                                  />
-                                 <UserName>{notification.fullName}</UserName>{' '}
-                              </>
-                           )}
-                        </WrapperUsers>
-                        <WrapperInfo>
-                           <NotificationTitle>
-                              {notification.text}
-                           </NotificationTitle>
-                           <div style={{ display: 'flex', gap: '0.3rem' }}>
-                              <span className="styledTime">
-                                 {
-                                    formatDateAndTime(notification.createdDate)
-                                       .formattedDate
-                                 }
-                              </span>
-                              <span className="styledTime">
-                                 {
-                                    formatDateAndTime(notification.createdDate)
-                                       .formattedTime
-                                 }
-                              </span>
-                           </div>
-                        </WrapperInfo>
-                     </ContainerInfo>
-                  </WrapperNotifications>
-               </ManyContainers>
-            ))}
-         </WrapperBlock>
-      </Containerr>
+                              )}
+                           </ContainerImages>
+                           <ContainerInfo>
+                              <WrapperUsers>
+                                 {notification.notificationType ===
+                                 'REMINDER' ? (
+                                    <WrapperNotificationTypes>
+                                       <TImeIconContainer>
+                                          <TimeIcon />
+                                       </TImeIconContainer>
+                                       <ReminderText>
+                                          {notification.notificationType}
+                                       </ReminderText>
+                                    </WrapperNotificationTypes>
+                                 ) : (
+                                    <>
+                                       <UserImage
+                                          src={notification.imageUser}
+                                          alt=""
+                                       />
+                                       <UserName>
+                                          {notification.fullName}
+                                       </UserName>{' '}
+                                    </>
+                                 )}
+                              </WrapperUsers>
+                              <WrapperInfo>
+                                 <NotificationTitle>
+                                    {notification.text}
+                                 </NotificationTitle>
+                                 <div
+                                    style={{ display: 'flex', gap: '0.3rem' }}
+                                 >
+                                    <span className="styledTime">
+                                       {
+                                          formatDateAndTime(
+                                             notification.createdDate
+                                          ).formattedDate
+                                       }
+                                    </span>
+                                    <span className="styledTime">
+                                       {
+                                          formatDateAndTime(
+                                             notification.createdDate
+                                          ).formattedTime
+                                       }
+                                    </span>
+                                 </div>
+                              </WrapperInfo>
+                           </ContainerInfo>
+                        </WrapperNotifications>
+                     </ManyContainers>
+                  ))}
+               </WrapperBlock>
+            </Containerr>
+         ) : (
+            <Containerr animation="slideIn">
+               <Backdrop onClick={notificationHandler} />
+
+               <p
+                  style={{
+                     textAlign: 'center',
+                     fontSize: '1.25rem',
+                     color: '#888888',
+                  }}
+               >
+                  No notifications
+               </p>
+            </Containerr>
+         )}
+      </>
    )
 }
 const Backdrop = styled('div')(() => ({
@@ -123,7 +149,7 @@ const Containerr = styled('div')(({ animation }) => {
    return {
       width: '22.5625rem',
       maxHeight: '35rem',
-      position: 'absolute',
+      position: 'fixed',
       right: '2rem',
       top: '4.5rem',
       boxShadow: '-4px 2px 20px 9px rgba(0, 0, 0, 0.2)',

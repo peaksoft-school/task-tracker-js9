@@ -21,7 +21,7 @@ export const checkListPutRequest = createAsyncThunk(
             data
          )
 
-         dispatch(checkListGetRequest(19))
+         dispatch(checkListGetRequest(data.carId))
 
          return response.data
       } catch (error) {
@@ -47,7 +47,7 @@ export const postItemToItems = createAsyncThunk(
       try {
          const response = await axiosInstance.post(`api/items`, data)
 
-         dispatch(checkListGetRequest(19))
+         dispatch(checkListGetRequest(data.carId))
 
          return response
       } catch (error) {
@@ -58,11 +58,11 @@ export const postItemToItems = createAsyncThunk(
 
 export const putItemToItems = createAsyncThunk(
    'checkList/putItemToItems',
-   async (id, { dispatch }) => {
+   async (data, { dispatch }) => {
       try {
-         const response = await axiosInstance.put(`api/items/${id}`)
+         const response = await axiosInstance.put(`api/items/${data.id}`)
 
-         dispatch(checkListGetRequest(19))
+         dispatch(checkListGetRequest(data.carId))
          return response
       } catch (error) {
          return error
@@ -72,11 +72,11 @@ export const putItemToItems = createAsyncThunk(
 
 export const deleteListInLists = createAsyncThunk(
    'checkList/deleteListInLists',
-   async (id, { dispatch }) => {
+   async (data, { dispatch }) => {
       try {
-         const response = await axiosInstance.delete(`api/checkList/${id}`)
+         const response = await axiosInstance.delete(`api/checkList/${data.id}`)
 
-         dispatch(checkListGetRequest(19))
+         dispatch(checkListGetRequest(data.carId))
 
          return response
       } catch (error) {
@@ -87,10 +87,10 @@ export const deleteListInLists = createAsyncThunk(
 
 export const deleteItemInItems = createAsyncThunk(
    'checkList/deleteItemInItems',
-   async (id, { dispatch }) => {
+   async (data, { dispatch }) => {
       try {
-         const response = await axiosInstance.delete(`api/items/${id}`)
-         dispatch(checkListGetRequest(19))
+         const response = await axiosInstance.delete(`api/items/${data.itemId}`)
+         dispatch(checkListGetRequest(data.carId))
 
          return response
       } catch (error) {

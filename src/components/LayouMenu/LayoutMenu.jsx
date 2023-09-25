@@ -58,6 +58,7 @@ export const LayoutMenu = () => {
             backGround: values.img ? values.img : boardById?.backGround || '',
          }
          dispatch(updateBord({ data, boardId }))
+
          setShowBoard(false)
       },
    })
@@ -93,7 +94,7 @@ export const LayoutMenu = () => {
                                     variant="outlined"
                                     size="small"
                                     name="title"
-                                    {...formik.getFieldProps('title')} // Подключение Formik
+                                    {...formik.getFieldProps('title')}
                                  />
                               </div>
                               {formik.touched.title && formik.errors.title && (
@@ -109,7 +110,7 @@ export const LayoutMenu = () => {
                                     label="Image"
                                     variant="outlined"
                                     size="small"
-                                    {...formik.getFieldProps('img')} // Подключение Formik
+                                    {...formik.getFieldProps('img')}
                                  />
                               </div>
 
@@ -140,8 +141,7 @@ export const LayoutMenu = () => {
                   style={{
                      display: 'flex',
                      gap: '0.5rem',
-                     marginLeft: '30px',
-                     // marginTop: '10px',
+                     marginLeft: '40px',
                   }}
                >
                   <span
@@ -192,7 +192,7 @@ const LayoutMenuContainer = styled('div')({
    justifyContent: 'space-between',
    width: 'auto',
    marginTop: '7rem',
-   // marginLeft: '2rem',
+   marginLeft: '2rem',
 })
 
 const ModalButton = styled(Button)(() => ({
@@ -270,7 +270,7 @@ const TitleBox = styled('div')({
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
-   gap: '1rem',
+   gap: '0.5rem',
    cursor: 'pointer',
 })
 
@@ -291,6 +291,8 @@ const InviteBox = styled('div')({
 
 const InviteText = styled('p')({
    color: '#2f1fe6',
+   fontWeight: 800,
+   fontSize: '1rem',
 })
 
 const CountSpan = styled('span')({

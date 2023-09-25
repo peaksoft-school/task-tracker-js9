@@ -22,7 +22,7 @@ const LabelContain = styled('button')(() => ({
 
 const P = styled('p')(() => ({
    color: '#FFF',
-   fontFamily: 'Cera Pro',
+   fontFamily: 'CeraPro',
    fontSize: '1rem',
    fontWeight: 500,
 }))

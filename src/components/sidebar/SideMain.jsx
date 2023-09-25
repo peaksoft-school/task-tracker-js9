@@ -11,16 +11,19 @@ import {
 } from '@mui/material'
 import { DownIcon, GraphicIcon, PlusIcon, UpIcon } from '../../assets/icons'
 import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
+// import { fetchBoards } from '../../store/board/boardThunk'
 
 export const SideMain = ({
    open,
    activeItem,
    handleItemClick,
    menuItemsWorspace,
+   navigateHandlerToWorkspace,
 }) => {
    const [workspaceId, setWorkspaceId] = useState(null)
    const [showMore, setShowMore] = useState(false)
    const dispatch = useDispatch()
+   // const navigate = useNavigate()
 
    const toggleButtonHadler = (id) => {
       setWorkspaceId(id)
@@ -37,6 +40,11 @@ export const SideMain = ({
    useEffect(() => {
       dispatch(fetchAllWorkspaces())
    }, [dispatch])
+
+   // const navigateHandlerToWorkspace = (workSpaceId) => {
+   //    navigate(`/mainPage/${workSpaceId}/boards`)
+   //    dispatch(fetchBoards(workSpaceId))
+   // }
 
    return (
       <div style={{ textShadow: '0  0 10px #fff' }}>
@@ -78,11 +86,22 @@ export const SideMain = ({
                                     sx={{ bgcolor: '#2CB107' }}
                                     alt="photo"
                                  >
-                                    <span style={{ fontSize: '1.3rem' }}>
+                                    <span
+                                       style={{
+                                          fontSize: '1.3rem',
+                                          textTransform: 'capitalize',
+                                       }}
+                                    >
                                        {item.workSpaceName[0]}
                                     </span>
                                  </StyledAvatar>
-                                 <StyledAccountingText>
+                                 <StyledAccountingText
+                                    onClick={() =>
+                                       navigateHandlerToWorkspace(
+                                          item.workSpaceId
+                                       )
+                                    }
+                                 >
                                     {item.workSpaceName}
                                  </StyledAccountingText>
                               </StyledForSpace>
@@ -208,7 +227,7 @@ const Accounting = styled(ListItem)(() => ({
       display: 'flex',
       width: '100%',
       marginLeft: '2.2rem',
-      cursor: 'default',
+      cursor: 'pointer',
    },
 }))
 const StyledListItemText = styled(ListItemText)(() => ({
@@ -220,6 +239,22 @@ const StyledListItemText = styled(ListItemText)(() => ({
 }))
 const StyledAccountingText = styled(ListItemText)(() => ({
    color: '#3C3C3C',
+   minWidth: '6.8rem',
+   overflowX: 'auto',
+
+   '::-webkit-scrollbar': {
+      width: '8px',
+      height: '2px',
+   },
+
+   '::-webkit-scrollbar-thumb': {
+      backgroundColor: '#e4e4e4',
+      borderRadius: '4px',
+   },
+
+   '::-webkit-scrollbar-track': {
+      backgroundColor: '#f1f1f1',
+   },
 }))
 const ListItemStyle = styled(ListItem)(() => ({
    '&.MuiListItem-root ,MuiListItem-root MuiListItem-gutters MuiListItem-padding css-bjvhst-MuiListItem-root':

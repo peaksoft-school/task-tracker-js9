@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
+// import { createGlobalStyle } from '@mui/styled-engine-sc'
 import { Avatar, IconButton } from '@mui/material'
 import {
    Outlet,
@@ -26,18 +27,23 @@ import { searchRequest } from '../../store/globalSearch/searchThunk'
 import { GlobalSearch } from './GlobalSearch'
 import { SearchHistory } from './SearchHistory'
 import { Notification } from './Notification'
+import { profileGetRequest } from '../../store/profile/ProfileThunk'
 import { getFavourites } from '../../store/getFavourites/favouritesThunk'
+import { getNotifications } from '../../store/notification/notificationThunk'
+// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
-export const Headers = ({ data }) => {
+export const Headers = () => {
    const [showModal, setShowModal] = useState(false)
    const [search, setSearch] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
+   const [animationClass, setAnimationClass] = useState('')
    const [searchValue] = useDebounce(search, 100)
    const [showAdditionalComponent, setShowAdditionalComponent] = useState(false)
    const [showNotifications, setShowNotifications] = useState(false)
 
    const { favoriteData } = useSelector((state) => state.favorite)
    const { globalSearch } = useSelector((state) => state.search)
+   const { item } = useSelector((state) => state.profile)
 
    const boardLength = favoriteData.data?.boardResponses?.length || 0
    const workSpaceLength = favoriteData.data?.workSpaceResponses?.length || 0
@@ -47,6 +53,10 @@ export const Headers = ({ data }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const location = useLocation()
+
+   useEffect(() => {
+      dispatch(profileGetRequest())
+   }, [])
 
    useEffect(() => {
       if (sumLength > 0) {
@@ -67,6 +77,13 @@ export const Headers = ({ data }) => {
       setShowModal(!showModal)
    }
 
+   useEffect(() => {
+      dispatch(getFavourites())
+   }, [])
+   useEffect(() => {
+      dispatch(getNotifications())
+   }, [])
+
    const openProfileHandler = () => {
       setOpenProfile((prev) => !prev)
    }
@@ -75,7 +92,7 @@ export const Headers = ({ data }) => {
       event.stopPropagation()
    }
    const logOutHandler = () => {
-      dispatch(logOut(), navigate)
+      dispatch(logOut())
          .unwrap()
          .then(() => {
             showSnackbar({
@@ -86,7 +103,7 @@ export const Headers = ({ data }) => {
             location.reload()
          })
          .catch((error) => {
-            console.log(error)
+            return error.message
          })
    }
 
@@ -101,6 +118,26 @@ export const Headers = ({ data }) => {
    const notificationHandler = () => {
       setShowNotifications((prev) => !prev)
    }
+   const boardResponse = favoriteData?.data?.boardResponses?.length
+
+   const favoriteResponse = favoriteData?.data?.workSpaceResponses?.length
+
+   const favoriteAndBoardResponse = boardResponse || favoriteResponse
+   const plusAnimation = () => {
+      setAnimationClass('bump')
+
+      const animationTimePlus = setTimeout(() => {
+         setAnimationClass('')
+      }, 300)
+
+      return () => {
+         clearTimeout(animationTimePlus)
+      }
+   }
+
+   useEffect(() => {
+      plusAnimation()
+   }, [favoriteData])
 
    return (
       <div>
@@ -115,8 +152,12 @@ export const Headers = ({ data }) => {
                   Task Tracker
                </LogoWords>
                <Favorite>
-                  <ParagraphFavorite>
-                     Favourites ({favoriteSum})
+                  <ParagraphFavorite
+                     className={animationClass}
+                     onClick={() => setShowModal(true)}
+                  >
+                     Favourites (
+                     {favoriteAndBoardResponse !== 0 ? favoriteSum : 0})
                   </ParagraphFavorite>
                   <IconButton onClick={openFavoriteModalHandler}>
                      {showModal ? (
@@ -160,7 +201,10 @@ export const Headers = ({ data }) => {
                      </>
                   ) : null}
                   {search.length > 0 && (
-                     <GlobalSearch globalSearch={globalSearch} />
+                     <GlobalSearch
+                        globalSearch={globalSearch}
+                        setSearch={setSearch}
+                     />
                   )}
                </div>
                <IconButton onClick={notificationHandler}>
@@ -169,10 +213,22 @@ export const Headers = ({ data }) => {
                {showNotifications && (
                   <Notification notificationHandler={notificationHandler} />
                )}
-               <WrapperTexts>
-                  <StyledAvatar onClick={openProfileHandler}>
-                     {data}
-                  </StyledAvatar>
+               <WrapperTexts onClick={openProfileHandler}>
+                  {item?.avatar === 'Default image' ? (
+                     <Avatar />
+                  ) : (
+                     <StyledAvatar>
+                        <img
+                           style={{
+                              width: '100%',
+                              height: '100%',
+                              borderRadius: '50%',
+                           }}
+                           src={item?.avatar}
+                           alt=""
+                        />
+                     </StyledAvatar>
+                  )}
                   {openProfile ? (
                      <ProfileTexts>
                         {location.pathname !== '/profile' && (
@@ -224,7 +280,30 @@ const ParagraphFavorite = muiStyled('p')(() => ({
    fontFamily: 'CarePro',
    color: '#3e3e3e',
    fontSize: '1rem',
-   fontWeight: '500',
+   fontWeight: '600',
+   animation: 'inherit',
+   cursor: 'pointer',
+
+   '&.bump': {
+      animation: 'bump 300ms ease-out',
+   },
+   '@keyframes bump': {
+      '0%': {
+         transform: 'scale(1)',
+      },
+      '10%': {
+         transform: 'scale(0.9)',
+      },
+      '30%': {
+         transform: 'scale(1.1)',
+      },
+      '50%': {
+         transform: 'scale(1.15)',
+      },
+      '100%': {
+         transform: 'scale(1)',
+      },
+   },
 }))
 
 const Logotype = muiStyled(Logo)(() => ({
@@ -282,8 +361,11 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
    },
 }))
 
-const StyledAvatar = muiStyled(Avatar)(() => ({
+const StyledAvatar = muiStyled('div')(() => ({
    cursor: 'pointer',
+   width: '3rem',
+   height: '3rem',
+   borderRadius: '50%',
 }))
 
 const ProfileTexts = muiStyled('div')(() => ({

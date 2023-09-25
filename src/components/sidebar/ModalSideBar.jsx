@@ -1,4 +1,4 @@
-import { styled } from '@mui/system'
+import { styled } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -53,29 +53,51 @@ export const ModalSideBar = ({
             </StyleModalUi>
          ) : null}
          {showSecondModal ? (
-            <StyleModalUi open={showSecondModal} onClose={openDeleteModal}>
-               <SettingStyle>Delete workspace</SettingStyle>
-               <ClarifyStyled>
-                  Are you sure to delete this workspace?
-               </ClarifyStyled>
-               <ButtonContainerSecond>
-                  <CanselButton onClick={openDeleteModal}>Cancel</CanselButton>
-                  <DeleteButton onClick={deleteWorkspacesHandler}>
-                     Delete
-                  </DeleteButton>
-               </ButtonContainerSecond>
-            </StyleModalUi>
+            <ModalUi open={showSecondModal} onClose={openDeleteModal}>
+               <Container>
+                  <div>
+                     <h3 style={{ textAlign: 'center', fontSize: '1.2rem' }}>
+                        Delete workspace:
+                     </h3>
+                  </div>
+                  <SecondBlock>
+                     <ClarifyStyled>
+                        Are you sure to delete this workspace ?
+                     </ClarifyStyled>
+                  </SecondBlock>
+                  <ButtonContainerSecond>
+                     <CanselButton onClick={openDeleteModal}>
+                        Cancel
+                     </CanselButton>
+                     <DeleteButton onClick={deleteWorkspacesHandler}>
+                        Delete
+                     </DeleteButton>
+                  </ButtonContainerSecond>
+               </Container>
+            </ModalUi>
          ) : null}
       </div>
    )
 }
+const Container = styled('div')(() => ({
+   width: '22.9375rem',
+   height: '11.125rem',
+   borderRadius: '0.625rem',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'space-between',
+}))
 
+const SecondBlock = styled('div')(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+}))
 const SettingStyle = styled('span')(() => ({
-   fontSize: '1rem',
    color: '#000',
    display: 'flex',
    justifyContent: 'center',
-   marginBottom: '1rem',
+   fontSize: '1.3rem',
+   marginBottom: '0.5rem',
 }))
 const ButtonContainer = styled('div')(() => ({
    display: 'flex',
@@ -84,8 +106,7 @@ const ButtonContainer = styled('div')(() => ({
 }))
 const ButtonContainerSecond = styled('div')(() => ({
    display: 'flex',
-   justifyContent: 'end',
-   marginTop: '2.5rem',
+   justifyContent: 'flex-end',
    gap: '1rem',
 }))
 const ClarifyStyle = styled('span')(() => ({
@@ -98,33 +119,42 @@ const ClarifyStyle = styled('span')(() => ({
 }))
 const ClarifyStyled = styled('span')(() => ({
    fontSize: '1rem',
-   color: '#919191',
+   color: '#111',
    display: 'flex',
    justifyContent: 'center',
-   marginTop: '1rem',
 }))
 const StyleModalUi = styled(ModalUi)(() => ({
    display: 'flex',
    flexDirection: 'column',
-   height: '11.625rem',
+   height: '12.625rem',
    bordeRadius: '0.625rem',
    background: '#FFF',
 }))
 const CanselButton = styled(Button)(() => ({
-   height: '2.125',
+   height: '2.125rem',
    width: '4.885rem',
    bordeRadius: '1.5rem',
    fontFamily: 'CarePro',
    backgroundColor: '#F0F0F0',
    textTransform: 'capitalize',
    color: '#919191',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   '&:hover': {
+      backgroundColor: '#b6b6b6',
+      color: 'white',
+   },
 }))
 const SaveButton = styled(Button)(() => ({
-   height: '2.125',
+   height: '2.125rem',
    width: '4rem',
    bordeRadius: '1.5rem',
    fontFamily: 'CarePro',
    textTransform: 'capitalize',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
    '&:hover': {
       backgroundColor: '#005688',
       color: '#ffff',
@@ -134,10 +164,13 @@ const SaveButton = styled(Button)(() => ({
    },
 }))
 const DeleteButton = styled(Button)(() => ({
-   height: '2.125',
+   height: '2.125rem',
    width: '4.75rem',
    bordeRadius: '1.5rem',
    fontFamily: 'CarePro',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
    textTransform: 'capitalize',
    backgroundColor: '#D91212',
    '&:hover': {

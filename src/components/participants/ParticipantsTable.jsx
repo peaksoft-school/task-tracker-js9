@@ -8,7 +8,10 @@ import {
 } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { putParticipans } from '../../store/participants/partThunk'
+import {
+   fetchParticipans,
+   putParticipans,
+} from '../../store/participants/partThunk'
 import TableMui from '../UI/table/TableMui'
 import { DeleteIcon } from '../../assets/icons'
 
@@ -22,6 +25,11 @@ export const ParticipantsTable = ({ onDelete, rows }) => {
    const { id } = useParams()
 
    const defaultRole = 'Member'
+
+   React.useEffect(() => {
+      const role = 'ALL'
+      dispatch(fetchParticipans({ id, role }))
+   }, [])
 
    const initialRoles = {}
    rows.forEach((row) => {
@@ -95,7 +103,7 @@ export const ParticipantsTable = ({ onDelete, rows }) => {
 
 const Container = styled('div')(() => ({
    width: '100%',
-   height: '100vh',
+   height: '100%',
 }))
 const MainContainer = styled('div')(() => ({
    display: 'flex',

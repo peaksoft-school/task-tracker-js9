@@ -28,15 +28,14 @@ export const createInviteMember = createAsyncThunk(
             newdata
          )
          dispatch(allinviteMember(boardId))
-         dispatch(openInviteNewModal())
          showSnackbar({
             message: 'Invited member',
             severity: 'success',
          })
+         dispatch(openInviteNewModal())
 
          return data
       } catch (error) {
-         console.log('error: ', error.response.data.message)
          showSnackbar({
             message: error.response.data.message,
             severity: 'error',

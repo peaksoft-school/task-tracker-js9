@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
 import MuiDrawer from '@mui/material/Drawer'
 import Divider from '@mui/material/Divider'
 import { IconButton, ListItemIcon } from '@mui/material'
 import { SideHead } from './SideHead'
 import { SideMain } from './SideMain'
+
 import {
    PeopleIcon,
    PlusIcon,
@@ -15,6 +18,8 @@ import {
    FirstMenu,
    AllIssuesIcon,
 } from '../../assets/icons'
+import { fetchBoards } from '../../store/board/boardThunk'
+import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
 
 export function Sidenav({ data, dataLength, workspacedata }) {
    const [openDrawer, setOpenDrawer] = useState(false)
@@ -28,6 +33,18 @@ export function Sidenav({ data, dataLength, workspacedata }) {
 
    const handleItemClick = (item) => {
       setActiveItem(item)
+   }
+
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+
+   useEffect(() => {
+      dispatch(fetchAllWorkspaces())
+   }, [dispatch])
+
+   const navigateHandlerToWorkspace = (workSpaceId) => {
+      navigate(`/mainPage/${workSpaceId}/boards`)
+      dispatch(fetchBoards(workSpaceId))
    }
 
    const menuItems = [
@@ -61,10 +78,16 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             ),
       },
    ]
+
    const menuItemsWorspace = [
       {
          text: 'Board',
-         icon: <TemplateIcon fill="#919191" />,
+         icon: (
+            <TemplateIcon
+               fill="#919191"
+               onClick={() => navigateHandlerToWorkspace()}
+            />
+         ),
          id: 1,
       },
       {
@@ -79,6 +102,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
          id: 3,
       },
    ]
+
    return (
       <div style={{ display: 'flex' }}>
          <StyledBox sx={{ zIndex: '0', marginTop: '200px' }}>
@@ -95,6 +119,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                <SideMain
                   workspacedata={workspacedata}
                   menuItemsWorspace={menuItemsWorspace}
+                  navigateHandlerToWorkspace={navigateHandlerToWorkspace}
                   open={openDrawer}
                   activeItem={activeItem}
                   handleItemClick={handleItemClick}

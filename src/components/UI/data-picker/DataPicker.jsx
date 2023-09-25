@@ -1,20 +1,66 @@
-import dayjs from 'dayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useState } from 'react'
 import Select from '@mui/material/Select'
+import { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
-import { styled as MUIStyled } from '@mui/material/styles'
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { DateField } from '@mui/x-date-pickers/DateField'
+import { styled as MUIStyled } from '@mui/material/styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { Button } from '../button/Button'
+import {
+   estimationPostRequest,
+   estimationPutRequest,
+} from '../../../store/dataPicjers/estimationThunk'
 
-export const DataPickers = () => {
-   const [selectedDate, setSelectedDate] = useState(dayjs('2023-07-11'))
-   const [start, setStart] = useState(dayjs('2023-07-10'))
-   const [due, setDue] = useState(dayjs('2023-07-15'))
-   const [value, setValue] = useState(dayjs('2023-07-15T18:45'))
+export const DataPickers = ({
+   setSelectedDate,
+   selectedDate,
+   setСlock,
+   clock,
+   due,
+   setDue,
+   cardId,
+   setOpenEstimation,
+   combinations,
+}) => {
+   const dispatch = useDispatch()
+   const [reminder, setReminder] = useState('')
+
+   const { cardById } = useSelector((state) => state.cards)
+
+   const mode = cardById?.estimationResponse?.estimationId
+
+   const handleCreate = () => {
+      const data = {
+         cardId,
+         reminder,
+         startDate: selectedDate.toISOString(),
+         dateOfFinish: due.toISOString(),
+         startTime: combinations,
+         finishTime: due.toISOString(),
+      }
+      dispatch(estimationPostRequest(data))
+      console.log('data: ', data)
+      setOpenEstimation(false)
+   }
+
+   const handleUpdate = () => {
+      const data = {
+         cardId,
+         values: {
+            estimationId: cardById?.estimationResponse?.estimationId,
+            reminder,
+            startDate: selectedDate.toISOString(),
+            dateOfFinish: due.toISOString(),
+            startTime: combinations,
+            finishTime: due.toISOString(),
+         },
+      }
+      dispatch(estimationPutRequest(data))
+      setOpenEstimation(false)
+   }
 
    return (
       <MainDateContainer>
@@ -27,8 +73,7 @@ export const DataPickers = () => {
                <DateLabel htmlFor="startDate">Start Date</DateLabel>
                <StartDatePanel
                   name="startDate"
-                  value={start}
-                  onChange={(newValue) => setStart(newValue)}
+                  value={selectedDate}
                   format="DD/MM/YYYY"
                />
                <DateLabel htmlFor="dueDate">Due Date</DateLabel>
@@ -40,9 +85,8 @@ export const DataPickers = () => {
                      format="DD/MM/YYYY"
                   />
                   <TimePicker
-                     value={value}
-                     onChange={(newValue) => setValue(newValue)}
-                     format="HH:mm "
+                     value={clock}
+                     onChange={(newValue) => setСlock(newValue)}
                   />
                </DateAndTimeContainer>
                <SelectContainer>
@@ -54,6 +98,8 @@ export const DataPickers = () => {
                      labelId="demo-simple-select-label"
                      id="demo-simple-select"
                      defaultValue="None"
+                     value={reminder}
+                     onChange={(e) => setReminder(e.target.value)}
                      MenuProps={{
                         PaperProps: {
                            style: {
@@ -69,7 +115,15 @@ export const DataPickers = () => {
                      <MenuItem value="60min">1 hour before</MenuItem>
                   </Select>
                </SelectContainer>
-               <StyledButton>Create a new template</StyledButton>
+               {mode ? (
+                  <StyledButton onClick={handleUpdate}>
+                     Update Existing Template
+                  </StyledButton>
+               ) : (
+                  <StyledButton onClick={handleCreate}>
+                     Create New Template
+                  </StyledButton>
+               )}
             </DateContainer>
          </LocalizationProvider>
       </MainDateContainer>
@@ -77,8 +131,14 @@ export const DataPickers = () => {
 }
 
 const MainDateContainer = MUIStyled('div')(() => ({
-   padding: '0 1rem 0  0',
+   padding: '0 1rem 1rem 0',
    width: '19.75rem',
+   position: 'absolute',
+   height: '41rem',
+   boxSizing: 'border-box',
+   zIndex: '999',
+   top: '0',
+   backgroundColor: '#FFFF',
    borderRadius: '0.625rem',
    '.MuiInputBase-input.MuiOutlinedInput-input': {
       padding: ' 0.5rem 0.875rem 0.5rem 1rem',

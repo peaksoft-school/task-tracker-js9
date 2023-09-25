@@ -33,3 +33,22 @@ export const getCardArchve = createAsyncThunk(
       }
    }
 )
+
+export const getAllCard = createAsyncThunk(
+   'archiveData/put',
+   async ({ columnId, boardId }, { rejectWithValue, dispatch }) => {
+      console.log('boardId: ', boardId)
+      console.log('columnId: ', columnId)
+      try {
+         const response = await axiosInstance.put(
+            `/api/cards/all-archive/${columnId}`
+         )
+         dispatch(getArchive(boardId))
+         console.log('TRUE ', response.data)
+         return response.data
+      } catch (error) {
+         console.log('ERROOR: ', error)
+         return rejectWithValue(error)
+      }
+   }
+)

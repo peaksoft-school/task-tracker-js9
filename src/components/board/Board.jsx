@@ -10,6 +10,9 @@ import {
 } from '../../store/board/boardThunk'
 import { BoardModal } from './BoardModal'
 import { boards as BoardColors } from '../../utils/constants/general'
+import { fetchParticipans } from '../../store/participants/partThunk'
+
+// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Board = () => {
    const { id } = useParams()
@@ -20,6 +23,12 @@ export const Board = () => {
 
    React.useEffect(() => {
       dispatch(fetchBoards(id))
+   }, [])
+
+   const role = 'ALL'
+
+   React.useEffect(() => {
+      dispatch(fetchParticipans({ id, role }))
    }, [])
 
    const toggleModal = () => {

@@ -8,7 +8,6 @@ import { LayoutMenu } from '../components/LayouMenu/LayoutMenu'
 export const InnerPage = () => {
    const { boardById } = useSelector((state) => state.board)
 
-   // Условие для определения стилей фона
    const pageStyles = {
       display: 'flex',
       width: '100%',
@@ -16,13 +15,11 @@ export const InnerPage = () => {
    }
 
    if (boardById.backGround) {
-      // Если backGround является ссылкой (URL), применяем как backgroundImage
       if (boardById.backGround.startsWith('http')) {
          pageStyles.backgroundImage = `url(${boardById.backGround})`
-         pageStyles.backgroundSize = 'cover' // Настройте размер изображения по вашему выбору
-         pageStyles.backgroundPosition = 'center center' // Настройте позицию изображения по вашему выбору
+         pageStyles.backgroundSize = 'cover'
+         pageStyles.backgroundPosition = 'center center'
       } else {
-         // Иначе, считаем backGround цветовым кодом и применяем как backgroundColor
          pageStyles.backgroundColor = boardById.backGround
       }
    }

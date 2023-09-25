@@ -2,23 +2,21 @@ import { Tooltip, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { ExitIcon, PLUSICON } from '../../assets/icons'
-import { deleteLabel, getLabels } from '../../store/getLabels/labelsThunk'
+import { getAllLabelByCardId } from '../../store/getLabels/labelsThunk'
 import { labelActions } from '../../store/getLabels/labelsSlice'
 import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
 import { ModalUi } from '../UI/modal/Modal'
+import { axiosInstance } from '../../config/axiosInstance'
+import { showSnackbar } from '../UI/snackbar/Snackbar'
 
-export const Labels = () => {
+export const Labels = ({ cardId }) => {
    const dispatch = useDispatch()
-   const { label, labelDrop } = useSelector((state) => state.labels)
+   const { labelByCardId, labelDrop } = useSelector((state) => state.labels)
 
    useEffect(() => {
-      dispatch(getLabels())
+      dispatch(getAllLabelByCardId(cardId))
    }, [dispatch])
 
-   const onRemoveLabel = (id) => {
-      dispatch(deleteLabel(id))
-      console.log(id)
-   }
    const addLabelOpenModal = () => {
       dispatch(labelActions.openModal())
    }
@@ -26,12 +24,34 @@ export const Labels = () => {
    const addLabelCloseModal = () => {
       dispatch(labelActions.closeModal())
    }
+
+   const deleteLabelInCard = async (id) => {
+      try {
+         // eslint-disable-next-line no-unused-vars
+         const response = await axiosInstance.delete(
+            `/api/labels/${id}/${cardId}`
+         )
+         addLabelCloseModal()
+         dispatch(getAllLabelByCardId(cardId))
+         showSnackbar({
+            message: 'Successfully deleted label ',
+            severity: 'success',
+         })
+      } catch (error) {
+         showSnackbar({
+            message: 'ERROR',
+            severity: 'error',
+         })
+         console.log(error)
+      }
+   }
+
    return (
       <div>
          <HeadingLabel>Labels</HeadingLabel>
 
          <AllContainer>
-            {label?.map((item) => (
+            {labelByCardId?.map((item) => (
                <ContainerLabels
                   style={{ backgroundColor: item.color }}
                   key={item.labelId}
@@ -42,7 +62,7 @@ export const Labels = () => {
                   <ExitIcon
                      fill="gray"
                      style={{ cursor: 'pointer' }}
-                     onClick={() => onRemoveLabel(item.labelId)}
+                     onClick={() => deleteLabelInCard(item.labelId)}
                   />
                </ContainerLabels>
             ))}
@@ -52,7 +72,13 @@ export const Labels = () => {
             />
             {labelDrop && (
                <ModalUi open={labelDrop}>
-                  <AddedLabelToCard addLabelCloseModal={addLabelCloseModal} />
+                  <AddedLabelToCard
+                     reloadedLabels={() => {
+                        dispatch(getAllLabelByCardId(cardId))
+                     }}
+                     addLabelCloseModal={addLabelCloseModal}
+                     cardId={cardId}
+                  />
                </ModalUi>
             )}
          </AllContainer>

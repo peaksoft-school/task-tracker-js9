@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material'
 import { Label } from './Label'
-import { ButtonTextcolors } from '../../utils/constants/buttonTextColor'
 import { Button } from '../UI/button/Button'
 import {
    CheckKeyboardIcon,
@@ -17,7 +16,7 @@ export const CardLabels = ({ el }) => {
    const [clickedLabels, setClickedLabels] = useState([])
 
    const handleButtonClick = () => {
-      setClickedLabels(ButtonTextcolors)
+      setClickedLabels(el.labelResponses)
       setOpenLabelText(true)
    }
 
@@ -26,31 +25,33 @@ export const CardLabels = ({ el }) => {
    }
    return (
       <div>
-         {openLabelText ? (
-            <ParentColorGroupButton>
-               {clickedLabels.map((el) => (
-                  <ColorfulButton
-                     onClick={() => deleteLabelText()}
-                     key={el.id}
-                     style={{
-                        backgroundColor: el.color,
-                     }}
-                  >
-                     {el.text}
-                  </ColorfulButton>
-               ))}
-            </ParentColorGroupButton>
-         ) : (
-            <Labels>
-               {ButtonTextcolors.map((el) => (
-                  <Label
-                     key={el.id}
-                     onClick={() => handleButtonClick()}
-                     color={el.color}
-                  />
-               ))}
-            </Labels>
-         )}
+         <Labels>
+            {openLabelText ? (
+               <ParentColorGroupButton>
+                  {clickedLabels?.map((el) => (
+                     <ColorfulButton
+                        onClick={() => deleteLabelText()}
+                        key={el.labelId}
+                        style={{
+                           backgroundColor: el.color,
+                        }}
+                     >
+                        {el.description}
+                     </ColorfulButton>
+                  ))}
+               </ParentColorGroupButton>
+            ) : (
+               <Labels>
+                  {el.labelResponses.map((el) => (
+                     <Label
+                        key={el.id}
+                        onClick={() => handleButtonClick()}
+                        color={el.color}
+                     />
+                  ))}
+               </Labels>
+            )}
+         </Labels>
          <ColumnCard>
             <ParagraphText>{el.title}</ParagraphText>
 
@@ -86,8 +87,9 @@ const Labels = styled('div')(() => ({
 }))
 
 const ParentColorGroupButton = styled('div')(() => ({
-   display: 'flex-wrap',
-   gap: '0.5rem',
+   display: 'flex',
+   flexWrap: 'wrap',
+   gap: '0.3rem',
 }))
 
 const ColorfulButton = styled(Button)(() => ({
@@ -130,7 +132,6 @@ const ParagraphDeadlineMonth = styled('p')(() => ({
    fontWeight: 500,
    color: ' #C7852C',
 }))
-
 const NumberIcon = styled('p')(() => ({
    color: '#919191',
    fontFamily: 'Cera Pro',

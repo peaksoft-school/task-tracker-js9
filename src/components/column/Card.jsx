@@ -74,6 +74,7 @@ export const Card = ({ column }) => {
          changeTitleHandler(column.columnId)
       }
    }
+
    return (
       <div key={column.id}>
          {editTitle ? (
@@ -110,6 +111,7 @@ export const Card = ({ column }) => {
                <BackDropForColumn onClick={handleOpenModal} />
                <MenuItemStyle open={openModal} onClose={handleOpenModal}>
                   <MeadTables
+                     boardId={boardId}
                      setOpneModal={setOpneModal}
                      columnId={column.columnId}
                   />
@@ -119,7 +121,10 @@ export const Card = ({ column }) => {
 
          <ParentColumnCard>
             <ScrollableContainer>
-               <DetailCard cardResponses={column.cardResponses} />
+               <DetailCard
+                  columnId={column.columnId}
+                  cardResponses={column.cardResponses}
+               />
             </ScrollableContainer>
 
             {openModalInputAddCard ? (
@@ -184,14 +189,16 @@ const ParentTitle = styled('div')(() => ({
    justifyContent: 'space-between',
    padding: '0 0.5rem 0 0.5rem',
    marginBottom: '0.89rem',
+   cursor: 'pointer',
 }))
 
 const Title = styled('p')(() => ({
    color: '#000',
    width: '90%',
    fontStyle: 'normal',
-   fontWeight: 500,
+   fontWeight: 600,
    lineHeight: 'normal',
+   marginLeft: '0.2rem',
    wordWrap: 'break-word',
 }))
 const StyleMeadIcon = styled('div')(() => ({
@@ -214,6 +221,7 @@ const ParentColumnCard = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
    marginLeft: '0.5rem',
+   position: 'relative',
 }))
 
 const ScrollableContainer = styled('div')(() => ({
@@ -238,13 +246,12 @@ const InputAddCardStyle = styled('textarea')(() => ({
    minHeight: '3rem',
    width: '16.5rem',
    background: '#ffffff',
+   borderColor: '#989898',
    borderRadius: '0.25rem',
    padding: '8px 8px 4px 12px',
    resize: 'none',
    overflow: 'hidden',
-   '&.css-1v4isp3': {
-      border: 'none',
-   },
+   fontFamily: 'CarePro',
 }))
 
 const InputAddCard = styled('div')(() => ({
@@ -287,15 +294,16 @@ const InputColumn = styled(TextareaAutosize)(() => ({
    overflow: 'hidden',
    zIndex: '44',
    height: '10vh',
-   padding: '0.2rem',
-   margin: '0 0 0.4rem 0',
-   // position: 'relative',
+   margin: '0 0 0.4rem 0.2rem',
+   fontFamily: 'CarePro',
+   fontWeight: 600,
+   fontSize: '1rem',
 }))
 
 const BackDrop = styled('div')({
-   position: 'absolute',
+   position: 'fixed',
    width: '100%',
-   height: '50vh',
+   height: '100%',
    top: '0',
    left: '0',
 })
