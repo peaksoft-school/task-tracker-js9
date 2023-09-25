@@ -94,7 +94,7 @@ export const LayoutMenu = () => {
                                     variant="outlined"
                                     size="small"
                                     name="title"
-                                    {...formik.getFieldProps('title')} // Подключение Formik
+                                    {...formik.getFieldProps('title')}
                                  />
                               </div>
                               {formik.touched.title && formik.errors.title && (
@@ -110,7 +110,7 @@ export const LayoutMenu = () => {
                                     label="Image"
                                     variant="outlined"
                                     size="small"
-                                    {...formik.getFieldProps('img')} // Подключение Formik
+                                    {...formik.getFieldProps('img')}
                                  />
                               </div>
 

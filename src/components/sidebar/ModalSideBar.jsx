@@ -56,24 +56,38 @@ export const ModalSideBar = ({
             </StyleModalUi>
          ) : null}
          {showSecondModal ? (
-            <StyleModalUi open={showSecondModal} onClose={openDeleteModal}>
-               <ClarifyStyled>
-                  Are you sure to delete this workspace?
-               </ClarifyStyled>
-               <WrapperWorningIcon>
-                  <WarningIconStyle show={showSecondModal} />
-               </WrapperWorningIcon>
-               <ButtonContainerSecond>
-                  <CanselButton onClick={openDeleteModal}>Cancel</CanselButton>
-                  <DeleteButton onClick={deleteWorkspacesHandler}>
-                     Delete
-                  </DeleteButton>
-               </ButtonContainerSecond>
-            </StyleModalUi>
+            <ModalUi open={showSecondModal} onClose={openDeleteModal}>
+               <Container>
+                  <div>
+                     <ClarifyStyled>
+                        Are you sure to delete this board?
+                     </ClarifyStyled>
+                  </div>
+                  <SecondBlock>
+                     <WarningIconStyle show={showSecondModal} />
+                  </SecondBlock>
+                  <ButtonContainerSecond>
+                     <CanselButton onClick={openDeleteModal}>
+                        Cancel
+                     </CanselButton>
+                     <DeleteButton onClick={deleteWorkspacesHandler}>
+                        Delete
+                     </DeleteButton>
+                  </ButtonContainerSecond>
+               </Container>
+            </ModalUi>
          ) : null}
       </div>
    )
 }
+const Container = styled('div')(() => ({
+   width: '22.9375rem',
+   height: '11.125rem',
+   borderRadius: '0.625rem',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'space-between',
+}))
 const fadeInOut = keyframes`
   0% {
     opacity: 0;
@@ -92,13 +106,10 @@ const WarningIconStyle = styled(WarningIcon)(({ show }) => ({
    marginTop: '0.5rem',
    animation: show ? `${fadeInOut} 2s infinite` : 'none',
 }))
-const WrapperWorningIcon = styled('div')(() => ({
+const SecondBlock = styled('div')(() => ({
    display: 'flex',
    justifyContent: 'center',
-   width: '100%',
-   height: '100%',
 }))
-
 const SettingStyle = styled('span')(() => ({
    color: '#000',
    display: 'flex',
@@ -113,9 +124,8 @@ const ButtonContainer = styled('div')(() => ({
 }))
 const ButtonContainerSecond = styled('div')(() => ({
    display: 'flex',
-   justifyContent: 'end',
+   justifyContent: 'flex-end',
    gap: '1rem',
-   marginTop: '1rem',
 }))
 const ClarifyStyle = styled('span')(() => ({
    fontSize: '1rem',

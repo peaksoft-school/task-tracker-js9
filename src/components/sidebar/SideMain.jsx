@@ -86,7 +86,12 @@ export const SideMain = ({
                                     sx={{ bgcolor: '#2CB107' }}
                                     alt="photo"
                                  >
-                                    <span style={{ fontSize: '1.3rem' }}>
+                                    <span
+                                       style={{
+                                          fontSize: '1.3rem',
+                                          textTransform: 'capitalize',
+                                       }}
+                                    >
                                        {item.workSpaceName[0]}
                                     </span>
                                  </StyledAvatar>

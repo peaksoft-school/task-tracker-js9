@@ -8,18 +8,25 @@ import {
    addToSearchHistoryWorkspace,
    addToSearchHistoryUser,
 } from '../../store/globalSearch/searchSlice'
+import { getWorkspacebyId } from '../../store/workspace/workspaceThunk'
+import { getBoardById } from '../../store/board/boardThunk'
 
-export const GlobalSearch = ({ globalSearch }) => {
+export const GlobalSearch = ({ globalSearch, setSearch }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { loading } = useSelector((state) => state.search)
 
    const navigateToBoardDetail = (workspaceId, boardId) => {
       navigate(`/mainPage/${workspaceId}/boards/${boardId}/board`)
+      dispatch(getWorkspacebyId(workspaceId))
+      dispatch(getBoardById(boardId))
+      setSearch('')
    }
 
    const navigateToWorkspaceDetail = (workspaceId) => {
       navigate(`/mainPage/${workspaceId}/boards/`)
+      dispatch(getWorkspacebyId(workspaceId))
+      setSearch('')
    }
 
    const handleSearchResultClick = (query) => {
@@ -71,6 +78,7 @@ export const GlobalSearch = ({ globalSearch }) => {
                      navigate(`/profile/${users.userId}`, {
                         state: { edit: 'true' },
                      })
+                     setSearch('')
                   }}
                >
                   <ProfieStyle src={users.avatar} alt="User photo" />

@@ -119,7 +119,12 @@ export const SideHead = ({
                            onClick={() => goBack()}
                         >
                            <p>
-                              <p style={{ fontSize: '1.3rem' }}>
+                              <p
+                                 style={{
+                                    fontSize: '1.3rem',
+                                    textTransform: 'capitalize',
+                                 }}
+                              >
                                  {editInput[0]}
                               </p>
                            </p>
