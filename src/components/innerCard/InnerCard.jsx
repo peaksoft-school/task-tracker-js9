@@ -158,7 +158,7 @@ export const InnerCard = ({
       setOpenEstimation(false)
    }
 
-   const currentHour = `${selectedDate.$H}`
+   const currentHour = `${selectedDate.$H}`.padStart(2, '0')
    const currentMinute = `${selectedDate.$m}`
    const currentSecond = String(selectedDate.$s).padStart(2, '0')
 

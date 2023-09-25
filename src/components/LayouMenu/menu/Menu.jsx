@@ -11,7 +11,7 @@ import { boardRemove, getBoardById } from '../../../store/board/boardThunk'
 import { showSnackbar } from '../../UI/snackbar/Snackbar'
 import { axiosInstance } from '../../../config/axiosInstance'
 import { Archive } from '../../archive/Archive'
-import { ModalUi } from '../../UI/modal/Modal'
+// import { ModalUi } from '../../UI/modal/Modal'
 import { getArchive } from '../../../store/getArchive/archiveThunk'
 import { DeleteBoardModal } from './DeleteBoardModal'
 
@@ -27,9 +27,9 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       dispatch(getBoardById(boardId))
    }, [])
 
-   const handleModalContentClick = (event) => {
-      event.stopPropagation()
-   }
+   // const handleModalContentClick = (event) => {
+   //    event.stopPropagation()
+   // }
 
    const openArchiveModal = () => {
       setArchive(true)
@@ -105,13 +105,15 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             <MenuPargraph>Menu</MenuPargraph>
          </StlyedContainerMenu>
          {archive && (
-            <ModalUi
-               open={archive}
-               onClose={() => setArchive(false)}
-               handleModalContentClick={handleModalContentClick}
-            >
+            <>
+               {/* <ModalUi
+                  open={archive}
+                  onClose={() => setArchive(false)}
+                  handleModalContentClick={handleModalContentClick}
+               /> */}
+               <BackDropInArchive onClick={() => setArchive(false)} />
                <Archive />
-            </ModalUi>
+            </>
          )}
 
          {open === 'menu' && (
@@ -562,4 +564,12 @@ const ColorBlock = styled('div')({
    height: '5rem',
    borderRadius: '0.5rem',
    backgroundColor: 'inherit',
+})
+
+const BackDropInArchive = styled('div')({
+   width: '100%',
+   height: '100%',
+   position: 'fixed',
+   top: '0',
+   left: '0',
 })
