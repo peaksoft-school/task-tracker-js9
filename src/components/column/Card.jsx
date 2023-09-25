@@ -244,13 +244,12 @@ const InputAddCardStyle = styled('textarea')(() => ({
    minHeight: '3rem',
    width: '16.5rem',
    background: '#ffffff',
+   borderColor: '#989898',
    borderRadius: '0.25rem',
    padding: '8px 8px 4px 12px',
    resize: 'none',
    overflow: 'hidden',
-   '&.css-1v4isp3': {
-      border: 'none',
-   },
+   fontFamily: 'CarePro',
 }))
 
 const InputAddCard = styled('div')(() => ({

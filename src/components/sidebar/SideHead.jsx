@@ -43,7 +43,6 @@ export const SideHead = ({
    const [showModal, setShowModal] = useState(false)
 
    const { board } = useSelector((state) => state.board)
-   console.log('board: ', board)
    const [workspaceId, setWorkspaceId] = useState({})
    const [editInput, setEditInput] = useState('')
    const { id } = useParams()

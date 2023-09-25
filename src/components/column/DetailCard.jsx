@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from '@mui/material'
-import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../UI/button/Button'
 import {
@@ -18,8 +19,7 @@ import { getCardbyId } from '../../store/cards/cardsThunk'
 import { getColumns } from '../../store/column/columnsThunk'
 
 export const DetailCard = ({ cardResponses }) => {
-   const [openLabelText, setOpenLabelText] = useState(false)
-   const [, setClickedLabels] = useState([])
+   const [openLabelMap, setOpenLabelMap] = useState({})
    const [showCardById, setShowCardByid] = useState()
    const [openModal, setOpenModal] = useState(false)
    const [cardId, setCardId] = useState(null)
@@ -27,6 +27,13 @@ export const DetailCard = ({ cardResponses }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { participants } = useSelector((state) => state.participant)
+
+   const toggleCardLabel = (cardId) => {
+      setOpenLabelMap((prevOpenLabelMap) => ({
+         ...prevOpenLabelMap,
+         [cardId]: !prevOpenLabelMap[cardId],
+      }))
+   }
 
    const getCardByIdHandler = (card) => {
       setCardId(card.cardId)
@@ -46,21 +53,15 @@ export const DetailCard = ({ cardResponses }) => {
       setOpenModal(!openModal)
       dispatch(getColumns(boardId))
    }
-
-   const handleButtonClick = () => {
-      setClickedLabels()
-      setOpenLabelText(true)
-   }
-
    const deleteLabelText = () => {
-      setOpenLabelText(false)
+      setOpenLabelMap({})
    }
 
    return (
       <Cont>
          {cardResponses?.map((card) => (
             <ColumnCard key={card.cardId}>
-               {openLabelText ? (
+               {openLabelMap[card.cardId] ? (
                   <ParentColorGroupButton>
                      {card.labelResponses?.map((el) => (
                         <ColorfulButton
@@ -79,7 +80,7 @@ export const DetailCard = ({ cardResponses }) => {
                      {card.labelResponses?.map((el) => (
                         <Label
                            key={el.labelId}
-                           onClick={() => handleButtonClick()}
+                           onClick={() => toggleCardLabel(card.cardId)}
                            color={el.color}
                         />
                      ))}
@@ -166,14 +167,17 @@ export const DetailCard = ({ cardResponses }) => {
       </Cont>
    )
 }
+
 const Cont = styled('div')(() => ({
    position: 'relative',
 }))
+
 const ParagraphText = styled('div')(() => ({
    width: '14rem',
    boxSizing: 'border-box',
    wordWrap: 'break-word',
 }))
+
 const IconText = styled('div')(() => ({
    display: 'flex',
    position: 'relative',
@@ -186,6 +190,7 @@ const EditIconStyle = styled(EditIcon)(() => ({
    bottom: '0.0rem',
    cursor: 'pointer',
 }))
+
 const Labels = styled('div')(() => ({
    display: 'flex',
    flexWrap: 'wrap',
@@ -203,7 +208,6 @@ const Deadline = styled('div')(() => ({
    backgroundColor: '#F9DCB4',
    borderRadius: '0.5rem',
    padding: ' 0.125rem 0.5rem 0rem 0.5rem',
-   // marginLeft: '0.7rem',
    marginBottom: '0.5rem',
 }))
 
@@ -211,6 +215,7 @@ const WraperIcons = styled('div')(() => ({
    display: 'flex',
    gap: '0.81rem',
 }))
+
 const ParagraphDeadlineMonth = styled('p')(() => ({
    fontSize: '0.875rem',
    fontFamily: ' normal',
@@ -237,6 +242,7 @@ const PeopleNumber = styled('p')(() => ({
 const ParentColorGroupButton = styled('div')(() => ({
    display: 'flex-wrap',
    gap: '0.5rem',
+   marginLeft: '0.5rem',
 }))
 
 const ColorfulButton = styled(Button)(() => ({
@@ -255,7 +261,6 @@ const CheckListButton = styled(Button)(() => ({
    fontSize: ' 0.75rem',
    fontStyle: ' normal',
    fontWeight: '500',
-   // position: 'absolute',
    left: '9.9rem',
    bottom: '0.5rem',
 }))
@@ -264,6 +269,7 @@ const CheckMarNumberkIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',
 }))
+
 const ParentPeopleIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',
