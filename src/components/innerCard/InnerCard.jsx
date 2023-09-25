@@ -17,7 +17,7 @@ import {
    MemberIcon,
 } from '../../assets/icons'
 import { Labels } from '../labels/Labels'
-import { Input } from '../UI/input/Input'
+// import { Input } from '../UI/input/Input'
 
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
@@ -46,7 +46,7 @@ export const InnerCard = ({
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
    const [handleAttachments, setHandleAttachments] = useState(false)
-   const { boardId, carId } = useParams()
+   const { boardId } = useParams()
 
    const dispatch = useDispatch()
    // const navigate = useNavigate()
@@ -61,10 +61,15 @@ export const InnerCard = ({
    const archiveCard = () => {
       dispatch(getCardArchve(cardId))
    }
-
    const handleDocumentClick = (event) => {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
-         dispatch(cardPut({ cardId: carId, boardId, title, description }))
+      if (
+         inputRef.current &&
+         !inputRef.current.contains(event.target) &&
+         !event.target.tagName.toLowerCase().match(/input|textarea/)
+      ) {
+         dispatch(
+            cardPut({ cardId: cardData.cardId, boardId, title, description })
+         )
          setIsEditing(false)
          setIsEditTitle(false)
       }
@@ -82,7 +87,7 @@ export const InnerCard = ({
       return () => {
          document.removeEventListener('mousedown', handleDocumentClick)
       }
-   })
+   }, [title, description])
 
    const openCheckListModalHandler = () => {
       setOpenCheckListModal(true)
@@ -118,16 +123,16 @@ export const InnerCard = ({
                <Wrapper>
                   <TextContainer>
                      <EditIcon fill="gray" onClick={handleEditTitleClick} />
-                     {isEditTitle ? (
+                     {isEditTitle || displayText === '' ? (
+                        <TitileInput
+                           onChange={(e) => setTitleText(e.target.value)}
+                           value={title}
+                           ref={inputRef}
+                        />
+                     ) : (
                         <CardText onClick={handleEditTitleClick}>
                            {displayTitle}
                         </CardText>
-                     ) : (
-                        <TitileInput
-                           aria-label="empty textarea"
-                           onChange={(e) => setTitleText(e.target.value)}
-                           value={title}
-                        />
                      )}
                   </TextContainer>
                   <CloseIcon
@@ -160,8 +165,10 @@ export const InnerCard = ({
                         </div>
                      </DataContainer>
                      <Description>
-                        <DownIcon />
-                        <DescriptionTitle>Description</DescriptionTitle>
+                        <DownIcon fill="gray" />
+                        <DescriptionTitle style={{ color: 'gray' }}>
+                           Description
+                        </DescriptionTitle>
                      </Description>
 
                      {isEditing || displayText === '' ? (
@@ -171,13 +178,8 @@ export const InnerCard = ({
                               placeholder="Add a description"
                               value={description}
                               onChange={(e) => setInputText(e.target.value)}
+                              ref={inputRef}
                            />
-                           {/* <ContainerButton>
-                              <CancelButton onClick={() => setIsEditing(false)}>
-                                 Cancel
-                              </CancelButton>
-                              <AddButton>Save</AddButton>
-                           </ContainerButton> */}
                         </div>
                      ) : (
                         <DescriptionText onClick={handleEditClick}>
@@ -291,43 +293,6 @@ export const InnerCard = ({
       </div>
    )
 }
-// const CancelButton = styled(Button)({
-//    fontFamily: 'CarePro',
-//    color: '#919191',
-//    borderRadius: ' 1.5rem',
-//    height: '2.1rem',
-//    width: '5.41313rem',
-//    padding: '0.275rem 0.6rem 0.375rem 0.5rem ',
-//    backgroundColor: '#F0F0F0',
-//    textAlign: 'center',
-//    fontSize: '0.91rem',
-//    textTransform: 'capitalize',
-//    '&:hover': {
-//       backgroundColor: '#cecdcd',
-//       color: '#fff',
-//       '&:active': {
-//          backgroundColor: '#F0F0F0',
-//       },
-//    },
-// })
-
-// const AddButton = styled(Button)({
-//    fontFamily: 'CarePro',
-//    color: '#fff',
-//    borderRadius: ' 1.5rem',
-//    width: '4.3rem',
-//    padding: '0.3rem 0.4rem 0 0.3rem',
-//    height: '2.1rem',
-//    textAlign: 'center',
-//    fontSize: '0.875rem',
-//    textTransform: 'capitalize',
-//    '&:hover': {
-//       backgroundColor: '#015C91',
-//       '&:active': {
-//          backgroundColor: '#0079BF',
-//       },
-//    },
-// })
 
 const CardContainer = styled('div')(() => ({
    width: '1150px',
@@ -335,12 +300,6 @@ const CardContainer = styled('div')(() => ({
    padding: '16px 20px',
    height: '100%',
 }))
-// const ContainerButton = styled('div')(() => ({
-//    marginLeft: '32rem',
-//    display: 'flex',
-//    gap: '1rem',
-//    marginTop: '0.8rem',
-// }))
 
 const Wrapper = styled('div')(() => ({
    display: 'flex',
@@ -359,6 +318,7 @@ const CardText = styled('p')(() => ({
 
 const TextContainer = styled('div')(() => ({
    display: 'flex',
+   gap: '0.5rem',
    alignItems: 'center',
 }))
 
@@ -391,19 +351,24 @@ const DescriptionTitle = styled('h4')(() => ({
    marginLeft: '0.5rem',
 }))
 
-const DescriptionInput = styled(Input)(() => ({
-   input: {
-      backgroundColor: 'none',
-      fontSize: '1rem',
-      width: '39.9931rem',
-      borderRadius: '5rem',
-      padding: '1.3rem 1.3rem 5.5rem',
-   },
+const DescriptionInput = styled('textarea')(() => ({
    marginTop: '0.5rem',
+   minHeight: '6.1875rem',
+   width: '42.2rem',
+   padding: '0.5rem 1rem',
+   background: '#ffffff',
+   borderColor: '#989898',
+   borderRadius: '0.5rem',
+   resize: 'none',
+   fontSize: '1rem',
+   overflow: 'hidden',
+   fontFamily: 'CarePro',
 }))
 
 const DescriptionText = styled('p')(() => ({
-   margin: '15px 25px 20px',
+   padding: '0.5rem 1rem',
+   width: '39.9931rem',
+   wordWrap: 'break-word',
 }))
 
 const CardRight = styled('div')(() => ({
@@ -440,14 +405,19 @@ const AddText = styled('p')(() => ({
    width: '95px',
 }))
 
-const TitileInput = styled(Input)(() => ({
-   input: {
-      backgroundColor: 'none',
-      fontSize: '1rem',
-      width: '20rem',
-      borderRadius: '5rem',
-      padding: '1rem 0',
-   },
+const TitileInput = styled('textarea')(() => ({
+   width: '40.3rem',
+
+   padding: '0.5em 0 0 0.4rem ',
+   // lineHeight: '1.7rem',
+   maxHeight: '2.5rem',
+   background: '#ffffff',
+   borderColor: '#989898',
+   borderRadius: '0.5rem',
+   resize: 'none',
+   fontSize: '1rem',
+   overflow: 'hidden',
+   fontFamily: 'CarePro',
 }))
 
 const ModalContent = styled('div')({

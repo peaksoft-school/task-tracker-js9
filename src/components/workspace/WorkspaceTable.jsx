@@ -10,6 +10,7 @@ import {
    fetchAllWorkspaces,
    getWorkspacebyId,
 } from '../../store/workspace/workspaceThunk'
+// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const WorkspaceTable = () => {
    const dispatch = useDispatch()

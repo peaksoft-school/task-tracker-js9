@@ -29,6 +29,8 @@ import {
 import { ModalSideBar } from './ModalSideBar'
 import { updateWorkspace } from '../../store/workspace/workspaceThunk'
 import { getWorkspacesById } from '../../api/workspaceServise'
+import { fetchBoards, getBoardById } from '../../store/board/boardThunk'
+import { getColumns } from '../../store/column/columnsThunk'
 
 export const SideHead = ({
    open,
@@ -94,6 +96,13 @@ export const SideHead = ({
       setToggleButton(!toggleButton)
    }
 
+   const navigateToBoards = (boardId) => {
+      navigate(`/mainPage/${id}/boards/${boardId}/board`)
+      dispatch(fetchBoards(id))
+      dispatch(getBoardById(boardId))
+      dispatch(getColumns(boardId))
+   }
+
    return (
       <div>
          <List>
@@ -109,7 +118,12 @@ export const SideHead = ({
                            onClick={() => goBack()}
                         >
                            <p>
-                              <p style={{ fontSize: '1.3rem' }}>
+                              <p
+                                 style={{
+                                    fontSize: '1.3rem',
+                                    textTransform: 'capitalize',
+                                 }}
+                              >
                                  {editInput[0]}
                               </p>
                            </p>
@@ -163,7 +177,11 @@ export const SideHead = ({
                      <ListItemStyleTitle disablePadding>
                         <MenuList>
                            {board.map((item) => (
-                              <MenuItem>{item.title}</MenuItem>
+                              <MenuItem
+                                 onClick={() => navigateToBoards(item.boardId)}
+                              >
+                                 {item.title}
+                              </MenuItem>
                            ))}
                         </MenuList>
                      </ListItemStyleTitle>

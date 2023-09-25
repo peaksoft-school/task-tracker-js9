@@ -27,8 +27,7 @@ const ModalStyle = styled(Box)(({ ...rest }) => ({
    backgroundColor: 'white',
    padding: rest.padding || '16px 20px',
    top: '50%',
-   overflowY: 'auto',
-   maxHeight: '80vh',
+   maxHeight: '100vh',
 }))
 const Backdrop = styled(Modal)(({ ...rest }) => ({
    position: 'absolute',
@@ -37,9 +36,9 @@ const Backdrop = styled(Modal)(({ ...rest }) => ({
    right: '0',
    bottom: '0',
    width: '100%',
-   height: '100%',
+   height: '100vh',
    backgroundColor: 'rgba(240, 230, 230, 0.288)',
    backdropFilter: rest.backdropFilter || 'blur(2px)',
    zIndex: '990',
-   minHeight: '11.615rem',
+   // minHeight: '11.615rem',
 }))

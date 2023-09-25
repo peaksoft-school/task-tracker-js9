@@ -1,5 +1,6 @@
 import { IconButton, styled, Button } from '@mui/material'
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { DeleteIcon, DownIcon, EditIcon, UpIcon } from '../../../assets/icons'
 import {
@@ -10,6 +11,7 @@ import { CheckListModal } from '../checkListModal/ChecklistModal'
 
 const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
    const { checkListData } = useSelector((state) => state.checkList)
+   const { carId } = useParams()
    const dispatch = useDispatch()
 
    const [showModal, setShowModal] = useState(false)
@@ -21,6 +23,7 @@ const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
          title: editTitle,
          checkListId: id,
          itemResponseList: checkListData.itemResponseList,
+         carId,
       }
 
       dispatch(checkListPutRequest(newData))
@@ -42,7 +45,11 @@ const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
    }
 
    const deleteList = () => {
-      dispatch(deleteListInLists(id))
+      const data = {
+         id,
+         carId,
+      }
+      dispatch(deleteListInLists(data))
    }
 
    return (
@@ -68,7 +75,7 @@ const CheckListItem = ({ cancelAddItem, showInputs, title, id }) => {
                ) : (
                   <>
                      <StyledIconButton onClick={() => editHandler(title)}>
-                        <EditIcon />
+                        <EditIcon fill="#9b9b9b" />
                      </StyledIconButton>
 
                      <Title>{title}</Title>

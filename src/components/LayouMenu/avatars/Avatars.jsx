@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { styled } from '@mui/material'
-import { avatarsData } from '../../../utils/constants/avatars'
+import { useParams } from 'react-router-dom'
+import { allinviteMember } from '../../../store/inviteMember/inviteThunk'
 
 export const Avatars = () => {
    const [selectedUser, setSelectedUser] = useState(null)
+   const { inviteMember } = useSelector((state) => state.inviteMember)
+   const { boardId } = useParams()
+   const dispatch = useDispatch()
 
-   const visibleAvatars = avatarsData.slice(0, 9)
+   useEffect(() => {
+      dispatch(allinviteMember(boardId))
+   }, [])
+
+   const visibleAvatars = inviteMember?.slice(0, 9)
 
    const handleAvatarClick = (user) => {
       setSelectedUser(user)
@@ -16,17 +25,17 @@ export const Avatars = () => {
 
    return (
       <AvatarBox>
-         {visibleAvatars.map((avatar) => (
+         {visibleAvatars?.map((avatar) => (
             <AvatarImageBox
-               key={avatar.id}
+               key={avatar.userId}
                onClick={() => handleAvatarClick(avatar)}
             >
                <AvatarImage src={avatar.image} alt="" />
             </AvatarImageBox>
          ))}
-         {avatarsData.length > 9 && (
+         {inviteMember?.length > 9 && (
             <div>
-               <AvatarImageMore>+{avatarsData.length - 9}</AvatarImageMore>
+               <AvatarImageMore>+{inviteMember.length - 9}</AvatarImageMore>
             </div>
          )}
 
@@ -39,7 +48,9 @@ export const Avatars = () => {
                         <SelectedImage src={selectedUser.image} alt="" />
                      </div>
                      <EmailAndNameBox>
-                        <p>{selectedUser.name}</p>
+                        <p style={{ fontWeight: '600' }}>
+                           {selectedUser.firstName}
+                        </p>
                         <StyledEmail>{selectedUser.email}</StyledEmail>
                      </EmailAndNameBox>
                   </UserInfoContainer>
@@ -96,6 +107,7 @@ const UserInfoBox = styled('div')({
    gap: '1rem',
    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
    padding: '1rem',
+   zIndex: 2,
 })
 
 const AvatarImageBox = styled('div')({})
@@ -124,7 +136,10 @@ const EditProfile = styled('p')({
 })
 
 const BackDrop = styled('div')({
-   position: 'absolute',
+   position: 'fixed',
    width: '100%',
    height: '100vh',
+   zIndex: '2',
+   top: '0',
+   left: '0',
 })

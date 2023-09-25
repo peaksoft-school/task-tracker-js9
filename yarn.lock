@@ -6765,13 +6765,13 @@ framer-motion@^10.15.1:
     "imurmurhash" "^0.1.4"
     "readable-stream" "1 || 2"
 
-"fs.realpath@^1.0.0":
-  "integrity" "sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw=="
-  "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
-  "version" "1.0.0"
+fs.realpath@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
+  integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
-"fstream-ignore@^1.0.0":
-  "version" "1.0.5"
+fstream-ignore@^1.0.0:
+  version "1.0.5"
   dependencies:
     "fstream" "^1.0.0"
     "inherits" "2"

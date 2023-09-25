@@ -22,6 +22,7 @@ export const Participants = () => {
    const handleChange = (event) => {
       setRole(event.target.value)
    }
+
    const onCreateClick = () => {
       setOpenInviteNewModal((prev) => !prev)
    }
@@ -38,7 +39,7 @@ export const Participants = () => {
       dispatch(fetchParticipans({ id, role }))
    }, [role])
    if (!id) {
-      return <div>Loading...</div> // Или другое поведение в случае, когда partId не определен
+      return <div>Loading...</div>
    }
 
    const onDelete = (userId) => {
@@ -99,7 +100,7 @@ const BodyContainer = styled('div')(() => ({
 }))
 
 const GlobalContainer = styled('div')(() => ({
-   marginTop: '86px',
+   marginTop: '50px',
    padding: '1.4rem 0 0 0',
    backgroundColor: '#ffffff',
    width: '100%',
@@ -151,7 +152,7 @@ const StyledSelect = styled(Select)(() => ({
          borderColor: '#8d8c8c',
       },
       '&.Mui-focused fieldset': {
-         borderColor: '#0079BF',
+         borderColor: '#D0D0D0',
       },
    },
 }))
