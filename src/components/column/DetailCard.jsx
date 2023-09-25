@@ -132,9 +132,7 @@ export const DetailCard = ({ cardResponses }) => {
                               </WraperIcons>
                            )
                      )}
-                     {card.description && card.description === '' && (
-                        <TypographyIcon fill="red" />
-                     )}
+                     {card.description && <TypographyIcon />}
                      {card.numberOfItems && card.numberOfItems > 0 ? (
                         <CheckMarNumberkIcon>
                            <CheckKeyboardIcon />
@@ -157,6 +155,7 @@ export const DetailCard = ({ cardResponses }) => {
                   <InnerCard
                      setOpenModal={setOpenModal}
                      displayTitle={card.title}
+                     displayText={card.description}
                      cardId={cardId}
                      cardData={card}
                      handleClose={handleClose}

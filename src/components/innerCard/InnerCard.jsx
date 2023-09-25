@@ -24,32 +24,29 @@ import { CommentSection } from '../UI/comments/CommentsSection'
 import { Button } from '../UI/button/Button'
 import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 import { ModalUi } from '../UI/modal/Modal'
-import { deleteCardbyCardId } from '../../store/cards/cardsThunk'
+import { cardPut, deleteCardbyCardId } from '../../store/cards/cardsThunk'
+import { getCardArchve } from '../../store/getArchive/archiveThunk'
+import { Attachment } from '../attachment/Attachment'
 
 export const InnerCard = ({
    isInnerCardOpen,
    setOpenModal,
-
-   // setSaveTitle,
-   setSaveDescription,
    displayText,
    handleClose,
-   setDisplayText,
    displayTitle,
-   // setDisplayTitle,
    cardId,
    cardData,
 }) => {
    const [showMore, setShowMore] = useState(false)
    const inputRef = useRef(null)
-   const titleRef = useRef(null)
-   const [titleText, setTitleText] = useState('')
-   const [inputText, setInputText] = useState('')
+   const [title, setTitleText] = useState(cardData.title)
+   const [description, setInputText] = useState(cardData.description)
    const [isEditing, setIsEditing] = useState(true)
    const [isEditTitle, setIsEditTitle] = useState(true)
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
-   const { columnId, boardId } = useParams()
+   const [handleAttachments, setHandleAttachments] = useState(false)
+   const { boardId, carId } = useParams()
 
    const dispatch = useDispatch()
    // const navigate = useNavigate()
@@ -61,26 +58,15 @@ export const InnerCard = ({
    // }
    // console.log(cardData, 'cardData in inner card')
 
-   const handleInputChange = (e) => {
-      setInputText(e.target.value)
+   const archiveCard = () => {
+      dispatch(getCardArchve(cardId))
    }
-   const handleTitleChange = (e) => {
-      setTitleText(e.target.value)
-   }
-   console.log(columnId, 'clickkkkkkk')
 
    const handleDocumentClick = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
-         setDisplayText(inputText)
-         setSaveDescription(inputText)
+         dispatch(cardPut({ cardId: carId, boardId, title, description }))
          setIsEditing(false)
-      }
-   }
-   const documentClick = (event) => {
-      if (titleRef.current && !titleRef.current.contains(event.target)) {
-         // setDisplayTitle(titleText)
-         // setSaveTitle(titleText)
-         setIsEditTitle(true)
+         setIsEditTitle(false)
       }
    }
 
@@ -96,13 +82,7 @@ export const InnerCard = ({
       return () => {
          document.removeEventListener('mousedown', handleDocumentClick)
       }
-   }, [inputText])
-   React.useEffect(() => {
-      document.addEventListener('mousedown', documentClick)
-      return () => {
-         document.removeEventListener('mousedown', documentClick)
-      }
-   }, [titleText])
+   })
 
    const openCheckListModalHandler = () => {
       setOpenCheckListModal(true)
@@ -127,10 +107,14 @@ export const InnerCard = ({
       setOpenModal(false)
    }
 
+   const onClickAttachments = () => {
+      setHandleAttachments((prev) => !prev)
+   }
+
    return (
       <div>
          <ModalUi open={isInnerCardOpen} onClose={handleClose}>
-            <CardContainer ref={(inputRef, titleRef)}>
+            <CardContainer ref={inputRef}>
                <Wrapper>
                   <TextContainer>
                      <EditIcon fill="gray" onClick={handleEditTitleClick} />
@@ -141,8 +125,8 @@ export const InnerCard = ({
                      ) : (
                         <TitileInput
                            aria-label="empty textarea"
-                           onChange={handleTitleChange}
-                           value={inputText}
+                           onChange={(e) => setTitleText(e.target.value)}
+                           value={title}
                         />
                      )}
                   </TextContainer>
@@ -179,19 +163,29 @@ export const InnerCard = ({
                         <DownIcon />
                         <DescriptionTitle>Description</DescriptionTitle>
                      </Description>
-                     {isEditing ? (
-                        <DescriptionInput
-                           type="text"
-                           placeholder="Add a description"
-                           value={inputText}
-                           onChange={handleInputChange}
-                        />
+
+                     {isEditing || displayText === '' ? (
+                        <div>
+                           <DescriptionInput
+                              type="text"
+                              placeholder="Add a description"
+                              value={description}
+                              onChange={(e) => setInputText(e.target.value)}
+                           />
+                           {/* <ContainerButton>
+                              <CancelButton onClick={() => setIsEditing(false)}>
+                                 Cancel
+                              </CancelButton>
+                              <AddButton>Save</AddButton>
+                           </ContainerButton> */}
+                        </div>
                      ) : (
                         <DescriptionText onClick={handleEditClick}>
                            {displayText}
                         </DescriptionText>
                      )}
                      <CheckList />
+                     {handleAttachments ? <Attachment /> : null}
                   </CardContainerInner>
                   <CardRight>
                      <CardRightContainer>
@@ -218,7 +212,9 @@ export const InnerCard = ({
                            <AddItem>
                               <AttachIcon />
                               {showMore === false ? (
-                                 <AddText>Attachment</AddText>
+                                 <AddText onClick={onClickAttachments}>
+                                    Attachment
+                                 </AddText>
                               ) : null}
                            </AddItem>
                            <AddItem onClick={openCheckListModalHandler}>
@@ -276,7 +272,9 @@ export const InnerCard = ({
                            <AddItem>
                               <ArchiveIcon />
                               {showMore === false ? (
-                                 <AddText>Archive</AddText>
+                                 <AddText onClick={archiveCard}>
+                                    Archive
+                                 </AddText>
                               ) : null}
                            </AddItem>
                         </ActionsItem>
@@ -293,6 +291,43 @@ export const InnerCard = ({
       </div>
    )
 }
+// const CancelButton = styled(Button)({
+//    fontFamily: 'CarePro',
+//    color: '#919191',
+//    borderRadius: ' 1.5rem',
+//    height: '2.1rem',
+//    width: '5.41313rem',
+//    padding: '0.275rem 0.6rem 0.375rem 0.5rem ',
+//    backgroundColor: '#F0F0F0',
+//    textAlign: 'center',
+//    fontSize: '0.91rem',
+//    textTransform: 'capitalize',
+//    '&:hover': {
+//       backgroundColor: '#cecdcd',
+//       color: '#fff',
+//       '&:active': {
+//          backgroundColor: '#F0F0F0',
+//       },
+//    },
+// })
+
+// const AddButton = styled(Button)({
+//    fontFamily: 'CarePro',
+//    color: '#fff',
+//    borderRadius: ' 1.5rem',
+//    width: '4.3rem',
+//    padding: '0.3rem 0.4rem 0 0.3rem',
+//    height: '2.1rem',
+//    textAlign: 'center',
+//    fontSize: '0.875rem',
+//    textTransform: 'capitalize',
+//    '&:hover': {
+//       backgroundColor: '#015C91',
+//       '&:active': {
+//          backgroundColor: '#0079BF',
+//       },
+//    },
+// })
 
 const CardContainer = styled('div')(() => ({
    width: '1150px',
@@ -300,6 +335,12 @@ const CardContainer = styled('div')(() => ({
    padding: '16px 20px',
    height: '100%',
 }))
+// const ContainerButton = styled('div')(() => ({
+//    marginLeft: '32rem',
+//    display: 'flex',
+//    gap: '1rem',
+//    marginTop: '0.8rem',
+// }))
 
 const Wrapper = styled('div')(() => ({
    display: 'flex',

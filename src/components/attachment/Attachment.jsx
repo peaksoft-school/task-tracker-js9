@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { DeleteIcon, DownIcon, UpIcon } from '../../assets/icons'
 
 import {
@@ -12,6 +13,7 @@ import {
 
 export const Attachment = () => {
    const dispatch = useDispatch()
+   const { carId } = useParams()
 
    const [downState, setDownSate] = React.useState(false)
 
@@ -22,7 +24,7 @@ export const Attachment = () => {
 
       const formData = new FormData()
       formData.append('file', file)
-      dispatch(attachmentPhotoPost(formData))
+      dispatch(attachmentPhotoPost({ obj: formData, id: carId }))
    }, [])
    const { getRootProps, getInputProps } = useDropzone({ onDrop })
    const deleteImg = (id) => {
@@ -30,7 +32,7 @@ export const Attachment = () => {
    }
 
    React.useEffect(() => {
-      dispatch(attachmentGet())
+      dispatch(attachmentGet(carId))
    }, [onDrop])
 
    const onClickDown = () => {
@@ -70,9 +72,6 @@ export const Attachment = () => {
                            <Img src={image.documentLink} alt="" />
                            <TextContainer>
                               <PhotoName>
-                                 {/* {image.documentLink.substring(
-                                    image.documentLink.lastIndexOf('/') + 1
-                                 )} */}
                                  {image.documentLink
                                     .split('/')
                                     .pop()

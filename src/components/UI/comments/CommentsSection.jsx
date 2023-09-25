@@ -17,8 +17,7 @@ import { MapCommets } from './comments-part/MapCommets'
 import CommentDelete from './comments-part/CommentDelete'
 import { CommentsUpdate } from './comments-part/CommentsUpdate'
 
-export const CommentSection = () => {
-   const [showMore, setShowMore] = useState(false)
+export const CommentSection = ({ setShowMore, showMore }) => {
    const [commentText, setCommentText] = useState('')
    const [editingCommentId, setEditingCommentId] = useState(null)
    const [editedCommentText, setEditedCommentText] = useState('')
