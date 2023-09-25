@@ -347,6 +347,7 @@ const MenuItemContainer = styled('div')(({ animation }) => {
       position: 'fixed',
       zIndex: '222',
       right: '2rem',
+      top: '5.5rem',
       padding: '0.5rem 0',
       boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
       transition: 'height 0.3s',

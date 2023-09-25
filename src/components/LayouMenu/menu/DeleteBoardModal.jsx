@@ -1,6 +1,5 @@
-import { keyframes, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import { ModalUi } from '../../UI/modal/Modal'
-import { WarningIcon } from '../../../assets/icons'
 import { Button } from '../../UI/button/Button'
 
 export const DeleteBoardModal = ({
@@ -12,10 +11,14 @@ export const DeleteBoardModal = ({
       <ModalUi open={showDeleteBoardModal} onClose={openCloseModalDeleteBoard}>
          <Container>
             <div>
-               <ClarifyStyled>Are you sure to delete this board?</ClarifyStyled>
+               <h3 style={{ textAlign: 'center', fontSize: '1.2rem' }}>
+                  Delete board:
+               </h3>
             </div>
             <SecondBlock>
-               <WarningIconStyle show={showDeleteBoardModal} />
+               <ClarifyStyled>
+                  Are you sure to delete this board ?
+               </ClarifyStyled>
             </SecondBlock>
             <ThirdBlock>
                <CanselButton onClick={openCloseModalDeleteBoard}>
@@ -50,7 +53,6 @@ const ClarifyStyled = styled('span')(() => ({
    color: '#111',
    display: 'flex',
    justifyContent: 'center',
-   //  marginTop: '1rem',
 }))
 const CanselButton = styled(Button)(() => ({
    height: '2.125rem',
@@ -85,22 +87,4 @@ const DeleteButton = styled(Button)(() => ({
    '&:active': {
       backgroundColor: '#db3333',
    },
-}))
-
-const fadeInOut = keyframes`
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-`
-
-const WarningIconStyle = styled(WarningIcon)(({ show }) => ({
-   width: '4rem',
-   height: '4rem',
-   animation: show ? `${fadeInOut} 2s infinite` : 'none',
 }))
