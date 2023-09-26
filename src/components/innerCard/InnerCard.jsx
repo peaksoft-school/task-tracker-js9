@@ -159,7 +159,7 @@ export const InnerCard = ({
    }
 
    const currentHour = `${selectedDate.$H}`.padStart(2, '0')
-   const currentMinute = `${selectedDate.$m}`
+   const currentMinute = `${selectedDate.$m}`.padStart(2, '0')
    const currentSecond = String(selectedDate.$s).padStart(2, '0')
 
    const selectedMonth = selectedDate.$M

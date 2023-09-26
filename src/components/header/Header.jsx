@@ -20,7 +20,7 @@ import {
    UpIcon,
 } from '../../assets/icons'
 import { logOut } from '../../store/auth/authThunk'
-import { showSnackbar } from '../UI/snackbar/Snackbar'
+// import { showSnackbar } from '../UI/snackbar/Snackbar'
 import { Favourite } from '../favourite/Favourite'
 import { ModalUi } from '../UI/modal/Modal'
 import { searchRequest } from '../../store/globalSearch/searchThunk'
@@ -89,19 +89,7 @@ export const Headers = () => {
       event.stopPropagation()
    }
    const logOutHandler = () => {
-      dispatch(logOut())
-         .unwrap()
-         .then(() => {
-            showSnackbar({
-               message: 'Log out successful!',
-               severity: 'success',
-            })
-            navigate('/')
-            location.reload()
-         })
-         .catch((error) => {
-            return error.message
-         })
+      logOut()
    }
 
    const searchHandler = (e) => {

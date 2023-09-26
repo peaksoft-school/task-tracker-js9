@@ -12,7 +12,16 @@ import { updateColumnTitle } from '../../store/column/columnsThunk'
 import { createNewCard } from '../../store/cards/cardsThunk'
 import { DetailCard } from './DetailCard'
 
-export const Card = ({ column }) => {
+export const Card = ({
+   setColumns,
+   columns,
+   column,
+   setCurrentCard,
+   currentCard,
+   currentColumn,
+   setCurrentColumn,
+   dropHandler,
+}) => {
    const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
    const [editTitle, setEditTitle] = useState(false)
    const [inputValue, setInputValue] = useState('')
@@ -76,7 +85,7 @@ export const Card = ({ column }) => {
    }
 
    return (
-      <div key={column.id}>
+      <div key={column.columnId}>
          {editTitle ? (
             <CreateColumn>
                <BackDrop onClick={closeHandlerEdit} />
@@ -123,6 +132,14 @@ export const Card = ({ column }) => {
                <DetailCard
                   columnId={column.columnId}
                   cardResponses={column.cardResponses}
+                  setCurrentCard={setCurrentCard}
+                  setCurrentColumn={setCurrentColumn}
+                  column={column}
+                  currentCard={currentCard}
+                  setColumns={setColumns}
+                  columns={columns}
+                  currentColumn={currentColumn}
+                  dropHandler={dropHandler}
                />
             </ScrollableContainer>
 
@@ -174,6 +191,7 @@ const AddPlus = styled('p')(() => ({
    marginLeft: '0.5rem',
    fontWeight: '400',
    marginTop: '0.69rem',
+   fontFamily: 'CarePro',
 }))
 
 const ControlsIconStyled = styled(ControlsIcon)(() => ({
@@ -221,6 +239,8 @@ const ParentColumnCard = styled('div')(() => ({
    flexDirection: 'column',
    marginLeft: '0.5rem',
    position: 'relative',
+   width: '17.6rem',
+   paddingLeft: '0.3rem',
 }))
 
 const ScrollableContainer = styled('div')(() => ({

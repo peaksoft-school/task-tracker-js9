@@ -65,8 +65,7 @@ export const ProfileForm = () => {
       dispatch(profilePutRequest(putData))
       reset()
    }
-   const ali = ''
-   console.log('ali: ', ali)
+
    return (
       <div>
          <StyledFormContainer onSubmit={handleSubmit(handleSubmitPut)}>

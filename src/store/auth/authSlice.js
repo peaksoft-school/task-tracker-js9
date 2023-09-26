@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import {
    authWithGoogleRequest,
    forgotPasswordRequest,
-   logOut,
    resetPasswordRequest,
    signInRequest,
    signUpRequest,
@@ -112,9 +111,6 @@ export const authSlice = createSlice({
             state.email = actions.payload.email
             state.token = actions.payload.token
             state.role = actions.payload.role
-         })
-         .addCase(logOut.fulfilled, () => {
-            return { ...initialState }
          })
    },
 })

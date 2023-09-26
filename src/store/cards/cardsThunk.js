@@ -40,3 +40,20 @@ export const getCardbyId = createAsyncThunk(
       }
    }
 )
+
+export const moveCard = createAsyncThunk(
+   'card/moveCard',
+   async (card, { rejectWithValue, dispatch }) => {
+      try {
+         const response = await axiosInstance.put(
+            `/api/cards/move-card/${card.data.cardId}/${card.data.columnId}`
+         )
+
+         dispatch(getColumns(card.boardId))
+
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.data.message)
+      }
+   }
+)

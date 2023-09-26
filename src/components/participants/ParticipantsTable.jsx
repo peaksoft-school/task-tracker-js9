@@ -32,7 +32,8 @@ export const ParticipantsTable = ({ onDelete, rows }) => {
    }, [])
 
    const initialRoles = {}
-   rows.forEach((row) => {
+   console.log(rows)
+   rows.participantsResponseList?.forEach((row) => {
       initialRoles[row.userId] = defaultRole
    })
 
@@ -96,7 +97,7 @@ export const ParticipantsTable = ({ onDelete, rows }) => {
 
    return (
       <Container>
-         <TableMui column={column} rows={rows} />
+         <TableMui column={column} rows={rows.participantsResponseList} />
       </Container>
    )
 }
