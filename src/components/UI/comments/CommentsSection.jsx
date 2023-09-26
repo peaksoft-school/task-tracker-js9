@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { IconButton } from '@mui/material'
 
 import { styled } from '@mui/material/styles'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input } from '../input/Input'
 import { UpIcon, DownIcon } from '../../../assets/icons'
@@ -17,8 +17,7 @@ import { MapCommets } from './comments-part/MapCommets'
 import CommentDelete from './comments-part/CommentDelete'
 import { CommentsUpdate } from './comments-part/CommentsUpdate'
 
-export const CommentSection = () => {
-   const [showMore, setShowMore] = useState(false)
+export const CommentSection = ({ setShowMore, showMore }) => {
    const [commentText, setCommentText] = useState('')
    const [editingCommentId, setEditingCommentId] = useState(null)
    const [editedCommentText, setEditedCommentText] = useState('')
@@ -30,6 +29,7 @@ export const CommentSection = () => {
    const { comments } = useSelector((state) => state.comments)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { cardId } = useParams()
 
    const toggleComments = () => {
       setShowMore((prevShowComments) => !prevShowComments)
@@ -49,7 +49,7 @@ export const CommentSection = () => {
       dispatch(
          postComments({
             comment: commentText,
-            cardId: 4,
+            cardId,
          })
       )
 

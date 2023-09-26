@@ -133,7 +133,7 @@ export const DetailCard = ({
                         ))}
                      </Labels>
                   )}
-
+                  
                   <ParagraphText
                      onClick={() => {
                         getCardByIdHandler(card)

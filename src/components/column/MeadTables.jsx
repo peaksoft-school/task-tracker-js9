@@ -6,6 +6,7 @@ import {
    addColumnsToArchive,
    deleteColumnById,
 } from '../../store/column/columnsThunk'
+import { deleteCardbyColumnId } from '../../store/cards/cardsThunk'
 
 export const MeadTables = ({ columnId, setOpneModal }) => {
    console.log('columnId: ', columnId)
@@ -19,9 +20,13 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
    const addtoArchiveteHandler = () => {
       const data = {
          columnId,
-         boardId,
       }
       dispatch(addColumnsToArchive(data))
+      setOpneModal(false)
+   }
+   const deleteCardsBycolumnIdHandler = () => {
+      dispatch(deleteCardbyColumnId({ columnId, boardId }))
+
       setOpneModal(false)
    }
 
@@ -41,7 +46,7 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
             <p onClick={deleteColumnHandler}>Delete a column</p>
          </CardText>
          <Line />
-         <CardText>
+         <CardText onClick={deleteCardsBycolumnIdHandler}>
             <p>Delete all cards in this list</p>
          </CardText>
          <CardText>

@@ -39,7 +39,7 @@ export const deleteColumnById = createAsyncThunk(
    }
 )
 export const updateColumnTitle = createAsyncThunk(
-   'columns/updateWorkspaceById',
+   'columns/updateColumnTitleById',
    async (data, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.put(
