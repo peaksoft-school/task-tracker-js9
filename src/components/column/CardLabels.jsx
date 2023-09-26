@@ -9,7 +9,6 @@ import {
    RealWorldIcon,
    TypographyIcon,
 } from '../../assets/icons'
-import { ColumnCard } from './ColumnCard'
 
 export const CardLabels = ({ el }) => {
    const [openLabelText, setOpenLabelText] = useState(false)
@@ -52,7 +51,7 @@ export const CardLabels = ({ el }) => {
                </Labels>
             )}
          </Labels>
-         <ColumnCard>
+         <div>
             <ParagraphText>{el.title}</ParagraphText>
 
             <WraperDedline>
@@ -75,7 +74,7 @@ export const CardLabels = ({ el }) => {
                   </ParentPeopleIcon>
                </WraperIcons>
             </WraperDedline>
-         </ColumnCard>
+         </div>
       </div>
    )
 }

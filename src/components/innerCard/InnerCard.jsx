@@ -112,6 +112,18 @@ export const InnerCard = ({
       setOpenModal(false)
    }
 
+   const currentHour = `${selectedDate.$H}`.padStart(2, '0')
+   const currentMinute = `${selectedDate.$m}`.padStart(2, '0')
+   const currentSecond = String(selectedDate.$s).padStart(2, '0')
+
+   const selectedMonth = selectedDate.$M
+
+   let month
+
+   if (selectedMonth < 10) {
+      month = String(selectedMonth + 1).padStart(2, '0')
+   } else {
+      month = String(selectedMonth)
    const onClickAttachments = () => {
       setHandleAttachments((prev) => !prev)
    }

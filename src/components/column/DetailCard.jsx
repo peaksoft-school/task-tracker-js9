@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable react/jsx-boolean-value */
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from '@mui/material'
@@ -12,13 +12,24 @@ import {
    RealWorldIcon,
    TypographyIcon,
 } from '../../assets/icons'
-import { ColumnCard } from './ColumnCard'
+// import { ColumnCard } from './ColumnCard'
 import { Label } from './Label'
 import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
 import { getColumns } from '../../store/column/columnsThunk'
 
-export const DetailCard = ({ cardResponses }) => {
+export const DetailCard = ({
+   cardResponses,
+   setCurrentColumn,
+   setCurrentCard,
+   column,
+   // setColumns,
+   // columns,
+   // currentColumn,
+   currentCard,
+   dropHandler,
+}) => {
+   console.log('currentCard', currentCard)
    const [openLabelMap, setOpenLabelMap] = useState({})
    const [showCardById, setShowCardByid] = useState()
    const [openModal, setOpenModal] = useState(false)
@@ -57,118 +68,162 @@ export const DetailCard = ({ cardResponses }) => {
       setOpenLabelMap({})
    }
 
+   const dragOverHandler = (e) => {
+      e.preventDefault()
+      e.dataTransfer.dropEffect = 'move'
+   }
+   const dragleaveHandler = (e) => {
+      e.target.style.boxShadow = 'none'
+   }
+
+   // const dragStartHandler = (e, column, card) => {
+   //    setCurrentColumn(column)
+   //    setCurrentCard(card?.cardId)
+   //    setCardId(card.cardId)
+   // }
+
+   const dragStartHandler = (e, column, card) => {
+      setCurrentColumn(column)
+      setCurrentCard(card?.cardId)
+      setCardId(card.cardId)
+
+      // Устанавливаем данные в dataTransfer
+      e.dataTransfer.setData('text/plain', card.cardId)
+   }
+
+   const dragEndHandler = (e) => {
+      e.target.style.boxShadow = 'none'
+   }
+
    return (
       <Cont>
          {cardResponses?.map((card) => (
-            <ColumnCard key={card.cardId}>
-               {openLabelMap[card.cardId] ? (
-                  <ParentColorGroupButton>
-                     {card.labelResponses?.map((el) => (
-                        <ColorfulButton
-                           onClick={() => deleteLabelText()}
-                           key={el.labelId}
-                           style={{
-                              backgroundColor: el.color,
-                           }}
-                        >
-                           {el.description}
-                        </ColorfulButton>
-                     ))}
-                  </ParentColorGroupButton>
-               ) : (
-                  <Labels style={{ marginLeft: '0.5rem' }}>
-                     {card.labelResponses?.map((el) => (
-                        <Label
-                           key={el.labelId}
-                           onClick={() => toggleCardLabel(card.cardId)}
-                           color={el.color}
-                        />
-                     ))}
-                  </Labels>
-               )}
-
-               <ParagraphText>
-                  <ColumnCard key={card.cardId}>
-                     <IconText>
-                        <div>
-                           <ParagraphText
-                              onClick={() => {
-                                 getCardByIdHandler(card)
-                                 setShowCardByid(card.cardId)
+            <ColumnCard
+               onDragOver={(e) => dragOverHandler(e)}
+               onDragLeave={(e) => dragleaveHandler(e)}
+               onDragStart={(e) => dragStartHandler(e, column, card)}
+               onDragEnd={(e) => dragEndHandler(e)}
+               onDrop={(e) => dropHandler(e, column, card)}
+               key={card.cardId}
+               draggable={true}
+            >
+               <ContainerClick>
+                  {openLabelMap[card.cardId] ? (
+                     <ParentColorGroupButton>
+                        {card.labelResponses?.map((el) => (
+                           <ColorfulButton
+                              onClick={() => deleteLabelText()}
+                              key={el.labelId}
+                              style={{
+                                 backgroundColor: el.color,
                               }}
                            >
-                              {card.title}
-                           </ParagraphText>
-                           <EditIconStyle fill="gray" />
-                        </div>
-                     </IconText>
-                  </ColumnCard>
-               </ParagraphText>
-               {card.checkListResponses &&
-               card.checkListResponses.length > 0 ? (
-                  <CheckListButton
-                     backgroundColor="#111"
-                     borderRadius="2rem"
-                     padding="0.25rem 0.75rem"
-                  >
-                     Cheklist
-                  </CheckListButton>
-               ) : null}
-
-               <WraperDedline>
-                  {card?.duration && (
-                     <Deadline>
-                        <RealWorldIcon />
-                        <ParagraphDeadlineMonth>
-                           {card.duration}
-                        </ParagraphDeadlineMonth>
-                     </Deadline>
+                              {el.description}
+                           </ColorfulButton>
+                        ))}
+                     </ParentColorGroupButton>
+                  ) : (
+                     <Labels style={{ marginLeft: '0.5rem' }}>
+                        {card.labelResponses?.map((el) => (
+                           <Label
+                              key={el.labelId}
+                              onClick={() => toggleCardLabel(card.cardId)}
+                              color={el.color}
+                           />
+                        ))}
+                     </Labels>
                   )}
-                  <WraperIcons>
-                     {card.commentResponses?.map(
-                        (el) =>
-                           el.comment === '' && (
-                              <WraperIcons>
-                                 <CommunicationIcon />
-                              </WraperIcons>
-                           )
+                  
+                  <ParagraphText
+                     onClick={() => {
+                        getCardByIdHandler(card)
+                        setShowCardByid(card.cardId)
+                     }}
+                  >
+                     <div>
+                        <IconText>
+                           <div>
+                              <ParagraphText>{card.title}</ParagraphText>
+                              <EditIconStyle fill="gray" />
+                           </div>
+                        </IconText>
+                     </div>
+                  </ParagraphText>
+                  {card.checkListResponses &&
+                  card.checkListResponses.length > 0 ? (
+                     <CheckListButton
+                        backgroundColor="#111"
+                        borderRadius="2rem"
+                        padding="0.25rem 0.75rem"
+                     >
+                        Cheklist
+                     </CheckListButton>
+                  ) : null}
+
+                  <WraperDedline>
+                     {card?.duration && (
+                        <Deadline>
+                           <RealWorldIcon />
+                           <ParagraphDeadlineMonth>
+                              {card.duration}
+                           </ParagraphDeadlineMonth>
+                        </Deadline>
                      )}
-                     {card.description && <TypographyIcon />}
-                     {card.numberOfItems && card.numberOfItems > 0 ? (
-                        <CheckMarNumberkIcon>
-                           <CheckKeyboardIcon />
-                           <NumberIcon>{card.numberOfItems}</NumberIcon>
-                           <p style={{ color: 'gray' }}>/</p>
-                           <NumberIcon>
-                              {card.numberOfCompletedItems}
-                           </NumberIcon>
-                        </CheckMarNumberkIcon>
-                     ) : null}
-                     {participants?.length > 0 ? (
-                        <ParentPeopleIcon>
-                           <PeopleIcon fill="gray" />
-                           <PeopleNumber>{participants?.length}</PeopleNumber>
-                        </ParentPeopleIcon>
-                     ) : null}
-                  </WraperIcons>
-               </WraperDedline>
-               {openModal && (
-                  <InnerCard
-                     setOpenModal={setOpenModal}
-                     displayTitle={card.title}
-                     displayText={card.description}
-                     cardId={cardId}
-                     cardData={card}
-                     handleClose={handleClose}
-                     isInnerCardOpen={showCardById === card.cardId}
-                  />
-               )}
+                     <WraperIcons>
+                        {card.commentResponses.map(
+                           (el) =>
+                              el.comment === '' && (
+                                 <WraperIcons>
+                                    <CommunicationIcon />
+                                 </WraperIcons>
+                              )
+                        )}
+                        {card.description && card.description === '' && (
+                           <TypographyIcon fill="red" />
+                        )}
+                        {card.numberOfItems && card.numberOfItems > 0 ? (
+                           <CheckMarNumberkIcon>
+                              <CheckKeyboardIcon />
+                              <NumberIcon>{card.numberOfItems}</NumberIcon>
+                              <p style={{ color: 'gray' }}>/</p>
+                              <NumberIcon>
+                                 {card.numberOfCompletedItems}
+                              </NumberIcon>
+                           </CheckMarNumberkIcon>
+                        ) : null}
+                        {participants?.length > 0 ? (
+                           <ParentPeopleIcon>
+                              <PeopleIcon fill="gray" />
+                              <PeopleNumber>
+                                 {participants?.length}
+                              </PeopleNumber>
+                           </ParentPeopleIcon>
+                        ) : null}
+                     </WraperIcons>
+                  </WraperDedline>
+                  {openModal && (
+                     <InnerCard
+                        cardId={cardId}
+                        cardData={card}
+                        handleClose={handleClose}
+                        isInnerCardOpen={showCardById === card.cardId}
+                     />
+                  )}
+               </ContainerClick>
             </ColumnCard>
          ))}
       </Cont>
    )
 }
-
+const ContainerClick = styled('div')({})
+const ColumnCard = styled('div')(() => ({
+   width: '16.8rem',
+   background: '#ffffff',
+   marginBottom: '1rem',
+   borderRadius: ' 0.25rem',
+   paddingRight: '0.4rem',
+   paddingTop: '0.5rem',
+}))
 const Cont = styled('div')(() => ({
    position: 'relative',
 }))

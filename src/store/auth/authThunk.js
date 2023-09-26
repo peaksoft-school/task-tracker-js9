@@ -95,6 +95,7 @@ export const resetPasswordRequest = createAsyncThunk(
    }
 )
 
-export const logOut = createAsyncThunk('auth/logOut', () => {
-   localStorage.removeItem(STORAGE_KEY.TASK_TRACER_AUTH_KEY)
-})
+export const logOut = () => {
+   window.location.pathname = '/'
+   return localStorage.removeItem(STORAGE_KEY.TASK_TRACER_AUTH_KEY)
+}

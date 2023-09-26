@@ -2,8 +2,9 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Sidenav } from '../components/sidebar/Sidenav'
 import { Column } from '../components/column/Column'
-import { data, dataLength, workspacedata } from '../utils/constants/general'
 import { LayoutMenu } from '../components/LayouMenu/LayoutMenu'
+import { data, dataLength, workspacedata } from '../utils/constants/general'
+// import { PracticeDragAndDrop } from './PracticeDragAndDrop'
 
 export const InnerPage = () => {
    const { boardById } = useSelector((state) => state.board)
@@ -39,6 +40,7 @@ export const InnerPage = () => {
          >
             <LayoutMenu />
             <Column />
+            {/* <PracticeDragAndDrop /> */}
          </div>
       </div>
    )
