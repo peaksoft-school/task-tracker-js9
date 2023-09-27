@@ -25,10 +25,8 @@ export const Attachment = () => {
       setOpenImageModal(!openImageModal)
       setSelectedImage(image)
    }
-   console.log('click', openImageModalHandler)
    const onDrop = React.useCallback(async (acceptedFiles) => {
       const file = acceptedFiles[0]
-
       const formData = new FormData()
       formData.append('file', file)
       dispatch(attachmentPhotoPost({ obj: formData, id: carId }))

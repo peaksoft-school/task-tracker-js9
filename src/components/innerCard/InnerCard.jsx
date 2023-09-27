@@ -87,7 +87,7 @@ export const InnerCard = ({
       return () => {
          document.removeEventListener('mousedown', handleDocumentClick)
       }
-   }, [title, description])
+   })
 
    const openCheckListModalHandler = () => {
       setOpenCheckListModal(true)
