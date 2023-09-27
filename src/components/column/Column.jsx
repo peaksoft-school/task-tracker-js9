@@ -104,7 +104,7 @@ const Cont = styled('div')({
    scrollbarWidth: 'thin',
    scrollbarColor: ' #b3b3b3 transparent',
    '&::-webkit-scrollbar ': {
-      width: '0.5rem',
+      width: '0.1rem',
    },
    '&::-webkit-scrollbar-track': {
       backgroundColor: 'transparent',
@@ -112,7 +112,7 @@ const Cont = styled('div')({
    '&::-webkit-scrollbar-thumb ': {
       backgroundColor: ' #D9D9D9',
       borderRadius: '0.25rem',
-      width: '0.5rem',
+      width: '0.1rem',
    },
 })
 

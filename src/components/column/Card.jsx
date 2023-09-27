@@ -202,10 +202,11 @@ const Title = styled('p')(() => ({
 }))
 const StyleMeadIcon = styled('div')(() => ({
    cursor: 'pointer',
-   // transition: 'transform 0.4s ease-out',
-   // '&:active': {
-   //    transform: 'scale(1,2)',
-   // },
+   marginRight: '1rem',
+   transition: 'transform 0.4s ease-out',
+   '&:active': {
+      transform: 'scale(1,2)',
+   },
 }))
 const MenuItemStyle = styled(MenuItem)(() => ({
    // padding: '1rem 0rem 0.25rem',
@@ -228,15 +229,15 @@ const ScrollableContainer = styled('div')(() => ({
    maxHeight: '22rem',
    overflowY: 'auto',
    scrollbarWidth: 'thin',
-   scrollbarColor: ' #b3b3b3 transparent',
+   scrollbarColor: ' #b3b3b30 transparent',
    '&::-webkit-scrollbar ': {
-      width: '0.5rem',
+      width: '0.1rem',
    },
    '&::-webkit-scrollbar-track': {
-      backgroundColor: 'transparent',
+      backgroundColor: ' #b3b3b30 transparent',
    },
    '&::-webkit-scrollbar-thumb ': {
-      backgroundColor: ' #D9D9D9',
+      backgroundColor: ' #d9d9d90',
       borderRadius: '0.25rem',
    },
 }))

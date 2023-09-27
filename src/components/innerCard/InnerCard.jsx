@@ -1,9 +1,7 @@
-// import { useNavigate, useParams } from 'react-router-dom'
+import { styled, IconButton } from '@mui/material'
 import React, { useState, useRef } from 'react'
-import dayjs from 'dayjs'
-import { IconButton } from '@mui/material'
-import styled from 'styled-components'
-import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
@@ -19,129 +17,86 @@ import {
    MemberIcon,
 } from '../../assets/icons'
 import { Labels } from '../labels/Labels'
-import { Input } from '../UI/input/Input'
+// import { Input } from '../UI/input/Input'
+
 import { CheckList } from '../checklist/CheckList'
 import { CommentSection } from '../UI/comments/CommentsSection'
 import { Button } from '../UI/button/Button'
 import { createdCheckListRequest } from '../../store/checkList/CheckListThunk'
 import { ModalUi } from '../UI/modal/Modal'
-import { DataPickers } from '../UI/data-picker/DataPicker'
+import { cardPut, deleteCardbyCardId } from '../../store/cards/cardsThunk'
 import { getCardArchve } from '../../store/getArchive/archiveThunk'
+import { Attachment } from '../attachment/Attachment'
 
-// const getMonthName = (monthNumber) => {
-//    const months = [
-//       'January',
-//       'February',
-//       'March',
-//       'April',
-//       'May',
-//       'June',
-//       'July',
-//       'August',
-//       'September',
-//       'October',
-//       'November',
-//       'December',
-//    ]
-//    return months[monthNumber] || ''
-// }
 export const InnerCard = ({
    isInnerCardOpen,
-   // setSaveTitle,
-   setSaveDescription,
+   setOpenModal,
    displayText,
    handleClose,
-   setDisplayText,
    displayTitle,
-   // setDisplayTitle,
    cardId,
    cardData,
 }) => {
    const [showMore, setShowMore] = useState(false)
    const inputRef = useRef(null)
-   const titleRef = useRef(null)
-   const [titleText, setTitleText] = useState('')
-   const [inputText, setInputText] = useState('')
+   const [title, setTitleText] = useState(cardData.title)
+   const [description, setInputText] = useState(cardData.description)
    const [isEditing, setIsEditing] = useState(true)
    const [isEditTitle, setIsEditTitle] = useState(true)
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
-   const [openEstimation, setOpenEstimation] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
-
-   const { cardById } = useSelector((state) => state.cards)
-
-   const startTimeSlice = cardById?.estimationResponse?.startTime?.slice(11, 20)
-
-   const startDateForState = dayjs(cardById?.estimationResponse?.startDate)
-
-   const [selectedDate, setSelectedDate] = useState(startDateForState)
-
-   const SliceOfStartDate = cardById?.estimationResponse?.startDate?.slice(
-      0,
-      11
-   )
-
-   const SliceOfDuetDate = cardById?.estimationResponse?.duetDate?.slice(0, 12)
-   const duetDateForState = dayjs(cardById?.estimationResponse?.duetDate)
-
-   const [due, setDue] = useState(duetDateForState)
-
-   const invalidDate = dayjs('2022-04-17T15:30')
-
-   const [clock, setСlock] = useState(invalidDate)
-   const formattedTime = clock.format('HH:mm')
-   const amPm = clock.format('A')
+   const [handleAttachments, setHandleAttachments] = useState(false)
+   const { boardId } = useParams()
 
    const dispatch = useDispatch()
+   // const navigate = useNavigate()
+
+   // const { id, boardId } = useParams()
+
+   // const closeInnerPage = () => {
+   //    navigate(`/mainPage/${id}/boards/${boardId}/board`)
+   // }
+   // console.log(cardData, 'cardData in inner card')
 
    const archiveCard = () => {
       dispatch(getCardArchve(cardId))
    }
-
-   const handleInputChange = (e) => {
-      setInputText(e.target.value)
-   }
-   const handleTitleChange = (e) => {
-      setTitleText(e.target.value)
-   }
    const handleDocumentClick = (event) => {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
-         setDisplayText(inputText)
-         setSaveDescription(inputText)
+      if (
+         inputRef.current &&
+         !inputRef.current.contains(event.target) &&
+         !event.target.tagName.toLowerCase().match(/input|textarea/)
+      ) {
+         dispatch(
+            cardPut({ cardId: cardData.cardId, boardId, title, description })
+         )
          setIsEditing(false)
+         setIsEditTitle(false)
       }
    }
-   const documentClick = (event) => {
-      if (titleRef.current && !titleRef.current.contains(event.target)) {
-         // setDisplayTitle(titleText)
-         // setSaveTitle(titleText)
-         setIsEditTitle(true)
-      }
-   }
+
    const handleEditClick = () => {
       setIsEditing(true)
    }
    const handleEditTitleClick = () => {
       setIsEditTitle(false)
    }
+
    React.useEffect(() => {
       document.addEventListener('mousedown', handleDocumentClick)
       return () => {
          document.removeEventListener('mousedown', handleDocumentClick)
       }
-   }, [inputText])
-   React.useEffect(() => {
-      document.addEventListener('mousedown', documentClick)
-      return () => {
-         document.removeEventListener('mousedown', documentClick)
-      }
-   }, [titleText])
+   })
+
    const openCheckListModalHandler = () => {
       setOpenCheckListModal(true)
    }
+
    const closeCheckListModalHandler = () => {
       setOpenCheckListModal(false)
    }
+
    const addCheckListHandler = () => {
       const data = {
          title: titleCheckList,
@@ -151,49 +106,33 @@ export const InnerCard = ({
       closeCheckListModalHandler()
       setTitleCheckList('')
    }
-   const openEstimationHandler = () => {
-      setOpenEstimation((prev) => !prev)
-   }
-   const closeEstimationHandler = () => {
-      setOpenEstimation(false)
-   }
 
-   const currentHour = `${selectedDate.$H}`.padStart(2, '0')
-   const currentMinute = `${selectedDate.$m}`
-   const currentSecond = String(selectedDate.$s).padStart(2, '0')
-
-   const selectedMonth = selectedDate.$M
-
-   let month
-
-   if (selectedMonth < 10) {
-      month = String(selectedMonth + 1).padStart(2, '0')
-   } else {
-      month = String(selectedMonth)
+   const deleteCardByIdHandler = () => {
+      dispatch(deleteCardbyCardId({ cardId, boardId }))
+      setOpenModal(false)
    }
 
-   const day = selectedDate.$D < 10 ? `0${selectedDate.$D}` : selectedDate.$D
-   const dateMonth = `${selectedDate.$y}-${month}-${day}T`
-
-   const combinations = `${dateMonth}${currentHour}:${currentMinute}:${currentSecond}.${selectedDate.$ms}Z`
+   const onClickAttachments = () => {
+      setHandleAttachments((prev) => !prev)
+   }
 
    return (
       <div>
          <ModalUi open={isInnerCardOpen} onClose={handleClose}>
-            <CardContainer ref={(inputRef, titleRef)}>
+            <CardContainer ref={inputRef}>
                <Wrapper>
                   <TextContainer>
-                     <EditIcon onClick={handleEditTitleClick} />
-                     {isEditTitle ? (
+                     <EditIcon fill="gray" onClick={handleEditTitleClick} />
+                     {isEditTitle || displayText === '' ? (
+                        <TitileInput
+                           onChange={(e) => setTitleText(e.target.value)}
+                           value={title}
+                           ref={inputRef}
+                        />
+                     ) : (
                         <CardText onClick={handleEditTitleClick}>
                            {displayTitle}
                         </CardText>
-                     ) : (
-                        <TitileInput
-                           type="text"
-                           value={titleText}
-                           onChange={handleTitleChange}
-                        />
                      )}
                   </TextContainer>
                   <CloseIcon
@@ -204,31 +143,20 @@ export const InnerCard = ({
                </Wrapper>
                <CardWrapper>
                   <CardContainerInner>
-                     <Labels labels={cardData.labelResponses} cardId={cardId} />
+                     <Labels labels={cardData.labelResponses} />
                      <DataContainer>
                         <div>
                            <Title>Start Date</Title>
                            <DateStart>
-                              {cardById?.estimationResponse?.startDate
-                                 ? SliceOfStartDate
-                                 : 'DD/MM/YYYY at'}{' '}
-                              {cardById?.estimationResponse?.startDate
-                                 ? startTimeSlice
-                                 : ' 00:00 '}
-                              {amPm}
+                              Sep 9, 2022 at 12:51 PM
+                              <DownIcon style={{ marginLeft: '0.5rem' }} />
                            </DateStart>
                         </div>
                         <div>
                            <Title>Due Date</Title>
                            <DateStart>
-                              {cardById?.estimationResponse?.duetDate
-                                 ? SliceOfDuetDate
-                                 : 'DD/MM/YYYY '}
-                              at{' '}
-                              {cardById?.estimationResponse?.duetDate
-                                 ? formattedTime
-                                 : ' 00:00'}{' '}
-                              {amPm}
+                              Sep 9, 2022 at 12:51 PM
+                              <DownIcon style={{ marginLeft: '0.5rem' }} />
                            </DateStart>
                         </div>
                         <div>
@@ -237,22 +165,29 @@ export const InnerCard = ({
                         </div>
                      </DataContainer>
                      <Description>
-                        <DownIcon />
-                        <DescriptionTitle>Description</DescriptionTitle>
+                        <DownIcon fill="gray" />
+                        <DescriptionTitle style={{ color: 'gray' }}>
+                           Description
+                        </DescriptionTitle>
                      </Description>
-                     {isEditing ? (
-                        <DescriptionInput
-                           type="text"
-                           placeholder="Add a description"
-                           value={inputText}
-                           onChange={handleInputChange}
-                        />
+
+                     {isEditing || displayText === '' ? (
+                        <div>
+                           <DescriptionInput
+                              type="text"
+                              placeholder="Add a description"
+                              value={description}
+                              onChange={(e) => setInputText(e.target.value)}
+                              ref={inputRef}
+                           />
+                        </div>
                      ) : (
                         <DescriptionText onClick={handleEditClick}>
                            {displayText}
                         </DescriptionText>
                      )}
                      <CheckList />
+                     {handleAttachments ? <Attachment /> : null}
                   </CardContainerInner>
                   <CardRight>
                      <CardRightContainer>
@@ -267,9 +202,7 @@ export const InnerCard = ({
                            <AddItem>
                               <ClockIcon style={{ width: '16px' }} />
                               {showMore === false ? (
-                                 <AddText onClick={openEstimationHandler}>
-                                    Estimation
-                                 </AddText>
+                                 <AddText>Estimation</AddText>
                               ) : null}
                            </AddItem>
                            <AddItem>
@@ -281,7 +214,9 @@ export const InnerCard = ({
                            <AddItem>
                               <AttachIcon />
                               {showMore === false ? (
-                                 <AddText>Attachment</AddText>
+                                 <AddText onClick={onClickAttachments}>
+                                    Attachment
+                                 </AddText>
                               ) : null}
                            </AddItem>
                            <AddItem onClick={openCheckListModalHandler}>
@@ -290,22 +225,6 @@ export const InnerCard = ({
                                  <AddText>Checklist</AddText>
                               ) : null}
                            </AddItem>
-                           {openEstimation && (
-                              <>
-                                 <BackDrop onClick={closeEstimationHandler} />
-                                 <DataPickers
-                                    setSelectedDate={setSelectedDate}
-                                    selectedDate={selectedDate}
-                                    setСlock={setСlock}
-                                    clock={clock}
-                                    setDue={setDue}
-                                    due={due}
-                                    cardId={cardId}
-                                    setOpenEstimation={setOpenEstimation}
-                                    combinations={combinations}
-                                 />
-                              </>
-                           )}
                            {openCheckListModal ? (
                               <>
                                  <BackDrop
@@ -347,7 +266,9 @@ export const InnerCard = ({
                            <AddItem>
                               <DeleteIcon />
                               {showMore === false ? (
-                                 <AddText>Delete</AddText>
+                                 <AddText onClick={deleteCardByIdHandler}>
+                                    Delete
+                                 </AddText>
                               ) : null}
                            </AddItem>
                            <AddItem>
@@ -372,6 +293,7 @@ export const InnerCard = ({
       </div>
    )
 }
+
 const CardContainer = styled('div')(() => ({
    width: '1150px',
    borderRadius: '8px',
@@ -396,6 +318,7 @@ const CardText = styled('p')(() => ({
 
 const TextContainer = styled('div')(() => ({
    display: 'flex',
+   gap: '0.5rem',
    alignItems: 'center',
 }))
 
@@ -428,19 +351,24 @@ const DescriptionTitle = styled('h4')(() => ({
    marginLeft: '0.5rem',
 }))
 
-const DescriptionInput = styled(Input)(() => ({
-   input: {
-      backgroundColor: 'none',
-      fontSize: '1rem',
-      width: '39.9931rem',
-      borderRadius: '5rem',
-      padding: '1.3rem 1.3rem 5.5rem',
-   },
+const DescriptionInput = styled('textarea')(() => ({
    marginTop: '0.5rem',
+   minHeight: '6.1875rem',
+   width: '42.2rem',
+   padding: '0.5rem 1rem',
+   background: '#ffffff',
+   borderColor: '#989898',
+   borderRadius: '0.5rem',
+   resize: 'none',
+   fontSize: '1rem',
+   overflow: 'hidden',
+   fontFamily: 'CarePro',
 }))
 
 const DescriptionText = styled('p')(() => ({
-   margin: '15px 25px 20px',
+   padding: '0.5rem 1rem',
+   width: '39.9931rem',
+   wordWrap: 'break-word',
 }))
 
 const CardRight = styled('div')(() => ({
@@ -477,14 +405,19 @@ const AddText = styled('p')(() => ({
    width: '95px',
 }))
 
-const TitileInput = styled(Input)(() => ({
-   input: {
-      backgroundColor: 'none',
-      fontSize: '1rem',
-      width: '20rem',
-      borderRadius: '5rem',
-      padding: '1rem 0',
-   },
+const TitileInput = styled('textarea')(() => ({
+   width: '40.3rem',
+
+   padding: '0.5em 0 0 0.4rem ',
+   // lineHeight: '1.7rem',
+   maxHeight: '2.5rem',
+   background: '#ffffff',
+   borderColor: '#989898',
+   borderRadius: '0.5rem',
+   resize: 'none',
+   fontSize: '1rem',
+   overflow: 'hidden',
+   fontFamily: 'CarePro',
 }))
 
 const ModalContent = styled('div')({
