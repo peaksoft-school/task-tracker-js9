@@ -176,6 +176,8 @@ export const InnerCard = ({
    const dateMonth = `${selectedDate.$y}-${month}-${day}T`
 
    const combinations = `${dateMonth}${currentHour}:${currentMinute}:${currentSecond}.${selectedDate.$ms}Z`
+   const ali = 'ali '
+   console.log('ali: ', ali)
 
    return (
       <div>
