@@ -3,6 +3,7 @@ import { styled } from '@mui/material'
 import { Card } from './Card'
 
 export const Columns = ({ column }) => {
+   console.log(column)
    return (
       <ColumnStyle>
          <Card column={column} />
