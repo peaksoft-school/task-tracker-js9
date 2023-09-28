@@ -21,6 +21,7 @@ export const CardLabels = ({ el }) => {
       setClickedLabels(el.labelResponses)
       setOpenLabelText(true)
    }
+   console.log('helloooo')
 
    const deleteLabelText = () => {
       setOpenLabelText(false)
