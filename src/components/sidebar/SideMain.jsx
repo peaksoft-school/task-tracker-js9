@@ -83,7 +83,12 @@ export const SideMain = ({
                            <AccountingListItemIcon key={item.workSpaceName}>
                               <StyledForSpace>
                                  <StyledAvatar
-                                    sx={{ bgcolor: '#2CB107' }}
+                                    sx={{
+                                       bgcolor: '#2CB107',
+                                       display: 'flex',
+                                       justifyContent: 'center',
+                                       alignItems: 'center',
+                                    }}
                                     alt="photo"
                                  >
                                     <span
@@ -275,7 +280,7 @@ const StyledAvatar = styled(Avatar)(() => ({
    width: '1.625rem',
    height: '1.5625rem',
    color: '#F0F0F0',
-   padding: '0.6rem 0.6rem 0.6rem 0.6rem',
-   bgcolor: '#2CB107',
+   paddingTop: '0.15rem',
+   paddingLeft: '0.05rem',
    marginLeft: '  -1rem',
 }))

@@ -146,7 +146,8 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   onClick={handleDrawerToggle}
                   edge="start"
                   style={{
-                     backgroundColor: '#ffffffb6',
+                     background:
+                        'linear-gradient(to left, #ffffffb6 61%, transparent 61.40%)',
                      borderRadius: '0rem 0.5rem 0.5rem 0rem',
                      position: 'fixed',
                      top: '6rem',
@@ -203,10 +204,12 @@ const Drawer = styled(MuiDrawer, {
    '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
       marginTop: '75px',
       backgroundColor: '#ffffffb6',
+      borderRight: '2px solid transparent',
    },
    ...(open && {
       ...openedMixin(theme),
       '& .MuiDrawer-paper': openedMixin(theme),
+      width: `calc(${drawerWidth}px - 0.1px)`,
    }),
    ...(!open && {
       ...closedMixin(theme),
