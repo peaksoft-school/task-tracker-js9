@@ -11,7 +11,7 @@ export const partSlice = createSlice({
    reducers: {},
    extraReducers: (builder) => {
       builder.addCase(fetchParticipans.fulfilled, (state, actions) => {
-         state.participants = actions.payload.participantsResponseList
+         state.participants = actions.payload
       })
    },
 })
