@@ -15,6 +15,17 @@ import {
    updateRoles,
 } from '../../../store/inviteMember/inviteThunk'
 
+const filterUsersByUserId = (users) => {
+   const seenUserIds = new Set()
+   return users.filter((user) => {
+      if (seenUserIds.has(user.userId)) {
+         return false
+      }
+      seenUserIds.add(user.userId)
+      return true
+   })
+}
+
 export const Participant = ({
    openModalHandler,
    openNewInvite,
@@ -52,6 +63,8 @@ export const Participant = ({
       dispatch(allinviteMember(boardId))
    }, [dispatch])
 
+   const filteredInviteMembers = filterUsersByUserId(inviteMember)
+
    return openNewInvite ? (
       <InviteNewParticipant
          openInviteNewModal={openInviteNewModal}
@@ -77,7 +90,7 @@ export const Participant = ({
                   <AdminP>Admin</AdminP>
                </AdminBox>
 
-               {inviteMember.map((user) => (
+               {filteredInviteMembers.map((user) => (
                   <UsersSelectBox key={user.userId}>
                      <p>{user.firstName}</p>
 
@@ -107,12 +120,14 @@ export const Participant = ({
       </Container>
    )
 }
+
 const Container = styled('div')(() => ({
    width: '100%',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
 }))
+
 const ParticipantContainer = styled('div')({
    width: '26.5625rem',
    height: '17.3125rem',

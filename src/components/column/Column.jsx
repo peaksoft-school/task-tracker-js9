@@ -176,7 +176,7 @@ const ChildContainer = styled('div')({
    backgroundColor: 'rgba(145, 145, 145, 0.12)',
    paddingBottom: '1rem',
    paddingTop: '0.69rem',
-   paddingRight: '0.5rem',
+   // paddingRight: '0.5rem',
    height: 'fit-content',
    position: 'relative',
    background: '#E6E6E6',
