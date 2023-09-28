@@ -9,6 +9,7 @@ import { Workspaces } from '../components/workspace/Workspace'
 import { Profile } from '../components/profile/Profile'
 import { BoardPage } from '../pages/BoardPage'
 import { InnerPage } from '../pages/InnerPage'
+import { AllIssuesPage } from '../pages/AllIssuesPage'
 import { ParticipantsPage } from '../pages/ParticipantsPage'
 // import { InnerCard } from '../components/innerCard/InnerCard'
 
@@ -65,6 +66,15 @@ export const routes = createBrowserRouter([
          <>
             <Headers />
             <BoardPage />
+         </>
+      ),
+   },
+   {
+      path: 'mainPage/:id/allissues/',
+      element: (
+         <>
+            <Headers />
+            <AllIssuesPage />
          </>
       ),
    },

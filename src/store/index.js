@@ -10,8 +10,9 @@ import { favouriteSlice } from './getFavourites/favouritesSlice'
 import { cardSlice } from './card/cardSlice'
 import { memberSlice } from './inviteMember/memberSlice'
 import { labelsSlice } from './getLabels/labelsSlice'
-import { partSlice } from './participants/partSlice'
 import { columnsSlice } from './column/columnsSlise'
+import { allIssuesSlice } from './get-all-issues/get.all.issuesSlice'
+import { partSlice } from './participants/partSlice'
 import { archiveSlice } from './getArchive/arichiveSlice'
 import { cardsSlice } from './cards/cardsSlice'
 import { searchSlice } from './globalSearch/searchSlice'
@@ -30,6 +31,8 @@ export const store = configureStore({
       [cardSlice.name]: cardSlice.reducer,
       [memberSlice.name]: memberSlice.reducer,
       [labelsSlice.name]: labelsSlice.reducer,
+      [columnsSlice.name]: columnsSlice.reducer,
+      [allIssuesSlice.name]: allIssuesSlice.reducer,
       [partSlice.name]: partSlice.reducer,
       [archiveSlice.name]: archiveSlice.reducer,
       [columnsSlice.name]: columnsSlice.reducer,
