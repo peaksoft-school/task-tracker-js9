@@ -1,10 +1,14 @@
+/* eslint-disable no-undef */
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { styled } from '@mui/material'
+import { getWorkspacebyId } from '../../store/workspace/workspaceThunk'
+import { getBoardById } from '../../store/board/boardThunk'
 
 export const SearchHistory = () => {
    const searchHistory = useSelector((state) => state.search.searchHistory)
+   const dispatch = useDispatch()
    const searchHistoryWorkspace = useSelector(
       (state) => state.search.searchHistoryWorkspace
    )
@@ -13,20 +17,24 @@ export const SearchHistory = () => {
    )
    const navigate = useNavigate()
 
-   const navigateToBoardDetail = (boardId) => {
-      navigate(`/mainPage/:id/boards/${boardId}/board`)
+   const navigateToBoardDetail = (workSpaceId, boardId) => {
+      navigate(`/mainPage/${workSpaceId}/boards/${boardId}/board`)
+      dispatch(getWorkspacebyId(workSpaceId))
+      dispatch(getBoardById(boardId))
    }
 
    const navigateToWorkspaceDetail = (workspaceId) => {
       navigate(`/mainPage/${workspaceId}/boards/`)
+      dispatch(getWorkspacebyId(workspaceId))
    }
-
    return (
       <Container>
          {searchHistory?.map((item) => (
             <WrapperBoard
                key={item.boardId}
-               onClick={() => navigateToBoardDetail(item.boardId)}
+               onClick={() =>
+                  navigateToBoardDetail(item.work_space_id, item.boardId)
+               }
                style={{ display: 'flex', alignItems: 'center' }}
             >
                {item.backGround?.startsWith('#') ? (

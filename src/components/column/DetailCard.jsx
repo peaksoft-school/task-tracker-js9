@@ -1,6 +1,7 @@
-import { useDispatch } from 'react-redux'
-import { styled } from '@mui/material'
+/* eslint-disable no-undef */
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { styled } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../UI/button/Button'
 import {
@@ -11,21 +12,36 @@ import {
    RealWorldIcon,
    TypographyIcon,
 } from '../../assets/icons'
-import { ColumnCard } from './ColumnCard'
+// import { ColumnCard } from './ColumnCard'
 import { Label } from './Label'
 import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
 import { getColumns } from '../../store/column/columnsThunk'
 
-export const DetailCard = ({ cardResponses }) => {
-   const [openLabelText, setOpenLabelText] = useState(false)
-   const [, setClickedLabels] = useState([])
+export const DetailCard = ({
+   cardResponses,
+   setCurrentColumn,
+   setCurrentCard,
+   column,
+
+   // currentCard,
+   dropHandler,
+}) => {
+   const [openLabelMap, setOpenLabelMap] = useState({})
    const [showCardById, setShowCardByid] = useState()
    const [openModal, setOpenModal] = useState(false)
    const [cardId, setCardId] = useState(null)
    const { id, boardId } = useParams()
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { participants } = useSelector((state) => state.participant)
+
+   const toggleCardLabel = (cardId) => {
+      setOpenLabelMap((prevOpenLabelMap) => ({
+         ...prevOpenLabelMap,
+         [cardId]: !prevOpenLabelMap[cardId],
+      }))
+   }
 
    const getCardByIdHandler = (card) => {
       setCardId(card.cardId)
@@ -45,21 +61,45 @@ export const DetailCard = ({ cardResponses }) => {
       setOpenModal(!openModal)
       dispatch(getColumns(boardId))
    }
-
-   const handleButtonClick = () => {
-      setClickedLabels()
-      setOpenLabelText(true)
-   }
-
    const deleteLabelText = () => {
-      setOpenLabelText(false)
+      setOpenLabelMap({})
+   }
+   const dragOverHandler = (e) => {
+      e.preventDefault()
+      // e.dataTransfer.dropEffect = 'move'
+   }
+   const dragleaveHandler = (e) => {
+      e.target.style.boxShadow = 'none'
+      if (e.target.className === 'live') {
+         e.target.style.backgroundColor = 'red'
+      }
+   }
+   const dragStartHandler = (e, column, card) => {
+      setCurrentColumn(column)
+      setCurrentCard(card?.cardId)
+      setCardId(card.cardId)
+
+      e.dataTransfer.setData('text/plain', card.cardId)
+   }
+   const dragEndHandler = (e) => {
+      e.target.style.boxShadow = 'none'
    }
 
    return (
       <Cont>
-         {cardResponses.map((card) => (
-            <ColumnCard key={card.cardId}>
-               {openLabelText ? (
+         {cardResponses?.map((card) => (
+            <ColumnCard
+               className="live"
+               key={card.cardId}
+               onDragOver={(e) => dragOverHandler(e)}
+               onDragLeave={(e) => dragleaveHandler(e)}
+               onDragStart={(e) => dragStartHandler(e, column, card)}
+               onDragEnd={(e) => dragEndHandler(e)}
+               onDrop={(e) => dropHandler(e, column, card)}
+               // eslint-disable-next-line react/jsx-boolean-value
+               draggable={true}
+            >
+               {openLabelMap[card.cardId] ? (
                   <ParentColorGroupButton>
                      {card.labelResponses?.map((el) => (
                         <ColorfulButton
@@ -78,7 +118,7 @@ export const DetailCard = ({ cardResponses }) => {
                      {card.labelResponses?.map((el) => (
                         <Label
                            key={el.labelId}
-                           onClick={() => handleButtonClick()}
+                           onClick={() => toggleCardLabel(card.cardId)}
                            color={el.color}
                         />
                      ))}
@@ -87,16 +127,14 @@ export const DetailCard = ({ cardResponses }) => {
 
                <ParagraphText>
                   <ColumnCard key={card.cardId}>
-                     <IconText>
+                     <IconText
+                        onClick={() => {
+                           getCardByIdHandler(card)
+                           setShowCardByid(card.cardId)
+                        }}
+                     >
                         <div>
-                           <ParagraphText
-                              onClick={() => {
-                                 getCardByIdHandler(card)
-                                 setShowCardByid(card.cardId)
-                              }}
-                           >
-                              {card.title}
-                           </ParagraphText>
+                           <ParagraphText>{card.title}</ParagraphText>
                            <EditIconStyle fill="gray" />
                         </div>
                      </IconText>
@@ -114,7 +152,7 @@ export const DetailCard = ({ cardResponses }) => {
                ) : null}
 
                <WraperDedline>
-                  {card.duration && card.duration === '' && (
+                  {card?.duration && (
                      <Deadline>
                         <RealWorldIcon />
                         <ParagraphDeadlineMonth>
@@ -123,7 +161,7 @@ export const DetailCard = ({ cardResponses }) => {
                      </Deadline>
                   )}
                   <WraperIcons>
-                     {card.commentResponses.map(
+                     {card.commentResponses?.map(
                         (el) =>
                            el.comment === '' && (
                               <WraperIcons>
@@ -131,9 +169,7 @@ export const DetailCard = ({ cardResponses }) => {
                               </WraperIcons>
                            )
                      )}
-                     {card.description && card.description === '' && (
-                        <TypographyIcon fill="red" />
-                     )}
+                     {card.description && <TypographyIcon />}
                      {card.numberOfItems && card.numberOfItems > 0 ? (
                         <CheckMarNumberkIcon>
                            <CheckKeyboardIcon />
@@ -144,16 +180,19 @@ export const DetailCard = ({ cardResponses }) => {
                            </NumberIcon>
                         </CheckMarNumberkIcon>
                      ) : null}
-                     {card.numberOfUsers > 1 && (
+                     {participants?.length > 0 ? (
                         <ParentPeopleIcon>
                            <PeopleIcon fill="gray" />
-                           <PeopleNumber>{card.numberOfUsers}</PeopleNumber>
+                           <PeopleNumber>{participants?.length}</PeopleNumber>
                         </ParentPeopleIcon>
-                     )}
+                     ) : null}
                   </WraperIcons>
                </WraperDedline>
                {openModal && (
                   <InnerCard
+                     setOpenModal={setOpenModal}
+                     displayTitle={card.title}
+                     displayText={card.description}
                      cardId={cardId}
                      cardData={card}
                      handleClose={handleClose}
@@ -165,14 +204,24 @@ export const DetailCard = ({ cardResponses }) => {
       </Cont>
    )
 }
+const ColumnCard = styled('div')(() => ({
+   width: '16.8rem',
+   background: '#ffffff',
+   marginBottom: '1rem',
+   borderRadius: ' 0.25rem',
+   paddingRight: '0.4rem',
+   paddingTop: '0.5rem',
+}))
 const Cont = styled('div')(() => ({
    position: 'relative',
 }))
+
 const ParagraphText = styled('div')(() => ({
    width: '14rem',
    boxSizing: 'border-box',
    wordWrap: 'break-word',
 }))
+
 const IconText = styled('div')(() => ({
    display: 'flex',
    position: 'relative',
@@ -185,6 +234,7 @@ const EditIconStyle = styled(EditIcon)(() => ({
    bottom: '0.0rem',
    cursor: 'pointer',
 }))
+
 const Labels = styled('div')(() => ({
    display: 'flex',
    flexWrap: 'wrap',
@@ -194,6 +244,7 @@ const Labels = styled('div')(() => ({
 const WraperDedline = styled('div')(() => ({
    display: 'flex',
    justifyContent: 'flex-end',
+   gap: '0.4rem',
 }))
 
 const Deadline = styled('div')(() => ({
@@ -201,13 +252,14 @@ const Deadline = styled('div')(() => ({
    backgroundColor: '#F9DCB4',
    borderRadius: '0.5rem',
    padding: ' 0.125rem 0.5rem 0rem 0.5rem',
-   marginLeft: '0.7rem',
+   marginBottom: '0.5rem',
 }))
 
 const WraperIcons = styled('div')(() => ({
    display: 'flex',
    gap: '0.81rem',
 }))
+
 const ParagraphDeadlineMonth = styled('p')(() => ({
    fontSize: '0.875rem',
    fontFamily: ' normal',
@@ -234,6 +286,7 @@ const PeopleNumber = styled('p')(() => ({
 const ParentColorGroupButton = styled('div')(() => ({
    display: 'flex-wrap',
    gap: '0.5rem',
+   marginLeft: '0.5rem',
 }))
 
 const ColorfulButton = styled(Button)(() => ({
@@ -252,7 +305,6 @@ const CheckListButton = styled(Button)(() => ({
    fontSize: ' 0.75rem',
    fontStyle: ' normal',
    fontWeight: '500',
-   // position: 'absolute',
    left: '9.9rem',
    bottom: '0.5rem',
 }))
@@ -261,6 +313,7 @@ const CheckMarNumberkIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',
 }))
+
 const ParentPeopleIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',

@@ -23,7 +23,6 @@ export const InviteNewParticipant = ({ onCreateClick, rows }) => {
             link: 'http://localhost:3000/signup',
          }
          dispatch(postParticipans(newdata))
-         onCreateClick()
       } else {
          showSnackbar({
             message: 'user already added',

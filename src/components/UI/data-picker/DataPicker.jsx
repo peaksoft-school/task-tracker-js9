@@ -1,5 +1,4 @@
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+/* eslint-disable no-unused-vars */
 import Select from '@mui/material/Select'
 import { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
@@ -22,10 +21,8 @@ export const DataPickers = ({
    due,
    setDue,
    cardId,
-   currentHour,
-   currentMinute,
    setOpenEstimation,
-   currentSecond,
+   combinations,
 }) => {
    const dispatch = useDispatch()
    const [reminder, setReminder] = useState('')
@@ -34,18 +31,6 @@ export const DataPickers = ({
 
    const mode = cardById?.estimationResponse?.estimationId
 
-   // const startDate = selectedDate.toISOString()
-   // const parts = startDate.split('T')
-   // const postStartDate = parts[0]
-   // console.log('selectedDate: ', startDate)
-
-   console.log('selectedDate.toISOString(): ', selectedDate.toISOString())
-
-   const dateMonth = selectedDate.toISOString().slice(0, 11)
-   const dateHour = selectedDate.toISOString().slice(20, 24)
-   const combinations = `${dateMonth}${currentHour}0:${currentMinute}:${currentSecond}.${dateHour}`
-
-   console.log('combinations: ', combinations)
    const handleCreate = () => {
       const data = {
          cardId,
@@ -53,7 +38,7 @@ export const DataPickers = ({
          startDate: selectedDate.toISOString(),
          dateOfFinish: due.toISOString(),
          startTime: combinations,
-         finishTime: '2024-04-17T00:45:00.000Z',
+         finishTime: due.toISOString(),
       }
       dispatch(estimationPostRequest(data))
       setOpenEstimation(false)
@@ -63,13 +48,12 @@ export const DataPickers = ({
       const data = {
          cardId,
          values: {
-            estimationId: cardById.estimationResponse.estimationId,
+            estimationId: cardById?.estimationResponse?.estimationId,
             reminder,
             startDate: selectedDate.toISOString(),
             dateOfFinish: due.toISOString(),
-            startTime: currentHour,
-            currentMinute,
-            finishTime: clock.toISOString(),
+            startTime: combinations,
+            finishTime: due.toISOString(),
          },
       }
       dispatch(estimationPutRequest(data))
@@ -78,69 +62,64 @@ export const DataPickers = ({
 
    return (
       <MainDateContainer>
-         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar
+         <DateCalendar
+            value={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+         />
+         <DateContainer>
+            <DateLabel>Start Date</DateLabel>
+            <StartDatePanel
+               name="startDate"
                value={selectedDate}
-               onChange={(date) => setSelectedDate(date)}
+               format="DD/MM/YYYY"
             />
-            <DateContainer>
-               <DateLabel htmlFor="startDate">Start Date</DateLabel>
-               <StartDatePanel
-                  name="startDate"
-                  value={selectedDate}
+            <DateLabel>Due Date</DateLabel>
+            <DateAndTimeContainer>
+               <DueDatePanel
+                  name="dueDate"
+                  value={due}
+                  onChange={(newValue) => setDue(newValue)}
                   format="DD/MM/YYYY"
                />
-               <DateLabel htmlFor="dueDate">Due Date</DateLabel>
-               <DateAndTimeContainer>
-                  <DueDatePanel
-                     name="dueDate"
-                     value={due}
-                     onChange={(newValue) => setDue(newValue)}
-                     format="DD/MM/YYYY"
-                  />
-                  <TimePicker
-                     value={clock}
-                     onChange={(newValue) => setСlock(newValue)}
-                     // format="HH:mm "
-                  />
-               </DateAndTimeContainer>
-               <SelectContainer>
-                  <DateLabel htmlFor="demo-simple-select-label">
-                     Set due date reminder
-                  </DateLabel>
+               <TimePicker
+                  value={clock}
+                  onChange={(newValue) => setСlock(newValue)}
+               />
+            </DateAndTimeContainer>
+            <SelectContainer>
+               <DateLabel>Set due date reminder</DateLabel>
 
-                  <Select
-                     labelId="demo-simple-select-label"
-                     id="demo-simple-select"
-                     defaultValue="None"
-                     value={reminder}
-                     onChange={(e) => setReminder(e.target.value)}
-                     MenuProps={{
-                        PaperProps: {
-                           style: {
-                              maxHeight: 145,
-                              overflowY: 'scroll',
-                           },
+               <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue="None"
+                  value={reminder}
+                  onChange={(e) => setReminder(e.target.value)}
+                  MenuProps={{
+                     PaperProps: {
+                        style: {
+                           maxHeight: 145,
+                           overflowY: 'scroll',
                         },
-                     }}
-                  >
-                     <MenuItem value="None">None</MenuItem>
-                     <MenuItem value="5min">5 min. before</MenuItem>
-                     <MenuItem value="15min">15 min. before</MenuItem>
-                     <MenuItem value="60min">1 hour before</MenuItem>
-                  </Select>
-               </SelectContainer>
-               {mode ? (
-                  <StyledButton onClick={handleUpdate}>
-                     update a new template
-                  </StyledButton>
-               ) : (
-                  <StyledButton onClick={handleCreate}>
-                     create a new template
-                  </StyledButton>
-               )}
-            </DateContainer>
-         </LocalizationProvider>
+                     },
+                  }}
+               >
+                  <MenuItem value="None">None</MenuItem>
+                  <MenuItem value="5min">5 min. before</MenuItem>
+                  <MenuItem value="15min">15 min. before</MenuItem>
+                  <MenuItem value="60min">1 hour before</MenuItem>
+               </Select>
+            </SelectContainer>
+            {mode ? (
+               <StyledButton onClick={handleUpdate}>
+                  Update Existing Template
+               </StyledButton>
+            ) : (
+               <StyledButton onClick={handleCreate}>
+                  Create New Template
+               </StyledButton>
+            )}
+         </DateContainer>
       </MainDateContainer>
    )
 }

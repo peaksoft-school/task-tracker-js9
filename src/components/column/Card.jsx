@@ -12,7 +12,16 @@ import { updateColumnTitle } from '../../store/column/columnsThunk'
 import { createNewCard } from '../../store/cards/cardsThunk'
 import { DetailCard } from './DetailCard'
 
-export const Card = ({ column }) => {
+export const Card = ({
+   column,
+   setColumns,
+   columns,
+   setCurrentCard,
+   currentCard,
+   currentColumn,
+   setCurrentColumn,
+   dropHandler,
+}) => {
    const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
    const [editTitle, setEditTitle] = useState(false)
    const [inputValue, setInputValue] = useState('')
@@ -123,6 +132,14 @@ export const Card = ({ column }) => {
                <DetailCard
                   columnId={column.columnId}
                   cardResponses={column.cardResponses}
+                  column={column}
+                  setColumns={setColumns}
+                  setCurrentCard={setCurrentCard}
+                  setCurrentColumn={setCurrentColumn}
+                  currentCard={currentCard}
+                  columns={columns}
+                  currentColumn={currentColumn}
+                  dropHandler={dropHandler}
                />
             </ScrollableContainer>
 
@@ -202,10 +219,11 @@ const Title = styled('p')(() => ({
 }))
 const StyleMeadIcon = styled('div')(() => ({
    cursor: 'pointer',
-   // transition: 'transform 0.4s ease-out',
-   // '&:active': {
-   //    transform: 'scale(1,2)',
-   // },
+   marginRight: '1rem',
+   transition: 'transform 0.4s ease-out',
+   '&:active': {
+      transform: 'scale(1,2)',
+   },
 }))
 const MenuItemStyle = styled(MenuItem)(() => ({
    // padding: '1rem 0rem 0.25rem',
@@ -220,6 +238,8 @@ const ParentColumnCard = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
    marginLeft: '0.5rem',
+   position: 'relative',
+   width: '17.6rem',
 }))
 
 const ScrollableContainer = styled('div')(() => ({
@@ -227,15 +247,15 @@ const ScrollableContainer = styled('div')(() => ({
    maxHeight: '22rem',
    overflowY: 'auto',
    scrollbarWidth: 'thin',
-   scrollbarColor: ' #b3b3b3 transparent',
+   scrollbarColor: ' #b3b3b30 transparent',
    '&::-webkit-scrollbar ': {
-      width: '0.5rem',
+      width: '0.1rem',
    },
    '&::-webkit-scrollbar-track': {
-      backgroundColor: 'transparent',
+      backgroundColor: ' #b3b3b30 transparent',
    },
    '&::-webkit-scrollbar-thumb ': {
-      backgroundColor: ' #D9D9D9',
+      backgroundColor: ' #d9d9d90',
       borderRadius: '0.25rem',
    },
 }))
@@ -244,13 +264,12 @@ const InputAddCardStyle = styled('textarea')(() => ({
    minHeight: '3rem',
    width: '16.5rem',
    background: '#ffffff',
+   borderColor: '#989898',
    borderRadius: '0.25rem',
    padding: '8px 8px 4px 12px',
    resize: 'none',
    overflow: 'hidden',
-   '&.css-1v4isp3': {
-      border: 'none',
-   },
+   fontFamily: 'CarePro',
 }))
 
 const InputAddCard = styled('div')(() => ({

@@ -3,20 +3,40 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { createNewColumn, getColumns } from '../../store/column/columnsThunk'
-import { Columns } from './Columns'
+// import { Columns } from './Columns'
+import { Card } from './Card'
+
 import { NewColumn } from './NewColumn'
+import { fetchParticipans } from '../../store/participants/partThunk'
+import { fetchBoards } from '../../store/board/boardThunk'
+import { moveCard } from '../../store/card/cardThunk'
+// import { fetchParticipans } from '../../store/participants/partThunk'
 
 export const Column = () => {
    const [isCreatingColumn, setIsCreatingColumn] = useState(false)
    const [newColumnName, setNewColumnName] = useState('')
    const dispatch = useDispatch()
-   const { boardId } = useParams()
+   const { boardId, id } = useParams()
    const { columnsData } = useSelector((state) => state.columns)
-   console.log('columnsData: ', columnsData)
+
+   const [columns, setColumns] = useState(columnsData)
+
+   const [currentColumn, setCurrentColumn] = useState({})
+   const [currentCard, setCurrentCard] = useState({})
 
    useEffect(() => {
       dispatch(getColumns(boardId))
    }, [dispatch])
+
+   useEffect(() => {
+      dispatch(fetchBoards(id))
+   }, [])
+
+   const role = 'ALL'
+
+   useEffect(() => {
+      dispatch(fetchParticipans({ id, role }))
+   }, [])
 
    const handleAddColumnClick = () => {
       setIsCreatingColumn(!isCreatingColumn)
@@ -35,14 +55,59 @@ export const Column = () => {
       setIsCreatingColumn(false)
       setNewColumnName('')
    }
+   const dragOverHandler = (e) => {
+      e.preventDefault()
+      if (e.target.className === 'item') {
+         e.target.style.boxShadow = '0 2px 3px gray'
+      }
+   }
+   const dropCardHandler = (e, column) => {
+      e.preventDefault()
+
+      // Получаем данные из dataTransfer
+      const cardId = e.dataTransfer.getData('text/plain')
+
+      const data = {
+         cardId,
+         columnId: column?.columnId,
+      }
+
+      dispatch(moveCard({ data, boardId }))
+   }
+
+   const dropHandler = (e, column) => {
+      e.preventDefault()
+
+      // Получаем данные из dataTransfer
+      const cardId = e.dataTransfer.getData('text/plain')
+
+      const data = {
+         cardId,
+         columnId: column?.columnId,
+      }
+
+      dispatch(moveCard({ data, boardId }))
+   }
 
    return (
       <ColumnsStyle>
          <Cont>
             {columnsData.map((column) => {
                return (
-                  <ChildContainer>
-                     <Columns column={column} />
+                  <ChildContainer
+                     onDrop={(e) => dropCardHandler(e, column)}
+                     onDragOver={(e) => dragOverHandler(e)}
+                  >
+                     <Card
+                        column={column}
+                        setCurrentColumn={setCurrentColumn}
+                        setCurrentCard={setCurrentCard}
+                        setColumns={setColumns}
+                        currentCard={currentCard}
+                        currentColumn={currentColumn}
+                        columns={columns}
+                        dropHandler={dropHandler}
+                     />
                   </ChildContainer>
                )
             })}
@@ -92,7 +157,7 @@ const Cont = styled('div')({
    scrollbarWidth: 'thin',
    scrollbarColor: ' #b3b3b3 transparent',
    '&::-webkit-scrollbar ': {
-      width: '0.5rem',
+      width: '0.1rem',
    },
    '&::-webkit-scrollbar-track': {
       backgroundColor: 'transparent',
@@ -100,10 +165,22 @@ const Cont = styled('div')({
    '&::-webkit-scrollbar-thumb ': {
       backgroundColor: ' #D9D9D9',
       borderRadius: '0.25rem',
-      width: '0.5rem',
+      width: '0.1rem',
    },
 })
 
 const ChildContainer = styled('div')({
-   width: '280px',
+   width: '100%',
+   borderRadius: '0.5rem',
+   backgroundColor: 'rgba(145, 145, 145, 0.12)',
+   paddingBottom: '1rem',
+   paddingTop: '0.69rem',
+   paddingRight: '0.5rem',
+   height: 'fit-content',
+   position: 'relative',
+   background: '#E6E6E6',
+   cursor: 'pointer',
+   // '&:active': {
+   //    cursor: 'grabbing',
+   // },
 })

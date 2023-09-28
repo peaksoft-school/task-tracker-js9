@@ -70,7 +70,7 @@ export const routes = createBrowserRouter([
       ),
    },
    {
-      path: 'mainPage/:id/boards/allissues/',
+      path: 'mainPage/:id/allissues/',
       element: (
          <>
             <Headers />

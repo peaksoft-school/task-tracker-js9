@@ -1,14 +1,11 @@
-import { styled, keyframes } from '@mui/material'
+import { styled } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-// import WarningIcon from '@mui/icons-material/Warning'
 import { useNavigate, useParams } from 'react-router-dom'
-// import { keyframes } from '@mui/system'
 import { ModalUi } from '../UI/modal/Modal'
 import { Input } from '../UI/input/Input'
 import { Button } from '../UI/button/Button'
 import { deleteWorkspaceById } from '../../store/workspace/workspaceThunk'
-import { WarningIcon } from '../../assets/icons'
 
 export const ModalSideBar = ({
    showModal,
@@ -56,49 +53,45 @@ export const ModalSideBar = ({
             </StyleModalUi>
          ) : null}
          {showSecondModal ? (
-            <StyleModalUi open={showSecondModal} onClose={openDeleteModal}>
-               <ClarifyStyled>
-                  Are you sure to delete this workspace?
-               </ClarifyStyled>
-               <WrapperWorningIcon>
-                  <WarningIconStyle show={showSecondModal} />
-               </WrapperWorningIcon>
-               <ButtonContainerSecond>
-                  <CanselButton onClick={openDeleteModal}>Cancel</CanselButton>
-                  <DeleteButton onClick={deleteWorkspacesHandler}>
-                     Delete
-                  </DeleteButton>
-               </ButtonContainerSecond>
-            </StyleModalUi>
+            <ModalUi open={showSecondModal} onClose={openDeleteModal}>
+               <Container>
+                  <div>
+                     <h3 style={{ textAlign: 'center', fontSize: '1.2rem' }}>
+                        Delete workspace:
+                     </h3>
+                  </div>
+                  <SecondBlock>
+                     <ClarifyStyled>
+                        Are you sure to delete this workspace ?
+                     </ClarifyStyled>
+                  </SecondBlock>
+                  <ButtonContainerSecond>
+                     <CanselButton onClick={openDeleteModal}>
+                        Cancel
+                     </CanselButton>
+                     <DeleteButton onClick={deleteWorkspacesHandler}>
+                        Delete
+                     </DeleteButton>
+                  </ButtonContainerSecond>
+               </Container>
+            </ModalUi>
          ) : null}
       </div>
    )
 }
-const fadeInOut = keyframes`
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-`
-
-const WarningIconStyle = styled(WarningIcon)(({ show }) => ({
-   width: '4rem',
-   height: '4rem',
-   marginTop: '0.5rem',
-   animation: show ? `${fadeInOut} 2s infinite` : 'none',
+const Container = styled('div')(() => ({
+   width: '22.9375rem',
+   height: '11.125rem',
+   borderRadius: '0.625rem',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'space-between',
 }))
-const WrapperWorningIcon = styled('div')(() => ({
+
+const SecondBlock = styled('div')(() => ({
    display: 'flex',
    justifyContent: 'center',
-   width: '100%',
-   height: '100%',
 }))
-
 const SettingStyle = styled('span')(() => ({
    color: '#000',
    display: 'flex',
@@ -113,9 +106,8 @@ const ButtonContainer = styled('div')(() => ({
 }))
 const ButtonContainerSecond = styled('div')(() => ({
    display: 'flex',
-   justifyContent: 'end',
+   justifyContent: 'flex-end',
    gap: '1rem',
-   marginTop: '1rem',
 }))
 const ClarifyStyle = styled('span')(() => ({
    fontSize: '1rem',
@@ -130,7 +122,6 @@ const ClarifyStyled = styled('span')(() => ({
    color: '#111',
    display: 'flex',
    justifyContent: 'center',
-   marginTop: '1rem',
 }))
 const StyleModalUi = styled(ModalUi)(() => ({
    display: 'flex',

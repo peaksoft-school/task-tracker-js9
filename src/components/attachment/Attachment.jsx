@@ -1,28 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector } from 'react-redux'
-import { DeleteIcon, DownIcon, UpIcon } from '../../assets/icons'
+import { useParams } from 'react-router-dom'
+import { DownIcon, UpIcon } from '../../assets/icons'
 
 import {
    attachmentRemove,
    attachmentGet,
    attachmentPhotoPost,
 } from '../../store/card/cardThunk'
+import ModalPage from './ModalPage'
 
 export const Attachment = () => {
    const dispatch = useDispatch()
+   const { carId } = useParams()
 
    const [downState, setDownSate] = React.useState(false)
-
+   const [openImageModal, setOpenImageModal] = useState(false)
+   const [selectedImage, setSelectedImage] = useState(null)
    const images = useSelector((state) => state.card.images)
 
+   const openImageModalHandler = (image) => {
+      setOpenImageModal(!openImageModal)
+      setSelectedImage(image)
+   }
    const onDrop = React.useCallback(async (acceptedFiles) => {
       const file = acceptedFiles[0]
-
       const formData = new FormData()
       formData.append('file', file)
-      dispatch(attachmentPhotoPost(formData))
+      dispatch(attachmentPhotoPost({ obj: formData, id: carId }))
    }, [])
    const { getRootProps, getInputProps } = useDropzone({ onDrop })
    const deleteImg = (id) => {
@@ -30,7 +37,7 @@ export const Attachment = () => {
    }
 
    React.useEffect(() => {
-      dispatch(attachmentGet())
+      dispatch(attachmentGet(carId))
    }, [onDrop])
 
    const onClickDown = () => {
@@ -48,16 +55,6 @@ export const Attachment = () => {
                )}
                <Title>Attachment</Title>
             </div>
-            <div
-               style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-               }}
-            >
-               <DeleteIcon />
-               <DeleteTitle>Delete</DeleteTitle>
-            </div>
          </ContainerInner>
          {!downState && (
             <Section>
@@ -67,12 +64,14 @@ export const Attachment = () => {
                         <div
                            style={{ display: 'flex', alignItems: 'flex-end' }}
                         >
-                           <Img src={image.documentLink} alt="" />
+                           <Img
+                              onClick={() => openImageModalHandler(image)}
+                              src={image.documentLink}
+                              alt=""
+                           />
+
                            <TextContainer>
                               <PhotoName>
-                                 {/* {image.documentLink.substring(
-                                    image.documentLink.lastIndexOf('/') + 1
-                                 )} */}
                                  {image.documentLink
                                     .split('/')
                                     .pop()
@@ -106,6 +105,13 @@ export const Attachment = () => {
                <AddButton>Add an attachment</AddButton>
             </div>
          </div>
+         {openImageModal && selectedImage && (
+            <ModalPage
+               selectedImage={openImageModalHandler}
+               open={openImageModal}
+               image={selectedImage}
+            />
+         )}
       </Container>
    )
 }
@@ -125,6 +131,7 @@ const Title = styled('h3')(() => ({
    fontWeight: 400,
 }))
 const SectionContainer = styled('div')(() => ({
+   position: 'relative',
    display: 'flex',
    alignItems: 'flex-end',
    justifyContent: 'space-between',
@@ -153,6 +160,8 @@ const Button = styled('div')(() => ({
    color: '#919191',
    fontWeight: 400,
    borderBottom: '1px solid #919191',
+   position: 'absolute',
+   left: '38.9rem',
 }))
 const Img = styled('img')(() => ({
    width: '153px',
@@ -161,11 +170,7 @@ const Img = styled('img')(() => ({
    borderRadius: '8px',
    marginRight: '0.63rem',
 }))
-const DeleteTitle = styled('div')(() => ({
-   marginLeft: '8px',
-   fontWeight: 400,
-   color: '#919191',
-}))
+
 // const AddButton = styled('input')(() => ({
 //    display: 'none',
 // }))

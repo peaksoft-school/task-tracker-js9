@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    Avatar,
@@ -37,8 +36,6 @@ export const SideMain = ({
    }
 
    const { workspaces } = useSelector((state) => state.workspaces)
-   const { id } = useParams()
-   console.log('id: ', id)
 
    useEffect(() => {
       dispatch(fetchAllWorkspaces())
@@ -89,7 +86,12 @@ export const SideMain = ({
                                     sx={{ bgcolor: '#2CB107' }}
                                     alt="photo"
                                  >
-                                    <span style={{ fontSize: '1.3rem' }}>
+                                    <span
+                                       style={{
+                                          fontSize: '1.3rem',
+                                          textTransform: 'capitalize',
+                                       }}
+                                    >
                                        {item.workSpaceName[0]}
                                     </span>
                                  </StyledAvatar>

@@ -7,7 +7,6 @@ import { addFavorite } from '../../../store/board/boardThunk'
 export const StarFilter = () => {
    const { id } = useParams()
    const { boardById } = useSelector((state) => state.board)
-   console.log('boardById: ', boardById)
 
    const dispatch = useDispatch()
    const addBoardFavorite = (boardId) => {

@@ -40,3 +40,40 @@ export const getCardbyId = createAsyncThunk(
       }
    }
 )
+export const cardPut = createAsyncThunk(
+   'card/cardPost',
+   async (objCard, { rejectWithValue, dispatch }) => {
+      try {
+         await axiosInstance.put('/api/cards', objCard)
+         dispatch(getColumns(objCard.boardId))
+      } catch (error) {
+         rejectWithValue(error)
+      }
+   }
+)
+export const deleteCardbyColumnId = createAsyncThunk(
+   'card/deleteCardsByColumnId',
+   async ({ columnId, boardId }, { rejectWithValue, dispatch }) => {
+      try {
+         const { data } = await axiosInstance.delete(
+            `/api/cards/all/${columnId}`
+         )
+         dispatch(getColumns(boardId))
+         return data
+      } catch (error) {
+         return rejectWithValue(error.data.message)
+      }
+   }
+)
+export const deleteCardbyCardId = createAsyncThunk(
+   'card/deleteCardsByCardId',
+   async ({ cardId, boardId }, { rejectWithValue, dispatch }) => {
+      try {
+         const { data } = await axiosInstance.delete(`/api/cards/${cardId}`)
+         dispatch(getColumns(boardId))
+         return data
+      } catch (error) {
+         return rejectWithValue(error.data.message)
+      }
+   }
+)
