@@ -21,6 +21,7 @@ const kindaSelect = [
 ]
 
 export const ParticipantsTable = ({ onDelete, rows }) => {
+   console.log('rows: ', rows)
    const dispatch = useDispatch()
    const { id } = useParams()
 
@@ -32,7 +33,7 @@ export const ParticipantsTable = ({ onDelete, rows }) => {
    }, [])
 
    const initialRoles = {}
-   rows.forEach((row) => {
+   rows?.forEach((row) => {
       initialRoles[row.userId] = defaultRole
    })
 

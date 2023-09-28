@@ -27,7 +27,7 @@ export const Participants = () => {
       setOpenInviteNewModal((prev) => !prev)
    }
 
-   const dataLength = rows.length
+   const dataLength = rows?.length
 
    const selectData = [
       { label: 'All', value: 'ALL' },

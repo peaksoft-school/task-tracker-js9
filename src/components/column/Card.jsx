@@ -12,7 +12,16 @@ import { updateColumnTitle } from '../../store/column/columnsThunk'
 import { createNewCard } from '../../store/cards/cardsThunk'
 import { DetailCard } from './DetailCard'
 
-export const Card = ({ column }) => {
+export const Card = ({
+   column,
+   setColumns,
+   columns,
+   setCurrentCard,
+   currentCard,
+   currentColumn,
+   setCurrentColumn,
+   dropHandler,
+}) => {
    const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
    const [editTitle, setEditTitle] = useState(false)
    const [inputValue, setInputValue] = useState('')
@@ -123,6 +132,14 @@ export const Card = ({ column }) => {
                <DetailCard
                   columnId={column.columnId}
                   cardResponses={column.cardResponses}
+                  column={column}
+                  setColumns={setColumns}
+                  setCurrentCard={setCurrentCard}
+                  setCurrentColumn={setCurrentColumn}
+                  currentCard={currentCard}
+                  columns={columns}
+                  currentColumn={currentColumn}
+                  dropHandler={dropHandler}
                />
             </ScrollableContainer>
 
@@ -222,6 +239,7 @@ const ParentColumnCard = styled('div')(() => ({
    flexDirection: 'column',
    marginLeft: '0.5rem',
    position: 'relative',
+   width: '17.6rem',
 }))
 
 const ScrollableContainer = styled('div')(() => ({
