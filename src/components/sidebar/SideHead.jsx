@@ -90,6 +90,8 @@ export const SideHead = ({
          setEditInput(editInput)
       } else if (text === 'Participants') {
          navigate(`/mainPage/${workspaceId.workSpaceId}/participants`)
+      } else if (text === 'All issues') {
+         navigate(`/mainPage/${workspaceId.workSpaceId}/allissues`)
       }
    }
 

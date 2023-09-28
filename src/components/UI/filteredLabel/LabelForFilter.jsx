@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
+import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { styled } from '@mui/material'
 import { filteredLabels } from '../../../utils/constants/general'
 
@@ -21,9 +23,18 @@ const SelectContainer = styled(Select)(() => ({
    },
 }))
 
-export const LabelForFilter = () => {
+export const LabelForFilter = ({ handleLabelChange }) => {
    const [selectWidth, setSelectWidth] = useState(13)
    const [animating, setAnimating] = useState(false)
+   const { allIssues } = useSelector((state) => state.allIssues)
+   const [state, setState] = useState([])
+
+   useEffect(() => {
+      const test = allIssues.find((el) => setState({ ...el.labelResponses }))
+      console.log(test)
+   }, [allIssues])
+
+   console.log(state)
 
    const handleOptionRemove = () => {
       setAnimating(true)
@@ -31,6 +42,11 @@ export const LabelForFilter = () => {
    }
 
    const handleOptionChange = (selectedOptions) => {
+      console.log('selectedOptions: ', selectedOptions)
+      console.log('click')
+      if (selectedOptions.length > 0) {
+         handleLabelChange(selectedOptions.map((item) => item.labelId))
+      }
       setAnimating(true)
       if (selectedOptions.length === 0) {
          setSelectWidth(13)
@@ -62,7 +78,7 @@ export const LabelForFilter = () => {
       }),
       multiValue: (styles, { data }) => ({
          ...styles,
-         backgroundColor: data.value.toLowerCase(),
+         backgroundColor: data.value?.toLowerCase(),
          borderRadius: '0.3rem',
       }),
       multiValueLabel: (styles) => ({
@@ -72,16 +88,16 @@ export const LabelForFilter = () => {
       option: (styles, { data, isFocused }) => ({
          ...styles,
          backgroundColor: isFocused
-            ? data.value.toLowerCase()
+            ? data.value?.toLowerCase()
             : styles.backgroundColor,
          cursor: 'pointer',
          color: isFocused ? 'white' : styles.color,
       }),
       multiValueRemove: (styles, { data }) => ({
          ...styles,
-         color: data.value.toLowerCase(),
+         color: data.value?.toLowerCase(),
          ':hover': {
-            backgroundColor: data.value.toLowerCase(),
+            backgroundColor: data.value?.toLowerCase(),
             color: 'white',
          },
       }),
@@ -91,9 +107,10 @@ export const LabelForFilter = () => {
 
    return (
       <SelectContainer
+         // key={labels}
          closeMenuOnSelect={false}
          components={animatedComponents}
-         defaultValue={[filteredLabels[4], filteredLabels[5]]}
+         defaultValue={[allIssues[4], allIssues[5]]}
          isMulti
          options={filteredLabels}
          styles={colorStyles}

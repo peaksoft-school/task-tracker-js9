@@ -1,31 +1,70 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Checkbox, FormControl, MenuItem, Select, styled } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
 import { AllIssuesTable } from './AllIssuesTable'
 import { AssigneeSection } from '../UI/assignee/AssigneeSection'
 import { LabelForFilter } from '../UI/filteredLabel/LabelForFilter'
+import { getAllIssues } from '../../store/get-all-issues/get.all.issuesThunk'
 
 export const AllIssues = () => {
    const [startDate, setStartDate] = useState(null)
    const [dueDate, setDueDate] = useState(null)
-   const [assignee, setAssignee] = useState('Assignee')
+   const [assignee, setAssignee] = useState('')
+   const [checked, setChecked] = useState(false)
+   const [labels, setLabels] = useState('')
 
-   const AssigneeHandleChange = (event) => {
-      setAssignee(event.target.value)
-   }
+   const dispatch = useDispatch()
+   // const { allIssues } = useSelector((state) => state.allIssues)
+   // console.log('allIssues ', allIssues)
+   const { id } = useParams()
+   const [selectedUserId, setSelectedUserId] = useState(null)
+
    const dataLength = 24
 
    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
-   const handleStartDateChange = (newValue) => {
-      setStartDate(newValue)
+   const handleStartDateChange = (date) => {
+      setStartDate(date)
    }
 
-   const handleDueDateChange = (newValue) => {
-      setDueDate(newValue)
+   const handleDueDateChange = (date) => {
+      setDueDate(date)
    }
+
+   const AssigneeHandleChange = (userId) => {
+      setAssignee(userId)
+   }
+
+   const handleCheckboxChange = (event) => {
+      setChecked(event.target.checked)
+   }
+
+   const handleLabelChange = (label) => {
+      console.log('label: ', label)
+      setLabels(label)
+   }
+
+   const changeHandler = (userId) => {
+      setSelectedUserId(userId)
+   }
+
+   useEffect(() => {
+      const formatToServerDate = (date) => {
+         return date ? date.format('YYYY-MM-DD') : null
+      }
+
+      const filterParams = {
+         from: formatToServerDate(startDate),
+         to: formatToServerDate(dueDate),
+         id,
+      }
+
+      dispatch(getAllIssues({ filterParams, assignee, id, labels, checked }))
+   }, [startDate, dueDate, labels, assignee, checked, id])
 
    return (
       <BodyContainer>
@@ -39,27 +78,24 @@ export const AllIssues = () => {
                         <DatePickerStyle
                            value={startDate}
                            onChange={handleStartDateChange}
-                           format="DD.MM.YYYY"
-                           disableFuture={Boolean(dueDate)}
+                           maxDate={startDate}
                         />
 
                         <DatePickerStyle
                            value={dueDate}
                            onChange={handleDueDateChange}
-                           format="DD.MM.YYYY"
-                           disablePast={Boolean(startDate)}
+                           minDate={startDate}
                         />
                      </LocalizationProvider>
 
                      <MainFormControlContainer>
                         <FormControl>
-                           <LabelForFilter />
+                           <LabelForFilter
+                              handleLabelChange={handleLabelChange}
+                           />
                         </FormControl>
                         <FormControl>
-                           <AssigneeSelect
-                              value={assignee}
-                              onChange={AssigneeHandleChange}
-                           >
+                           <AssigneeSelect>
                               <MenuItem
                                  style={{ fontFamily: 'CarePro' }}
                                  disabled
@@ -67,12 +103,17 @@ export const AllIssues = () => {
                               >
                                  Assignee
                               </MenuItem>
-                              <AssigneeSection />
+                              <AssigneeSection
+                                 changeHandler={changeHandler}
+                                 AssigneeHandleChange={AssigneeHandleChange}
+                              />
                            </AssigneeSelect>
                         </FormControl>
                      </MainFormControlContainer>
                      <CheckConatainer>
                         <Checkbox
+                           checked={checked}
+                           onChange={handleCheckboxChange}
                            sx={{
                               '& .MuiSvgIcon-root': { fontSize: 25 },
                               '&.Mui-checked': {
@@ -89,14 +130,18 @@ export const AllIssues = () => {
                   Total:<TotalAmount>{dataLength}</TotalAmount>
                </Total>
             </HeaderContainer>
-            <AllIssuesTable />
+            <AllIssuesTable selectedUserId={selectedUserId} checked={checked} />
          </GlobalContainer>
       </BodyContainer>
    )
 }
 
 const BodyContainer = styled('div')(() => ({
-   padding: '0.76rem 1.25rem 0rem 1.25rem',
+   // padding: '0.76rem 1.25rem 0rem 1.25rem',
+   paddingLeft: '2rem',
+
+   marginTop: '5rem',
+   width: '100%',
 }))
 
 const GlobalContainer = styled('div')(() => ({
@@ -154,7 +199,7 @@ const TotalAmount = styled('span')(() => ({
 
 const DatePickerStyle = styled(DatePicker)(() => ({
    input: {
-      width: '5.31rem',
+      width: '6.8rem',
       padding: ' 0.4rem 0.7rem 0.4rem 0.8rem',
       borderRadius: '0.5rem',
       fontFamily: 'CarePro',
