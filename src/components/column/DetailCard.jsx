@@ -12,13 +12,21 @@ import {
    RealWorldIcon,
    TypographyIcon,
 } from '../../assets/icons'
-import { ColumnCard } from './ColumnCard'
+// import { ColumnCard } from './ColumnCard'
 import { Label } from './Label'
 import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
 import { getColumns } from '../../store/column/columnsThunk'
 
-export const DetailCard = ({ cardResponses }) => {
+export const DetailCard = ({
+   cardResponses,
+   setCurrentColumn,
+   setCurrentCard,
+   column,
+
+   // currentCard,
+   dropHandler,
+}) => {
    const [openLabelMap, setOpenLabelMap] = useState({})
    const [showCardById, setShowCardByid] = useState()
    const [openModal, setOpenModal] = useState(false)
@@ -56,11 +64,41 @@ export const DetailCard = ({ cardResponses }) => {
    const deleteLabelText = () => {
       setOpenLabelMap({})
    }
+   const dragOverHandler = (e) => {
+      e.preventDefault()
+      // e.dataTransfer.dropEffect = 'move'
+   }
+   const dragleaveHandler = (e) => {
+      e.target.style.boxShadow = 'none'
+      if (e.target.className === 'live') {
+         e.target.style.backgroundColor = 'red'
+      }
+   }
+   const dragStartHandler = (e, column, card) => {
+      setCurrentColumn(column)
+      setCurrentCard(card?.cardId)
+      setCardId(card.cardId)
+
+      e.dataTransfer.setData('text/plain', card.cardId)
+   }
+   const dragEndHandler = (e) => {
+      e.target.style.boxShadow = 'none'
+   }
 
    return (
       <Cont>
          {cardResponses?.map((card) => (
-            <ColumnCard key={card.cardId}>
+            <ColumnCard
+               className="live"
+               key={card.cardId}
+               onDragOver={(e) => dragOverHandler(e)}
+               onDragLeave={(e) => dragleaveHandler(e)}
+               onDragStart={(e) => dragStartHandler(e, column, card)}
+               onDragEnd={(e) => dragEndHandler(e)}
+               onDrop={(e) => dropHandler(e, column, card)}
+               // eslint-disable-next-line react/jsx-boolean-value
+               draggable={true}
+            >
                {openLabelMap[card.cardId] ? (
                   <ParentColorGroupButton>
                      {card.labelResponses?.map((el) => (
@@ -89,16 +127,14 @@ export const DetailCard = ({ cardResponses }) => {
 
                <ParagraphText>
                   <ColumnCard key={card.cardId}>
-                     <IconText>
+                     <IconText
+                        onClick={() => {
+                           getCardByIdHandler(card)
+                           setShowCardByid(card.cardId)
+                        }}
+                     >
                         <div>
-                           <ParagraphText
-                              onClick={() => {
-                                 getCardByIdHandler(card)
-                                 setShowCardByid(card.cardId)
-                              }}
-                           >
-                              {card.title}
-                           </ParagraphText>
+                           <ParagraphText>{card.title}</ParagraphText>
                            <EditIconStyle fill="gray" />
                         </div>
                      </IconText>
@@ -168,7 +204,14 @@ export const DetailCard = ({ cardResponses }) => {
       </Cont>
    )
 }
-
+const ColumnCard = styled('div')(() => ({
+   width: '16.8rem',
+   background: '#ffffff',
+   marginBottom: '1rem',
+   borderRadius: ' 0.25rem',
+   paddingRight: '0.4rem',
+   paddingTop: '0.5rem',
+}))
 const Cont = styled('div')(() => ({
    position: 'relative',
 }))
