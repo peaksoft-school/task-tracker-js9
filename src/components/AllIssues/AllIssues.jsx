@@ -44,6 +44,7 @@ export const AllIssues = () => {
    }
 
    const handleLabelChange = (label) => {
+      console.log('label: ', label)
       setLabels(label)
    }
 
@@ -59,13 +60,10 @@ export const AllIssues = () => {
       const filterParams = {
          from: formatToServerDate(startDate),
          to: formatToServerDate(dueDate),
-         // assignees: assignee,
-         labels,
-         check: checked,
          id,
       }
 
-      dispatch(getAllIssues({ filterParams, assignee, id }))
+      dispatch(getAllIssues({ filterParams, assignee, id, labels, checked }))
    }, [startDate, dueDate, labels, assignee, checked, id])
 
    return (
@@ -97,10 +95,7 @@ export const AllIssues = () => {
                            />
                         </FormControl>
                         <FormControl>
-                           <AssigneeSelect
-                           // value={assignee}
-                           // onChange={AssigneeHandleChange}
-                           >
+                           <AssigneeSelect>
                               <MenuItem
                                  style={{ fontFamily: 'CarePro' }}
                                  disabled
@@ -135,7 +130,7 @@ export const AllIssues = () => {
                   Total:<TotalAmount>{dataLength}</TotalAmount>
                </Total>
             </HeaderContainer>
-            <AllIssuesTable selectedUserId={selectedUserId} />
+            <AllIssuesTable selectedUserId={selectedUserId} checked={checked} />
          </GlobalContainer>
       </BodyContainer>
    )
@@ -143,6 +138,8 @@ export const AllIssues = () => {
 
 const BodyContainer = styled('div')(() => ({
    // padding: '0.76rem 1.25rem 0rem 1.25rem',
+   paddingLeft: '2rem',
+
    marginTop: '5rem',
    width: '100%',
 }))

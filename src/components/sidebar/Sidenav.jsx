@@ -1,27 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
-import { useNavigate, useParams } from 'react-router'
 import MuiDrawer from '@mui/material/Drawer'
 import Divider from '@mui/material/Divider'
 import { IconButton, ListItemIcon } from '@mui/material'
 import { SideHead } from './SideHead'
 import { SideMain } from './SideMain'
+
 import {
-   FilesAndFoldersIcon,
    PeopleIcon,
    PlusIcon,
    TemplateIcon,
    ToolsIcon,
    SecondMenu,
    FirstMenu,
+   AllIssuesIcon,
 } from '../../assets/icons'
+import { fetchBoards } from '../../store/board/boardThunk'
+import { fetchAllWorkspaces } from '../../store/workspace/workspaceThunk'
 
 export function Sidenav({ data, dataLength, workspacedata }) {
    const [openDrawer, setOpenDrawer] = useState(false)
    const [activeItem, setActiveItem] = useState(null)
    const [toggle, setToggle] = useState(false)
    const navigate = useNavigate()
+   const dispatch = useDispatch()
    const { id } = useParams()
 
    const handleDrawerToggle = () => {
@@ -34,14 +39,25 @@ export function Sidenav({ data, dataLength, workspacedata }) {
       navigate(`/mainPage/${id}/boards/allissues/`)
    }
 
+   console.log('id: ', id)
+
+   useEffect(() => {
+      dispatch(fetchAllWorkspaces())
+   }, [dispatch])
+
+   const navigateHandlerToWorkspace = (workSpaceId) => {
+      navigate(`/mainPage/${workSpaceId}/boards`)
+      dispatch(fetchBoards(workSpaceId))
+   }
+
    const menuItems = [
       {
          text: 'All issues',
          icon:
             activeItem === 'All issues' ? (
-               <FilesAndFoldersIcon fill="#FFFFFF" />
+               <AllIssuesIcon fill="#FFFFFF" />
             ) : (
-               <FilesAndFoldersIcon fill="#919191" />
+               <AllIssuesIcon fill="#919191" />
             ),
          count: dataLength,
       },
@@ -65,10 +81,16 @@ export function Sidenav({ data, dataLength, workspacedata }) {
             ),
       },
    ]
+
    const menuItemsWorspace = [
       {
          text: 'Board',
-         icon: <TemplateIcon fill="#919191" />,
+         icon: (
+            <TemplateIcon
+               fill="#919191"
+               onClick={() => navigateHandlerToWorkspace()}
+            />
+         ),
          id: 1,
       },
       {
@@ -83,6 +105,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
          id: 3,
       },
    ]
+
    return (
       <div style={{ display: 'flex' }}>
          <StyledBox sx={{ zIndex: '0', marginTop: '200px' }}>
@@ -99,13 +122,20 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                <SideMain
                   workspacedata={workspacedata}
                   menuItemsWorspace={menuItemsWorspace}
+                  navigateHandlerToWorkspace={navigateHandlerToWorkspace}
                   open={openDrawer}
                   activeItem={activeItem}
                   handleItemClick={handleItemClick}
                />
             </Drawer>
          </StyledBox>
-         <div style={{ margin: '1rem 0 0 -1.9rem' }}>
+         <div
+            style={{
+               position: 'relative',
+               left: '-2rem',
+               marginRight: '-3.5rem',
+            }}
+         >
             <ListItemIcon
                style={{
                   display: 'flex',
@@ -123,6 +153,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                      borderRadius: '0rem 0.5rem 0.5rem 0rem',
                      position: 'fixed',
                      top: '6rem',
+                     // left: '6rem',
                      zIndex: '10',
                   }}
                >
@@ -173,7 +204,7 @@ const Drawer = styled(MuiDrawer, {
    },
 
    '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
-      marginTop: '80px',
+      marginTop: '75px',
       backgroundColor: '#ffffffb6',
    },
    ...(open && {

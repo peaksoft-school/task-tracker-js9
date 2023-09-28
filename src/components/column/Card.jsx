@@ -4,22 +4,33 @@ import { useParams } from 'react-router-dom'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import { useDispatch } from 'react-redux'
 import { Button } from '../UI/button/Button'
-import { ControlsIcon, EditIcon, ExitIcon } from '../../assets/icons'
-import { ColumnCard } from './ColumnCard'
+import { ControlsIcon, ExitIcon } from '../../assets/icons'
+
 import { MeadTables } from './MeadTables'
 import { MenuItem } from '../UI/menu/MenuItem'
 import { updateColumnTitle } from '../../store/column/columnsThunk'
-// import { Input } from '../UI/input/Input'
+import { createNewCard } from '../../store/cards/cardsThunk'
+import { DetailCard } from './DetailCard'
 
 export const Card = ({ column }) => {
    const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
    const [editTitle, setEditTitle] = useState(false)
    const [inputValue, setInputValue] = useState('')
-   const [card, setCards] = useState([])
    const [openModal, setOpneModal] = useState(false)
    const [editInput, setEditInput] = useState('')
    const dispatch = useDispatch()
    const { boardId } = useParams()
+
+   const handleButtonClickAddCard = (event) => {
+      event.preventDefault()
+      const newCard = {
+         columnId: column.columnId,
+         title: inputValue,
+         boardId,
+      }
+      dispatch(createNewCard(newCard))
+      setInputValue('')
+   }
 
    const handleUpdateColumn = () => {
       setEditTitle(!editTitle)
@@ -47,15 +58,6 @@ export const Card = ({ column }) => {
       setOpneModalInputAddCard(true)
    }
 
-   const handleButtonClickAddCard = (event) => {
-      event.preventDefault()
-      const newCard = {
-         id: Date.now().toString(),
-         text: inputValue,
-      }
-      setCards((prevTasks) => [...prevTasks, newCard])
-      setInputValue('')
-   }
    const handleCloseCard = () => {
       setOpneModalInputAddCard(false)
    }
@@ -72,6 +74,7 @@ export const Card = ({ column }) => {
          changeTitleHandler(column.columnId)
       }
    }
+
    return (
       <div key={column.id}>
          {editTitle ? (
@@ -114,15 +117,14 @@ export const Card = ({ column }) => {
                </MenuItemStyle>
             </>
          )}
+
          <ParentColumnCard>
-            {card.map((el) => (
-               <ColumnCard key={el.id}>
-                  <IconText>
-                     <ParagraphText>{el.text}</ParagraphText>
-                     <EditIconStyle />
-                  </IconText>
-               </ColumnCard>
-            ))}
+            <ScrollableContainer>
+               <DetailCard
+                  columnId={column.columnId}
+                  cardResponses={column.cardResponses}
+               />
+            </ScrollableContainer>
 
             {openModalInputAddCard ? (
                <form onSubmit={handleButtonClickAddCard}>
@@ -153,7 +155,10 @@ export const Card = ({ column }) => {
                         >
                            +Add card
                         </ButtonAddCardStyle>
-                        <ExitIconStyle onClick={handleCloseCard} />
+                        <ExitIconStyle
+                           fill="#111111"
+                           onClick={handleCloseCard}
+                        />
                      </ParentAddbuttonAndExitIcon>
                   </InputAddCard>
                </form>
@@ -164,6 +169,12 @@ export const Card = ({ column }) => {
       </div>
    )
 }
+const AddPlus = styled('p')(() => ({
+   cursor: 'pointer',
+   marginLeft: '0.5rem',
+   fontWeight: '400',
+   marginTop: '0.69rem',
+}))
 
 const ControlsIconStyled = styled(ControlsIcon)(() => ({
    position: 'absolute',
@@ -177,16 +188,16 @@ const ParentTitle = styled('div')(() => ({
    justifyContent: 'space-between',
    padding: '0 0.5rem 0 0.5rem',
    marginBottom: '0.89rem',
+   cursor: 'pointer',
 }))
 
 const Title = styled('p')(() => ({
    color: '#000',
    width: '90%',
-   fontFamily: 'Gilroy',
-   // fontSize: '1rem',
    fontStyle: 'normal',
-   fontWeight: 500,
+   fontWeight: 600,
    lineHeight: 'normal',
+   marginLeft: '0.2rem',
    wordWrap: 'break-word',
 }))
 const StyleMeadIcon = styled('div')(() => ({
@@ -211,36 +222,35 @@ const ParentColumnCard = styled('div')(() => ({
    marginLeft: '0.5rem',
 }))
 
-const ParagraphText = styled('p')(() => ({
+const ScrollableContainer = styled('div')(() => ({
    width: '100%',
-   boxSizing: 'border-box',
-   wordWrap: 'break-word',
-}))
-const IconText = styled('div')(() => ({
-   display: 'flex',
-   position: 'relative',
-}))
-const AddPlus = styled('p')(() => ({
-   cursor: 'pointer',
-   marginLeft: '0.5rem',
-   fontWeight: '400',
-   marginTop: '0.69rem',
+   maxHeight: '22rem',
+   overflowY: 'auto',
+   scrollbarWidth: 'thin',
+   scrollbarColor: ' #b3b3b3 transparent',
+   '&::-webkit-scrollbar ': {
+      width: '0.5rem',
+   },
+   '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+   },
+   '&::-webkit-scrollbar-thumb ': {
+      backgroundColor: ' #D9D9D9',
+      borderRadius: '0.25rem',
+   },
 }))
 
-const EditIconStyle = styled(EditIcon)(() => ({
-   position: 'absolute',
-   marginLeft: '14.31rem',
-   marginBottom: '5.6rem',
-   cursor: 'pointer',
-}))
 const InputAddCardStyle = styled('textarea')(() => ({
-   minHeight: '3.75rem',
+   minHeight: '3rem',
    width: '16.5rem',
-   backgroundColor: '#F4F4F4',
+   background: '#ffffff',
    borderRadius: '0.25rem',
    padding: '8px 8px 4px 12px',
    resize: 'none',
    overflow: 'hidden',
+   '&.css-1v4isp3': {
+      border: 'none',
+   },
 }))
 
 const InputAddCard = styled('div')(() => ({
@@ -252,6 +262,7 @@ const InputAddCard = styled('div')(() => ({
 const ParentAddbuttonAndExitIcon = styled('div')(() => ({
    display: 'flex',
    gap: '0.5rem',
+   padding: '0 0 1rem 0',
 }))
 const ExitIconStyle = styled(ExitIcon)(() => ({
    color: 'gray',
@@ -260,6 +271,7 @@ const ExitIconStyle = styled(ExitIcon)(() => ({
 }))
 
 const ButtonAddCardStyle = styled(Button)(() => ({
+   width: '12rem',
    '&:disabled': {
       backgroundColor: ' #0079BF',
       color: '#FFFFFF',
@@ -281,15 +293,16 @@ const InputColumn = styled(TextareaAutosize)(() => ({
    overflow: 'hidden',
    zIndex: '44',
    height: '10vh',
-   padding: '0.2rem',
-   margin: '0 0 0.4rem 0',
-   // position: 'relative',
+   margin: '0 0 0.4rem 0.2rem',
+   fontFamily: 'CarePro',
+   fontWeight: 600,
+   fontSize: '1rem',
 }))
 
 const BackDrop = styled('div')({
-   position: 'absolute',
+   position: 'fixed',
    width: '100%',
-   height: '50vh',
+   height: '100%',
    top: '0',
    left: '0',
 })

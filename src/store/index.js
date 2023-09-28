@@ -13,6 +13,11 @@ import { labelsSlice } from './getLabels/labelsSlice'
 import { columnsSlice } from './column/columnsSlise'
 import { allIssuesSlice } from './get-all-issues/get.all.issuesSlice'
 import { partSlice } from './participants/partSlice'
+import { archiveSlice } from './getArchive/arichiveSlice'
+import { cardsSlice } from './cards/cardsSlice'
+import { searchSlice } from './globalSearch/searchSlice'
+import { notificationSlice } from './notification/notificationSlice'
+import { estimationSlice } from './dataPicjers/estimationSlice'
 
 export const store = configureStore({
    reducer: {
@@ -29,5 +34,11 @@ export const store = configureStore({
       [columnsSlice.name]: columnsSlice.reducer,
       [allIssuesSlice.name]: allIssuesSlice.reducer,
       [partSlice.name]: partSlice.reducer,
+      [archiveSlice.name]: archiveSlice.reducer,
+      [columnsSlice.name]: columnsSlice.reducer,
+      [cardsSlice.name]: cardsSlice.reducer,
+      [searchSlice.name]: searchSlice.reducer,
+      [notificationSlice.name]: notificationSlice.reducer,
+      [estimationSlice.name]: estimationSlice.reducer,
    },
 })

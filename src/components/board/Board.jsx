@@ -10,6 +10,7 @@ import {
 } from '../../store/board/boardThunk'
 import { BoardModal } from './BoardModal'
 import { boards as BoardColors } from '../../utils/constants/general'
+// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Board = () => {
    const { id } = useParams()
@@ -102,8 +103,9 @@ const BoardWrapper = styled('div')(({ noBoards }) => ({
 const AllBoards = styled('div')(() => ({
    background: '#F0F0F0;',
    width: '100%',
-   height: '89vh',
+   height: '89.6vh',
    padding: '0 1rem',
+   paddingLeft: '2rem',
 }))
 
 const Boards = styled('div')(() => ({

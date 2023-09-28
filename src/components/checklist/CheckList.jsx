@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material'
 import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { checkListGetRequest } from '../../store/checkList/CheckListThunk'
 import { CheckListHeader } from './checkListHeader/CheckListHeader'
 
 export const CheckList = ({ title }) => {
    const [showModal, setShowModal] = useState(false)
+   const { carId } = useParams()
 
    const dispatch = useDispatch()
 
@@ -14,7 +16,7 @@ export const CheckList = ({ title }) => {
    }
 
    useEffect(() => {
-      dispatch(checkListGetRequest(19))
+      dispatch(checkListGetRequest(carId))
    }, [])
 
    return (

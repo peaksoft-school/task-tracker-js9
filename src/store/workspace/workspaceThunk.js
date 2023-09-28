@@ -8,6 +8,7 @@ import {
 } from '../../api/workspaceServise'
 import { showSnackbar } from '../../components/UI/snackbar/Snackbar'
 import { axiosInstance } from '../../config/axiosInstance'
+import { getFavourites } from '../getFavourites/favouritesThunk'
 
 export const fetchAllWorkspaces = createAsyncThunk(
    'workspaces/work_spaces',
@@ -24,7 +25,6 @@ export const getWorkspacebyId = createAsyncThunk(
    'workspaces/getById',
    async (payload, { rejectWithValue }) => {
       const { workspaceData, navigate, path } = payload
-
       try {
          const { data } = await getWorkspacesById(workspaceData.workSpaceId)
          if (navigate) {
@@ -116,10 +116,10 @@ export const updateWorkspace = createAsyncThunk(
 export const addWorkspaceToFavorites = createAsyncThunk(
    'favorite/addFavorite',
    async (workspaceId, { rejectWithValue, dispatch }) => {
-      console.log(workspaceId, 'adding')
       try {
          await axiosInstance.post(`api/favorites/work_space/${workspaceId}`)
          dispatch(fetchAllWorkspaces())
+         dispatch(getFavourites())
       } catch (error) {
          return rejectWithValue(error.data.message)
       }

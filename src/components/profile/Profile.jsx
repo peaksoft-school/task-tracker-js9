@@ -18,9 +18,10 @@ import { ProfileForm } from './ProfileForm'
 export const Profile = () => {
    const [avatarUrl, setAvatarUrl] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
-   const { item, avatarLink } = useSelector((state) => state.profile)
+   const { item, avatarLink, getItemById } = useSelector(
+      (state) => state.profile
+   )
    const { state } = useLocation()
-   console.log('state: ', state)
    const { profileId } = useParams()
 
    const dispatch = useDispatch()
@@ -69,22 +70,23 @@ export const Profile = () => {
    return (
       <div style={{ paddingTop: '6rem' }}>
          <StyledWorkspace>
-            <WorkSpaceSpan to="/mainPage">Workspace</WorkSpaceSpan>
+            <WorkSpaceSpan to="/mainPage">Workspaces</WorkSpaceSpan>
             <WorkSpaceSpanTwo> \ Profile</WorkSpaceSpanTwo>
          </StyledWorkspace>
          <ProfileContainer>
             <div>
                {item.avatar === 'Default image' || item.avatar === null ? (
                   <EmptyAvatarLink>
-                     <StyledAccountCircleIcon />
+                     <StyledAccountCircleIcon fill="red" />
                   </EmptyAvatarLink>
                ) : (
                   <ProfileImageBox src={avatarLink} alt="avatar" />
                )}
 
-               <EditProfileIcon onClick={openEditProfile} />
+               <EditProfileIcon fill="#7d7a7a" onClick={openEditProfile} />
                {openProfile ? (
                   <EditProfileBox>
+                     <Backdrop onClick={openEditProfile} />
                      <EditProfileBoxP {...getRootProps()}>
                         Change profile photo
                      </EditProfileBoxP>
@@ -96,14 +98,10 @@ export const Profile = () => {
 
                <ProfileNames>
                   <ProfileNamesSpan>
-                     {/* {state?.edit === null
-                        ? item?.firstName
-                        : getItemById?.firstName} */}
+                     {state === null ? item?.firstName : getItemById?.firstName}
                   </ProfileNamesSpan>
                   <ProfileNamesSpan>
-                     {/* {state.edit === null
-                        ? item?.lastName
-                        : getItemById?.lastName} */}
+                     {state === null ? item?.lastName : getItemById?.lastName}
                   </ProfileNamesSpan>
                </ProfileNames>
             </div>
@@ -113,6 +111,14 @@ export const Profile = () => {
       </div>
    )
 }
+const Backdrop = styled('div')(() => ({
+   width: '100%',
+   height: '100%',
+   position: 'fixed',
+   top: '0',
+   left: '0',
+   zIndex: -1,
+}))
 const WorkSpaceSpan = styled(NavLink)({
    color: 'white',
    cursor: 'pointer',
@@ -148,7 +154,7 @@ const EditProfileIcon = styled(EditIcon)({
    position: 'absolute',
    top: '5.5rem',
    left: '6.5rem',
-   backgroundColor: '#d1c9c9',
+   backgroundColor: '#dfdddd',
    zIndex: 1000,
    cursor: 'pointer',
 })

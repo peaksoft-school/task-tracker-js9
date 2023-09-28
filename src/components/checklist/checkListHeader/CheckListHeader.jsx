@@ -13,20 +13,22 @@ export const CheckListHeader = ({
 
    return (
       <CheckListHeaderContainer>
-         {checkListData?.map((item) => {
-            return (
-               <CheckListState
-                  itemResponseList={item.itemResponseList}
-                  id={item?.checkListId}
-                  key={item?.checkListId}
-                  cancelAddItem={cancelAddItem}
-                  setShowModal={setShowModal}
-                  openModal={openModal}
-                  showModal={showModal}
-                  {...item}
-               />
-            )
-         })}
+         {checkListData !== undefined && checkListData.length > 0
+            ? checkListData?.map((item) => {
+                 return (
+                    <CheckListState
+                       itemResponseList={item.itemResponseList}
+                       id={item?.checkListId}
+                       key={item?.checkListId}
+                       cancelAddItem={cancelAddItem}
+                       setShowModal={setShowModal}
+                       openModal={openModal}
+                       showModal={showModal}
+                       {...item}
+                    />
+                 )
+              })
+            : null}
       </CheckListHeaderContainer>
    )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 import { useSelector } from 'react-redux'
@@ -27,14 +27,14 @@ export const LabelForFilter = ({ handleLabelChange }) => {
    const [selectWidth, setSelectWidth] = useState(13)
    const [animating, setAnimating] = useState(false)
    const { allIssues } = useSelector((state) => state.allIssues)
-   // const [state, setState] = useState([])
+   const [state, setState] = useState([])
 
-   // useEffect(() => {
-   //    const test = allIssues.find((el) => setState({ ...el.labelResponses }))
-   //    console.log(test)
-   // }, [allIssues])
+   useEffect(() => {
+      const test = allIssues.find((el) => setState({ ...el.labelResponses }))
+      console.log(test)
+   }, [allIssues])
 
-   // console.log(state)
+   console.log(state)
 
    const handleOptionRemove = () => {
       setAnimating(true)
@@ -42,10 +42,10 @@ export const LabelForFilter = ({ handleLabelChange }) => {
    }
 
    const handleOptionChange = (selectedOptions) => {
+      console.log('selectedOptions: ', selectedOptions)
+      console.log('click')
       if (selectedOptions.length > 0) {
-         handleLabelChange(selectedOptions[0].labelId)
-      } else {
-         handleLabelChange(null)
+         handleLabelChange(selectedOptions.map((item) => item.labelId))
       }
       setAnimating(true)
       if (selectedOptions.length === 0) {

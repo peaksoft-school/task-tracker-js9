@@ -3,6 +3,8 @@ import { getAllIssues } from './get.all.issuesThunk'
 
 const initialState = {
    isLoading: false,
+   isChecked: false,
+   // memberSearch: [],
    allIssues: [],
    isError: '',
 }
@@ -16,7 +18,7 @@ export const allIssuesSlice = createSlice({
          .addCase(getAllIssues.fulfilled, (state, action) => {
             state.isLoading = false
             state.allIssues = action.payload
-
+            state.isChecked = action.isChecked
             state.isError = ''
          })
 
@@ -28,5 +30,16 @@ export const allIssuesSlice = createSlice({
             state.isLoading = false
             state.isError = action.payload
          })
+      // search
+      // .addCase(getSearchMembers.fulfilled, (state, actions) => {
+      //    state.memberSearch = actions.payload
+      //    state.isLoading = false
+      // })
+      // .addCase(getSearchMembers.pending, (state) => {
+      //    state.isLoading = true
+      // })
+      // .addCase(getSearchMembers.rejected, (state) => {
+      //    state.isLoading = false
+      // })
    },
 })

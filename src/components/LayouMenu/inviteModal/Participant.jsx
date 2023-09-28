@@ -53,15 +53,18 @@ export const Participant = ({
    }, [dispatch])
 
    return openNewInvite ? (
-      <InviteNewParticipant openInviteNewModal={openInviteNewModal} />
+      <InviteNewParticipant
+         openInviteNewModal={openInviteNewModal}
+         openModalHandler={openModalHandler}
+      />
    ) : (
       <Container>
          <ParticipantContainer>
             <ParticipantHeader>
                <p>{}</p>
                <p>Participant</p>
-               <IconButton>
-                  <ExitIcon fill="gray" onClick={openModalHandler} />
+               <IconButton onClick={openModalHandler}>
+                  <ExitIcon fill="gray" />
                </IconButton>
             </ParticipantHeader>
             <InputBox>
@@ -147,6 +150,7 @@ const UsersBox = styled('div')(() => ({
    maxHeight: '7.8rem',
    padding: '0.7rem ',
    overflowY: 'auto ',
+
    scrollbarWidth: 'thin',
    scrollbarColor: ' #D9D9D9 transparent',
    cursor: 'pointer',

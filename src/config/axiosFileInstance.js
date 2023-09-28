@@ -1,27 +1,22 @@
 import axios from 'axios'
-import { BASE_URL } from '../utils/constants/baseURL'
+import { BASE_URL } from '../utils/constants/authorization'
 
 const logoutAction = () => {}
-
 const headers = {
-   'Content-Type': 'multipart/from-data',
+   'Content-Type': 'multipart/form-data',
 }
-
 const axiosFileInstance = axios.create({
    baseURL: BASE_URL,
    headers,
 })
-
 let store
-
-export const injectStore = (_store) => {
+export const injectFileStore = (_store) => {
    store = _store
 }
-
 axiosFileInstance.interceptors.request.use((config) => {
    const updatedConfig = { ...config }
+   const { token } = store.getState().auth
 
-   const { token } = store.getState().login.accessToken
    if (token) {
       updatedConfig.headers.Authorization = `Bearer ${token}`
    }

@@ -34,9 +34,6 @@ export const profilePutRequest = createAsyncThunk(
 
          dispatch(profileGetRequest())
 
-         // eslint-disable-next-line no-restricted-globals
-         location.reload()
-
          return response.data
       } catch (error) {
          return rejectWithValue(error.message)
@@ -64,6 +61,7 @@ export const profileAvatarSThreePost = createAsyncThunk(
    async (avatar, { rejectWithValue, dispatch }) => {
       try {
          const { data } = await axiosFileInstance.post('/api/file', avatar)
+
          dispatch(profileAvatarPutRequest(data.Link))
          return data.Link
       } catch (error) {

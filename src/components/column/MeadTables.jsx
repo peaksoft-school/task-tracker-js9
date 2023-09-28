@@ -1,7 +1,6 @@
 import { styled } from '@mui/system'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-// import { Backdrop } from '@mui/material'
 import React from 'react'
 import {
    addColumnsToArchive,
@@ -9,6 +8,7 @@ import {
 } from '../../store/column/columnsThunk'
 
 export const MeadTables = ({ columnId, setOpneModal }) => {
+   console.log('columnId: ', columnId)
    const dispatch = useDispatch()
    const { boardId } = useParams()
 
@@ -25,8 +25,13 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
       setOpneModal(false)
    }
 
+   // const archiveAllCard = () => {
+   //    navigate("")
+   // }
+
    return (
       <Container>
+         <Backdrop onClick={() => setOpneModal(false)} />
          <TextActions>Actions</TextActions>
          <CardText>
             <TextAddCard>Add Card</TextAddCard>
@@ -40,7 +45,9 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
             <p>Delete all cards in this list</p>
          </CardText>
          <CardText>
-            <p>Archive all cards in this list</p>
+            <p onClick={addtoArchiveteHandler}>
+               Archive all cards in this list
+            </p>
          </CardText>
          <Line />
          <CardText>
@@ -49,7 +56,14 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
       </Container>
    )
 }
-
+const Backdrop = styled('div')(() => ({
+   position: 'fixed',
+   width: '100%',
+   height: '100%',
+   left: '0',
+   top: '0',
+   zIndex: -2,
+}))
 const Container = styled('div')(() => ({
    padding: '1rem 0rem 0.25rem',
    borderRadius: ' 0.625rem',

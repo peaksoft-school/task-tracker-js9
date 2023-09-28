@@ -5,46 +5,66 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { SearchIcon } from '../../../assets/icons'
 import { fetchParticipans } from '../../../store/participants/partThunk'
+// import { getSearchMembers } from '../../../store/get-all-issues/get.all.issuesThunk'
 
 export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
    const dispatch = useDispatch()
    const [, setAnchorEl] = useState(null)
    const [, setToogle] = useState(false)
+   const [search, setSearch] = useState('')
    const { id } = useParams()
    const { participants } = useSelector((state) => state.participant)
+   // const { memberSearch } = useSelector((state) => state.allIssues)
 
    const handleCheckboxClick = (userId) => {
       changeHandler(userId)
       AssigneeHandleChange(userId)
    }
-
+   const handleUnassignedClick = () => {
+      AssigneeHandleChange('')
+   }
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget)
       setToogle(true)
    }
 
    useEffect(() => {
-      dispatch(fetchParticipans({ partId: id, role: 'ALL' }))
-   }, [])
+      dispatch(fetchParticipans({ id, role: 'ALL' }))
+   }, [id, dispatch])
 
-   // const open = Boolean(anchorEl)
-   // const id = open ? 'simple-popover' : undefined
+   const filteredParticipants = participants.filter((item) => {
+      const fullName = item.fullName.toLowerCase()
+      const email = item.email.toLowerCase()
+      const searchTerm = search.toLowerCase()
+
+      const fullNameMatch = fullName.match(new RegExp(searchTerm, ''))
+      const emailMatch = email.match(new RegExp(searchTerm, ''))
+
+      return fullNameMatch !== null || emailMatch !== null
+   })
 
    return (
       <MainContainerOfAssignee>
          <Search>
             <SearchIconWrapper>
                <SearchIcon
-                  style={{ position: 'relative', left: '10rem' }}
+                  style={{ position: 'relative', left: '11.5rem' }}
                   src={SearchIcon}
                   alt="Search_Icon"
                />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search" />
+            <StyledInputBase
+               placeholder="Search"
+               value={search}
+               onChange={(e) => setSearch(e.target.value)}
+            />
          </Search>
          <div style={{ marginTop: '1rem' }}>
             <ScrollableContainer>
-               <UnassignedContainer aria-describedby={id}>
+               <UnassignedContainer
+                  onClick={handleUnassignedClick}
+                  aria-describedby={id}
+               >
                   <Checkbox
                      sx={{
                         '&.Mui-checked': {
@@ -59,8 +79,8 @@ export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
                      <p>Unassigned</p>
                   </UnassignedChildContainer>
                </UnassignedContainer>
-               {participants?.map((item) => {
-                  // return el.assignee?.map((item) => {
+               {filteredParticipants?.map((item) => {
+                  // return el.participantsResponseList?.map((item) => {
                   return (
                      <AssigneeMapContainer key={item.userId}>
                         <Checkbox
@@ -85,6 +105,8 @@ export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
                      </AssigneeMapContainer>
                   )
                })}
+               {/* )} */}
+               {/* )} */}
             </ScrollableContainer>
          </div>
       </MainContainerOfAssignee>
@@ -92,13 +114,13 @@ export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
 }
 
 const MainContainerOfAssignee = styled('div')(() => ({
-   width: ' 21.6rem',
+   width: ' 22.6rem',
    height: '32rem',
    padding: '1rem',
    borderRadius: '0.625rem',
 }))
 
-const Search = styled('div')(({ theme }) => ({
+const Search = styled('form')(({ theme }) => ({
    position: 'relative',
    display: 'flex',
    alignItems: 'center',
@@ -163,7 +185,7 @@ const ScrollableContainer = styled('div')(() => ({
 const AssigneeMapContainer = styled('div')(() => ({
    display: 'flex',
    height: '3.5rem',
-   width: '18.75rem',
+   width: '19.75rem',
    gap: '0.3rem',
    padding: '0.5rem 2rem 0 0 ',
    cursor: 'pointer',
@@ -178,7 +200,7 @@ const PeoplesEmail = styled('p')(() => ({
 const UnassignedContainer = styled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
-   width: '18.75rem',
+   width: '19.75rem',
    height: '3.5rem',
    background: ' #F2F2F2',
    cursor: 'pointer',

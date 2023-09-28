@@ -3,10 +3,14 @@ import { Avatar, styled } from '@mui/material'
 import { useSelector } from 'react-redux'
 import TableMui from '../UI/table/TableMui'
 
-export const AllIssuesTable = ({ selectedUserId }) => {
+export const AllIssuesTable = ({ selectedUserId, checked }) => {
    console.log('selectedUserId: ', selectedUserId)
    const { allIssues } = useSelector((state) => state.allIssues)
    console.log('allIssues: ', allIssues)
+
+   const filteredIssues = checked
+      ? allIssues.filter((issue) => issue.isChecked === checked)
+      : allIssues
 
    const column = [
       {
@@ -87,7 +91,7 @@ export const AllIssuesTable = ({ selectedUserId }) => {
    ]
    return (
       <div>
-         <StyledTable column={column} rows={allIssues} />
+         <StyledTable column={column} rows={filteredIssues} />
       </div>
    )
 }
@@ -121,10 +125,12 @@ const Labels = styled('div')(() => ({
 const Description = styled('p')(() => ({
    padding: '0 0 0 2.4rem',
    textAlign: 'left',
-   width: ' 22rem',
+   width: '100%',
+   maxWidth: '22rem',
 }))
 
 const StyledTable = styled(TableMui)(() => ({
+   width: '100%',
    '& .css-1q1u3t4-MuiTableRow-root': {
       backgroundColor: 'red',
    },

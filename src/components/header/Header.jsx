@@ -7,8 +7,9 @@ import {
    useNavigate,
    NavLink,
    useLocation,
-   useParams,
+   // useParams,
 } from 'react-router-dom'
+import { useDebounce } from 'use-debounce'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    DownIcon,
@@ -21,13 +22,25 @@ import { logOut } from '../../store/auth/authThunk'
 import { showSnackbar } from '../UI/snackbar/Snackbar'
 import { Favourite } from '../favourite/Favourite'
 import { ModalUi } from '../UI/modal/Modal'
+import { searchRequest } from '../../store/globalSearch/searchThunk'
+import { GlobalSearch } from './GlobalSearch'
+import { SearchHistory } from './SearchHistory'
+import { Notification } from './Notification'
+import { profileGetRequest } from '../../store/profile/ProfileThunk'
+import { getFavourites } from '../../store/getFavourites/favouritesThunk'
+// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
-export const Headers = ({ data }) => {
+export const Headers = () => {
    const [showModal, setShowModal] = useState(false)
+   const [search, setSearch] = useState('')
    const [openProfile, setOpenProfile] = useState(false)
-   const { profileId } = useParams()
-   console.log('profileId: ', profileId)
+   const [searchValue] = useDebounce(search, 100)
+   const [showAdditionalComponent, setShowAdditionalComponent] = useState(false)
+   const [showNotifications, setShowNotifications] = useState(false)
+
    const { favoriteData } = useSelector((state) => state.favorite)
+   const { globalSearch } = useSelector((state) => state.search)
+   const { item } = useSelector((state) => state.profile)
 
    const boardLength = favoriteData.data?.boardResponses?.length || 0
    const workSpaceLength = favoriteData.data?.workSpaceResponses?.length || 0
@@ -39,14 +52,28 @@ export const Headers = ({ data }) => {
    const location = useLocation()
 
    useEffect(() => {
+      dispatch(profileGetRequest())
+   }, [])
+
+   useEffect(() => {
       if (sumLength > 0) {
          setFavoriteSum(sumLength)
       }
    }, [sumLength])
 
+   useEffect(() => {
+      if (searchValue.trim().length > 0) {
+         dispatch(searchRequest(search))
+         setShowAdditionalComponent(false)
+      }
+   }, [searchValue])
    const openFavoriteModalHandler = () => {
       setShowModal(!showModal)
    }
+
+   useEffect(() => {
+      dispatch(getFavourites())
+   }, [])
 
    const openProfileHandler = () => {
       setOpenProfile((prev) => !prev)
@@ -56,7 +83,7 @@ export const Headers = ({ data }) => {
       event.stopPropagation()
    }
    const logOutHandler = () => {
-      dispatch(logOut(), navigate)
+      dispatch(logOut())
          .unwrap()
          .then(() => {
             showSnackbar({
@@ -67,9 +94,26 @@ export const Headers = ({ data }) => {
             location.reload()
          })
          .catch((error) => {
-            console.log(error)
+            return error.message
          })
    }
+
+   const searchHandler = (e) => {
+      setSearch(e.target.value)
+   }
+   const handleSubmit = (e) => {
+      e.preventDefault()
+      dispatch(searchRequest(search))
+   }
+
+   const notificationHandler = () => {
+      setShowNotifications((prev) => !prev)
+   }
+   const boardResponse = favoriteData?.data?.boardResponses?.length
+
+   const favoriteResponse = favoriteData?.data?.workSpaceResponses?.length
+
+   const favoriteAndBoardResponse = boardResponse || favoriteResponse
 
    return (
       <div>
@@ -85,7 +129,8 @@ export const Headers = ({ data }) => {
                </LogoWords>
                <Favorite>
                   <ParagraphFavorite>
-                     Favourites ({favoriteSum})
+                     Favourites (
+                     {favoriteAndBoardResponse !== 0 ? favoriteSum : 0})
                   </ParagraphFavorite>
                   <IconButton onClick={openFavoriteModalHandler}>
                      {showModal ? (
@@ -106,19 +151,54 @@ export const Headers = ({ data }) => {
                </Favorite>
             </LogoContainer>
             <AboutPanel>
-               <Search>
-                  <SearchIconWrapper>
-                     <SearchIcon src={SearchIcon} alt="Search_Icon" />
-                  </SearchIconWrapper>
-                  <StyledInputBase placeholder="Search" type="search" />
-               </Search>
-               <IconButton>
+               <div style={{ positon: 'relative' }}>
+                  <Search onSubmit={handleSubmit}>
+                     <SearchIconWrapper>
+                        <SearchIcon src={SearchIcon} alt="Search_Icon" />
+                     </SearchIconWrapper>
+
+                     <StyledInputBase
+                        placeholder="Search"
+                        type="text"
+                        value={search}
+                        onChange={searchHandler}
+                        onFocus={() => setShowAdditionalComponent(true)}
+                     />
+                  </Search>
+                  {showAdditionalComponent ? (
+                     <>
+                        <BackDrop
+                           onClick={() => setShowAdditionalComponent(false)}
+                        />
+                        <SearchHistory />
+                     </>
+                  ) : null}
+                  {search.length > 0 && (
+                     <GlobalSearch globalSearch={globalSearch} />
+                  )}
+               </div>
+               <IconButton onClick={notificationHandler}>
                   <NotificationIcon src={NotificationIcon} alt="notification" />
                </IconButton>
-               <WrapperTexts>
-                  <StyledAvatar onClick={openProfileHandler}>
-                     {data}
-                  </StyledAvatar>
+               {showNotifications && (
+                  <Notification notificationHandler={notificationHandler} />
+               )}
+               <WrapperTexts onClick={openProfileHandler}>
+                  {item?.avatar === 'Default image' ? (
+                     <Avatar />
+                  ) : (
+                     <StyledAvatar>
+                        <img
+                           style={{
+                              width: '100%',
+                              height: '100%',
+                              borderRadius: '50%',
+                           }}
+                           src={item?.avatar}
+                           alt=""
+                        />
+                     </StyledAvatar>
+                  )}
                   {openProfile ? (
                      <ProfileTexts>
                         {location.pathname !== '/profile' && (
@@ -185,7 +265,7 @@ const AboutPanel = muiStyled('div')(() => ({
    gap: '1.8rem',
 }))
 
-const Search = muiStyled('div')(({ theme }) => ({
+const Search = muiStyled('form')(({ theme }) => ({
    position: 'relative',
    display: 'flex',
    alignItems: 'center',
@@ -228,8 +308,11 @@ const StyledInputBase = muiStyled(InputBase)(({ theme }) => ({
    },
 }))
 
-const StyledAvatar = muiStyled(Avatar)(() => ({
+const StyledAvatar = muiStyled('div')(() => ({
    cursor: 'pointer',
+   width: '3rem',
+   height: '3rem',
+   borderRadius: '50%',
 }))
 
 const ProfileTexts = muiStyled('div')(() => ({
@@ -269,4 +352,12 @@ const WrapperTexts = muiStyled('div')(() => ({
    position: 'relative',
    zIndex: '100',
    borderRadius: '0.625rem',
+}))
+
+const BackDrop = muiStyled('div')(() => ({
+   width: '100%',
+   height: '98vh',
+   position: 'absolute',
+   top: '0',
+   left: '0',
 }))

@@ -9,9 +9,10 @@ import { NewColumn } from './NewColumn'
 export const Column = () => {
    const [isCreatingColumn, setIsCreatingColumn] = useState(false)
    const [newColumnName, setNewColumnName] = useState('')
-   const { boardId } = useParams()
    const dispatch = useDispatch()
+   const { boardId } = useParams()
    const { columnsData } = useSelector((state) => state.columns)
+   console.log('columnsData: ', columnsData)
 
    useEffect(() => {
       dispatch(getColumns(boardId))
@@ -69,13 +70,13 @@ const CreteColumn = styled('div')(() => ({
    alignItems: 'center',
    justifyContent: 'center',
    borderRadius: '0.5rem',
-   background: '#FFF',
-   // background: 'rgba(145, 145, 145, 0.11)',
+   background: '#E6E6E6',
+   cursor: 'pointer',
 }))
 
 const ColumnsStyle = styled('div')(() => ({
    display: 'flex',
-   marginTop: '50px',
+   marginTop: '10px',
    maxWidth: '100%',
    flexDirection: 'reverse',
 }))
@@ -84,11 +85,23 @@ const Cont = styled('div')({
    overflowX: 'auto',
    maxWidth: '100%',
    display: 'flex',
-   gap: '1.5rem',
-   height: '75vh',
-   margin: '0 20px', // Установка отступа
+   gap: '3rem',
+   height: '78vh',
+   margin: '0 20px 50px 0 ',
    padding: '0.7rem ',
    scrollbarWidth: 'thin',
+   scrollbarColor: ' #b3b3b3 transparent',
+   '&::-webkit-scrollbar ': {
+      width: '0.5rem',
+   },
+   '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+   },
+   '&::-webkit-scrollbar-thumb ': {
+      backgroundColor: ' #D9D9D9',
+      borderRadius: '0.25rem',
+      width: '0.5rem',
+   },
 })
 
 const ChildContainer = styled('div')({

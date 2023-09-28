@@ -1,25 +1,40 @@
-import React from 'react'
 import { styled, IconButton, keyframes } from '@mui/material'
 import { useNavigate, useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 import { ExitIcon, LeftIcon, MenuIcon } from '../../../assets/icons'
-import { MenuItem } from '../../UI/menu/MenuItem'
+// import { MenuItem } from '../../UI/menu/MenuItem'
 import { boards } from '../../../utils/constants/general'
 import { backgroundImage, backgroundPhoto } from '../../../assets/images'
 import { Button } from '../../UI/button/Button'
 import { boardRemove, getBoardById } from '../../../store/board/boardThunk'
 import { showSnackbar } from '../../UI/snackbar/Snackbar'
 import { axiosInstance } from '../../../config/axiosInstance'
+import { Archive } from '../../archive/Archive'
+import { ModalUi } from '../../UI/modal/Modal'
+import { getArchive } from '../../../store/getArchive/archiveThunk'
 
 export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { boardId, id } = useParams()
    const { boardById } = useSelector((state) => state.board)
+   const [archive, setArchive] = useState(false)
 
-   React.useEffect(() => {
+   useEffect(() => {
       dispatch(getBoardById(boardId))
    }, [])
+
+   const handleModalContentClick = (event) => {
+      event.stopPropagation()
+   }
+
+   const openArchiveModal = () => {
+      setArchive(true)
+      setOpen(false)
+      dispatch(getArchive(boardId))
+      console.log('boardId: ', boardId)
+   }
 
    const openMenuHandler = () => {
       setOpen('menu')
@@ -44,8 +59,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
 
    const photoBoards = boards.filter(
       (board) =>
-         board.background.startsWith('http') ||
-         board.background.startsWith('https')
+         board.background.startsWith('https') ||
+         board.background.startsWith('http')
    )
 
    const colorBoards = boards.filter((board) =>
@@ -56,7 +71,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
    }
 
    const handleclick = async (item, board) => {
-      console.log('item: ', item)
       try {
          const data = {
             boardI: boardId,
@@ -86,6 +100,15 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             <MenuIcon />
             <MenuPargraph>Menu</MenuPargraph>
          </StlyedContainerMenu>
+         {archive && (
+            <ModalUi
+               open={archive}
+               onClose={() => setArchive(false)}
+               handleModalContentClick={handleModalContentClick}
+            >
+               <Archive />
+            </ModalUi>
+         )}
 
          {open === 'menu' && (
             <MenuItemContainer
@@ -96,8 +119,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                <MenuHeader>
                   <p>{}</p>
                   <p>Menu</p>
-                  <IconButton>
-                     <ExitIcon fill="gray" onClick={closeHandler} />
+                  <IconButton onClick={closeHandler}>
+                     <ExitIcon fill="gray" />
                   </IconButton>
                </MenuHeader>
                <ChangeDivContainer>
@@ -111,9 +134,11 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                      />
                   </ChangeDiv>
 
-                  <Archive>
-                     <ArchiveButton>In archive</ArchiveButton>
-                  </Archive>
+                  <ArchiveCard>
+                     <ArchiveButton onClick={openArchiveModal}>
+                        In archive
+                     </ArchiveButton>
+                  </ArchiveCard>
 
                   <DeleteBox>
                      <DeleteButton onClick={deleteBoardHandler}>
@@ -123,7 +148,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                </ChangeDivContainer>
             </MenuItemContainer>
          )}
-
          {open === 'background' && (
             <ChangeBackgroundContainer animation="slideIn">
                <ChangeBackgroundHeader>
@@ -158,8 +182,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
                         <StyledLeftIcon onClick={openBackgroundHandler} />
                      </StyledIconButton>
                      <p>Photos</p>
-                     <StyledIconButton>
-                        <ExitIcon fill="gray" onClick={closeHandler} />
+                     <StyledIconButton onClick={closeHandler}>
+                        <ExitIcon fill="gray" />
                      </StyledIconButton>
                   </StyledHeader>
                   <PhotoBlocks>
@@ -180,8 +204,8 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
             <PopoverContColor open={openColorsHandler}>
                <AllBoardColor>
                   <StyledHeaderColor>
-                     <StyledIconButtonColor>
-                        <StyledLeftIconColor onClick={openBackgroundHandler} />
+                     <StyledIconButtonColor onClick={openBackgroundHandler}>
+                        <StyledLeftIconColor />
                      </StyledIconButtonColor>
                      <p>Colors</p>
                      <StyledIconButtonColor>
@@ -207,7 +231,6 @@ export const Menu = ({ open, setOpen, setOpenFilterModal }) => {
       </div>
    )
 }
-
 const StlyedContainerMenu = styled('div')({
    width: '6rem',
    height: '2.125rem',
@@ -233,7 +256,7 @@ const MenuHeader = styled('div')({
    justifyContent: 'space-between',
    marginRight: '0.5rem',
 })
-const Archive = styled('div')({
+const ArchiveCard = styled('div')({
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'space-between',
@@ -282,18 +305,48 @@ const ChangeDiv = styled('div')({
    },
 })
 
-const MenuItemContainer = styled(MenuItem)({
-   width: '22.9375rem',
-   height: '11.6rem',
-   borderRadius: '0.625rem',
-   position: 'absolute',
-   right: '2rem',
-   padding: '0.5rem 0',
-   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-   transition: 'height 0.3s',
-   overflow: 'hidden',
-   backgroundColor: 'white',
+//------
+const MenuItemContainer = styled('div')(({ animation }) => {
+   let animationStyles = {}
+   switch (animation) {
+      case 'slideIn':
+         animationStyles = {
+            animation: 'slideInAnimation 0.3s ease-in-out',
+         }
+
+         break
+      default:
+         break
+   }
+   return {
+      width: '22.9375rem',
+      height: '11.6rem',
+      borderRadius: '0.625rem',
+      position: 'absolute',
+      zIndex: '222',
+      right: '2rem',
+      padding: '0.5rem 0',
+      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+      transition: 'height 0.3s',
+      overflow: 'hidden',
+      backgroundColor: 'white',
+
+      ...animationStyles,
+
+      '@keyframes slideInAnimation': {
+         '0%': {
+            transform: 'translateX(100%)',
+            opacity: 0,
+         },
+         '100%': {
+            transform: 'translateX(0)',
+            opacity: 1,
+         },
+      },
+   }
 })
+
+//-------
 const ImageStyled = styled('img')({
    width: '3.6875rem',
    height: '1.625rem',
@@ -316,25 +369,21 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
          }
 
          break
-      case 'fadeIn':
-         animationStyles = {
-            animation: 'fadeInAnimation 0.3s ease-in-out',
-         }
-         break
       default:
          break
    }
    return {
       width: '22.9375rem',
-      height: '33vh',
+      height: '24vh',
       position: 'absolute',
       right: '2rem',
       // top: '0',
-      backgroundColor: '#ffff',
+      backgroundColor: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
       padding: '1rem',
       zIndex: '999',
+      borderRadius: '1rem',
       ...animationStyles,
 
       '@keyframes slideInAnimation': {
@@ -344,15 +393,6 @@ const ChangeBackgroundContainer = styled('div')(({ animation }) => {
          },
          '100%': {
             transform: 'translateX(0)',
-            opacity: 1,
-         },
-      },
-
-      '@keyframes fadeInAnimation': {
-         '0%': {
-            opacity: 0,
-         },
-         '100%': {
             opacity: 1,
          },
       },
@@ -382,17 +422,17 @@ const slideInAnimation = keyframes`
 `
 
 const PopoverCont = styled('div')(() => ({
-   position: 'absolute',
+   position: 'fixed',
    right: '0',
-   // top: '0',
+   top: '0',
    minWidth: '23.8rem',
    minHeight: '37rem',
+   marginTop: '6rem',
    backgroundColor: '#FFFFFF',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
    borderRadius: '0.7rem',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
 }))
-
 const rotateIcon = keyframes` 
       from { 
       transform: rotate(0); 
@@ -454,7 +494,7 @@ const PopoverContColor = styled('div')(() => ({
    minHeight: '30rem',
    backgroundColor: '#FFFFFF',
    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-   borderRadius: '0.7rem',
+   borderRadius: '0.7rem   ',
    animation: `${slideInAnimation} 0.3s ease-in-out`,
    zIndex: 2,
 }))

@@ -29,11 +29,13 @@ export const ProfileForm = () => {
       handleSubmit,
       formState: { errors },
       watch,
+      reset,
    } = useForm({
       defaultValues: {
          firstName: 'Ваше имя',
          lastName: 'Ваша фамилия',
          email: 'example@example.com',
+         password: '',
          confirmPassword: '',
       },
       resolver: yupResolver(schema),
@@ -61,7 +63,10 @@ export const ProfileForm = () => {
       }
 
       dispatch(profilePutRequest(putData))
+      reset()
    }
+   const ali = ''
+   console.log('ali: ', ali)
    return (
       <div>
          <StyledFormContainer onSubmit={handleSubmit(handleSubmitPut)}>
