@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material'
+import { useSelector } from 'react-redux'
 import { Label } from './Label'
 import { Button } from '../UI/button/Button'
 import {
    CheckKeyboardIcon,
-   CommunicationIcon,
    PeopleIcon,
    RealWorldIcon,
    TypographyIcon,
@@ -12,8 +12,10 @@ import {
 // import { ColumnCard } from './ColumnCard'
 
 export const CardLabels = ({ el }) => {
+   console.log('el: ', el)
    const [openLabelText, setOpenLabelText] = useState(false)
    const [clickedLabels, setClickedLabels] = useState([])
+   const { participants } = useSelector((state) => state.participant)
 
    const handleButtonClick = () => {
       setClickedLabels(el.labelResponses)
@@ -60,18 +62,27 @@ export const CardLabels = ({ el }) => {
                   <RealWorldIcon />
                   <ParagraphDeadlineMonth>{el.duration}</ParagraphDeadlineMonth>
                </Deadline>
-               <WraperIcons>
-                  <TypographyIcon />
-                  <CommunicationIcon />
+               {el.numberOfItems && el.numberOfItems > 0 ? (
                   <CheckMarNumberkIcon>
                      <CheckKeyboardIcon />
-                     <NumberIcon>
-                        {el.numberOfCompletedItems}/{el.numberOfItems}
-                     </NumberIcon>
+                     <NumberIcon>{el.numberOfItems}</NumberIcon>
+                     <p style={{ color: 'gray' }}>/</p>
+                     <NumberIcon>{el.numberOfCompletedItems}</NumberIcon>
                   </CheckMarNumberkIcon>
+               ) : null}
+               {el.description && el.description > 0 ? (
+                  <TypographyIcon fill="grey" />
+               ) : null}
+               <WraperIcons>
+                  {participants?.length > 0 ? (
+                     <ParentPeopleIcon>
+                        <PeopleIcon fill="gray" />
+                        <PeopleNumber>{participants?.length}</PeopleNumber>
+                     </ParentPeopleIcon>
+                  ) : null}
                   <ParentPeopleIcon>
                      <PeopleIcon />
-                     <PeopleNumber>{el.numberOfUsers}</PeopleNumber>
+                     {/* <PeopleNumber>{el.numberOfUsers}</PeopleNumber> */}
                   </ParentPeopleIcon>
                </WraperIcons>
             </WraperDedline>
