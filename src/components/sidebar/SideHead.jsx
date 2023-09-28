@@ -11,6 +11,7 @@ import {
    ListItemText,
    MenuItem,
    MenuList,
+   Tooltip,
    styled,
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
@@ -133,7 +134,7 @@ export const SideHead = ({
                      )}
                   </StyleListItemIcon>
 
-                  <ListItemText primary={editInput} />
+                  <Tooltip title={editInput}>{editInput}</Tooltip>
                </ListItemButton>
             </ListItem>
             <List />
