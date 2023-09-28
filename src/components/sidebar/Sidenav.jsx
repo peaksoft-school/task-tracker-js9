@@ -41,6 +41,7 @@ export function Sidenav({ data, dataLength, workspacedata }) {
    }
 
    console.log('id: ', id)
+   console.log('zhakshylyk')
 
    useEffect(() => {
       dispatch(fetchAllWorkspaces())
