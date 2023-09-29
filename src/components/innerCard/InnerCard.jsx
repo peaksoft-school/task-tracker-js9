@@ -111,7 +111,7 @@ export const InnerCard = ({
       setIsEditing(true)
    }
    const handleEditTitleClick = () => {
-      setIsEditTitle(false)
+      setIsEditTitle(true)
    }
 
    React.useEffect(() => {
@@ -174,7 +174,7 @@ export const InnerCard = ({
          <ModalUi open={isInnerCardOpen} onClose={handleClose}>
             <CardContainer ref={inputRef}>
                <Wrapper>
-                  <TextContainer>
+                  <TextContainer onClick={handleEditTitleClick}>
                      <EditIcon fill="gray" onClick={handleEditTitleClick} />
                      {isEditTitle || displayText === '' ? (
                         <TitileInput
@@ -183,9 +183,7 @@ export const InnerCard = ({
                            ref={inputRef}
                         />
                      ) : (
-                        <CardText onClick={handleEditTitleClick}>
-                           {displayTitle}
-                        </CardText>
+                        <CardText>{displayTitle}</CardText>
                      )}
                   </TextContainer>
                   <CloseIcon
@@ -229,7 +227,7 @@ export const InnerCard = ({
                         </div>
                      </DataContainer>
                      <Description>
-                        <DownIcon fill="gray" />
+                        <DownIcon fill="gray" onClick={handleEditClick} />
                         <DescriptionTitle style={{ color: 'gray' }}>
                            Description
                         </DescriptionTitle>

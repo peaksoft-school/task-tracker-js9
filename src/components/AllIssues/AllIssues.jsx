@@ -3,7 +3,7 @@ import { Checkbox, FormControl, MenuItem, Select, styled } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { AllIssuesTable } from './AllIssuesTable'
 import { AssigneeSection } from '../UI/assignee/AssigneeSection'
@@ -18,12 +18,11 @@ export const AllIssues = () => {
    const [labels, setLabels] = useState('')
 
    const dispatch = useDispatch()
-   // const { allIssues } = useSelector((state) => state.allIssues)
-   // console.log('allIssues ', allIssues)
+   const { allIssues } = useSelector((state) => state.allIssues)
    const { id } = useParams()
    const [selectedUserId, setSelectedUserId] = useState(null)
 
-   const dataLength = 24
+   const dataLength = allIssues?.length
 
    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
@@ -138,7 +137,7 @@ export const AllIssues = () => {
 
 const BodyContainer = styled('div')(() => ({
    // padding: '0.76rem 1.25rem 0rem 1.25rem',
-   paddingLeft: '2rem',
+   paddingLeft: '1.5rem',
 
    marginTop: '5rem',
    width: '100%',

@@ -6,12 +6,9 @@ import TableMui from '../UI/table/TableMui'
 export const AllIssuesTable = ({ selectedUserId, checked }) => {
    console.log('selectedUserId: ', selectedUserId)
    const { allIssues } = useSelector((state) => state.allIssues)
-   console.log('allIssues: ', allIssues)
-
    const filteredIssues = checked
       ? allIssues.filter((issue) => issue.isChecked === checked)
       : allIssues
-
    const column = [
       {
          heading: 'Created',
@@ -26,7 +23,6 @@ export const AllIssuesTable = ({ selectedUserId, checked }) => {
       {
          heading: 'Creator',
          key: 'Creator',
-
          render: (creatorFullName) => (
             <Creator>{creatorFullName.creatorFullName}</Creator>
          ),
@@ -36,7 +32,6 @@ export const AllIssuesTable = ({ selectedUserId, checked }) => {
          key: 'Column',
          render: (column) => <Column>{column.column}</Column>,
       },
-
       {
          heading: 'Assignee',
          key: 'Assignee',
@@ -56,13 +51,12 @@ export const AllIssuesTable = ({ selectedUserId, checked }) => {
                      {assignee.assignee.slice(0, 2).map((item) => (
                         <Avatar src={item.image} key={item.id} />
                      ))}
-                     <Avatar>{assignee.assignee.length - 2}</Avatar>
+                     <Avatar>{(assignee.assignee.length - 2, 0)}</Avatar>
                   </>
                )}
             </Assignee>
          ),
       },
-
       {
          heading: 'Labels',
          key: 'Labels',
@@ -74,7 +68,6 @@ export const AllIssuesTable = ({ selectedUserId, checked }) => {
             </Labels>
          ),
       },
-
       {
          heading: 'Checklist',
          key: 'Checklist',
@@ -83,7 +76,7 @@ export const AllIssuesTable = ({ selectedUserId, checked }) => {
       {
          heading: 'Description',
          key: 'Description',
-         align: 'right',
+         align: 'center',
          render: (description) => (
             <Description>{description.description}</Description>
          ),
@@ -95,7 +88,6 @@ export const AllIssuesTable = ({ selectedUserId, checked }) => {
       </div>
    )
 }
-
 const Created = styled('p')(() => ({
    padding: '0 0 0 0.6rem',
 }))
@@ -108,7 +100,6 @@ const Column = styled('p')(() => ({
 const Assignee = styled('div')(() => ({
    display: 'flex',
 }))
-
 const Labels = styled('div')(() => ({
    display: 'flex',
    width: '7rem',
@@ -121,14 +112,12 @@ const Labels = styled('div')(() => ({
       borderRadius: '0.6rem',
    },
 }))
-
 const Description = styled('p')(() => ({
    padding: '0 0 0 2.4rem',
    textAlign: 'left',
    width: '100%',
    maxWidth: '22rem',
 }))
-
 const StyledTable = styled(TableMui)(() => ({
    width: '100%',
    '& .css-1q1u3t4-MuiTableRow-root': {
