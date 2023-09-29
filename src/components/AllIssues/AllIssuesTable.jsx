@@ -31,19 +31,36 @@ export const AllIssuesTable = () => {
          key: 'Assignee',
          render: (assignee) => (
             <Assignee>
-               {assignee.assignees.length <= 2 ? (
-                  assignee.assignees.map((item) => (
-                     <Avatar key={item.id}>{item.img}</Avatar>
-                  ))
+               {assignee.length <= 2 ? (
+                  assignee.map((item) => {
+                     return (
+                        <div key={item.userId}>
+                           <Avatar key={item.id}>{item.image}</Avatar>
+                           <p>{item.fullName}</p>
+                        </div>
+                     )
+                  })
                ) : (
                   <>
-                     {assignee.assignees.slice(0, 2).map((item) => (
-                        <Avatar src={item.img} key={item.id} />
+                     {assignee.assignee.slice(0, 2).map((item) => (
+                        <Avatar src={item.image} key={item.id} />
                      ))}
-                     <Avatar>+{assignee.assignees.length - 2}</Avatar>
+                     <Avatar>{(assignee.assignee.length - 2, 0)}</Avatar>
                   </>
                )}
             </Assignee>
+         ),
+      },
+
+      {
+         heading: 'Labels',
+         key: 'Labels',
+         render: (label) => (
+            <Labels>
+               {label.labelResponses.map((item) => (
+                  <p key={item.id} style={{ backgroundColor: item.color }} />
+               ))}
+            </Labels>
          ),
       },
 
