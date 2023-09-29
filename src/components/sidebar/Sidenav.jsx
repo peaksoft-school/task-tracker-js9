@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
 import MuiDrawer from '@mui/material/Drawer'
@@ -25,6 +25,9 @@ export function Sidenav({ data, dataLength, workspacedata }) {
    const [openDrawer, setOpenDrawer] = useState(false)
    const [activeItem, setActiveItem] = useState(null)
    const [toggle, setToggle] = useState(false)
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const { id } = useParams()
 
    const handleDrawerToggle = () => {
       setOpenDrawer((prev) => !prev)
@@ -32,11 +35,13 @@ export function Sidenav({ data, dataLength, workspacedata }) {
    }
 
    const handleItemClick = (item) => {
+      console.log('item: ', item)
       setActiveItem(item)
+      // navigate(`/mainPage/${id}/allissues/`)
    }
 
-   const navigate = useNavigate()
-   const dispatch = useDispatch()
+   console.log('id: ', id)
+   console.log('zhakshylyk')
 
    useEffect(() => {
       dispatch(fetchAllWorkspaces())
@@ -146,7 +151,8 @@ export function Sidenav({ data, dataLength, workspacedata }) {
                   onClick={handleDrawerToggle}
                   edge="start"
                   style={{
-                     backgroundColor: '#ffffffb6',
+                     background:
+                        'linear-gradient(to left, #ffffffb6 61%, transparent 61.40%)',
                      borderRadius: '0rem 0.5rem 0.5rem 0rem',
                      position: 'fixed',
                      top: '6rem',
@@ -203,10 +209,12 @@ const Drawer = styled(MuiDrawer, {
    '.css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
       marginTop: '75px',
       backgroundColor: '#ffffffb6',
+      borderRight: '2px solid transparent',
    },
    ...(open && {
       ...openedMixin(theme),
       '& .MuiDrawer-paper': openedMixin(theme),
+      width: `calc(${drawerWidth}px - 0.1px)`,
    }),
    ...(!open && {
       ...closedMixin(theme),

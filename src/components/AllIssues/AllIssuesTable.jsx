@@ -1,9 +1,14 @@
 import React from 'react'
 import { Avatar, styled } from '@mui/material'
+import { useSelector } from 'react-redux'
 import TableMui from '../UI/table/TableMui'
-import { rows } from '../../utils/constants/allIssues'
 
-export const AllIssuesTable = () => {
+export const AllIssuesTable = ({ selectedUserId, checked }) => {
+   console.log('selectedUserId: ', selectedUserId)
+   const { allIssues } = useSelector((state) => state.allIssues)
+   const filteredIssues = checked
+      ? allIssues.filter((issue) => issue.isChecked === checked)
+      : allIssues
    const column = [
       {
          heading: 'Created',
@@ -11,15 +16,16 @@ export const AllIssuesTable = () => {
          render: (created) => <Created>{created.created}</Created>,
       },
       {
-         heading: 'Period',
-         key: 'Period',
-         render: (period) => <p>{period.period}</p>,
+         heading: 'DurationDay',
+         key: 'DurationDay',
+         render: (durationDay) => <p>{durationDay.durationDay}</p>,
       },
       {
          heading: 'Creator',
          key: 'Creator',
-
-         render: (creator) => <Creator>{creator.creator}</Creator>,
+         render: (creatorFullName) => (
+            <Creator>{creatorFullName.creatorFullName}</Creator>
+         ),
       },
       {
          heading: 'Column',
@@ -51,7 +57,6 @@ export const AllIssuesTable = () => {
             </Assignee>
          ),
       },
-
       {
          heading: 'Labels',
          key: 'Labels',
@@ -63,27 +68,15 @@ export const AllIssuesTable = () => {
             </Labels>
          ),
       },
-
-      {
-         heading: 'Labels',
-         key: 'Labels',
-         render: (label) => (
-            <Labels>
-               {label.labels.map((item) => (
-                  <p style={{ backgroundColor: item.color }} />
-               ))}
-            </Labels>
-         ),
-      },
       {
          heading: 'Checklist',
          key: 'Checklist',
-         render: (data) => <p>{data.checklist}</p>,
+         render: (data) => <p>{data.checkListResponse}</p>,
       },
       {
          heading: 'Description',
          key: 'Description',
-         align: 'right',
+         align: 'center',
          render: (description) => (
             <Description>{description.description}</Description>
          ),
@@ -91,11 +84,10 @@ export const AllIssuesTable = () => {
    ]
    return (
       <div>
-         <StyledTable column={column} rows={rows} />
+         <StyledTable column={column} rows={filteredIssues} />
       </div>
    )
 }
-
 const Created = styled('p')(() => ({
    padding: '0 0 0 0.6rem',
 }))
@@ -108,7 +100,6 @@ const Column = styled('p')(() => ({
 const Assignee = styled('div')(() => ({
    display: 'flex',
 }))
-
 const Labels = styled('div')(() => ({
    display: 'flex',
    width: '7rem',
@@ -121,14 +112,14 @@ const Labels = styled('div')(() => ({
       borderRadius: '0.6rem',
    },
 }))
-
 const Description = styled('p')(() => ({
    padding: '0 0 0 2.4rem',
    textAlign: 'left',
-   width: ' 22rem',
+   width: '100%',
+   maxWidth: '22rem',
 }))
-
 const StyledTable = styled(TableMui)(() => ({
+   width: '100%',
    '& .css-1q1u3t4-MuiTableRow-root': {
       backgroundColor: 'red',
    },

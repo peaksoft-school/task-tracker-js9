@@ -12,7 +12,16 @@ import { updateColumnTitle } from '../../store/column/columnsThunk'
 import { createNewCard } from '../../store/cards/cardsThunk'
 import { DetailCard } from './DetailCard'
 
-export const Card = ({ column }) => {
+export const Card = ({
+   column,
+   setColumns,
+   columns,
+   setCurrentCard,
+   currentCard,
+   currentColumn,
+   setCurrentColumn,
+   dropHandler,
+}) => {
    const [openModalInputAddCard, setOpneModalInputAddCard] = useState(false)
    const [editTitle, setEditTitle] = useState(false)
    const [inputValue, setInputValue] = useState('')
@@ -123,6 +132,14 @@ export const Card = ({ column }) => {
                <DetailCard
                   columnId={column.columnId}
                   cardResponses={column.cardResponses}
+                  column={column}
+                  setColumns={setColumns}
+                  setCurrentCard={setCurrentCard}
+                  setCurrentColumn={setCurrentColumn}
+                  currentCard={currentCard}
+                  columns={columns}
+                  currentColumn={currentColumn}
+                  dropHandler={dropHandler}
                />
             </ScrollableContainer>
 
@@ -186,7 +203,7 @@ const ControlsIconStyled = styled(ControlsIcon)(() => ({
 const ParentTitle = styled('div')(() => ({
    display: 'flex',
    justifyContent: 'space-between',
-   padding: '0 0.5rem 0 0.5rem',
+   padding: '0 0.1rem 0 0.5rem',
    marginBottom: '0.89rem',
    cursor: 'pointer',
 }))
@@ -202,7 +219,7 @@ const Title = styled('p')(() => ({
 }))
 const StyleMeadIcon = styled('div')(() => ({
    cursor: 'pointer',
-   marginRight: '1rem',
+   marginRight: '0.9rem',
    transition: 'transform 0.4s ease-out',
    '&:active': {
       transform: 'scale(1,2)',
@@ -222,6 +239,7 @@ const ParentColumnCard = styled('div')(() => ({
    flexDirection: 'column',
    marginLeft: '0.5rem',
    position: 'relative',
+   width: '17.6rem',
 }))
 
 const ScrollableContainer = styled('div')(() => ({
@@ -242,13 +260,15 @@ const ScrollableContainer = styled('div')(() => ({
    },
 }))
 
-const InputAddCardStyle = styled('textarea')(() => ({
+const InputAddCardStyle = styled('input')(() => ({
    minHeight: '3rem',
    width: '16.5rem',
    background: '#ffffff',
    borderColor: '#989898',
    borderRadius: '0.25rem',
-   padding: '8px 8px 4px 12px',
+   // padding: '8px 8px 4px 12px',
+   paddingLeft: '12px',
+   paddingBottom: '8px',
    resize: 'none',
    overflow: 'hidden',
    fontFamily: 'CarePro',
@@ -279,7 +299,7 @@ const ButtonAddCardStyle = styled(Button)(() => ({
    },
 }))
 const CreateColumn = styled('div')(() => ({
-   width: '280px',
+   width: '220px',
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',

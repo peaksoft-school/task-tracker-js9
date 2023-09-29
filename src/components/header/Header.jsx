@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { styled as muiStyled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
-// import { createGlobalStyle } from '@mui/styled-engine-sc'
 import { Avatar, IconButton } from '@mui/material'
-import {
-   Outlet,
-   useNavigate,
-   NavLink,
-   useLocation,
-   // useParams,
-} from 'react-router-dom'
+import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom'
 import { useDebounce } from 'use-debounce'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -20,7 +13,6 @@ import {
    UpIcon,
 } from '../../assets/icons'
 import { logOut } from '../../store/auth/authThunk'
-import { showSnackbar } from '../UI/snackbar/Snackbar'
 import { Favourite } from '../favourite/Favourite'
 import { ModalUi } from '../UI/modal/Modal'
 import { searchRequest } from '../../store/globalSearch/searchThunk'
@@ -30,7 +22,6 @@ import { Notification } from './Notification'
 import { profileGetRequest } from '../../store/profile/ProfileThunk'
 import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 import { getNotifications } from '../../store/notification/notificationThunk'
-// import { getFavourites } from '../../store/getFavourites/favouritesThunk'
 
 export const Headers = () => {
    const [showModal, setShowModal] = useState(false)
@@ -89,19 +80,7 @@ export const Headers = () => {
       event.stopPropagation()
    }
    const logOutHandler = () => {
-      dispatch(logOut())
-         .unwrap()
-         .then(() => {
-            showSnackbar({
-               message: 'Log out successful!',
-               severity: 'success',
-            })
-            navigate('/')
-            location.reload()
-         })
-         .catch((error) => {
-            return error.message
-         })
+      logOut()
    }
 
    const searchHandler = (e) => {

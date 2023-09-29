@@ -4,6 +4,17 @@ import { styled } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { allinviteMember } from '../../../store/inviteMember/inviteThunk'
 
+const filterUsersByUserId = (users) => {
+   const seenUserIds = new Set()
+   return users.filter((user) => {
+      if (seenUserIds.has(user.userId)) {
+         return false
+      }
+      seenUserIds.add(user.userId)
+      return true
+   })
+}
+
 export const Avatars = () => {
    const [selectedUser, setSelectedUser] = useState(null)
    const { inviteMember } = useSelector((state) => state.inviteMember)
@@ -14,11 +25,14 @@ export const Avatars = () => {
       dispatch(allinviteMember(boardId))
    }, [])
 
-   const visibleAvatars = inviteMember?.slice(0, 9)
+   const filteredInviteMembers = filterUsersByUserId(inviteMember)
+
+   const visibleAvatars = filteredInviteMembers.slice(0, 9)
 
    const handleAvatarClick = (user) => {
       setSelectedUser(user)
    }
+
    const handleBackdropClick = () => {
       setSelectedUser(null)
    }
@@ -54,7 +68,7 @@ export const Avatars = () => {
                         <StyledEmail>{selectedUser.email}</StyledEmail>
                      </EmailAndNameBox>
                   </UserInfoContainer>
-                  <EditProfile>Edit your profile</EditProfile>
+                  {/* <EditProfile>Edit your profile</EditProfile> */}
                </UserInfoBox>
             </>
          )}
@@ -128,11 +142,6 @@ const EmailAndNameBox = styled('div')({
    display: 'flex',
    flexDirection: 'column',
    gap: '0.3rem',
-})
-
-const EditProfile = styled('p')({
-   cursor: 'pointer',
-   marginTop: '1rem',
 })
 
 const BackDrop = styled('div')({

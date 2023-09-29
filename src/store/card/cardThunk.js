@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
+import { getColumns } from '../column/columnsThunk'
 
 export const attachmentGet = createAsyncThunk(
    'card/attachmentGet',
@@ -55,6 +56,23 @@ export const attachmentPhotoPost = createAsyncThunk(
          return data.Link
       } catch (error) {
          rejectWithValue(error)
+      }
+   }
+)
+
+export const moveCard = createAsyncThunk(
+   'card/moveCard',
+   async (card, { rejectWithValue, dispatch }) => {
+      try {
+         const response = await axiosInstance.put(
+            `/api/cards/move-card/${card.data.cardId}/${card.data.columnId}`
+         )
+
+         dispatch(getColumns(card.boardId))
+
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error)
       }
    }
 )

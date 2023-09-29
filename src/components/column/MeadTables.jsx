@@ -21,7 +21,7 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
       const data = {
          columnId,
       }
-      dispatch(addColumnsToArchive(data))
+      dispatch(addColumnsToArchive({ data, boardId }))
       setOpneModal(false)
    }
    const deleteCardsBycolumnIdHandler = () => {
@@ -29,10 +29,6 @@ export const MeadTables = ({ columnId, setOpneModal }) => {
 
       setOpneModal(false)
    }
-
-   // const archiveAllCard = () => {
-   //    navigate("")
-   // }
 
    return (
       <Container>

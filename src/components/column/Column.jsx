@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { createNewColumn, getColumns } from '../../store/column/columnsThunk'
-import { Columns } from './Columns'
+// import { Columns } from './Columns'
+import { Card } from './Card'
+
 import { NewColumn } from './NewColumn'
 import { fetchParticipans } from '../../store/participants/partThunk'
 import { fetchBoards } from '../../store/board/boardThunk'
+import { moveCard } from '../../store/card/cardThunk'
 // import { fetchParticipans } from '../../store/participants/partThunk'
 
 export const Column = () => {
@@ -15,6 +18,12 @@ export const Column = () => {
    const dispatch = useDispatch()
    const { boardId, id } = useParams()
    const { columnsData } = useSelector((state) => state.columns)
+
+   const [columns, setColumns] = useState(columnsData)
+   console.log('columnsData: ', columnsData)
+
+   const [currentColumn, setCurrentColumn] = useState({})
+   const [currentCard, setCurrentCard] = useState({})
 
    useEffect(() => {
       dispatch(getColumns(boardId))
@@ -47,14 +56,59 @@ export const Column = () => {
       setIsCreatingColumn(false)
       setNewColumnName('')
    }
+   const dragOverHandler = (e) => {
+      e.preventDefault()
+      if (e.target.className === 'item') {
+         e.target.style.boxShadow = '0 2px 3px gray'
+      }
+   }
+   const dropCardHandler = (e, column) => {
+      e.preventDefault()
+
+      // Получаем данные из dataTransfer
+      const cardId = e.dataTransfer.getData('text/plain')
+
+      const data = {
+         cardId,
+         columnId: column?.columnId,
+      }
+
+      dispatch(moveCard({ data, boardId }))
+   }
+
+   const dropHandler = (e, column) => {
+      e.preventDefault()
+
+      // Получаем данные из dataTransfer
+      const cardId = e.dataTransfer.getData('text/plain')
+
+      const data = {
+         cardId,
+         columnId: column?.columnId,
+      }
+
+      dispatch(moveCard({ data, boardId }))
+   }
 
    return (
       <ColumnsStyle>
          <Cont>
             {columnsData.map((column) => {
                return (
-                  <ChildContainer>
-                     <Columns column={column} />
+                  <ChildContainer
+                     onDrop={(e) => dropCardHandler(e, column)}
+                     onDragOver={(e) => dragOverHandler(e)}
+                  >
+                     <Card
+                        column={column}
+                        setCurrentColumn={setCurrentColumn}
+                        setCurrentCard={setCurrentCard}
+                        setColumns={setColumns}
+                        currentCard={currentCard}
+                        currentColumn={currentColumn}
+                        columns={columns}
+                        dropHandler={dropHandler}
+                     />
                   </ChildContainer>
                )
             })}
@@ -117,5 +171,17 @@ const Cont = styled('div')({
 })
 
 const ChildContainer = styled('div')({
-   width: '280px',
+   width: '100%',
+   borderRadius: '0.5rem',
+   backgroundColor: 'rgba(145, 145, 145, 0.12)',
+   paddingBottom: '1rem',
+   paddingTop: '0.69rem',
+   // paddingRight: '0.5rem',
+   height: 'fit-content',
+   position: 'relative',
+   background: '#E6E6E6',
+   cursor: 'pointer',
+   // '&:active': {
+   //    cursor: 'grabbing',
+   // },
 })
