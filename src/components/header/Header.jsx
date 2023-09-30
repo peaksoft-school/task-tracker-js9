@@ -183,9 +183,14 @@ export const Headers = () => {
                      />
                   )}
                </div>
-               <IconButton onClick={notificationHandler}>
-                  <NotificationIcon src={NotificationIcon} alt="notification" />
-               </IconButton>
+               <div>
+                  <IconButton onClick={notificationHandler}>
+                     <NotificationIcon
+                        src={NotificationIcon}
+                        alt="notification"
+                     />
+                  </IconButton>
+               </div>
                {showNotifications && (
                   <Notification notificationHandler={notificationHandler} />
                )}

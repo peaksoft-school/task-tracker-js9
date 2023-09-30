@@ -23,8 +23,6 @@ export const DetailCard = ({
    setCurrentColumn,
    setCurrentCard,
    column,
-
-   // currentCard,
    dropHandler,
 }) => {
    const [openLabelMap, setOpenLabelMap] = useState({})
@@ -84,6 +82,7 @@ export const DetailCard = ({
    const dragEndHandler = (e) => {
       e.target.style.boxShadow = 'none'
    }
+   console.log('cardResponses', cardResponses)
 
    return (
       <Cont>
@@ -99,6 +98,19 @@ export const DetailCard = ({
                // eslint-disable-next-line react/jsx-boolean-value
                draggable={true}
             >
+               {card.attachmentResponses?.[0]?.documentLink ? (
+                  <AttachmentCard>
+                     <img
+                        style={{
+                           width: '100%',
+                           height: '7rem',
+                        }}
+                        src={card.attachmentResponses[0].documentLink}
+                        alt=""
+                     />
+                  </AttachmentCard>
+               ) : null}
+
                {openLabelMap[card.cardId] ? (
                   <ParentColorGroupButton>
                      {card.labelResponses?.map((el) => (
@@ -134,7 +146,7 @@ export const DetailCard = ({
                         }}
                      >
                         <div>
-                           <ParagraphText>{card.title}</ParagraphText>
+                           <ParagraphText>{card.title}f</ParagraphText>
                            <EditIconStyle fill="gray" />
                         </div>
                      </IconText>
@@ -204,6 +216,10 @@ export const DetailCard = ({
       </Cont>
    )
 }
+const AttachmentCard = styled('div')(() => ({
+   width: '100%',
+   height: '7rem',
+}))
 const ColumnCard = styled('div')(() => ({
    width: '16.8rem',
    background: '#ffffff',
