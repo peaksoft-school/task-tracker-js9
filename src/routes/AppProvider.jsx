@@ -41,7 +41,7 @@ export const routes = createBrowserRouter([
          <PrivateRoute
             component={<ResetPasswordPage />}
             roles={[USER_ROLE.GUEST]}
-            fallBacPath="/mainPage"
+            fallBacPath="/"
          />
       ),
    },

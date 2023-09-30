@@ -29,7 +29,7 @@ export const CommentSection = ({ setShowMore, showMore }) => {
    const { comments } = useSelector((state) => state.comments)
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { cardId } = useParams()
+   const { carId } = useParams()
 
    const toggleComments = () => {
       setShowMore((prevShowComments) => !prevShowComments)
@@ -40,8 +40,8 @@ export const CommentSection = ({ setShowMore, showMore }) => {
       setShowDeleteModal(true)
    }
    useEffect(() => {
-      dispatch(getAllComments())
-   }, [dispatch])
+      dispatch(getAllComments(carId))
+   }, [])
 
    const handleCommentSubmit = (e) => {
       e.preventDefault()
@@ -49,7 +49,7 @@ export const CommentSection = ({ setShowMore, showMore }) => {
       dispatch(
          postComments({
             comment: commentText,
-            cardId,
+            cardId: carId,
          })
       )
 
@@ -77,6 +77,7 @@ export const CommentSection = ({ setShowMore, showMore }) => {
          editComment({
             commentId: editingCommentId,
             comment: editedCommentText,
+            cardId: carId,
          })
       )
       setShowEditModal(false)
@@ -122,6 +123,7 @@ export const CommentSection = ({ setShowMore, showMore }) => {
                />
             </FormContainer>
             <CommentDelete
+               cardId={carId}
                showDeleteModal={showDeleteModal}
                handleCloseDeleteModal={handleCloseDeleteModal}
                deleteCommentId={deleteCommentId}

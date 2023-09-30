@@ -81,7 +81,7 @@ const AvatarImage = styled('img')({
    height: '2.5rem',
    borderRadius: '2.125rem',
    marginRight: '-1rem',
-   border: '0.3125rem solid white',
+   border: '0.15rem solid white',
    cursor: 'pointer',
 })
 
@@ -90,7 +90,7 @@ const AvatarImageMore = styled('div')({
    height: '2.5rem',
    borderRadius: '2.125rem',
    marginRight: '-1rem',
-   border: '0.3125rem solid white',
+   // border: '0.3125rem solid white',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
