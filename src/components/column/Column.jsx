@@ -20,7 +20,6 @@ export const Column = () => {
    const { columnsData } = useSelector((state) => state.columns)
 
    const [columns, setColumns] = useState(columnsData)
-   console.log('columnsData: ', columnsData)
 
    const [currentColumn, setCurrentColumn] = useState({})
    const [currentCard, setCurrentCard] = useState({})

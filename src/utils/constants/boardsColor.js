@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import {
    Img1,
    Img10,
