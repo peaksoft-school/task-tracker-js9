@@ -134,7 +134,7 @@ export const SideHead = ({
                      )}
                   </StyleListItemIcon>
 
-                  <Tooltip title={editInput}>{editInput}</Tooltip>
+                  <WorkSpaceName title={editInput}>{editInput}</WorkSpaceName>
                </ListItemButton>
             </ListItem>
             <List />
@@ -300,3 +300,11 @@ const AvatarStyledHeader = styled(Avatar)(() => ({
    padding: ' 0.3125rem 0.8125rem',
    marginLeft: '  -0.5rem',
 }))
+
+const WorkSpaceName = styled(Tooltip)({
+   color: '#3C3C3C',
+   minWidth: '6rem',
+   overflowX: 'hidden',
+   whiteSpace: 'nowrap',
+   textOverflow: 'ellipsis',
+})

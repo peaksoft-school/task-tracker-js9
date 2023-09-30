@@ -37,7 +37,7 @@ export const ResetPasswordPage = () => {
                message: 'Sign In successful!',
                severity: 'success',
             })
-            navigate('/mainPage')
+            navigate('/')
          })
          .catch((error) => {
             showSnackbar({

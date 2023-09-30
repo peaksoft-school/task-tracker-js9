@@ -14,7 +14,12 @@ const CommentDelete = ({
    dispatch,
    deleteComment,
    deleteCommentId,
+   cardId,
 }) => {
+   const data = {
+      cardId,
+      deleteCommentId,
+   }
    return (
       <ModalUi open={showDeleteModal} onClose={handleCloseDeleteModal}>
          <DialogTitle style={{ textAlign: 'center', fontFamily: 'CarePro' }}>
@@ -26,7 +31,7 @@ const CommentDelete = ({
          <DialogActions>
             <StyledButton
                onClick={() => {
-                  dispatch(deleteComment(deleteCommentId))
+                  dispatch(deleteComment(data))
                   handleCloseDeleteModal()
                }}
                color="error"

@@ -3,9 +3,11 @@ import { axiosInstance } from '../../config/axiosInstance'
 
 export const getAllComments = createAsyncThunk(
    'comments/getAllComments',
-   async (_, { rejectWithValue }) => {
+   async (cardId, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(`/api/comments/comments/${4}`)
+         const response = await axiosInstance.get(
+            `/api/comments/comments/${cardId}`
+         )
          return response.data
       } catch (error) {
          return rejectWithValue(
@@ -20,7 +22,7 @@ export const postComments = createAsyncThunk(
    async (payload, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.post(`/api/comments`, payload)
-         dispatch(getAllComments())
+         dispatch(getAllComments(payload.cardId))
          return response
       } catch (error) {
          return rejectWithValue(
@@ -41,7 +43,7 @@ export const editComment = createAsyncThunk(
                cardId: payload.commentId,
             }
          )
-         dispatch(getAllComments())
+         dispatch(getAllComments(payload.cardId))
          return data
       } catch (error) {
          return rejectWithValue(
@@ -53,13 +55,13 @@ export const editComment = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
    'comments/deleteComment',
-   async (deleteCommentById, { rejectWithValue, dispatch }) => {
+   async (data, { rejectWithValue, dispatch }) => {
       try {
-         const { data } = await axiosInstance.delete(
-            `/api/comments/${deleteCommentById}`
+         const { dataa } = await axiosInstance.delete(
+            `/api/comments/${data.deleteCommentId}`
          )
-         dispatch(getAllComments())
-         return data
+         dispatch(getAllComments(data.cardId))
+         return dataa
       } catch (error) {
          return rejectWithValue(
             error?.response?.data || 'Something went wrong!'
@@ -71,6 +73,7 @@ export const deleteComment = createAsyncThunk(
 export const getCommentsbyId = createAsyncThunk(
    'comments/getCommentsbyId',
    async (payload, { rejectWithValue }) => {
+      console.log('payload: ', payload)
       const { commentId, navigate } = payload
 
       try {
