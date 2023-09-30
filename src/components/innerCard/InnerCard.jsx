@@ -30,6 +30,7 @@ import { getCardArchve } from '../../store/getArchive/archiveThunk'
 import { Attachment } from '../attachment/Attachment'
 import { DataPickers } from '../UI/data-picker/DataPicker'
 import { showSnackbar } from '../UI/snackbar/Snackbar'
+import { Avatars } from '../LayouMenu/avatars/Avatars'
 
 export const InnerCard = ({
    isInnerCardOpen,
@@ -70,8 +71,6 @@ export const InnerCard = ({
    const [clock, setСlock] = useState(invalidDate)
    const formattedTime = clock.format('HH:mm')
    const amPm = clock.format('A')
-
-   console.log(selectedDate)
 
    const dispatch = useDispatch()
 
@@ -223,7 +222,7 @@ export const InnerCard = ({
                         </div>
                         <div>
                            <Title>Members</Title>
-                           <DateStart />
+                           <Avatars />
                         </div>
                      </DataContainer>
                      <Description>

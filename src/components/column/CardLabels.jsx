@@ -21,7 +21,6 @@ export const CardLabels = ({ el }) => {
       setClickedLabels(el.labelResponses)
       setOpenLabelText(true)
    }
-   console.log('helloooo')
 
    const deleteLabelText = () => {
       setOpenLabelText(false)
@@ -59,10 +58,19 @@ export const CardLabels = ({ el }) => {
             <ParagraphText>{el.title}</ParagraphText>
 
             <WraperDedline>
-               <Deadline>
-                  <RealWorldIcon />
-                  <ParagraphDeadlineMonth>{el.duration}</ParagraphDeadlineMonth>
-               </Deadline>
+               {el.duration === 'No time set for this card' ? null : (
+                  <Deadline>
+                     <RealWorldIcon />
+                     <ParagraphDeadlineMonth>
+                        {el.duration}
+                     </ParagraphDeadlineMonth>
+                  </Deadline>
+               )}
+               {el.checkListResponses && el.checkListResponses.length > 0 ? (
+                  <CheckListButton backgroundColor="#111" borderRadius="2rem">
+                     Cheklist
+                  </CheckListButton>
+               ) : null}
                {el.numberOfItems && el.numberOfItems > 0 ? (
                   <CheckMarNumberkIcon>
                      <CheckKeyboardIcon />
@@ -71,9 +79,7 @@ export const CardLabels = ({ el }) => {
                      <NumberIcon>{el.numberOfCompletedItems}</NumberIcon>
                   </CheckMarNumberkIcon>
                ) : null}
-               {el.description && el.description > 0 ? (
-                  <TypographyIcon fill="grey" />
-               ) : null}
+               {el.description && <TypographyIcon />}
                <WraperIcons>
                   {participants?.length > 0 ? (
                      <ParentPeopleIcon>
@@ -165,4 +171,14 @@ const CheckMarNumberkIcon = styled('div')(() => ({
 const ParentPeopleIcon = styled('div')(() => ({
    display: 'flex',
    gap: '4px',
+}))
+
+const CheckListButton = styled(Button)(() => ({
+   color: '#F8F8F8',
+   fontSize: ' 0.45rem',
+   fontStyle: ' normal',
+   fontWeight: '500',
+   top: '5.5rem',
+   left: '15rem',
+   position: 'absolute',
 }))

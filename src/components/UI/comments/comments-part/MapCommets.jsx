@@ -4,11 +4,7 @@ import { useSelector } from 'react-redux'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export const MapCommets = ({
-   getCommentsID,
-   handleEditClick,
-   handleDeleteClick,
-}) => {
+export const MapCommets = ({ handleEditClick, handleDeleteClick }) => {
    const navigate = useNavigate()
    const { comments } = useSelector((state) => state.comments)
    return (
@@ -30,7 +26,11 @@ export const MapCommets = ({
                         />
                         <AboutComments>
                            <PostName
-                              onClick={() => getCommentsID(comment.creatorId)}
+                              onClick={() =>
+                                 navigate(`/profile/${comment.creatorId}`, {
+                                    state: { edit: 'true' },
+                                 })
+                              }
                            >
                               {comment.creatorName}
                            </PostName>
