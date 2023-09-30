@@ -96,25 +96,6 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                         <div>
                            <CreatableSelect
                               className="basic-multi-select"
-                              styles={{
-                                 control: (baseStyles) => ({
-                                    ...baseStyles,
-                                    borderColor: '#D0D0D0',
-                                    '&:hover': {
-                                       border: '1px solid #0079BF',
-                                    },
-                                    '&:active': {
-                                       border: '1px solid #999898',
-                                    },
-
-                                    borderRadius: '0.5rem',
-                                    height: '1rem',
-                                 }),
-                                 placeholder: (baseStyles) => ({
-                                    ...baseStyles,
-                                    color: '#AFAFAF',
-                                 }),
-                              }}
                               isClearable
                               isMulti
                               inputValue={tempValue}
@@ -151,7 +132,7 @@ const NewWorkspaceForm = ({ showModal, setShowModal }) => {
                               }}
                               placeholder="example@gmail.com"
                            />
-                           {/* </EmailInputContainer> */}
+
                            <p style={{ color: 'red' }}>
                               {errors?.invitedMembers
                                  ? errors.invitedMembers[0]?.value ||
@@ -241,15 +222,42 @@ const NewWorkspace = styled('span')(() => ({
    marginBottom: '1rem',
 }))
 
+// const InputStyle = styled(Input)(() => ({
+//    '& .MuiOutlinedInput-root': {
+//       borderRadius: '0.25rem',
+//    },
+//    input: {
+//       width: '20.4625rem',
+//       height: '1.60rem',
+//       padding: ' 0.375rem 1rem',
+//       alignItems: ' center',
+//       borderRadius: '0.5rem',
+//    },
+//    '::placeholder': {
+//       color: 'black',
+//    },
+// }))
 const InputStyle = styled(Input)(() => ({
    '& .MuiOutlinedInput-root': {
-      borderRadius: '0.5rem',
+      borderRadius: '0.25rem',
    },
    input: {
       width: '20.4625rem',
-      height: '1.65rem',
-      padding: ' 0.375rem 1rem',
-      alignItems: ' center',
+      height: '1.60rem',
+      padding: '0.375rem 1rem',
+      alignItems: 'center',
       borderRadius: '0.5rem',
+      '&:hover fieldset': {
+         border: '3px solid #0079BF',
+      },
+      '&.Mui-focused fieldset': {
+         border: '3px solid #38b5fe',
+      },
+      '::placeholder': {
+         fontFamily: 'CarePro',
+
+         color: '#000000',
+         fontWeight: '600',
+      },
    },
 }))

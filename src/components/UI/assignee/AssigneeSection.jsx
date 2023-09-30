@@ -32,7 +32,7 @@ export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
       dispatch(fetchParticipans({ id, role: 'ALL' }))
    }, [id, dispatch])
 
-   const filteredParticipants = participants.filter((item) => {
+   const filteredParticipants = participants?.filter((item) => {
       const fullName = item.fullName.toLowerCase()
       const email = item.email.toLowerCase()
       const searchTerm = search.toLowerCase()
