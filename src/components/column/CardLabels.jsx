@@ -89,7 +89,6 @@ export const CardLabels = ({ el }) => {
                   ) : null}
                   <ParentPeopleIcon>
                      <PeopleIcon />
-                     {/* <PeopleNumber>{el.numberOfUsers}</PeopleNumber> */}
                   </ParentPeopleIcon>
                </WraperIcons>
             </WraperDedline>

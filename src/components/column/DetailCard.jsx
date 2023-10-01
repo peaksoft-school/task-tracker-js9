@@ -12,7 +12,6 @@ import {
    RealWorldIcon,
    TypographyIcon,
 } from '../../assets/icons'
-// import { ColumnCard } from './ColumnCard'
 import { Label } from './Label'
 import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
@@ -99,11 +98,19 @@ export const DetailCard = ({
                draggable={true}
             >
                {card.attachmentResponses?.[0]?.documentLink ? (
-                  <AttachmentCard>
+                  <AttachmentCard
+                     onClick={() => {
+                        getCardByIdHandler(card)
+                        setShowCardByid(card.cardId)
+                     }}
+                  >
                      <img
                         style={{
-                           width: '100%',
+                           width: '98%',
                            height: '7rem',
+                           objectFit: 'cover',
+                           marginLeft: '5px',
+                           borderRadius: '0.25rem',
                         }}
                         src={card.attachmentResponses[0].documentLink}
                         alt=""
@@ -303,6 +310,7 @@ const ParentColorGroupButton = styled('div')(() => ({
    display: 'flex-wrap',
    gap: '0.5rem',
    marginLeft: '0.5rem',
+   marginTop: '0.5rem',
 }))
 
 const ColorfulButton = styled(Button)(() => ({
