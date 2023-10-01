@@ -22,7 +22,6 @@ export const Profile = () => {
       (state) => state.profile
    )
    const { state } = useLocation()
-   console.log('state: ', state)
    const { profileId } = useParams()
 
    const dispatch = useDispatch()

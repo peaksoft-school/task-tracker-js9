@@ -3,21 +3,13 @@ import { getAllLabelByCardId, getLabels } from './labelsThunk'
 
 const initialState = {
    label: [],
-   labelDrop: false,
    labelByCardId: [],
 }
 
 export const labelsSlice = createSlice({
    name: 'labels',
    initialState,
-   reducers: {
-      openModal: (state) => {
-         state.labelDrop = true
-      },
-      closeModal: (state) => {
-         state.labelDrop = false
-      },
-   },
+   reducers: {},
    extraReducers: (builder) => {
       builder
          .addCase(getLabels.fulfilled, (state, action) => {
@@ -32,5 +24,3 @@ export const labelsSlice = createSlice({
          })
    },
 })
-
-export const labelActions = labelsSlice.actions

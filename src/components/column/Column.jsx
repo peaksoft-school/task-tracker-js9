@@ -18,6 +18,7 @@ export const Column = () => {
    const dispatch = useDispatch()
    const { boardId, id } = useParams()
    const { columnsData } = useSelector((state) => state.columns)
+   const [hoveredColumnId, setHoveredColumnId] = useState(null)
 
    const [columns, setColumns] = useState(columnsData)
 
@@ -57,12 +58,10 @@ export const Column = () => {
    }
    const dragOverHandler = (e) => {
       e.preventDefault()
-      if (e.target.className === 'item') {
-         e.target.style.boxShadow = '0 2px 3px gray'
-      }
    }
    const dropCardHandler = (e, column) => {
       e.preventDefault()
+      setHoveredColumnId(null)
 
       // Получаем данные из dataTransfer
       const cardId = e.dataTransfer.getData('text/plain')
@@ -89,6 +88,10 @@ export const Column = () => {
       dispatch(moveCard({ data, boardId }))
    }
 
+   const handleDragLeave = (column) => {
+      setHoveredColumnId(column.columnId)
+   }
+
    return (
       <ColumnsStyle>
          <Cont>
@@ -97,6 +100,8 @@ export const Column = () => {
                   <ChildContainer
                      onDrop={(e) => dropCardHandler(e, column)}
                      onDragOver={(e) => dragOverHandler(e)}
+                     onDragLeave={() => handleDragLeave(column)}
+                     isHovered={hoveredColumnId === column.columnId}
                   >
                      <Card
                         column={column}
@@ -168,19 +173,22 @@ const Cont = styled('div')({
       width: '0.1rem',
    },
 })
-
-const ChildContainer = styled('div')({
+const ChildContainer = styled('div')(({ isHovered }) => ({
    width: '100%',
    borderRadius: '0.5rem',
-   backgroundColor: 'rgba(145, 145, 145, 0.12)',
    paddingBottom: '1rem',
    paddingTop: '0.69rem',
-   // paddingRight: '0.5rem',
    height: 'fit-content',
    position: 'relative',
-   background: '#E6E6E6',
    cursor: 'pointer',
-   // '&:active': {
-   //    cursor: 'grabbing',
-   // },
-})
+   transition: 'background 0.1s ease, box-shadow 0.3s ease-in-out',
+   background: isHovered ? '#bdb6b6' : '#E6E6E6',
+
+   boxShadow: isHovered
+      ? '0 0 10px rgba(57, 53, 53, 0.8), 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset'
+      : 'none',
+   '&:hover': {
+      boxShadow:
+         '0 0 10px rgba(0, 0, 0, 0.8), 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset',
+   },
+}))
