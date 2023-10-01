@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from '@mui/material'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { useParams } from 'react-router-dom'
 import { allinviteMember } from '../../../store/inviteMember/inviteThunk'
 
@@ -44,7 +45,13 @@ export const Avatars = () => {
                key={avatar.userId}
                onClick={() => handleAvatarClick(avatar)}
             >
-               <AvatarImage src={avatar.image} alt="" />
+               {avatar.image === 'Default image' ? (
+                  <CircleIconCont>
+                     <AccountCircleIconStyled />
+                  </CircleIconCont>
+               ) : (
+                  <AvatarImage src={avatar.image} alt="" />
+               )}
             </AvatarImageBox>
          ))}
          {inviteMember?.length > 9 && (
@@ -151,4 +158,20 @@ const BackDrop = styled('div')({
    zIndex: '2',
    top: '0',
    left: '0',
+})
+
+const CircleIconCont = styled('div')({
+   width: '2.55rem',
+   height: '2.55rem',
+   borderRadius: '50%',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: 'white',
+   marginBottom: '3px',
+})
+
+const AccountCircleIconStyled = styled(AccountCircleIcon)({
+   width: '2.55rem',
+   height: '2.55rem',
 })

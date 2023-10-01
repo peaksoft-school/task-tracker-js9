@@ -1,9 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { allinviteMember, createInviteMember } from './inviteThunk'
+import {
+   allinviteMember,
+   createInviteMember,
+   getMembersInCard,
+} from './inviteThunk'
 
 const initialState = {
    inviteMember: [],
    loading: false,
+   members: [],
 }
 
 export const memberSlice = createSlice({
@@ -23,6 +28,10 @@ export const memberSlice = createSlice({
          })
          .addCase(createInviteMember.rejected, (state) => {
             state.loading = false
+         })
+         .addCase(getMembersInCard.fulfilled, (state, action) => {
+            state.loading = false
+            state.members = action.payload
          }),
    ],
 })
