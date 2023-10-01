@@ -46,7 +46,6 @@ const CreateColumn = styled('div')(() => ({
    gap: '0.3rem',
    borderRadius: '0.5rem',
    background: '#FFF',
-   // background: 'rgba(145, 145, 145, 0.11)',
    padding: '0.7rem',
 }))
 const TitleOfCreateColumn = styled('div')(() => ({
