@@ -3,11 +3,16 @@ import { styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect } from 'react'
 import { format } from 'date-fns'
-import { getNotifications } from '../../store/notification/notificationThunk'
+import {
+   getNotifications,
+   markAsReadNotifications,
+   notificationsById,
+} from '../../store/notification/notificationThunk'
 import { NotificationSms, TimeIcon } from '../../assets/icons'
 
 export const Notification = ({ notificationHandler }) => {
    const { notifications } = useSelector((state) => state.notifications)
+   console.log('notifications: ', notifications)
    const dispatch = useDispatch()
 
    useEffect(() => {
@@ -21,6 +26,12 @@ export const Notification = ({ notificationHandler }) => {
       return { formattedDate, formattedTime }
    }
 
+   const handleMarkAsRead = () => {
+      dispatch(markAsReadNotifications())
+   }
+   const handleNotificationById = (id) => {
+      dispatch(notificationsById(id))
+   }
    return (
       <>
          {notifications?.length > 0 ? (
@@ -29,17 +40,26 @@ export const Notification = ({ notificationHandler }) => {
                <HeaderBlock>
                   <p>{}</p>
                   <NotificationText>Notification</NotificationText>
-                  <SecondText>Mark as read</SecondText>
+                  <SecondText onClick={handleMarkAsRead}>
+                     Mark as read
+                  </SecondText>
                </HeaderBlock>
                <WrapperBlock>
                   {notifications?.map((notification) => (
                      <ManyContainers key={notification.id}>
                         {notification.isRead ? null : <NotificationSmsIcon />}
-                        <WrapperNotifications>
+                        <WrapperNotifications
+                           onClick={() =>
+                              handleNotificationById(
+                                 notification.notificationId
+                              )
+                           }
+                        >
                            <ContainerImages>
                               <TitleBoard>{notification.titleBoard}</TitleBoard>
                               <ColumnText>{notification.columnName}</ColumnText>
-                              {notification.backGround ? (
+                              {notification.backGround &&
+                              notification.backGround.startsWith('#') ? (
                                  <ColorBlock color={notification.backGround} />
                               ) : (
                                  <ImageStyled
@@ -230,7 +250,6 @@ const ImageStyled = styled('img')(() => ({
    width: '19rem',
    height: '8.5rem',
    borderRadius: '10px',
-   border: '1px solid green',
 }))
 
 const ColorBlock = styled('div')(({ color }) => ({
@@ -238,7 +257,6 @@ const ColorBlock = styled('div')(({ color }) => ({
    height: '8.5rem',
    borderRadius: '10px',
    backgroundColor: color,
-   border: '1px solid green',
 }))
 
 const ContainerImages = styled('div')(() => ({
@@ -312,6 +330,7 @@ const ContainerInfo = styled('div')(() => ({
 const WrapperNotifications = styled('div')(() => ({
    position: 'relative',
    left: '0.8rem',
+   cursor: 'pointer',
 }))
 
 const NotificationSmsIcon = styled(NotificationSms)(() => ({

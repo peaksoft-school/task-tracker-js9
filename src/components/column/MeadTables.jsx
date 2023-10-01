@@ -9,7 +9,6 @@ import {
 import { deleteCardbyColumnId } from '../../store/cards/cardsThunk'
 
 export const MeadTables = ({ columnId, setOpneModal }) => {
-   console.log('columnId: ', columnId)
    const dispatch = useDispatch()
    const { boardId } = useParams()
 

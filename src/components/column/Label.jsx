@@ -22,4 +22,5 @@ const Color = styled('div')(({ props }) => ({
    '&:active': {
       transform: 'scale(2, 0.9)',
    },
+   marginTop: '0.65rem',
 }))

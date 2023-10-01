@@ -35,7 +35,6 @@ export function Sidenav({ data, dataLength, workspacedata }) {
 
    const handleItemClick = (item) => {
       setActiveItem(item)
-      // navigate(`/mainPage/${id}/allissues/`)
    }
 
    useEffect(() => {

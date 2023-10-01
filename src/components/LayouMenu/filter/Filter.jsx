@@ -1,11 +1,25 @@
+import { useEffect, useState } from 'react'
 import { styled, Checkbox, IconButton, keyframes } from '@mui/material'
+import { useParams } from 'react-router'
+import { useDispatch } from 'react-redux'
 import { ExitIcon, FrameThreeIcon } from '../../../assets/icons'
+import { getBoardFilter } from '../../../store/filterBoard/filterBoardThunk'
 
 export const Filter = ({
    openFilterModal,
    openFilterModalHandler,
    closeFilterModalHandler,
 }) => {
+   const [duration, setDuration] = useState(false)
+   const { boardId } = useParams()
+   const dispatch = useDispatch()
+
+   const changeDurationHandler = (e) => {
+      setDuration(e.target.checked)
+   }
+   useEffect(() => {
+      dispatch(getBoardFilter({ duration, boardId }))
+   }, [duration])
    return (
       <div>
          <FilterCont onClick={openFilterModalHandler}>
@@ -29,7 +43,10 @@ export const Filter = ({
                         <p>Due date</p>
                      </Due>
                      <CheckbexAndName>
-                        <Checkbox />
+                        <Checkbox
+                           checked={duration}
+                           onChange={changeDurationHandler}
+                        />
                         <p>No Dates</p>
                      </CheckbexAndName>
                      <CheckbexAndName>

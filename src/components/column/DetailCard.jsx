@@ -12,7 +12,6 @@ import {
    RealWorldIcon,
    TypographyIcon,
 } from '../../assets/icons'
-// import { ColumnCard } from './ColumnCard'
 import { Label } from './Label'
 import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
@@ -24,8 +23,6 @@ export const DetailCard = ({
    setCurrentColumn,
    setCurrentCard,
    column,
-
-   // currentCard,
    dropHandler,
 }) => {
    const [openLabelMap, setOpenLabelMap] = useState({})
@@ -86,6 +83,7 @@ export const DetailCard = ({
    const dragEndHandler = (e) => {
       e.target.style.boxShadow = 'none'
    }
+   console.log('cardResponses', cardResponses)
 
    return (
       <Cont>
@@ -101,6 +99,27 @@ export const DetailCard = ({
                // eslint-disable-next-line react/jsx-boolean-value
                draggable={true}
             >
+               {card.attachmentResponses?.[0]?.documentLink ? (
+                  <AttachmentCard
+                     onClick={() => {
+                        getCardByIdHandler(card)
+                        setShowCardByid(card.cardId)
+                     }}
+                  >
+                     <img
+                        style={{
+                           width: '98%',
+                           height: '7rem',
+                           objectFit: 'cover',
+                           marginLeft: '5px',
+                           borderRadius: '0.25rem',
+                        }}
+                        src={card.attachmentResponses[0].documentLink}
+                        alt=""
+                     />
+                  </AttachmentCard>
+               ) : null}
+
                {openLabelMap[card.cardId] ? (
                   <ParentColorGroupButton>
                      {card.labelResponses?.map((el) => (
@@ -136,7 +155,7 @@ export const DetailCard = ({
                         }}
                      >
                         <div>
-                           <ParagraphText>{card.title}</ParagraphText>
+                           <ParagraphText>{card.title}f</ParagraphText>
                            <EditIconStyle fill="gray" />
                         </div>
                      </IconText>
@@ -206,6 +225,10 @@ export const DetailCard = ({
       </Cont>
    )
 }
+const AttachmentCard = styled('div')(() => ({
+   width: '100%',
+   height: '7rem',
+}))
 const ColumnCard = styled('div')(() => ({
    width: '16.8rem',
    background: '#ffffff',
@@ -289,6 +312,7 @@ const ParentColorGroupButton = styled('div')(() => ({
    display: 'flex-wrap',
    gap: '0.5rem',
    marginLeft: '0.5rem',
+   marginTop: '0.5rem',
 }))
 
 const ColorfulButton = styled(Button)(() => ({
