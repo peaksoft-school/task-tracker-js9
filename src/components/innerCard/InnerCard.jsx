@@ -16,6 +16,7 @@ import {
    ExitIcon,
    LabelIcon,
    MemberIcon,
+   UpIcon,
 } from '../../assets/icons'
 import { Labels } from '../labels/Labels'
 // import { Input } from '../UI/input/Input'
@@ -52,11 +53,12 @@ export const InnerCard = ({
    const [isEditTitle, setIsEditTitle] = useState(true)
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
-   const [handleAttachments, setHandleAttachments] = useState(false)
    const [openEstimation, setOpenEstimation] = useState(false)
    const { boardId } = useParams()
    const [openMembers, setOpenMembers] = useState(false)
    const [openLabel, setOpenLabel] = useState(false)
+   const [downState, setDownSate] = useState(false)
+
    const { members } = useSelector((state) => state.inviteMember)
 
    const filterUsersByUserId = (users) => {
@@ -126,7 +128,7 @@ export const InnerCard = ({
    }
 
    const handleEditClick = () => {
-      setIsEditing(true)
+      setIsEditing(!isEditing)
    }
    const handleEditTitleClick = () => {
       setIsEditTitle(true)
@@ -162,10 +164,6 @@ export const InnerCard = ({
       setOpenModal(false)
    }
 
-   const onClickAttachments = () => {
-      setHandleAttachments((prev) => !prev)
-   }
-
    const openEstimationHandler = () => {
       setOpenEstimation(true)
    }
@@ -182,9 +180,9 @@ export const InnerCard = ({
       setOpenLabel((prev) => !prev)
    }
 
-   // const addLabelCloseModal = () => {
-   //    setOpenLabel(false)
-   // }
+   const onClickDown = () => {
+      setDownSate((prev) => !prev)
+   }
 
    const currentHour = `${selectedDate.$H}`.padStart(2, '0')
    const currentMinute = `${selectedDate.$m}`.padStart(2, '0')
@@ -255,27 +253,27 @@ export const InnerCard = ({
                         <div>
                            <Title>Members</Title>
                            {filteredInviteMembers?.map((user) => (
-                              <div
-                                 style={
-                                    {
-                                       // position: 'relative',
-                                       // display: 'flex',
-                                       // flexDirection: 'row',
-                                    }
-                                 }
-                                 key={user.userId}
-                              >
+                              <div key={user.userId}>
                                  <ImageMembersStyled src={user.image} alt="" />
                               </div>
                            ))}
-                           {/* <Avatars /> */}
                         </div>
                      </DataContainer>
                      <Description>
-                        <DownIcon fill="gray" onClick={handleEditClick} />
-                        <DescriptionTitle style={{ color: 'gray' }}>
-                           Description
-                        </DescriptionTitle>
+                        {isEditing ? (
+                           <UpIcon
+                              fill="gray"
+                              style={{ cursor: 'pointer' }}
+                              onClick={handleEditClick}
+                           />
+                        ) : (
+                           <DownIcon
+                              style={{ cursor: 'pointer' }}
+                              fill="gray"
+                              onClick={handleEditClick}
+                           />
+                        )}
+                        <DescriptionTitle>Description</DescriptionTitle>
                      </Description>
 
                      {isEditing || displayText === '' ? (
@@ -294,7 +292,11 @@ export const InnerCard = ({
                         </DescriptionText>
                      )}
                      <CheckList />
-                     {handleAttachments ? <Attachment /> : null}
+                     {/* {handleAttachments ? <Attachment /> : null} */}
+                     <Attachment
+                        downState={downState}
+                        onClickDown={onClickDown}
+                     />
                   </CardContainerInner>
                   <CardRight>
                      <CardRightContainer>
@@ -350,7 +352,7 @@ export const InnerCard = ({
                            <AddItem>
                               <AttachIcon />
                               {showMore === false ? (
-                                 <AddText onClick={onClickAttachments}>
+                                 <AddText onClick={onClickDown}>
                                     Attachment
                                  </AddText>
                               ) : null}
@@ -450,7 +452,20 @@ const CardContainer = styled('div')(() => ({
    width: '1150px',
    borderRadius: '8px',
    padding: '16px 20px',
-   height: '100%',
+   maxHeight: '40rem ',
+   overflowY: 'auto ',
+   scrollbarWidth: 'thin',
+   scrollbarColor: ' #D9D9D9 transparent',
+   ' &::-webkit-scrollbar ': {
+      width: '0.5rem',
+   },
+   '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+   },
+   ' &::-webkit-scrollbar-thumb ': {
+      backgroundColor: ' #D9D9D9',
+      borderRadius: '0.25rem',
+   },
 }))
 
 const Wrapper = styled('div')(() => ({
@@ -507,7 +522,7 @@ const DescriptionInput = styled('textarea')(() => ({
    marginTop: '0.5rem',
    minHeight: '6.1875rem',
    width: '42.2rem',
-   padding: '0.5rem 1rem',
+   padding: '0',
    background: '#ffffff',
    borderColor: '#989898',
    borderRadius: '0.5rem',
@@ -519,8 +534,10 @@ const DescriptionInput = styled('textarea')(() => ({
 
 const DescriptionText = styled('p')(() => ({
    padding: '0.5rem 1rem',
-   width: '39.9931rem',
+   width: '42.2rem',
    wordWrap: 'break-word',
+   marginTop: '0.5rem',
+   minHeight: '6.1875rem',
 }))
 
 const CardRight = styled('div')(() => ({
@@ -575,6 +592,7 @@ const TitileInput = styled('textarea')(() => ({
 const ModalContent = styled('div')({
    backgroundColor: '#fff',
    borderRadius: '5px',
+   boxShadow: '0px 5px 10px 2px rgba(0, 0, 0, 0.2)',
    width: '17.75rem',
    height: '9.125rem',
    display: 'flex',

@@ -83,7 +83,6 @@ export const DetailCard = ({
    const dragEndHandler = (e) => {
       e.target.style.boxShadow = 'none'
    }
-   console.log('cardResponses', cardResponses)
 
    return (
       <Cont>

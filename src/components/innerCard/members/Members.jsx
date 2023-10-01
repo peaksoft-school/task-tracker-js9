@@ -79,6 +79,7 @@ const Container = styled('div')({
    backgroundColor: '#fff',
    top: '3rem',
    borderRadius: '10px',
+
    padding: '1rem',
    zIndex: 1000,
    scrollbarWidth: 'thin',
@@ -93,6 +94,7 @@ const Container = styled('div')({
       backgroundColor: ' #D9D9D9',
       borderRadius: '0.25rem',
    },
+   boxShadow: '0px 5px 10px 2px rgba(0, 0, 0, 0.2)',
 })
 
 const HeaderMember = styled('div')({

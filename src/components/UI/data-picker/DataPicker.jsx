@@ -126,6 +126,7 @@ export const DataPickers = ({
 
 const MainDateContainer = MUIStyled('div')(() => ({
    padding: '0 1rem 1rem 0',
+   boxShadow: '0px 5px 10px 2px rgba(0, 0, 0, 0.2)',
    width: '19.75rem',
    position: 'absolute',
    height: '41rem',

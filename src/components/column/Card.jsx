@@ -30,7 +30,6 @@ export const Card = ({
    const dispatch = useDispatch()
    const { boardId } = useParams()
 
-   console.log('column:', column)
    const handleButtonClickAddCard = (event) => {
       event.preventDefault()
       const newCard = {
