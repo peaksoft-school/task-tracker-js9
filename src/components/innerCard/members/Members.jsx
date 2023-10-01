@@ -61,7 +61,7 @@ export const Members = ({ closeMembersHandler }) => {
                   <StyledImage src={member.image} alt="" />
                   <div>
                      <p>{member.firstName}</p>
-                     <p>{member.email}</p>
+                     <EmailStyled>{member.email}</EmailStyled>
                   </div>
                </ContInMember>
             ))}
@@ -136,4 +136,12 @@ const StyledImage = styled('img')({
    width: '2.5rem',
    height: '2.5rem',
    borderRadius: '50%',
+})
+
+const EmailStyled = styled('p')({
+   color: '#3C3C3C',
+   maxWidth: '12rem',
+   overflowX: 'hidden',
+   whiteSpace: 'nowrap',
+   textOverflow: 'ellipsis',
 })

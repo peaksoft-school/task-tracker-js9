@@ -65,13 +65,6 @@ export const DetailCard = ({
    }
    const dragOverHandler = (e) => {
       e.preventDefault()
-      // e.dataTransfer.dropEffect = 'move'
-   }
-   const dragleaveHandler = (e) => {
-      e.target.style.boxShadow = 'none'
-      if (e.target.className === 'live') {
-         e.target.style.backgroundColor = 'red'
-      }
    }
    const dragStartHandler = (e, column, card) => {
       setCurrentColumn(column)
@@ -80,19 +73,14 @@ export const DetailCard = ({
 
       e.dataTransfer.setData('text/plain', card.cardId)
    }
-   const dragEndHandler = (e) => {
-      e.target.style.boxShadow = 'none'
-   }
-   console.log('cardResponses', cardResponses)
+   const dragEndHandler = () => {}
 
    return (
       <Cont>
          {cardResponses?.map((card) => (
             <ColumnCard
-               className="live"
                key={card.cardId}
                onDragOver={(e) => dragOverHandler(e)}
-               onDragLeave={(e) => dragleaveHandler(e)}
                onDragStart={(e) => dragStartHandler(e, column, card)}
                onDragEnd={(e) => dragEndHandler(e)}
                onDrop={(e) => dropHandler(e, column, card)}
