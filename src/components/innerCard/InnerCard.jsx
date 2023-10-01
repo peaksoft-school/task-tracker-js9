@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react'
 import dayjs from 'dayjs'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { comments } from '../../utils/constants/comments'
 import {
    ArchiveIcon,
@@ -35,6 +36,7 @@ import { showSnackbar } from '../UI/snackbar/Snackbar'
 import { Members } from './members/Members'
 import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
 import { getAllLabelByCardId } from '../../store/getLabels/labelsThunk'
+import { getMembersInCard } from '../../store/inviteMember/inviteThunk'
 
 export const InnerCard = ({
    isInnerCardOpen,
@@ -54,7 +56,7 @@ export const InnerCard = ({
    const [openCheckListModal, setOpenCheckListModal] = useState(false)
    const [titleCheckList, setTitleCheckList] = useState('')
    const [openEstimation, setOpenEstimation] = useState(false)
-   const { boardId } = useParams()
+   const { boardId, carId } = useParams()
    const [openMembers, setOpenMembers] = useState(false)
    const [openLabel, setOpenLabel] = useState(false)
    const [downState, setDownSate] = useState(false)
@@ -62,8 +64,11 @@ export const InnerCard = ({
    const { members } = useSelector((state) => state.inviteMember)
 
    const filterUsersByUserId = (users) => {
+      if (!Array.isArray(users)) {
+         return []
+      }
       const seenUserIds = new Set()
-      return users.filter((user) => {
+      return users?.filter((user) => {
          if (seenUserIds.has(user.userId)) {
             return false
          }
@@ -140,6 +145,9 @@ export const InnerCard = ({
          document.removeEventListener('mousedown', handleDocumentClick)
       }
    })
+   React.useEffect(() => {
+      dispatch(getMembersInCard({ cardId: carId }))
+   }, [dispatch])
 
    const openCheckListModalHandler = () => {
       setOpenCheckListModal(true)
@@ -251,12 +259,35 @@ export const InnerCard = ({
                            </DateStart>
                         </div>
                         <div>
-                           <Title>Members</Title>
-                           {filteredInviteMembers?.map((user) => (
-                              <div key={user.userId}>
-                                 <ImageMembersStyled src={user.image} alt="" />
-                              </div>
-                           ))}
+                           <TitleMember>Members</TitleMember>
+                           <div
+                              style={{
+                                 display: 'flex',
+                                 justifyContent: 'flex-end',
+                              }}
+                           >
+                              {filteredInviteMembers?.map((user) => (
+                                 <div
+                                    key={user.userId}
+                                    style={{ marginLeft: '-1rem' }}
+                                 >
+                                    {user.image === 'Default image' ||
+                                    user.image === null ? (
+                                       <AccountCircleIcon
+                                          style={{
+                                             width: '2.5rem',
+                                             height: '2.5rem',
+                                          }}
+                                       />
+                                    ) : (
+                                       <ImageMembersStyled
+                                          src={user.image}
+                                          alt=""
+                                       />
+                                    )}
+                                 </div>
+                              ))}
+                           </div>
                         </div>
                      </DataContainer>
                      <Description>
@@ -502,6 +533,13 @@ const Title = styled('h4')(() => ({
    fontWeight: '400',
    marginBottom: '6px',
 }))
+const TitleMember = styled('h4')(() => ({
+   color: '#919191',
+   fontSize: '0.875rem',
+   fontWeight: '400',
+   marginBottom: '6px',
+   marginLeft: '4rem',
+}))
 const DateStart = styled('div')(() => ({
    display: 'flex',
    alignItems: 'center',
@@ -659,7 +697,7 @@ const ImageMembersStyled = styled('img')({
    width: '2.5rem',
    height: '2.5rem',
    borderRadius: '50%',
-   position: 'absolute',
+   // position: 'absolute',
    // right: '1rem',
-   marginRight: '1rem',
+   // marginRight: '-1rem',
 })

@@ -48,7 +48,7 @@ export const DetailCard = ({
       )
       setOpenModal(true)
       dispatch(getMembersInCard({ cardId: card.cardId }))
-
+      console.log('first ', { cardId: card.cardId })
       dispatch(
          getCardbyId({
             cardId: card.cardId,
@@ -65,13 +65,6 @@ export const DetailCard = ({
    }
    const dragOverHandler = (e) => {
       e.preventDefault()
-      // e.dataTransfer.dropEffect = 'move'
-   }
-   const dragleaveHandler = (e) => {
-      e.target.style.boxShadow = 'none'
-      if (e.target.className === 'live') {
-         e.target.style.backgroundColor = 'red'
-      }
    }
    const dragStartHandler = (e, column, card) => {
       setCurrentColumn(column)
@@ -88,10 +81,8 @@ export const DetailCard = ({
       <Cont>
          {cardResponses?.map((card) => (
             <ColumnCard
-               className="live"
                key={card.cardId}
                onDragOver={(e) => dragOverHandler(e)}
-               onDragLeave={(e) => dragleaveHandler(e)}
                onDragStart={(e) => dragStartHandler(e, column, card)}
                onDragEnd={(e) => dragEndHandler(e)}
                onDrop={(e) => dropHandler(e, column, card)}

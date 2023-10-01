@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { styled } from '@mui/material'
+import { styled, keyframes } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { useParams } from 'react-router-dom'
 import { allinviteMember } from '../../../store/inviteMember/inviteThunk'
 
 const filterUsersByUserId = (users) => {
    const seenUserIds = new Set()
-   return users.filter((user) => {
+   return users?.filter((user) => {
       if (seenUserIds.has(user.userId)) {
          return false
       }
@@ -72,7 +72,9 @@ export const Avatars = () => {
                         <p style={{ fontWeight: '600' }}>
                            {selectedUser.firstName}
                         </p>
-                        <StyledEmail>{selectedUser.email}</StyledEmail>
+                        <EmailCont>
+                           <StyledEmail>{selectedUser.email}</StyledEmail>
+                        </EmailCont>
                      </EmailAndNameBox>
                   </UserInfoContainer>
                   {/* <EditProfile>Edit your profile</EditProfile> */}
@@ -97,7 +99,6 @@ const AvatarImageMore = styled('div')({
    height: '2.5rem',
    borderRadius: '2.125rem',
    marginRight: '-1rem',
-   // border: '0.3125rem solid white',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
@@ -112,19 +113,30 @@ const AvatarBox = styled('div')({
    alignItems: 'center',
    position: 'relative',
 })
+const move = keyframes`
+   0% {
+      transform: translate(100%, 0);
+   }
+   100% {
+      transform: translate(-100%, 0);
+   }
+`
+
 const StyledEmail = styled('p')({
-   color: '#919191',
+   display: 'inlineBlock',
+   color: '#b0b0b0',
+   animation: `${move} 5s linear infinite`,
 })
 
 const UserInfoBox = styled('div')({
    width: '18.0625rem',
-   height: '8rem',
+   height: '6rem',
    position: 'absolute',
    top: '110%',
    left: '50%',
    transform: 'translateX(-50%)',
    backgroundColor: 'white',
-   borderRadius: '0.25rem',
+   borderRadius: '0.5rem',
    gap: '1rem',
    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
    padding: '1rem',
@@ -174,4 +186,12 @@ const CircleIconCont = styled('div')({
 const AccountCircleIconStyled = styled(AccountCircleIcon)({
    width: '2.55rem',
    height: '2.55rem',
+})
+
+const EmailCont = styled('div')({
+   width: '70%',
+   whiteSpace: 'nowrap',
+   overflow: 'hidden',
+   boxSizing: 'borderBox',
+   position: 'relative',
 })
