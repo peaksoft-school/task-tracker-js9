@@ -61,3 +61,30 @@ export const updateRoles = createAsyncThunk(
       }
    }
 )
+
+export const createMembersInCard = createAsyncThunk(
+   'inviteMember/createMembersInCard',
+   async (data) => {
+      console.log('data: ', data)
+      try {
+         const response = await axiosInstance.post(
+            `/api/members/${data.memberId}/${data.cardId}`
+         )
+         return response.data
+      } catch (err) {
+         return err.message
+      }
+   }
+)
+
+export const getMembersInCard = createAsyncThunk(
+   'inviteMember/getMemersInCard',
+   async ({ cardId }) => {
+      try {
+         const response = await axiosInstance.get(`/api/members/${cardId}`)
+         return response.data
+      } catch (err) {
+         return err.message
+      }
+   }
+)

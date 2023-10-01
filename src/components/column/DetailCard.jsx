@@ -17,6 +17,7 @@ import { Label } from './Label'
 import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
 import { getColumns } from '../../store/column/columnsThunk'
+import { getMembersInCard } from '../../store/inviteMember/inviteThunk'
 
 export const DetailCard = ({
    cardResponses,
@@ -49,6 +50,7 @@ export const DetailCard = ({
          `/mainPage/${id}/boards/${boardId}/board/${card.cardId}/innerCard`
       )
       setOpenModal(true)
+      dispatch(getMembersInCard({ cardId: card.cardId }))
 
       dispatch(
          getCardbyId({

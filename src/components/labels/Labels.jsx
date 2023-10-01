@@ -1,9 +1,8 @@
 import { Tooltip, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ExitIcon, PLUSICON } from '../../assets/icons'
 import { getAllLabelByCardId } from '../../store/getLabels/labelsThunk'
-import { labelActions } from '../../store/getLabels/labelsSlice'
 import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
 import { ModalUi } from '../UI/modal/Modal'
 import { axiosInstance } from '../../config/axiosInstance'
@@ -11,18 +10,19 @@ import { showSnackbar } from '../UI/snackbar/Snackbar'
 
 export const Labels = ({ cardId }) => {
    const dispatch = useDispatch()
-   const { labelByCardId, labelDrop } = useSelector((state) => state.labels)
+   const { labelByCardId } = useSelector((state) => state.labels)
+   const [openAddLabelModal, setOpenAddLabelModal] = useState(false)
 
    useEffect(() => {
       dispatch(getAllLabelByCardId(cardId))
    }, [dispatch])
 
    const addLabelOpenModal = () => {
-      dispatch(labelActions.openModal())
+      setOpenAddLabelModal(true)
    }
 
    const addLabelCloseModal = () => {
-      dispatch(labelActions.closeModal())
+      setOpenAddLabelModal(false)
    }
 
    const deleteLabelInCard = async (id) => {
@@ -42,7 +42,6 @@ export const Labels = ({ cardId }) => {
             message: 'ERROR',
             severity: 'error',
          })
-         console.log(error)
       }
    }
 
@@ -70,8 +69,8 @@ export const Labels = ({ cardId }) => {
                onClick={addLabelOpenModal}
                style={{ cursor: 'pointer', marginTop: '2px' }}
             />
-            {labelDrop && (
-               <ModalUi open={labelDrop}>
+            {openAddLabelModal && (
+               <ModalUi open={openAddLabelModal} onClose={addLabelCloseModal}>
                   <AddedLabelToCard
                      reloadedLabels={() => {
                         dispatch(getAllLabelByCardId(cardId))

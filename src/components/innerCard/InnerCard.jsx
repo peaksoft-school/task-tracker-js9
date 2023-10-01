@@ -30,7 +30,10 @@ import { getCardArchve } from '../../store/getArchive/archiveThunk'
 import { Attachment } from '../attachment/Attachment'
 import { DataPickers } from '../UI/data-picker/DataPicker'
 import { showSnackbar } from '../UI/snackbar/Snackbar'
-import { Avatars } from '../LayouMenu/avatars/Avatars'
+// import { Avatars } from '../LayouMenu/avatars/Avatars'
+import { Members } from './members/Members'
+import { AddedLabelToCard } from '../addedLabelToCard/AddedLabelToCard'
+import { getAllLabelByCardId } from '../../store/getLabels/labelsThunk'
 
 export const InnerCard = ({
    isInnerCardOpen,
@@ -52,6 +55,22 @@ export const InnerCard = ({
    const [handleAttachments, setHandleAttachments] = useState(false)
    const [openEstimation, setOpenEstimation] = useState(false)
    const { boardId } = useParams()
+   const [openMembers, setOpenMembers] = useState(false)
+   const [openLabel, setOpenLabel] = useState(false)
+   const { members } = useSelector((state) => state.inviteMember)
+
+   const filterUsersByUserId = (users) => {
+      const seenUserIds = new Set()
+      return users.filter((user) => {
+         if (seenUserIds.has(user.userId)) {
+            return false
+         }
+         seenUserIds.add(user.userId)
+         return true
+      })
+   }
+
+   const filteredInviteMembers = filterUsersByUserId(members)
 
    const { cardById } = useSelector((state) => state.cards)
    const startTimeSlice = cardById?.estimationResponse?.startTime?.slice(11, 20)
@@ -63,7 +82,7 @@ export const InnerCard = ({
       0,
       11
    )
-   // const navigate = useNavigate()
+
    const SliceOfDuetDate = cardById?.estimationResponse?.duetDate?.slice(0, 12)
    const duetDateForState = dayjs(cardById?.estimationResponse?.duetDate)
    const [due, setDue] = useState(dayjs(Date(duetDateForState)))
@@ -153,6 +172,19 @@ export const InnerCard = ({
    const closeEstimationHandler = () => {
       setOpenEstimation(false)
    }
+   const openMembersHandler = () => {
+      setOpenMembers((prev) => !prev)
+   }
+   const closeMembersHandler = () => {
+      setOpenMembers(false)
+   }
+   const addLabelOpenModal = () => {
+      setOpenLabel((prev) => !prev)
+   }
+
+   // const addLabelCloseModal = () => {
+   //    setOpenLabel(false)
+   // }
 
    const currentHour = `${selectedDate.$H}`.padStart(2, '0')
    const currentMinute = `${selectedDate.$m}`.padStart(2, '0')
@@ -222,7 +254,21 @@ export const InnerCard = ({
                         </div>
                         <div>
                            <Title>Members</Title>
-                           <Avatars />
+                           {filteredInviteMembers?.map((user) => (
+                              <div
+                                 style={
+                                    {
+                                       // position: 'relative',
+                                       // display: 'flex',
+                                       // flexDirection: 'row',
+                                    }
+                                 }
+                                 key={user.userId}
+                              >
+                                 <ImageMembersStyled src={user.image} alt="" />
+                              </div>
+                           ))}
+                           {/* <Avatars /> */}
                         </div>
                      </DataContainer>
                      <Description>
@@ -257,9 +303,22 @@ export const InnerCard = ({
                            <AddItem>
                               <MemberIcon />
                               {showMore === false ? (
-                                 <AddText>Members</AddText>
+                                 <AddText onClick={openMembersHandler}>
+                                    Members
+                                 </AddText>
                               ) : null}
                            </AddItem>
+                           {openMembers && (
+                              <>
+                                 <BackDropMember
+                                    onClick={closeMembersHandler}
+                                 />
+                                 <Members
+                                    closeMembersHandler={closeMembersHandler}
+                                    setOpenMembers={setOpenMembers}
+                                 />
+                              </>
+                           )}
                            <AddItem>
                               <ClockIcon style={{ width: '16px' }} />
                               {showMore === false ? (
@@ -268,11 +327,25 @@ export const InnerCard = ({
                                  </AddText>
                               ) : null}
                            </AddItem>
-                           <AddItem>
+                           <AddItem onClick={addLabelOpenModal}>
                               <LabelIcon />
                               {showMore === false ? (
                                  <AddText>Label</AddText>
                               ) : null}
+                              {openLabel && (
+                                 <ModalUi
+                                    open={openLabel}
+                                    onClose={addLabelOpenModal}
+                                 >
+                                    <AddedLabelToCard
+                                       reloadedLabels={() => {
+                                          dispatch(getAllLabelByCardId(cardId))
+                                       }}
+                                       // addLabelCloseModal={addLabelCloseModal}
+                                       cardId={cardId}
+                                    />
+                                 </ModalUi>
+                              )}
                            </AddItem>
                            <AddItem>
                               <AttachIcon />
@@ -554,4 +627,21 @@ const BackDrop = styled('div')({
    position: 'absolute',
    width: '100%',
    height: '100vh',
+})
+
+const BackDropMember = styled('div')({
+   width: '100%',
+   height: '100%',
+   position: 'fixed',
+   top: '0',
+   left: '0',
+})
+
+const ImageMembersStyled = styled('img')({
+   width: '2.5rem',
+   height: '2.5rem',
+   borderRadius: '50%',
+   position: 'absolute',
+   // right: '1rem',
+   marginRight: '1rem',
 })

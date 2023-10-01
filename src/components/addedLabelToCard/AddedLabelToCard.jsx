@@ -5,6 +5,7 @@ import { IconButton } from '@mui/material'
 import { CloseIcon } from '../../assets/icons'
 import { axiosInstance } from '../../config/axiosInstance'
 import { showSnackbar } from '../UI/snackbar/Snackbar'
+import { ModalUi } from '../UI/modal/Modal'
 
 export const AddedLabelToCard = ({
    addLabelCloseModal,
@@ -19,7 +20,7 @@ export const AddedLabelToCard = ({
             const { data } = await axiosInstance('/api/labels')
             setLabels(data)
          } catch (error) {
-            console.log(error, 'ERROR MESSAGE')
+            return error.message
          }
       }
       getLabels()
@@ -41,7 +42,6 @@ export const AddedLabelToCard = ({
             message: 'Already have this color :(',
             severity: 'error',
          })
-         console.log(error)
       }
    }
 
