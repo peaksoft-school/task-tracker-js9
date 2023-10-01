@@ -48,7 +48,7 @@ export const DetailCard = ({
       )
       setOpenModal(true)
       dispatch(getMembersInCard({ cardId: card.cardId }))
-
+      console.log('first ', { cardId: card.cardId })
       dispatch(
          getCardbyId({
             cardId: card.cardId,
@@ -73,7 +73,9 @@ export const DetailCard = ({
 
       e.dataTransfer.setData('text/plain', card.cardId)
    }
-   const dragEndHandler = () => {}
+   const dragEndHandler = (e) => {
+      e.target.style.boxShadow = 'none'
+   }
 
    return (
       <Cont>

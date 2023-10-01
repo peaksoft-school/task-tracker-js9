@@ -144,7 +144,7 @@ export const CommentSection = ({ setShowMore, showMore }) => {
 }
 const GLobalContainer = styled('div')(() => ({
    backgroundColor: '#F4F5F7',
-   width: ' 24.9rem',
+   width: '24.9rem',
    // margin: '0 5rem',
    padding: ' 0.9rem 0.75rem ',
    borderRadius: '0.5rem',

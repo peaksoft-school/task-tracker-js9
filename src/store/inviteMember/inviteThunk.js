@@ -44,6 +44,17 @@ export const createInviteMember = createAsyncThunk(
       }
    }
 )
+export const getMembersInCard = createAsyncThunk(
+   'inviteMember/getMemersInCard',
+   async ({ cardId }) => {
+      try {
+         const response = await axiosInstance.get(`/api/members/${cardId}`)
+         return response.data
+      } catch (err) {
+         return err.message
+      }
+   }
+)
 export const updateRoles = createAsyncThunk(
    'inviteMember/updateRolesById',
    async ({ memberId, role, boardId }, { rejectWithValue, dispatch }) => {
@@ -64,27 +75,15 @@ export const updateRoles = createAsyncThunk(
 
 export const createMembersInCard = createAsyncThunk(
    'inviteMember/createMembersInCard',
-   async (data) => {
-      console.log('data: ', data)
+   async (data, { dispatch, rejectWithValue }) => {
       try {
          const response = await axiosInstance.post(
             `/api/members/${data.memberId}/${data.cardId}`
          )
+         dispatch(getMembersInCard())
          return response.data
       } catch (err) {
-         return err.message
-      }
-   }
-)
-
-export const getMembersInCard = createAsyncThunk(
-   'inviteMember/getMemersInCard',
-   async ({ cardId }) => {
-      try {
-         const response = await axiosInstance.get(`/api/members/${cardId}`)
-         return response.data
-      } catch (err) {
-         return err.message
+         return rejectWithValue(err)
       }
    }
 )

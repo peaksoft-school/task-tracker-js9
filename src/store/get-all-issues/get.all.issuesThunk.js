@@ -7,8 +7,6 @@ export const getAllIssues = createAsyncThunk(
       { filterParams, labels, assignee, id, checked },
       { rejectWithValue }
    ) => {
-      console.log('checked: ', checked)
-
       try {
          const response = await axiosInstance.get(
             `/all-issues/filter?workSpaceId=${id}&labels=${labels}&assignees=${assignee}`,

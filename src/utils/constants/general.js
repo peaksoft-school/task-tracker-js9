@@ -105,26 +105,28 @@ export const boards = [
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://images.unsplash.com/photo-1680254321973-f5e235a20c54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80',
+         'https://anitabemcriada.com/wp-content/uploads/2020/08/airbnbmgn4.jpg',
    },
    {
       id: 18,
       title: 'Boardname',
       isFavourite: false,
       background:
-         'https://wallpaperboat.com/wp-content/uploads/2019/09/a-photo-of-the-moon-with-a-beautiful-sky.jpg',
+         'https://miro.medium.com/v2/resize:fit:1358/1*dtmQywVDfpqh-xwQWvAzRg.png',
    },
    {
       id: 19,
       title: 'Boardname',
       isFavourite: false,
-      background: 'https://wallpapercave.com/wp/wp2737825.jpg',
+      background:
+         'https://images.cointelegraph.com/images/240_aHR0cHM6Ly9zMy5jb2ludGVsZWdyYXBoLmNvbS91cGxvYWRzLzIwMjMtMDEvMTU4MDI5YWYtYTg2YS00MDJmLWE1YjUtZTkxNWNjNjlmMTM4LkpQRw==.jpg',
    },
    {
       id: 20,
       title: 'Boardname',
       isFavourite: false,
-      background: 'https://wallpaperaccess.com/full/1131217.jpg',
+      background:
+         'https://thegadgetflow.com/wp-content/uploads/2021/04/Must-have-iPhone-gadgets-for-your-everyday-life-featured-1200x675.jpeg',
    },
 ]
 

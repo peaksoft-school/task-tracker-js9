@@ -31,4 +31,6 @@ export const CheckList = ({ title }) => {
    )
 }
 
-const ChecklistContainer = styled('div')({})
+const ChecklistContainer = styled('div')({
+   marginBottom: '2rem',
+})

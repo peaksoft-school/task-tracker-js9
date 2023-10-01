@@ -1,22 +1,28 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { IconButton, styled } from '@mui/material'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { useParams } from 'react-router-dom'
 import { ExitIcon, SearchIcon } from '../../../assets/icons'
 import {
    createMembersInCard,
    getMembersInCard,
 } from '../../../store/inviteMember/inviteThunk'
+import { showSnackbar } from '../../UI/snackbar/Snackbar'
 
 export const Members = ({ closeMembersHandler }) => {
    const { inviteMember } = useSelector((state) => state.inviteMember)
    const { carId } = useParams()
    const dispatch = useDispatch()
 
+   useEffect(() => {
+      dispatch(getMembersInCard({ cardId: +carId }))
+   }, [])
+
    const filterUsersByUserId = (users) => {
       const seenUserIds = new Set()
-      return users.filter((user) => {
-         if (seenUserIds.has(user.userId)) {
+      return users?.filter((user) => {
+         if (seenUserIds?.has(user.userId)) {
             return false
          }
          seenUserIds.add(user.userId)
@@ -25,17 +31,30 @@ export const Members = ({ closeMembersHandler }) => {
    }
 
    const filteredInviteMembers = filterUsersByUserId(inviteMember)
+   console.log('filteredInviteMembers: ', filteredInviteMembers)
 
    const postMemberHandler = (member) => {
       const data = {
          memberId: member.userId,
-         cardId: carId,
+         cardId: +carId,
       }
       dispatch(createMembersInCard(data))
+         .unwrap()
+         .then(() => {
+            showSnackbar({
+               message: 'Successfully added members',
+               severity: 'success',
+            })
+            dispatch(getMembersInCard({ cardId: carId }))
+         })
+         .catch((error) => {
+            showSnackbar({
+               message: 'Failed to add members',
+               severity: 'error',
+            })
+            return error
+         })
    }
-   useEffect(() => {
-      dispatch(getMembersInCard({ cardId: carId }))
-   }, [])
 
    return (
       <Container>
@@ -58,7 +77,11 @@ export const Members = ({ closeMembersHandler }) => {
                   onClick={() => postMemberHandler(member)}
                   key={member.id}
                >
-                  <StyledImage src={member.image} alt="" />
+                  {member.image === 'Default image' || member.image === null ? (
+                     <AccountCircleIconStyled />
+                  ) : (
+                     <StyledImage src={member.image} alt="" />
+                  )}
                   <div>
                      <p>{member.firstName}</p>
                      <EmailStyled>{member.email}</EmailStyled>
@@ -79,6 +102,7 @@ const Container = styled('div')({
    backgroundColor: '#fff',
    top: '3rem',
    borderRadius: '10px',
+
    padding: '1rem',
    zIndex: 1000,
    scrollbarWidth: 'thin',
@@ -93,6 +117,7 @@ const Container = styled('div')({
       backgroundColor: ' #D9D9D9',
       borderRadius: '0.25rem',
    },
+   boxShadow: '0px 5px 10px 2px rgba(0, 0, 0, 0.2)',
 })
 
 const HeaderMember = styled('div')({
@@ -130,6 +155,7 @@ const ContInMember = styled('div')({
    display: 'flex',
    gap: '1rem',
    paddingTop: '1rem',
+   cursor: 'pointer',
 })
 
 const StyledImage = styled('img')({
@@ -144,4 +170,9 @@ const EmailStyled = styled('p')({
    overflowX: 'hidden',
    whiteSpace: 'nowrap',
    textOverflow: 'ellipsis',
+})
+
+const AccountCircleIconStyled = styled(AccountCircleIcon)({
+   width: '2.5rem',
+   height: '2.5rem',
 })

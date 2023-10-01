@@ -7,7 +7,7 @@ import { allinviteMember } from '../../../store/inviteMember/inviteThunk'
 
 const filterUsersByUserId = (users) => {
    const seenUserIds = new Set()
-   return users.filter((user) => {
+   return users?.filter((user) => {
       if (seenUserIds.has(user.userId)) {
          return false
       }

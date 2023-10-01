@@ -3,14 +3,12 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { createNewColumn, getColumns } from '../../store/column/columnsThunk'
-// import { Columns } from './Columns'
 import { Card } from './Card'
 
 import { NewColumn } from './NewColumn'
 import { fetchParticipans } from '../../store/participants/partThunk'
 import { fetchBoards } from '../../store/board/boardThunk'
 import { moveCard } from '../../store/card/cardThunk'
-// import { fetchParticipans } from '../../store/participants/partThunk'
 
 export const Column = () => {
    const [isCreatingColumn, setIsCreatingColumn] = useState(false)
