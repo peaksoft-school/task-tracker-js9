@@ -12,11 +12,10 @@ import {
 } from '../../store/card/cardThunk'
 import ModalPage from './ModalPage'
 
-export const Attachment = () => {
+export const Attachment = ({ downState, onClickDown }) => {
    const dispatch = useDispatch()
    const { carId } = useParams()
 
-   const [downState, setDownSate] = React.useState(false)
    const [openImageModal, setOpenImageModal] = useState(false)
    const [selectedImage, setSelectedImage] = useState(null)
    const images = useSelector((state) => state.card.images)
@@ -39,10 +38,6 @@ export const Attachment = () => {
    React.useEffect(() => {
       dispatch(attachmentGet(carId))
    }, [onDrop])
-
-   const onClickDown = () => {
-      setDownSate((prev) => !prev)
-   }
 
    return (
       <Container>
@@ -125,10 +120,10 @@ const ContainerInner = styled('div')(() => ({
    justifyContent: 'space-between',
    marginBottom: '1rem',
 }))
-const Title = styled('h3')(() => ({
+const Title = styled('h4')(() => ({
    color: '#111',
    marginLeft: '8px',
-   fontWeight: 400,
+   // fontWeight: 400,
 }))
 const SectionContainer = styled('div')(() => ({
    position: 'relative',

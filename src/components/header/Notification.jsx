@@ -12,7 +12,6 @@ import { NotificationSms, TimeIcon } from '../../assets/icons'
 
 export const Notification = ({ notificationHandler }) => {
    const { notifications } = useSelector((state) => state.notifications)
-   console.log('notifications: ', notifications)
    const dispatch = useDispatch()
 
    useEffect(() => {

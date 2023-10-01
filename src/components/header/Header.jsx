@@ -211,12 +211,15 @@ export const Headers = () => {
                      </StyledAvatar>
                   )}
                   {openProfile ? (
-                     <ProfileTexts>
-                        {location.pathname !== '/profile' && (
-                           <NavLink to="/profile">Profile</NavLink>
-                        )}
-                        <p onClick={logOutHandler}>Log out</p>
-                     </ProfileTexts>
+                     <>
+                        <BackDrop />
+                        <ProfileTexts>
+                           {location.pathname !== '/profile' && (
+                              <NavLinkStlye to="/profile">Profile</NavLinkStlye>
+                           )}
+                           <p onClick={logOutHandler}>Log out</p>
+                        </ProfileTexts>
+                     </>
                   ) : null}
                </WrapperTexts>
             </AboutPanel>
@@ -226,6 +229,9 @@ export const Headers = () => {
    )
 }
 
+const NavLinkStlye = muiStyled(NavLink)(() => ({
+   color: 'black',
+}))
 const GLobalContainer = muiStyled('header')(() => ({
    width: '100%',
    height: ': 4.25rem',
@@ -359,8 +365,8 @@ const ProfileTexts = muiStyled('div')(() => ({
    top: '3rem',
    zIndex: '100',
    borderRadius: '0.625rem',
-   border: '1px solid #919191',
    display: 'flex',
+   boxShadow: '0px 5px 10px 2px rgba(0, 0, 0, 0.2)',
    flexDirection: 'column',
    justifyContent: 'center',
    alignItems: 'start',
@@ -391,7 +397,7 @@ const WrapperTexts = muiStyled('div')(() => ({
 const BackDrop = muiStyled('div')(() => ({
    width: '100%',
    height: '98vh',
-   position: 'absolute',
+   position: 'fixed',
    top: '0',
    left: '0',
 }))

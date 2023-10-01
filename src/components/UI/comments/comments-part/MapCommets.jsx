@@ -179,7 +179,8 @@ const NoCommentsDescription = styled('p')(() => ({
 
 const ScrollableContainer = styled('div')(() => ({
    width: '100%',
-   height: ' 25rem ',
+   height: 'fit-content',
+   maxHeight: '25rem',
    padding: '0.7rem ',
    overflowY: 'auto ',
    scrollbarWidth: 'thin',

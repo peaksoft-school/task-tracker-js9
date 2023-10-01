@@ -43,7 +43,6 @@ export const AllIssues = () => {
    }
 
    const handleLabelChange = (label) => {
-      console.log('label: ', label)
       setLabels(label)
    }
 
