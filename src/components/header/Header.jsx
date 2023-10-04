@@ -115,6 +115,12 @@ export const Headers = () => {
       plusAnimation()
    }, [favoriteData])
 
+   const { notifications } = useSelector((state) => state.notifications)
+
+   useEffect(() => {
+      dispatch(getNotifications())
+   }, [dispatch])
+
    return (
       <div>
          <GLobalContainer>
@@ -183,7 +189,26 @@ export const Headers = () => {
                      />
                   )}
                </div>
-               <div>
+               <div style={{ position: 'relative' }}>
+                  <p
+                     style={{
+                        width: '1.26319rem',
+                        height: '0.94738rem',
+                        padding: '0.0625rem 0.3125rem 0rem 0.3125rem',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '0.5rem',
+                        backgroundColor: '#D91212',
+                        fontSize: '0.8rem',
+                        color: 'white',
+                        position: 'absolute',
+                        right: 0,
+                        zIndex: '2',
+                     }}
+                  >
+                     {notifications.length}
+                  </p>
                   <IconButton onClick={notificationHandler}>
                      <NotificationIcon
                         src={NotificationIcon}
@@ -195,7 +220,7 @@ export const Headers = () => {
                   <Notification notificationHandler={notificationHandler} />
                )}
                <WrapperTexts onClick={openProfileHandler}>
-                  {item?.avatar === 'Default image' ? (
+                  {item?.avatar === 'Default image' || item?.avatar === null ? (
                      <Avatar />
                   ) : (
                      <StyledAvatar>

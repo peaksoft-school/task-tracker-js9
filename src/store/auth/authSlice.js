@@ -105,12 +105,12 @@ export const authSlice = createSlice({
             state.isLoading = false
          })
          // reset password
-         .addCase(resetPasswordRequest.fulfilled, (state, actions) => {
+         .addCase(resetPasswordRequest.fulfilled, (state) => {
             state.isAuthorization = true
             state.isLoading = false
-            state.email = actions.payload.email
-            state.token = actions.payload.token
-            state.role = actions.payload.role
+            // state.email = actions.payload.email
+            // state.token = actions.payload.token
+            // state.role = actions.payload.role
          })
    },
 })

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../config/axiosInstance'
 import { getColumns } from '../column/columnsThunk'
+import { getNotifications } from '../notification/notificationThunk'
 
 export const attachmentGet = createAsyncThunk(
    'card/attachmentGet',
@@ -69,6 +70,7 @@ export const moveCard = createAsyncThunk(
          )
 
          dispatch(getColumns(card.boardId))
+         dispatch(getNotifications())
 
          return response.data
       } catch (error) {

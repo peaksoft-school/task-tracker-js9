@@ -58,8 +58,7 @@ export const Labels = ({ cardId }) => {
                   <TextLabels title={item.description} arrow>
                      {item.description}
                   </TextLabels>
-                  <ExitIcon
-                     fill="gray"
+                  <ExitIconStyle
                      style={{ cursor: 'pointer' }}
                      onClick={() => deleteLabelInCard(item.labelId)}
                   />
@@ -84,6 +83,9 @@ export const Labels = ({ cardId }) => {
       </div>
    )
 }
+const ExitIconStyle = styled(ExitIcon)(() => ({
+   color: !'white',
+}))
 
 const HeadingLabel = styled('p')(({ theme }) => ({
    color: theme.palette.secondary.gray,
@@ -113,7 +115,7 @@ const ContainerLabels = styled('div')(() => ({
 const TextLabels = styled(Tooltip)(() => ({
    color: '#FFF',
    fontFamily: 'CarePro',
-   fontSize: '1rem',
+   fontSize: '0.9rem',
    fontStyle: 'normal',
    fontWeight: '500',
    lineHeight: ' normal',
