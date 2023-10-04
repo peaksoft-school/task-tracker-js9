@@ -560,7 +560,7 @@ const DescriptionInput = styled('textarea')(() => ({
    marginTop: '0.5rem',
    minHeight: '6.1875rem',
    width: '42.2rem',
-   padding: '0',
+   padding: '1rem 1.25rem',
    background: '#ffffff',
    borderColor: '#989898',
    borderRadius: '0.5rem',

@@ -24,6 +24,7 @@ export const Board = () => {
    React.useEffect(() => {
       dispatch(fetchBoards(id))
    }, [])
+   // const dispatch = useDispatch()
 
    const role = 'ALL'
 

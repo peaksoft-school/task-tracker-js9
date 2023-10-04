@@ -14,6 +14,7 @@ export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
    const [search, setSearch] = useState('')
    const { id } = useParams()
    const { participants } = useSelector((state) => state.participant)
+   console.log('participants: ', participants)
    // const { memberSearch } = useSelector((state) => state.allIssues)
 
    const handleCheckboxClick = (userId) => {
@@ -42,6 +43,7 @@ export const AssigneeSection = ({ changeHandler, AssigneeHandleChange }) => {
 
       return fullNameMatch !== null || emailMatch !== null
    })
+   console.log('filteredParticipants:', filteredParticipants)
 
    return (
       <MainContainerOfAssignee>

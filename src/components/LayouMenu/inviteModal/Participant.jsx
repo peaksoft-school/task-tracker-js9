@@ -86,7 +86,7 @@ export const Participant = ({
             </InputBox>
             <UsersBox>
                <AdminBox>
-                  <p>Ali (you)</p>
+                  <p>Айжан (you)</p>
                   <AdminP>Admin</AdminP>
                </AdminBox>
 

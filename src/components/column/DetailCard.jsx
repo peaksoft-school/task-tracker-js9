@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -17,6 +17,7 @@ import { InnerCard } from '../innerCard/InnerCard'
 import { getCardbyId } from '../../store/cards/cardsThunk'
 import { getColumns } from '../../store/column/columnsThunk'
 import { getMembersInCard } from '../../store/inviteMember/inviteThunk'
+import { getNotifications } from '../../store/notification/notificationThunk'
 
 export const DetailCard = ({
    cardResponses,
@@ -76,6 +77,10 @@ export const DetailCard = ({
    const dragEndHandler = (e) => {
       e.target.style.boxShadow = 'none'
    }
+
+   useEffect(() => {
+      dispatch(getNotifications())
+   }, [dispatch])
 
    return (
       <Cont>
@@ -145,7 +150,7 @@ export const DetailCard = ({
                         }}
                      >
                         <div>
-                           <ParagraphText>{card.title}f</ParagraphText>
+                           <ParagraphText>{card.title}</ParagraphText>
                            <EditIconStyle fill="gray" />
                         </div>
                      </IconText>
@@ -322,7 +327,12 @@ const CheckListButton = styled(Button)(() => ({
    fontStyle: ' normal',
    fontWeight: '500',
    left: '9.9rem',
+   width: '3rem',
+   height: '1.1rem',
    bottom: '0.5rem',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
 }))
 
 const CheckMarNumberkIcon = styled('div')(() => ({

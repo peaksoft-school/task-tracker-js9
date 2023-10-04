@@ -75,12 +75,13 @@ export const deleteWorkspaceById = createAsyncThunk(
 
          return data
       } catch (error) {
+         console.log('error: ', error.message)
          showSnackbar({
-            message: error,
+            message: "You can't delete this workspace",
             additionalMessage: 'Please try again .',
             severity: 'error',
          })
-         return rejectWithValue(error.data.message)
+         return rejectWithValue(error.message)
       }
    }
 )

@@ -6,6 +6,7 @@ import TableMui from '../UI/table/TableMui'
 export const AllIssuesTable = ({ selectedUserId, checked }) => {
    console.log('selectedUserId: ', selectedUserId)
    const { allIssues } = useSelector((state) => state.allIssues)
+   console.log('allIssues: ', allIssues)
    const filteredIssues = checked
       ? allIssues.filter((issue) => issue.isChecked === checked)
       : allIssues
@@ -47,12 +48,20 @@ export const AllIssuesTable = ({ selectedUserId, checked }) => {
                      )
                   })
                ) : (
-                  <>
+                  <div
+                     style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                     }}
+                  >
                      {assignee.assignee.slice(0, 2).map((item) => (
-                        <Avatar src={item.image} key={item.id} />
+                        <Avatar
+                           style={{ marginLeft: '-1rem' }}
+                           src={item.image}
+                           key={item.id}
+                        />
                      ))}
-                     <Avatar>{(assignee.assignee.length - 2, 0)}</Avatar>
-                  </>
+                  </div>
                )}
             </Assignee>
          ),
